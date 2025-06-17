@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import {ref, reactive, onMounted} from 'vue'
-import Datepicker from '@vuepic/vue-datepicker'
+import {ref, reactive, onMounted, computed} from 'vue'
+import VueDatepicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
 import { customFetch } from '@/util/customFetch'
 import router from '@/router'
@@ -12,26 +12,37 @@ import router from '@/router'
   });
 
   const selectDoctor = (doctor) => {
+    console.log(doctor.uuid);
+    console.log(doctor.name);
     selectedDoctor.value.uuid = doctor.uuid;
     selectedDoctor.value.name = doctor.name;
   }
-  const today = new Date();
-  let maxDate = new Date();
-  maxDate.setDate(today.getDate() + 7);
+const minDate = new Date();
+let maxDate = new Date();
+maxDate.setDate(minDate.getDate() + 7);
+// const allowedDates = computed(() => {
+  //   const dates = [];
+  //   let date;
+  //   for(let i = 0; i < 7; i++){
+  //     date = new Date(new Date().setDate(new Date().getDate() + i));
+  //     dates.push(date);
+  //   }
+  //   return dates;
+  // });
 
-  let selectedTime = ref();
+  let selectedTime = ref([]);
 
-  let selectedDate = ref(today);
+  let selectedDate = ref(new Date());
 
-  onMounted(
+  onMounted(() =>
       customFetch({
-        method: 'post',
-        url: '/patient/getDoctorList'
+        method: 'get',
+        url: '/doctor/list'
       })
       .then(
           response => {
             if (response.status === 200) {
-              doctorList.value = response.doctorList;
+              doctorList.value = response.data?.list;
             }
           }
       )
@@ -62,7 +73,10 @@ import router from '@/router'
     </div>
     <div class="my-3">
       <h3>일자</h3>
-      <Datepicker v-model="selectedDate" :format="'yyyy-MM-dd'" :min-date="today" :max-date="maxDate" :input-class="'form-control'"/>
+      <VueDatepicker
+          v-model="selectedDate" :format="'yyyy-MM-dd'" :min-date="minDate" :max-date="maxDate"
+          :enable-time-picker="false"  :input-class="'form-control'" prevent-min-max-navigation
+      />
     </div>
     <div class="my-3">
       <h3>시간</h3>
