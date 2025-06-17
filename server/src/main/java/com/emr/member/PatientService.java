@@ -12,11 +12,10 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class PatientService {
 
-    private final PatientMapper pm;
+    private final PatientDAO pm;
 
     public Optional<List<String>> getDoctorList(){
         return pm.getDoctorList();
     }
-
 
 }

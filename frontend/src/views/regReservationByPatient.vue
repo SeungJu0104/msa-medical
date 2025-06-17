@@ -1,14 +1,11 @@
 <script setup lang="ts">
-  import {ref, reactive} from 'vue'
-  import Datepicker from '@vuepic/vue-datepicker'
-  import '@vuepic/vue-datepicker/dist/main.css'
+import {ref, reactive, onMounted} from 'vue'
+import Datepicker from '@vuepic/vue-datepicker'
+import '@vuepic/vue-datepicker/dist/main.css'
+import { customFetch } from '@/util/customFetch'
+import router from '@/router'
 
-  const doctorList = ref(
-[
-      {uuid: "1", name: "김수영"},
-      {uuid: "2", name: "박민수"}
-    ]
-  );
+  const doctorList = ref();
   const selectedDoctor = ref({
     uuid: '',
     name: ''
@@ -25,6 +22,26 @@
   let selectedTime = ref();
 
   let selectedDate = ref(today);
+
+  onMounted(
+      customFetch({
+        method: 'post',
+        url: '/patient/getDoctorList'
+      })
+      .then(
+          response => {
+            if (response.status === 200) {
+              doctorList.value = response.doctorList;
+            }
+          }
+      )
+      .catch(
+          err => {
+            err.response?.data?.message ? alert(err.response?.data?.message) : alert("실행 중 오류가 발생했습니다. 다시 실행해주세요.");
+            router.push({name: 'home'});
+          }
+      )
+  );
 
 
 </script>
