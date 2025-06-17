@@ -1,0 +1,10 @@
+CREATE TABLE TB_MEMBER (
+    uuid VARCHAR(36) PRIMARY KEY,
+    member_role VARCHAR(4) NOT NULL,
+    name VARCHAR(20) NOT NULL,
+    rrn VARCHAR(15) NOT NULL UNIQUE,
+    phone VARCHAR(15) NOT NULL UNIQUE,
+    create_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_date DATETIME,
+    delete_date DATETIME
+);
