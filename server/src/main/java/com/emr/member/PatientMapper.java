@@ -5,6 +5,6 @@ import java.util.Optional;
 
 public interface PatientMapper {
 
-    public Optional<List> getDoctorList();
+    public Optional<List<String>> getDoctorList();
 
 }

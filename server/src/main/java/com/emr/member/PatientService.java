@@ -14,7 +14,7 @@ public class PatientService {
 
     private final PatientMapper pm;
 
-    public Optional<List> getDoctorList(){
+    public Optional<List<String>> getDoctorList(){
         return pm.getDoctorList();
     }
 
