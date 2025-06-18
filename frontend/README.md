@@ -27,3 +27,9 @@ npm run dev
 ```sh
 npm run build
 ```
+
+### use stomp
+```sh
+npm install @stomp/stompjs sockjs-client
+```
+

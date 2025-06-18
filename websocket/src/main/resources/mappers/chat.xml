@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.emr.slgi.chat.ChatMessageDAO">
+  
+  	<select id="getList">
+   	select *
+  	from tb_chat_message
+  	where room_id = #{roomId}
+  
+	</select>
+	
+	
+	<insert id = "saveMessage" >
+	
+	insert into TB_CHAT_message (room_id, uuid,content,create_date)
+	values(#{roomId},#{uuid},#{content},now())
+	
+	</insert>
+  </mapper>
