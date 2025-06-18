@@ -19,13 +19,7 @@
   <select id="getDoctorList">
     SELECT
       uuid,
-      member_role as role,
-      name,
-      rrn,
-      phone,
-      create_date,
-      update_date,
-      delete_date
+      name
     FROM TB_MEMBER
     WHERE member_role = 'R002'
   </select>

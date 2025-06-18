@@ -12,13 +12,18 @@ import org.springframework.web.server.ResponseStatusException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
     @ExceptionHandler(ResponseStatusException.class)
     public ResponseEntity<Map<String, Object>> handleResponseStatusException(ResponseStatusException exception) {
+
         Map<String, Object> map = new HashMap<>();
+
         map.put(
             "message",
             Optional.ofNullable(exception.getReason()).orElse(((HttpStatus)exception.getStatusCode()).getReasonPhrase())
         );
+
         return ResponseEntity.status(exception.getStatusCode()).body(map);
     }
+
 }
