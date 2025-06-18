@@ -7,6 +7,17 @@ export const ENDPOINTS = {
         register: {
             method: 'post',
             url: '/member'
+        },
+        reservation: {
+            method: 'get',
+            url: `/patient/${memberId}`
+        }
+
+    },
+    doctor: {
+        list: {
+            method: 'get',
+            url: '/doctor/list'
         }
     }
 }
