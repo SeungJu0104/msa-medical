@@ -1,0 +1,5 @@
+spring:
+  datasource:
+    url: #URL
+    username: #DB 사용자명
+    password: #DB 비밀번호
