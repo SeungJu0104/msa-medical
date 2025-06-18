@@ -6,5 +6,10 @@ CREATE TABLE TB_MEMBER (
     phone VARCHAR(15) NOT NULL UNIQUE,
     create_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_date DATETIME,
-    delete_date DATETIME
+    delete_date DATETIME,
+    CONSTRAINT fk_tb_status_code_id
+        FOREIGN KEY (member_role)
+        REFERENCES TB_STATUS_CODE(id),
+    CONSTRAINT chk_member_role_prefix
+        CHECK (member_role LIKE 'R%')
 );
