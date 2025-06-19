@@ -11,12 +11,11 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'home',
       component: HomeView,
       children: [
         {
           path: '/',
-          name: 'mainView',
+          name: 'home',
           component: MainView
         },
         ...patientRoutes
