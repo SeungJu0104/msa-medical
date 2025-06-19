@@ -26,7 +26,12 @@
 </template>
 
 <script setup>
+import { customFetch } from '@/util/customFetch';
+import { ENDPOINTS } from '@/util/endpoints';
 import { reactive } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 const member = reactive({
   userid: '',
@@ -37,6 +42,11 @@ const member = reactive({
 });
 
 async function registerPatient() {
-  console.log("register patient");
+  // TODO: 실패 시 이동 안 함
+  const response = await customFetch(
+    ENDPOINTS.patient.signup,
+    { data: member }
+  );
+  router.push({ name: 'loginView' });
 }
 </script>

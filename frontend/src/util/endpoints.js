@@ -12,7 +12,12 @@ export const ENDPOINTS = {
             method: 'get',
             url: `/patient/${memberId}`
         }
-
+    },
+    patient: {
+        signup: {
+            method: 'post',
+            url: '/patient/signup'
+        }
     },
     doctor: {
         list: {
