@@ -21,7 +21,7 @@
       <input type="text" id="phone" v-model="member.phone">
     </div>
   </form>
-  <button @click="registerPatient">회원가입</button>
+  <button @click="signupPatient">회원가입</button>
   <RouterLink :to="{ name: 'home' }">취소</RouterLink>
 </template>
 
@@ -41,7 +41,7 @@ const member = reactive({
   rrn: ''
 });
 
-async function registerPatient() {
+async function signupPatient() {
   // TODO: 실패 시 이동 안 함
   const response = await customFetch(
     ENDPOINTS.patient.signup,
