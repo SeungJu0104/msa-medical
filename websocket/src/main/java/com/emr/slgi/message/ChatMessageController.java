@@ -1,4 +1,4 @@
-package com.emr.slgi.chat;
+package com.emr.slgi.message;
 
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;

@@ -3,6 +3,10 @@ package com.emr.slgi.chatroom;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.emr.slgi.chatjoin.ChatJoinDAO;
+import com.emr.slgi.chatjoin.ChatJoin;
 
 import lombok.RequiredArgsConstructor;
 
@@ -10,11 +14,29 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ChatRoomService {
 	private final ChatRoomDAO chatRoomDAO;
+	private final ChatJoinDAO chatJoinDAO;
 
 	public List<ChatRoom> getList(String uuid) {
-		
-		// TODO Auto-generated method stub
 		return chatRoomDAO.getList(uuid);
 	}
+	
+	@Transactional
+	public int createChat(ChatRoomCreate data) {
+	    ChatRoom room = new ChatRoom();
+	    room.setRoomName(data.getRoomName());
+
+	    chatRoomDAO.insert(room); 
+
+	    int roomId = room.getRoomId();
+	    // 2. 참여자 목록 생성
+	    for (String uuid : data.getMembers()) {
+	        ChatJoin join = new ChatJoin();
+	        join.setRoomId(roomId);
+	        join.setUuid(uuid);
+	        chatJoinDAO.insert(join);
+	    }
+	    return roomId;
+	    }
+	
 
 }

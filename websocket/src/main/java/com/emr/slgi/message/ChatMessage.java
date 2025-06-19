@@ -1,4 +1,4 @@
-package com.emr.slgi.chat;
+package com.emr.slgi.message;
 
 import java.time.LocalDate;
 
@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ChatMessage {
 
-	private String messageId;
-	private String roomId;
+	private Integer messageId;
+	private Integer roomId;
 	private String uuid; 
 	private String content;
 	private LocalDate createDate;

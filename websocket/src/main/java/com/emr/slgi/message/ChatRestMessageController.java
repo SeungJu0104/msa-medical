@@ -1,4 +1,4 @@
-package com.emr.slgi.chat;
+package com.emr.slgi.message;
 
 import java.util.List;
 

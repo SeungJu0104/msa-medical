@@ -8,6 +8,8 @@ import org.apache.ibatis.annotations.Mapper;
 public interface ChatRoomDAO {
 
 	public List<ChatRoom> getList(String uuid);
+
+	public void insert(ChatRoom room);
 	
 
 }

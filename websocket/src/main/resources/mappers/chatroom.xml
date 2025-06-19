@@ -11,4 +11,11 @@
   	WHERE j.uuid = #{uuid}
 	</select>
 	
+<insert id="insert" useGeneratedKeys="true" keyProperty="roomId">
+  INSERT INTO TB_CHAT_ROOM (room_name, create_date)
+  VALUES (#{roomName}, NOW())
+</insert>
+	
+	
+	
   </mapper>
