@@ -7,14 +7,15 @@
 <mapper namespace="com.emr.slgi.chatjoin.ChatJoinDAO">
 
 <insert id="insert" >
-  INSERT INTO TB_CHAT_JOIN (room_id, uuid, join_time)
-  VALUES (#{roomId}, #{uuid}, NOW())
+  INSERT INTO TB_CHAT_JOIN (room_id, uuid)
+  VALUES (#{roomId}, #{uuid})
 </insert>
 
 
 <update id="updateJoinTime">
 	update TB_CHAT_JOIN
-	set join_time = now()
+	set join_time = now(),
+		out_time = NULL
 	where room_id = #{roomId} 
 	and uuid = #{uuid}
 
@@ -28,6 +29,7 @@
 	and uuid = #{uuid}
 
 </update>
+
 
 </mapper>
 

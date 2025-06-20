@@ -21,6 +21,8 @@ public class ChatMessageController {
 			System.out.println(">> 서버 수신 메시지: " + content);
 			
 			chatMessageService.saveMessage(content);
+			System.out.println("저장된 메시지 ID: " + content.getMessageId());
+			
 			messagingTemplate.convertAndSend("/sub/chat/room/" + content.getRoomId(), content);
 
 		} catch (Exception e) {

@@ -26,9 +26,9 @@ public class ChatRoomService {
 	    room.setRoomName(data.getRoomName());
 
 	    chatRoomDAO.insert(room); 
-
+	    
 	    int roomId = room.getRoomId();
-	    // 2. 참여자 목록 생성
+	    
 	    for (String uuid : data.getMembers()) {
 	        ChatJoin join = new ChatJoin();
 	        join.setRoomId(roomId);

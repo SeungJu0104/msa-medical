@@ -13,7 +13,7 @@
 	</select>
 	
 	
-	<insert id = "saveMessage" >
+	<insert id = "saveMessage"  useGeneratedKeys="true" keyProperty="messageId" >
 	
 	insert into TB_CHAT_message (room_id, uuid,content,create_date)
 	values(#{roomId},#{uuid},#{content},NOW())

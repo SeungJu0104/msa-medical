@@ -14,7 +14,8 @@ public class ChatMessageService {
 	public List<ChatMessage> getList(String roomId) {
 		return chatMessageDAO.getList(roomId);
 	}
-
+	
+	
 	public void saveMessage(ChatMessage content) {
 		chatMessageDAO.saveMessage(content);
 		
