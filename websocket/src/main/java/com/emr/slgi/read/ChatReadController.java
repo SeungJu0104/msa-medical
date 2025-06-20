@@ -15,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/read")
+@RequestMapping("/read")
 @Slf4j
 public class ChatReadController {
 	

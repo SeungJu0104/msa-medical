@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/chatjoin")
+@RequestMapping("/chatjoin")
 public class ChatJoinController {
 	private final ChatJoinService chatJoinService;
 	
