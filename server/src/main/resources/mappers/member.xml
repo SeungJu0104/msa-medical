@@ -23,4 +23,8 @@
     FROM TB_MEMBER
     WHERE member_role = 'R002'
   </select>
+  <insert id="createPatient">
+    INSERT INTO TB_MEMBER (uuid, member_role, name, rrn, phone)
+    VALUES (#{uuid}, 'R004', #{name}, #{rrn}, #{phone})
+  </insert>
 </mapper>
