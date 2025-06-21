@@ -47,6 +47,36 @@ const member = reactive({
 
 async function registerPatient() {
   // TODO: 실패 시 이동 안 함
+  if (member.userid.length === 0) {
+    alert("아이디를 입력해주세요.");
+    return;
+  }
+
+  if (member.userid !== validId) {
+    alert("중복확인을 해주세요.");
+    return;
+  }
+
+  if (member.password.length === 0) {
+    alert("비밀번호를 입력해주세요.");
+    return;
+  }
+
+  if (member.name.length === 0) {
+    alert("이름을 입력해주세요.");
+    return;
+  }
+
+  if (member.phone.length === 0) {
+    alert("전화번호를 입력해주세요.");
+    return;
+  }
+
+  if (member.rrn.length === 0) {
+    alert("주민번호를 입력해주세요.");
+    return;
+  }
+
   const response = await customFetch(
     ENDPOINTS.auth.register.patient,
     { data: member }
