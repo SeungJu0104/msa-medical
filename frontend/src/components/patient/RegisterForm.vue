@@ -10,6 +10,10 @@
       <input type="password" id="password" v-model="member.password">
     </div>
     <div>
+      <label for="passwordCheck">비밀번호 확인</label>
+      <input type="password" id="passwordCheck" v-model="passwordCheck">
+    </div>
+    <div>
       <label for="name">이름</label>
       <input type="text" id="name" v-model="member.name">
     </div>
@@ -29,7 +33,7 @@
 <script setup>
 import { customFetch } from '@/util/customFetch';
 import { ENDPOINTS } from '@/util/endpoints';
-import { reactive } from 'vue';
+import { reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
@@ -44,6 +48,7 @@ const member = reactive({
   phone: '',
   rrn: ''
 });
+const passwordCheck = ref(''); // TODO: lodash로 처리하기
 
 async function registerPatient() {
   // TODO: 실패 시 이동 안 함
@@ -59,6 +64,11 @@ async function registerPatient() {
 
   if (member.password.length === 0) {
     alert("비밀번호를 입력해주세요.");
+    return;
+  }
+
+  if (passwordCheck.value !== member.password) {
+    alert("비밀번호 확인이 일치하지 않습니다.");
     return;
   }
 
