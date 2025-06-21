@@ -4,6 +4,7 @@
       <label for="userid">아이디</label>
       <input type="text" id="userid" v-model="member.userid">
     </div>
+    <button type="button" @click="checkIdDuplicate">중복확인</button>
     <div>
       <label for="password">비밀번호</label>
       <input type="password" id="password" v-model="member.password">
@@ -33,6 +34,9 @@ import { useRouter } from 'vue-router';
 
 const router = useRouter();
 
+let validChecked = false;
+let validId = "";
+
 const member = reactive({
   userid: '',
   password: '',
@@ -48,5 +52,21 @@ async function registerPatient() {
     { data: member }
   );
   router.push({ name: 'loginView' });
+}
+
+async function checkIdDuplicate() {
+  if (8 <= member.userid.length && member.userid.length <= 20) {
+    const userid = member.userid;
+    const response = await customFetch(ENDPOINTS.auth.checkId, {
+      params: { userid }
+    });
+    if (!response.data.exists) {
+      validChecked = true;
+      validId = userid;
+      alert("아이디가 사용가능합니다.");
+      return;
+    }
+    alert("아이디가 이미 존재합니다.");
+  }
 }
 </script>
