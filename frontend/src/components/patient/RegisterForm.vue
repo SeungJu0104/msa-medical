@@ -2,33 +2,33 @@
   <form>
     <div>
       <label for="userid">아이디</label>
-      <input type="text" id="userid" v-model="member.userid">
+      <input type="text" @input="checkIdValidity" id="userid" v-model="member.userid">
       <div v-show="invalidity.userid" v-text="invalidity.userid"></div>
     </div>
     <button type="button" @click="checkIdDuplicate">중복확인</button>
     <div>
       <label for="password">비밀번호</label>
-      <input type="password" id="password" v-model="member.password">
+      <input type="password" @input="checkPasswordValidity" id="password" v-model="member.password">
       <div v-show="invalidity.password" v-text="invalidity.password"></div>
     </div>
     <div>
       <label for="passwordCheck">비밀번호 확인</label>
-      <input type="password" id="passwordCheck" v-model="passwordCheck">
+      <input type="password" @input="checkPasswordCheckValidity" id="passwordCheck" v-model="passwordCheck">
       <div v-show="invalidity.passwordCheck" v-text="invalidity.passwordCheck"></div>
     </div>
     <div>
       <label for="name">이름</label>
-      <input type="text" id="name" v-model="member.name">
+      <input type="text" @input="checkNameValidity" id="name" v-model="member.name">
       <div v-show="invalidity.name" v-text="invalidity.name"></div>
     </div>
     <div>
       <label for="rrn">주민번호</label>
-      <input type="text" id="rrn" v-model="member.rrn">
+      <input type="text" @input="checkRrnValidity" id="rrn" v-model="member.rrn">
       <div v-show="invalidity.rrn" v-text="invalidity.rrn"></div>
     </div>
     <div>
       <label for="phone">전화번호</label>
-      <input type="text" id="phone" v-model="member.phone">
+      <input type="text" @input="checkPhoneValidity" id="phone" v-model="member.phone">
       <div v-show="invalidity.phone" v-text="invalidity.phone"></div>
     </div>
   </form>
