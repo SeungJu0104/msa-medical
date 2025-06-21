@@ -1,9 +1,9 @@
-package com.emr.slgi.patient.dto;
+package com.emr.slgi.auth.dto;
 
 import lombok.Data;
 
 @Data
-public class SignupDTO {
+public class RegisterByPatientDTO {
     private String userid;
     private String password;
     private String name;

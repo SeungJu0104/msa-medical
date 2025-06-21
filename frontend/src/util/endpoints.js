@@ -1,4 +1,12 @@
 export const ENDPOINTS = {
+    auth: {
+        register: {
+            patient: {
+                method: 'post',
+                url: '/auth/register/patient'
+            }
+        }
+    },
     member: {
         detail: (memberId) => ({
             method: 'get',
@@ -11,12 +19,6 @@ export const ENDPOINTS = {
         reservation: {
             method: 'get',
             url: `/patient/${memberId}`
-        }
-    },
-    patient: {
-        signup: {
-            method: 'post',
-            url: '/patient/signup'
         }
     },
     doctor: {

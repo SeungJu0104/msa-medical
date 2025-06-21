@@ -44,7 +44,7 @@ const member = reactive({
 async function signupPatient() {
   // TODO: 실패 시 이동 안 함
   const response = await customFetch(
-    ENDPOINTS.patient.signup,
+    ENDPOINTS.auth.register.patient,
     { data: member }
   );
   router.push({ name: 'loginView' });
