@@ -10,5 +10,6 @@ import com.emr.slgi.member.dto.MemberCreateDTO;
 public interface MemberDAO {
     public Member getById(String id);
     public List<Member> getDoctorList();
+    public List<Member> getStaffList();
     public void createPatient(MemberCreateDTO memberCreateDTO);
 }
