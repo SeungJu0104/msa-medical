@@ -1,12 +1,16 @@
 package com.emr.slgi.patient;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import com.emr.slgi.member.Member;
 import com.emr.slgi.member.MemberDAO;
 import com.emr.slgi.member.dto.MemberCreateDTO;
+import com.emr.slgi.member.dto.MemberSearchDTO;
 import com.emr.slgi.patient.dto.PatientRegisterDTO;
+import com.emr.slgi.patient.dto.PatientSearchDTO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,5 +28,10 @@ public class PatientService {
             patientRegisterDTO.getPhone()
         );
         memberDAO.createPatient(memberCreateDTO);
+    }
+
+    public List<Member> search(PatientSearchDTO patientSearchDTO) {
+        MemberSearchDTO memberSearchDTO = new MemberSearchDTO(patientSearchDTO.getSearchValue());
+        return memberDAO.search(memberSearchDTO);
     }
 }
