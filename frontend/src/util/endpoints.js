@@ -32,5 +32,11 @@ export const ENDPOINTS = {
             method: 'get',
             url: '/doctor/list'
         }
+    },
+    staff: {
+        list: {
+            method: 'get',
+            url: '/staff/list'
+        }
     }
 }
