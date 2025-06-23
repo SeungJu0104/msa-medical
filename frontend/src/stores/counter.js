@@ -10,3 +10,18 @@ export const useCounterStore = defineStore('counter', () => {
 
   return { count, doubleCount, increment }
 })
+
+
+export const useAuthStore = defineStore('auth',{
+  persist: true,
+  state: () => ({
+    user: null
+  }),
+
+  actions: {
+    setUser(user){
+      this.user =user
+    }
+  }
+  
+})

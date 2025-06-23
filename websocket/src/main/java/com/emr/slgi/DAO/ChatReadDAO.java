@@ -14,5 +14,4 @@ public interface ChatReadDAO {
 	public List<ChatRead> selectMessages(ChatRead read);
 
 	public List<ChatAlarmDTO> getList(String uuid);
-
 }
