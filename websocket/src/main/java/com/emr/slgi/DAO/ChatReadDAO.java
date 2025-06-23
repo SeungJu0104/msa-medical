@@ -1,13 +1,16 @@
-package com.emr.slgi.read;
+package com.emr.slgi.DAO;
 
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.emr.slgi.DTO.ChatAlarmDTO;
+import com.emr.slgi.DTO.ChatRead;
+
 @Mapper
 public interface ChatReadDAO {
 	
-	public void readtime(ChatRead read);
+	public int readtime(ChatRead read);
 
 	public void joinreadtime(ChatRead read);
 

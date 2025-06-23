@@ -1,12 +1,15 @@
-package com.emr.slgi.chatroom;
+package com.emr.slgi.service;
 
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.emr.slgi.chatjoin.ChatJoinDAO;
-import com.emr.slgi.chatjoin.ChatJoin;
+import com.emr.slgi.DAO.ChatJoinDAO;
+import com.emr.slgi.DAO.ChatRoomDAO;
+import com.emr.slgi.DTO.ChatJoin;
+import com.emr.slgi.DTO.ChatRoom;
+import com.emr.slgi.DTO.ChatRoomCreate;
 
 import lombok.RequiredArgsConstructor;
 
@@ -38,5 +41,20 @@ public class ChatRoomService {
 	    return roomId;
 	    }
 	
+
+	public String loadChatName(int roomId) {
+		return chatRoomDAO.loadChatName(roomId);
+	}
+
+	public int totalCount(String uuid) {
+		
+		return 0;
+	}
+
+	public List<String> getUuid(Integer roomId) {
+		// TODO Auto-generated method stub
+		return chatRoomDAO.getUuid(roomId);
+	}
+
 
 }

@@ -1,4 +1,4 @@
-package com.emr.slgi.message;
+package com.emr.slgi.DTO;
 
 import java.time.LocalDate;
 
@@ -16,5 +16,4 @@ public class ChatMessage {
 	private String uuid; 
 	private String content;
 	private LocalDate createDate;
-	
 }

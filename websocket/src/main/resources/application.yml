@@ -1,13 +1,8 @@
 spring:
     application:
         name: websocket
-
-    datasource:
-        url: jdbc:mariadb://localhost:3306/final_project
-        driver-class-name: org.mariadb.jdbc.Driver
-        username: kosa
-        password: 1004
-
+    profiles:
+      active: db
 mybatis:
   mapper-locations: classpath:/mappers/**/*.xml
   configuration:

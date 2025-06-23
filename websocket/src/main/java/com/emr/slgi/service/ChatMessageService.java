@@ -1,8 +1,11 @@
-package com.emr.slgi.message;
+package com.emr.slgi.service;
 
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+
+import com.emr.slgi.DAO.ChatMessageDAO;
+import com.emr.slgi.DTO.ChatMessage;
 
 import lombok.RequiredArgsConstructor;
 

@@ -1,4 +1,4 @@
-package com.emr.slgi.chatroom;
+package com.emr.slgi.DTO;
 
 import java.util.List;
 

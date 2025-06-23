@@ -1,0 +1,137 @@
+<template>
+    <div>
+      <h2>채팅방 리스트</h2>
+      {{uuid}}님
+      
+      <button class="btn" @click="showModal = true">알림창 </button>
+      <alarm v-if="showModal" :alarms="alarmList" @close="showModal = false " :loadAlarmList="loadAlarmList" />
+
+  
+      <ul class="list-group">
+        <li v-for="room in state.chatList" :key="room.roomId">
+          <router-link :to="{name : 'chatroom', params:{roomId : room.roomId }}">{{ room.roomName }}</router-link>
+          {{ room.content }}
+          {{ room.count }}
+          {{ room.finalReadTime }}
+        </li>
+        
+      </ul>
+    
+      <button class="btn" @click="create = true">등록하기</button>
+    <ChatCreate v-if="create" @close="create = false" @refresh="loadList" />
+
+  </div>
+  </template>
+  
+  <script setup>
+  
+import ChatCreate from './ChatCreate.vue'
+import alarm from './Alarm.vue'
+import { useAuthStore} from '@/stores/counter';
+import { customFetch } from '@/util/customFetch';
+import {onMounted, onUnmounted, provide, reactive, ref } from 'vue';
+import { Client } from '@stomp/stompjs';
+import SockJS from 'sockjs-client';
+import { useRouter } from 'vue-router';
+
+  const auth = useAuthStore();
+  const uuid = auth.user.uuid;
+  const alarmList = ref([])
+  const create = ref(false)
+  const showModal = ref(false)
+  const router = useRouter()
+  const state = reactive({
+    chatList : [],
+  });
+
+  onMounted(()=>{
+    loadchatList()
+    loadAlarmList()
+    client.activate()
+  })
+
+  const loadchatList= () =>{
+    customFetch({
+    url: `/chatroom/chatRoomList/${uuid}`,
+    method: 'GET'
+  })
+    .then(({ data, status }) => {
+    if (status === 200) {
+    state.chatList = data
+  }
+  })
+  .catch(e => {
+  alert("채팅방을 불러오지 못했습니다.")
+  console.error("에러:", e)
+})
+};
+
+const client = new Client({
+  webSocketFactory:() => new SockJS('/ws'),
+  connectHeaders:{sender:uuid},
+  onConnect: () => {
+    console.log("연결성공")
+    client.subscribe(`/sub/chatrooms/${uuid}`,(message) =>{
+    const list = JSON.parse(message.body)
+    state.chatList = list
+    })
+    client.subscribe(`/sub/alarms/${uuid}`, (message) => {
+    const list = JSON.parse(message.body)
+    alarmList.value = list
+  })
+  },
+  onStompError: (e) =>{
+  console.error('연결 실패 : ' ,e)
+  }
+})
+const loadList = (roomId) =>{
+  
+  if (client.connected) {
+    client.publish({
+      destination: `/pub/chat/list`,
+      body: JSON.stringify({ uuid,roomId })
+    });
+  create.value =false;
+  router.push({name:'chatroom', params:{roomId}}) 
+}}
+
+const loadAlarmList = () => {
+  customFetch({
+          url: `/chatread/chatReadList/${uuid}`,
+          method : 'GET'
+      }).then(({data,status})=> {
+          if(status===200){
+            alarmList.value = data
+          }
+      }).catch(error => {
+          console.error("에러",error)
+      })
+}
+
+</script>
+
+
+<style scoped>
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+.modal-window {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  min-width: 300px;
+}
+.modal-footer {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+</style>

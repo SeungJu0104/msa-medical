@@ -1,6 +1,9 @@
-package com.emr.slgi.chatjoin;
+package com.emr.slgi.service;
 
 import org.springframework.stereotype.Service;
+
+import com.emr.slgi.DAO.ChatJoinDAO;
+import com.emr.slgi.DTO.ChatJoin;
 
 import lombok.RequiredArgsConstructor;
 

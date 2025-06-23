@@ -1,4 +1,4 @@
-package com.emr.slgi.read;
+package com.emr.slgi.DTO;
 
 import java.time.LocalDateTime;
 

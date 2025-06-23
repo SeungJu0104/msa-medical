@@ -1,8 +1,11 @@
-package com.emr.slgi.member;
+package com.emr.slgi.service;
 
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+
+import com.emr.slgi.DAO.MemberDAO;
+import com.emr.slgi.DTO.Member;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,6 +22,4 @@ public class MemberService {
 		// TODO Auto-generated method stub
 		return memberDAO.getList(uuid);
 	}
-
-    
 }

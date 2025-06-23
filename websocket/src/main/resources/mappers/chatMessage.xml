@@ -3,9 +3,10 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
-  <mapper namespace="com.emr.slgi.message.ChatMessageDAO">
+  <mapper namespace="com.emr.slgi.DAO.ChatMessageDAO">
   
   	<select id="getList">
+
    	select *
   	from tb_chat_message
   	where room_id = #{roomId}
@@ -15,8 +16,8 @@
 	
 	<insert id = "saveMessage"  useGeneratedKeys="true" keyProperty="messageId" >
 	
-	insert into TB_CHAT_message (room_id, uuid,content,create_date)
-	values(#{roomId},#{uuid},#{content},NOW())
+	insert into TB_CHAT_message (room_id, uuid,content)
+	values(#{roomId},#{uuid},#{content})
 	
 	</insert>
   </mapper>

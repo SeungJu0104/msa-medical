@@ -1,4 +1,4 @@
-package com.emr.slgi.chatjoin;
+package com.emr.slgi.DTO;
 
 import java.time.LocalDateTime;
 
@@ -13,6 +13,5 @@ public class ChatJoin {
 	private Integer roomId;
 	private String uuid;
 	private LocalDateTime joinTime;
-	private LocalDateTime outTime;
-	
+	private LocalDateTime outTime;	
 }

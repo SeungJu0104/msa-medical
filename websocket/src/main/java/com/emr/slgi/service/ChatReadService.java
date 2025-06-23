@@ -5,9 +5,9 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.emr.slgi.read.ChatAlarmDTO;
-import com.emr.slgi.read.ChatRead;
-import com.emr.slgi.read.ChatReadDAO;
+import com.emr.slgi.DAO.ChatReadDAO;
+import com.emr.slgi.DTO.ChatAlarmDTO;
+import com.emr.slgi.DTO.ChatRead;
 
 import lombok.RequiredArgsConstructor;
 
@@ -17,12 +17,14 @@ public class ChatReadService {
 	private final ChatReadDAO chatReadDAO;
 	
 	@Transactional
-	public void selectMessages(ChatRead read) {
-		
+	public int selectMessages(ChatRead read) {
+		int result = 0;
 		List<ChatRead>	list = chatReadDAO.selectMessages(read); 
+		System.out.println("selectMessages result count = " + list.size());
 		for (ChatRead msg : list) {
-	        chatReadDAO.readtime(msg);
+	        result += chatReadDAO.readtime(msg);
 	    }
+		return result;
 	}
 
 	public List<ChatAlarmDTO> getList(String uuid) {

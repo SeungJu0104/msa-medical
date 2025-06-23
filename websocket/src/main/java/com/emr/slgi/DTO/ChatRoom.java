@@ -1,6 +1,7 @@
-package com.emr.slgi.chatroom;
+package com.emr.slgi.DTO;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,6 +14,9 @@ public class ChatRoom {
 	private Integer roomId;
 	private String roomName;
 	private LocalDate createDate;
+	private String uuid;
+	private String content;
+	private int count ; 
+	private LocalDateTime lastMessageTime;
 	
-
 }

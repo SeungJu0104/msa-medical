@@ -63,4 +63,6 @@ export const ENDPOINTS = {
             url: '/staff/list'
         }
     }
+
+    
 }
