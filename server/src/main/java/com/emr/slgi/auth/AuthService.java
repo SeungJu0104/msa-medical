@@ -1,10 +1,16 @@
 package com.emr.slgi.auth;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
+import com.emr.slgi.auth.dto.LoginDTO;
 import com.emr.slgi.auth.dto.RegisterByPatientDTO;
+import com.emr.slgi.credentials.Credentials;
 import com.emr.slgi.credentials.CredentialsDAO;
 import com.emr.slgi.credentials.dto.CredentialsCreateDTO;
 import com.emr.slgi.member.MemberDAO;
@@ -40,5 +46,15 @@ public class AuthService {
 
     public boolean checkIdDuplicate(String userid) {
         return credentialsDAO.existsByUserid(userid);
+    }
+
+    public Map<String, String> login(LoginDTO loginDTO) {
+        Map<String, String> map = new HashMap<>();
+        Credentials credentials = credentialsDAO.getMemberCredentials(loginDTO.getUserid());
+        if (credentials == null || !credentials.getPassword().equals(loginDTO.getPassword())) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "아이디나 비밀번호가 틀렸습니다.");
+        }
+        map.put("status", "ok");
+        return map;
     }
 }
