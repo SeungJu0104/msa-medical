@@ -10,7 +10,7 @@
     <div>
       <div>
         <RouterLink>로그인</RouterLink>
-        <RouterLink :to="{ name: 'patientSignup' }">회원가입</RouterLink>
+        <RouterLink :to="{ name: 'patientRegister' }">회원가입</RouterLink>
       </div>
       <div>
         <RouterLink>회원님</RouterLink>

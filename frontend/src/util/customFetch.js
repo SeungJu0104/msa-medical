@@ -4,6 +4,20 @@ const instance = axios.create({
     baseURL: '/api'
 });
 
+/**
+ * Axios 인스턴스를 이용한 커스텀 Fetch 함수
+ *
+ * @template T
+ * @param {Object} endpoint - 요청할 엔드포인트 정보
+ * @param {import('axios').Method} endpoint.method - HTTP 메서드 (e.g. 'get', 'post')
+ * @param {string} endpoint.url - 요청할 URL
+ * @param {import('axios').AxiosRequestConfig} [config] - 추가 Axios 요청 설정
+ * @returns {Promise<{
+ *   data: T;
+ *   headers: import('axios').AxiosResponseHeaders;
+ *   status: number;
+ * }>} 응답 데이터, 헤더, 상태코드를 포함한 객체
+ */
 export async function customFetch(endpoint, config) {
     const response = await instance({
         ...endpoint,

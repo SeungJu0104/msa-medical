@@ -1,9 +1,9 @@
-const SignupView = () => import("@/views/patient/SignupView.vue");
+const RegisterView = () => import("@/views/patient/RegisterView.vue");
 
 export const patientRoutes = [
   {
-    path: '/patient/signup',
-    name: 'patientSignup',
-    component: SignupView
+    path: '/patient/register',
+    name: 'patientRegister',
+    component: RegisterView
   }
 ];

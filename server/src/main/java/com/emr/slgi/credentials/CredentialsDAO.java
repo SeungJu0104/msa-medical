@@ -7,4 +7,5 @@ import com.emr.slgi.credentials.dto.CredentialsCreateDTO;
 @Mapper
 public interface CredentialsDAO {
     public void create(CredentialsCreateDTO credentialsCreateDTO);
+    public boolean existsByUserid(String userid);
 }

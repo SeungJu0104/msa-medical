@@ -37,4 +37,8 @@ public class AuthService {
         );
         credentialsDAO.create(credentialsCreateDTO);
     }
+
+    public boolean checkIdDuplicate(String userid) {
+        return credentialsDAO.existsByUserid(userid);
+    }
 }

@@ -5,6 +5,10 @@ export const ENDPOINTS = {
                 method: 'post',
                 url: '/auth/register/patient'
             }
+        },
+        checkId: {
+            method: 'get',
+            url: '/auth/check-id'
         }
     },
     member: {
