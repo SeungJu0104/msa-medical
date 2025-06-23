@@ -3,7 +3,9 @@
       <h2>채팅방 리스트</h2>
       {{uuid}}님
       
-      <button class="btn" @click="showModal = true">알림창 </button>
+      <button class="btn" @click="showModal = true">
+        알림창 <span v-if="totalCount > 0">({{ totalCount }})</span>
+      </button>
       <alarm v-if="showModal" :alarms="alarmList" @close="showModal = false " :loadAlarmList="loadAlarmList" />
 
   
@@ -43,6 +45,12 @@ import { useRouter } from 'vue-router';
   const state = reactive({
     chatList : [],
   });
+
+  import { computed } from 'vue'
+
+  const totalCount = computed(() => {
+  return state.chatList.reduce((sum, room) => sum + room.count, 0)
+  })
 
   onMounted(()=>{
     loadchatList()
