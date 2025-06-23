@@ -21,10 +21,26 @@ export const ENDPOINTS = {
             url: `/patient/${memberId}`
         }
     },
+    paitent: {
+        register: {
+            method: 'post',
+            url: '/patient'
+        },
+        search: (searchValue) => ({
+            method: 'get',
+            url: `/patient/search?searchValue=${searchValue}`
+        })
+    },
     doctor: {
         list: {
             method: 'get',
             url: '/doctor/list'
+        }
+    },
+    staff: {
+        list: {
+            method: 'get',
+            url: '/staff/list'
         }
     }
 }
