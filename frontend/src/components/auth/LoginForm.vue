@@ -23,7 +23,9 @@ const user = reactive({
 });
 
 async function login() {
-  console.log("login() 실행");
-  // const response = await customFetch(ENDPOINTS.auth.login);
+  const response = await customFetch(ENDPOINTS.auth.login, {
+    data: user
+  });
+  console.log(response);
 }
 </script>
