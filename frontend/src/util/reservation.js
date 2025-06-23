@@ -4,9 +4,10 @@ import {ENDPOINTS} from "@/util/endpoints.js";
 import router from "@/router/index.js";
 import {omit} from "lodash";
 import {common} from "@/util/common.js";
+import dayjs from "dayjs";
 
 export const patientMethods = {
-    generateTimeSlots : reservationList => {
+    generateTimeSlots : (reservationList, selectedVal) => {
 
         console.log("예약 데이터 처리 부분");
         console.log(reservationList);
@@ -20,28 +21,48 @@ export const patientMethods = {
             })
         );
 
-        const start = new Date();
-        const end = new Date();
+
+
+        let start = selectedVal.reservationDate;
+        let end = selectedVal.reservationDate;
         const availableSlots = new Set();
 
-        start.setHours(9, 0, 0, 0); // 9:00 AM
-        end.setHours(18, 0, 0, 0); // 6:00 PM
+        console.log("당일 여부 : ", selectedVal.isToday);
+        console.log("start : ", start);
+
+        if(selectedVal.isToday) {
+            start = start.minute(Math.floor(start.minute() / 10) * 10).second(0); // 초와 밀리초도 0으로 초기화
+        }else {
+            start = start.hour(9).minute(0).second(0); // 9:00 AM
+        }
+
+        console.log("시작 시각 : ", start);
+
+        end = end.hour(18).minute(0).second(0); // 6:00 PM
 
         while (start <= end) {
 
-            const hours = start.getHours().toString().padStart(2, '0');
-            const minutes = start.getMinutes().toString().padStart(2, '0');
+            const hours = start.hour().toString().padStart(2, '0');
+            const minutes = start.minute().toString().padStart(2, '0');
 
             availableSlots.add(`${hours}:${minutes}`);
-            start.setMinutes(start.getMinutes() + 10);
+            start = start.minute(start.minute() + 10);
 
         }
 
+        console.log("예약된 시간 목록", [...alreadyReservatedSlots]);
+        console.log("전체 가능한 시간 목록", [...availableSlots]);
+
+
         const diff = new Set(
-            [...availableSlots].filter(slot => !alreadyReservatedSlots.has(slot))
+            [...availableSlots].filter(slot => {
+                !alreadyReservatedSlots.has(slot);
+                const [hh] = slot.split(':');
+                return hh !== '12';
+            })
         );
 
-        console.log(diff);
+        console.log("최종 목록 ", diff);
 
         return diff;
 
@@ -51,10 +72,7 @@ export const patientMethods = {
         try{
             console.log("fetch 전송");
             const response = await customFetch(
-                ENDPOINTS.patient.reservationList,
-                {
-                    data: selectedVal
-                }
+                ENDPOINTS.patient.reservationList(selectedVal),
             );
 
             if(response.status === 200) {
@@ -69,11 +87,11 @@ export const patientMethods = {
         }
 
     },
-    reservation : async (selectedVal) => {
+    reservation : (selectedVal) => {
 
         console.log(selectedVal);
 
-        await customFetch(
+        customFetch(
             ENDPOINTS.member.reservation,
             {
                 data: selectedVal
@@ -110,28 +128,45 @@ export const patientMethods = {
 
     getReservationTime: async(selectedVal) => {
 
-        const today = new Date();
+        const today = dayjs(new Date());
         const reservationList = ref([]);
+
+        selectedVal.reservationDate = dayjs(selectedVal.reservationDate);
 
         console.log("fetch에 전송하는 일시 : " + selectedVal.reservationDate);
         // 오늘 날짜인지 검증해
         // 오늘 날짜가 아니면 그냥 그대로 보내기
-        if(selectedVal.reservationDate.toDateString() === today.toDateString()) {
-
+        if(selectedVal.reservationDate.isSame(today, 'day')) {
+            selectedVal.isToday = true;
             // 오늘 날짜면 현재 시간 기준 1시간 뒤로 시간 데이터 수정해서
             // reservationTime 함수 실행.
-            if(selectedVal.reservationDate.getHours() > 8  && selectedVal.reservationDate.getHours() < 19) {
-                console.log("a");
-                selectedVal.reservationDate.setHours(selectedVal.reservationDate.getHours() + 1);
+            if(selectedVal.reservationDate.hour() > 8  && selectedVal.reservationDate.hour() < 19) {
+
+                selectedVal.reservationDate = selectedVal.reservationDate.add(1, 'hour');
+                // selectedValO.reservationDate.setHours(selectedValO.reservationDate.getHours() + 1);
+                // selectedValO.reservationDate = dayjs(selectedValO.reservationDate).format('YYYY-MM-DDTHH:mm:00');
+                console.log("당일 1시간 뒤 시간 : ", selectedVal.reservationDate);
+
             }
             
+        }else {
+            selectedVal.isToday = false; // 다른 날짜 선택하면 false로 변경
         }
 
-        const response = await patientMethods.reservationTime(selectedVal);
+        console.log("시간 : ", selectedVal.reservationDate);
+        console.log("인코딩 후 시간 : ", selectedVal.reservationDate);
+
+        const response = await patientMethods.reservationTime({
+            patientUuid : '550e8400-e29b-41d4-a716-446655440020', // 테스트용 환자 아이디
+            ...omit(selectedVal, ['reservationDate', 'time', 'name']), // date와 time, name 속성을 제외한 나머지 속성들을 복사
+            dateTime:
+                `${dayjs(selectedVal.reservationDate).format('YYYY-MM-DDTHH:mm:00')}`
+            // ISO8601 형식으로 안정적인 전송
+        });
         reservationList.value = Array.isArray(response) ? response : [];
         
         return patientMethods.generateTimeSlots(
-            reservationList
+            reservationList, selectedVal
         );
 
     }

@@ -5,13 +5,15 @@ import '@vuepic/vue-datepicker/dist/main.css'
 import {common} from '@/util/common.js'
 import { patientMethods } from '@/util/reservation.js'
 import {omit} from 'lodash'
+import dayjs from "dayjs";
 
 const selectedVal = reactive({
     doctorUuid: null,
     reservationDate: new Date(),
     time: null,
     symptom: null,
-    name: null
+    name: null,
+    isToday: false
   });
 
   const reservationChk = reactive({
@@ -75,27 +77,41 @@ const selectedVal = reactive({
   }
 
   function reservation (selectedValO) {
-    console.log(selectedValO.date);
+    console.log(selectedValO.reservationDate);
     console.log(selectedValO.time);
 
 
 
     // 전송 전 데이터 있는지 확인하는 검증 로직 추가하기
+    const fieldLabels = {
+      doctorChk: '의사를 선택해주세요.',
+      dateChk: '날짜를 선택해주세요.',
+      timeChk: '시간을 선택해주세요.',
+      symptomChk: '증상을 입력해주세요.'
+    };
+
+    for (const [key, value] of Object.entries(reservationChk)) {
+      if (!value) {
+        alert(fieldLabels[key]);
+        return;
+      }
+    }
+
+    if(selectedValO.symptom.length === 0) {
+      alert("증상을 입력해주세요.");
+      return;
+    }
+
+    console.log("예약 수행 : ", selectedValO);
 
 
-
-
-    const selectedVal = reactive({
+    patientMethods.reservation({
       patientUuid : '550e8400-e29b-41d4-a716-446655440020', // 테스트용 환자 아이디
-      ...omit(selectedValO, ['date', 'time', 'name']), // date와 time 속성을 제외한 나머지 속성들을 복사
+      ...omit(selectedValO, ['reservationDate', 'time', 'name']), // date와 time, name 속성을 제외한 나머지 속성들을 복사
       dateTime:
-        `${selectedValO.reservationDate.toISOString().slice(0, 10)}T${selectedValO.time}:00`
-      // 서버로 보낼 때는 ISOString 문자열로 보내는 것이 안정적이다.
+          `${dayjs(selectedValO.reservationDate).format('YYYY-MM-DD')}T${selectedValO.time}:00`
     });
 
-    console.log(selectedVal);
-
-    patientMethods.reservation(selectedVal);
   }
 
   async function getDoctorList () {
@@ -131,6 +147,8 @@ const selectedVal = reactive({
             :enable-time-picker="false"  :input-class="'form-control'" :esc-close = "false" :space-confirm = "false"
             @update:model-value = "handleDate" prevent-min-max-navigation
         />
+
+
       </div>
     </template>
     <template v-if="reservationChk.dateChk && reservationTime">
@@ -138,6 +156,11 @@ const selectedVal = reactive({
         <h3>시간</h3>
         <template v-for="time in Array.from(reservationTime).sort()" :key="time">
           <button type="button" class="btn btn-primary btn-lg" @click="selectTime(time)" ref="selectedVal.time" v-cloak>{{time}}</button>
+        </template>
+        <template v-if="!reservationTime.size">
+          <div>
+            <span>예약 가능한 시간대가 없습니다.</span>
+          </div>
         </template>
       </div>
     </template>

@@ -12,6 +12,7 @@
     "@vuepic/vue-datepicker": "^11.0.2",
     "axios": "^1.10.0",
     "bootstrap": "^5.3.6",
+    "dayjs": "^1.11.13",
     "install": "^0.13.0",
     "lodash": "^4.17.21",
     "pinia": "^3.0.1",

@@ -1,9 +1,9 @@
-package com.emr.slgi.patient.service;
+package com.emr.slgi.reservation.service;
 
-import com.emr.slgi.patient.dao.ReservationDAO;
-import com.emr.slgi.patient.dto.Reservation;
-import com.emr.slgi.patient.dto.ReservationForm;
-import com.emr.slgi.patient.dto.ReservationList;
+import com.emr.slgi.reservation.dao.ReservationDAO;
+import com.emr.slgi.reservation.dto.FindReservationDate;
+import com.emr.slgi.reservation.dto.ReservationForm;
+import com.emr.slgi.reservation.dto.ReservationList;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -26,10 +26,10 @@ public class ReservationService {
     }
 
     // 환자 직접 등록 시 날짜 선택하면 해당 일자의 예약 데이터 가져오기.
-    public Optional<List<ReservationList>> getReservationList(Reservation reservation) {
+    public Optional<List<ReservationList>> getReservationList(FindReservationDate reservation) {
         
         // 오늘이면 today 값 true로
-        if(reservation.getReservationDate().toLocalDate().isEqual(LocalDate.now())) {
+        if(reservation.getDateTime().toLocalDate().isEqual(LocalDate.now())) {
             reservation.setToday(true);
             log.info(reservation.toString());
         }

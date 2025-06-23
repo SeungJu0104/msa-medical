@@ -1,5 +1,4 @@
 import router from "@/router/index.js";
-import {useRouter} from 'vue-router'
 
 export const common =  {
 
@@ -7,7 +6,7 @@ export const common =  {
         return router.push({name: 'home'});
     },
     goBack : () => {
-        return useRouter().back();
+        return router.back();
     },
     errMsg : (err) => {
         err.response?.data?.message ?

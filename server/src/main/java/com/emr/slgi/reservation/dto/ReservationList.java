@@ -1,4 +1,4 @@
-package com.emr.slgi.patient.dto;
+package com.emr.slgi.reservation.dto;
 
 import lombok.Data;
 
