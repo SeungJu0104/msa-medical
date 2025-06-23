@@ -1,4 +1,12 @@
 export const ENDPOINTS = {
+    auth: {
+        register: {
+            patient: {
+                method: 'post',
+                url: '/auth/register/patient'
+            }
+        }
+    },
     member: {
         detail: (memberId) => ({
             method: 'get',

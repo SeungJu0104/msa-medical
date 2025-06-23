@@ -2,15 +2,14 @@ spring:
     application:
         name: server
 
-    datasource:
-        url: jdbc:mariadb://localhost:3306/kosa_db?useSSL=false
-        driver-class-name: org.mariadb.jdbc.Driver
-        username: kosa
-        password: 1004
-
     devtools:
       livereload:
         enabled: true
+
+    #db 관련 내용은 application-db.yml 파일에 작성.
+    #gitignore로 git에 해당파일 커밋 안되도록 수정.
+    profiles:
+      active: db
 
 server:
   port: 8080

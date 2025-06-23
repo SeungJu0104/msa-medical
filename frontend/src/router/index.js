@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import regReservationByPatient from '@/views/regReservationByPatient.vue'
+import { patientRoutes } from './patientRoutes';
 
 const HomeView = () => import('@/views/HomeView.vue');
 const MainView = () => import('@/views/home/MainView.vue');
@@ -10,14 +11,14 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'home',
       component: HomeView,
       children: [
         {
           path: '/',
-          name: 'mainView',
+          name: 'home',
           component: MainView
-        }
+        },
+        ...patientRoutes
       ]
     },
     {
