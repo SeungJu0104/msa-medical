@@ -19,3 +19,7 @@ mybatis:
   configuration:
     map-underscore-to-camel-case: true
 #  type-aliases-package: com.emr.slgi.member
+
+springdoc:
+  swagger-ui:
+    path: /api-docs
