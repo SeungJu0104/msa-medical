@@ -23,6 +23,27 @@
     FROM TB_MEMBER
     WHERE member_role = 'R002'
   </select>
+  <select id="getStaffList">
+    SELECT
+      uuid,
+      name,
+      CASE member_role
+        WHEN 'R002' THEN '의사'
+        WHEN 'R003' THEN '간호사'
+      END as role
+    FROM TB_MEMBER
+    WHERE member_role = 'R002' OR member_role = 'R003'
+  </select>
+  <select id="search">
+    SELECT
+      uuid,
+      name,
+      rrn,
+      phone,
+      create_date
+    FROM TB_MEMBER
+    WHERE member_role = 'R004' AND name LIKE CONCAT('%', #{searchValue}, '%')
+  </select>
   <insert id="createPatient">
     INSERT INTO TB_MEMBER (uuid, member_role, name, rrn, phone)
     VALUES (#{uuid}, 'R004', #{name}, #{rrn}, #{phone})

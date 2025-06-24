@@ -5,6 +5,10 @@ export const ENDPOINTS = {
                 method: 'post',
                 url: '/auth/register/patient'
             }
+        },
+        checkId: {
+            method: 'get',
+            url: '/auth/check-id'
         }
     },
     member: {
@@ -23,16 +27,40 @@ export const ENDPOINTS = {
             // 추후 팀장님과 얘기해서 patient 속성쪽으로 이동할지 결정.
         }
     },
+    paitent: {
+        register: {
+            method: 'post',
+            url: '/patient'
+        },
+        search: (searchValue) => ({
+            method: 'get',
+            url: `/patient/search?searchValue=${searchValue}`
+        })
+    },
+    paitent: {
+        register: {
+            method: 'post',
+            url: '/patient'
+        },
+        search: (searchValue) => ({
+            method: 'get',
+            url: `/patient/search?searchValue=${searchValue}`
+        }),
+        reservationList: (selectedVal) => ({
+                method: 'get',
+                url: `/reservation/getReservationList/${selectedVal.doctorUuid}/${selectedVal.dateTime}`
+        })
+    },
     doctor: {
         list: {
             method: 'get',
             url: '/doctor/list'
         }
     },
-    patient: {
-        reservationList: (selectedVal) => ({
-                method: 'get',
-                url: `/reservation/getReservationList/${selectedVal.doctorUuid}/${selectedVal.dateTime}`
-        })
+    staff: {
+        list: {
+            method: 'get',
+            url: '/staff/list'
+        }
     }
 }
