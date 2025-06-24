@@ -36,6 +36,8 @@ import dayjs from "dayjs";
 
     reservationChk.doctorChk = true;
 
+    handleDate(selectedVal.reservationDate);
+
   }
 
   const handleDate = async (selectedDate) => {
@@ -52,7 +54,7 @@ import dayjs from "dayjs";
   }
 
   const disabledWeekends = (date) => {
-      return dayjs(date).toDate().getDay() === 0; // 일요일, 토요일만 true = 비활성화
+      return dayjs(date).toDate().getDay() === 0;
   };
 
 
@@ -138,17 +140,15 @@ import dayjs from "dayjs";
           </template>
       </ul>
     </div>
-    <template v-if="reservationChk.doctorChk">
-      <div class="my-3">
-        <h3>일자</h3>
-        <VueDatepicker
-            :model-value = "selectedVal.reservationDate" :format="'yyyy-MM-dd'" :min-date="minDate" :max-date="maxDate"
-            :disabled-dates="disabledWeekends" :enable-time-picker="false"  :input-class="'form-control'" :esc-close = "false" :space-confirm = "false"
-            @update:model-value = "handleDate" prevent-min-max-navigation
-        />
-      </div>
-    </template>
-    <template v-if="reservationChk.dateChk && reservationTime">
+    <div class="my-3">
+      <h3>일자</h3>
+      <VueDatepicker
+          :model-value = "selectedVal.reservationDate" :format="'yyyy-MM-dd'" :min-date="minDate" :max-date="maxDate"
+          :disabled-dates="disabledWeekends" :enable-time-picker="false"  :input-class="'form-control'" :esc-close = "false" :space-confirm = "false"
+          @update:model-value = "handleDate" prevent-min-max-navigation
+      />
+    </div>
+    <template v-if="reservationChk.dateChk && reservationChk.doctorChk">
       <div class="my-3">
         <h3>시간</h3>
         <template v-for="time in Array.from(reservationTime).sort()" :key="time">
