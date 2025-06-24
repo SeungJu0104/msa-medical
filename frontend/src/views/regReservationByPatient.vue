@@ -1,95 +1,125 @@
-<script setup lang="ts">
+<script setup>
 import {ref, reactive, onMounted, computed} from 'vue'
 import VueDatepicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
-import { customFetch } from '@/util/customFetch'
-import router from '@/router'
-import { ENDPOINTS } from '@/util/endpoints'
+import {common} from '@/util/common.js'
+import { patientMethods } from '@/util/reservation.js'
+import {omit} from 'lodash'
+import dayjs from "dayjs";
 
-  const selectedVal = reactive({
+const selectedVal = reactive({
     doctorUuid: null,
-    date: new Date(),
+    reservationDate: new Date(),
     time: null,
-    symptom: null
+    symptom: null,
+    name: null,
+    isToday: false
+  });
+
+  const reservationChk = reactive({
+    doctorChk : false,
+    dateChk : false,
+    timeChk : false,
+    symptomChk : false
   });
 
   const doctorList = ref();
+  const reservationTime = ref();
 
   const selectDoctor = (doctor) => {
     selectedVal.doctorUuid = doctor.uuid;
-    console.log(selectedVal);
+    selectedVal.name = doctor.name;
+
+    reservationChk.doctorChk = true;
+
+  }
+
+  const handleDate = async (selectedDate) => {
+
+    console.log("handleDate selectedDate:", selectedDate);
+    selectedVal.reservationDate = selectedDate;
+
+    reservationChk.dateChk = true;
+
+    reservationTime.value = await patientMethods.getReservationTime(selectedVal);
+    console.log("다시 프론트");
+    console.log(reservationTime.value);
+
   }
 
   const minDate = new Date();
   const maxDate = new Date().setDate(minDate.getDate() + 7);
 
-  const reservationTime = computed(() => {
 
-    const start = new Date();
-    const end = new Date();
-    const slots = [];
 
-    start.setHours(9, 0, 0, 0); // 9:00 AM
-    end.setHours(18, 0, 0, 0); // 6:00 PM
+  const selectTime = (time) => {
 
-    while (start <= end) {
+    selectedVal.time = time;
 
-      const hours = start.getHours().toString().padStart(2, '0');
-      const minutes = start.getMinutes().toString().padStart(2, '0');
+    reservationChk.timeChk = true;
 
-      slots.push(`${hours}:${minutes}`);
-      start.setMinutes(start.getMinutes() + 10);
+  }
+
+  const writeSymptom = (symptom) => {
+
+    if(symptom !== null) {
+
+      reservationChk.symptomChk = true;
 
     }
 
-    return slots;
-
-  });
-
-  const selectTime = (time) => {
-    selectedVal.time = time;
-    console.log(selectedVal);
   }
 
-  const historyBack = () => {
-    router.push({name: 'home'});
+  function goHome () {
+
+    common.goHome();
+
   }
 
-  const reservation = () => {
-    customFetch(
-      ENDPOINTS.member.reservation
-    )
-    .then(
-        response => {
-          if(response.status === 200) alert(response.data?.message);
-        }
-    )
-    .catch(
-        err => {
-          err.response?.data?.message ? alert(err.response?.data?.message) : alert("실행 중 오류가 발생했습니다. 다시 실행해주세요.");
-        }
-    )
+  function reservation (selectedValO) {
+    console.log(selectedValO.reservationDate);
+    console.log(selectedValO.time);
+
+
+
+    // 전송 전 데이터 있는지 확인하는 검증 로직 추가하기
+    const fieldLabels = {
+      doctorChk: '의사를 선택해주세요.',
+      dateChk: '날짜를 선택해주세요.',
+      timeChk: '시간을 선택해주세요.',
+      symptomChk: '증상을 입력해주세요.'
+    };
+
+    for (const [key, value] of Object.entries(reservationChk)) {
+      if (!value) {
+        alert(fieldLabels[key]);
+        return;
+      }
+    }
+
+    if(selectedValO.symptom.length === 0) {
+      alert("증상을 입력해주세요.");
+      return;
+    }
+
+    console.log("예약 수행 : ", selectedValO);
+
+
+    patientMethods.reservation({
+      patientUuid : '550e8400-e29b-41d4-a716-446655440020', // 테스트용 환자 아이디
+      ...omit(selectedValO, ['reservationDate', 'time', 'name']), // date와 time, name 속성을 제외한 나머지 속성들을 복사
+      dateTime:
+          `${dayjs(selectedValO.reservationDate).format('YYYY-MM-DD')}T${selectedValO.time}:00`
+    });
+
   }
 
-  onMounted(() =>
-      customFetch(
-        // method: 'get',
-        // url: '/doctor/list'
-        ENDPOINTS.doctor.list
-      )
-      .then(
-          response => {
-            if (response.status === 200) {
-              doctorList.value = response.data?.list;
-            }
-          }
-      )
-      .catch(
-          err => {
-            err.response?.data?.message ? alert(err.response?.data?.message) : alert("실행 중 오류가 발생했습니다. 다시 실행해주세요.");
-            router.push({name: 'home'});
-          }
-      )
+  async function getDoctorList () {
+    doctorList.value = await patientMethods.getDoctorList();
+  }
+
+  onMounted(
+      getDoctorList
   );
 
 
@@ -100,37 +130,54 @@ import { ENDPOINTS } from '@/util/endpoints'
     <h2>예약등록</h2>
     <div class="dropdown my-3">
       <h3>의사</h3>
-      <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+      <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" v-cloak>
         {{ selectedVal?.name || '의사를 선택해주세요.' }}
       </button>
       <ul class="dropdown-menu">
           <template v-for="doctor in doctorList" :key="doctor.uuid">
-            <li class="dropdown-item" @click="selectDoctor(doctor)">{{doctor.name}}</li>
+            <li class="dropdown-item" @click="selectDoctor(doctor)" v-cloak>{{doctor.name}}</li>
           </template>
       </ul>
     </div>
-    <div class="my-3">
-      <h3>일자</h3>
-      <VueDatepicker
-          v-model="selectedVal.date" :format="'yyyy-MM-dd'" :min-date="minDate" :max-date="maxDate"
-          :enable-time-picker="false"  :input-class="'form-control'" prevent-min-max-navigation
-      />
-    </div>
-    <div class="my-3">
-      <h3>시간</h3>
-      <template v-for="time in reservationTime">
-        <button type="button" class="btn btn-primary btn-lg" @click="selectTime(time)">{{time}}</button>
-      </template>
-    </div>
-    <div>
-      <div class="my-3 input-group">
-        <span class="input-group-text">증상</span>
-        <textarea class="form-control" aria-label="symptom" v-model="selectedVal.symptom"></textarea>
+    <template v-if="reservationChk.doctorChk">
+      <div class="my-3">
+        <h3>일자</h3>
+        <VueDatepicker
+            :model-value = "selectedVal.reservationDate" :format="'yyyy-MM-dd'" :min-date="minDate" :max-date="maxDate"
+            :enable-time-picker="false"  :input-class="'form-control'" :esc-close = "false" :space-confirm = "false"
+            @update:model-value = "handleDate" prevent-min-max-navigation
+        />
+
+
       </div>
-    </div>
-    <div>
-      <button type="button" class="btn btn-outline-success" @click="reservation">예약</button>
-      <button type="button" class="btn btn-outline-warning" @click="historyBack">취소</button>
-    </div>
+    </template>
+    <template v-if="reservationChk.dateChk && reservationTime">
+      <div class="my-3">
+        <h3>시간</h3>
+        <template v-for="time in Array.from(reservationTime).sort()" :key="time">
+          <button type="button" class="btn btn-primary btn-lg" @click="selectTime(time)" ref="selectedVal.time" v-cloak>{{time}}</button>
+        </template>
+        <template v-if="!reservationTime.size">
+          <div>
+            <span>예약 가능한 시간대가 없습니다.</span>
+          </div>
+        </template>
+      </div>
+    </template>
+    <template v-if="reservationChk.timeChk">
+      <div>
+        <div class="my-3 input-group">
+          <span class="input-group-text">증상</span>
+          <textarea class="form-control" aria-label="symptom" v-model="selectedVal.symptom"
+                    @change = "writeSymptom(selectedVal.symptom)" maxlength="100"
+                    placeholder="100자 이내로 작성해주세요.">
+          </textarea>
+        </div>
+      </div>
+    </template>
+    <template v-if="reservationChk.symptomChk">
+        <button type="button" class="btn btn-outline-success" @click="reservation(selectedVal)">예약</button>
+    </template>
+    <button type="button" class="btn btn-outline-warning" @click="goHome">취소</button>
   </div>
 </template>

@@ -26,7 +26,6 @@ public class DoctorController {
 
     @GetMapping("/list")
     public ResponseEntity<Map<String, List<Member>>> getDoctorList() {
-        Map<String, Object> map = new HashMap<>();
         List<Member> list = memberService.getDoctorList();
         if(list.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "다시 시도해주세요.");
         return ResponseEntity.status(HttpStatus.OK).body(Map.of("list", list));
