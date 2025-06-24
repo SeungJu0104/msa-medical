@@ -80,8 +80,6 @@ const selectedVal = reactive({
     console.log(selectedValO.reservationDate);
     console.log(selectedValO.time);
 
-
-
     // 전송 전 데이터 있는지 확인하는 검증 로직 추가하기
     const fieldLabels = {
       doctorChk: '의사를 선택해주세요.',
