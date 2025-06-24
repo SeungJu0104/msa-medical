@@ -21,6 +21,7 @@ import { inject, onMounted, reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/counter'
 import { customFetch } from '@/util/customFetch';
+import { ENDPOINTS } from '@/util/endpoints';
 
 const router = useRouter()
 const auth = useAuthStore();
@@ -29,34 +30,27 @@ const emit = defineEmits(['close','refresh'])
 
 const state = reactive({
     roomName: '',
-    selectedMembers: [auth.user.uuid],
+    selectedMembers: [uuid],
     members: [],
 })
 
 onMounted(()=>{
-    loadMemberList()
+  loadUuidList()
 })
 
-const loadMemberList= () => {
-  customFetch({
-    url: `/member/memberList/${uuid}`,
-    method: "GET"
-  })
-  .then(({data,status}) => {
-    if(status ===200){
-      console.log(data)
-      state.members = data;
-    }
-  })
-  .catch(error => {
-    alert("멤버 리스트를 불러올수 없습니다.")
-    console.error(error)
-  })
+const loadUuidList = async () => {
+  try {
+    const response= await customFetch(ENDPOINTS.chat.loadMemberList(uuid))
+    state.members = response.data
+    
+  } catch (error) {
+    alert("채팅방 목록을 불러올 수 없습니다.")
+    console.error("에러:", error)
+  }
 }
-   
 
 
-const submit = () => {
+const submit =   async ()  => {
     if (!state.roomName.trim()) {
     alert('채팅방 이름을 입력하세요.')
     return
@@ -71,24 +65,15 @@ const submit = () => {
     members: state.selectedMembers
   }
 
-  customFetch({
-    url: `/chatroom/createChatRoom`,
-    method: "POST",
-    data
-  })
-  .then(({data,status}) => {
-    if(status===200){
-      const roomId = data.roomId;
+  try {
+    const response = await customFetch(ENDPOINTS.chat.createChatRoom,{data})
+    if(response.status===200){
+      const roomId = response.data.roomId;
       alert("채팅방 등록이 완료되었습니다.")
       emit('refresh',roomId)
       emit('close')
-      
-    }
-  })
-  
-  }
+  } }
+  catch (error) {
+    console.error("에러:", error)
+  }}
 </script>
-
-<style lang="scss" scoped>
-
-</style>

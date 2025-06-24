@@ -13,8 +13,11 @@
   </insert>
   
   <select id="selectMessages" resultType="com.emr.slgi.DTO.ChatRead">
-  SELECT m.room_id, m.message_id, #{uuid} AS uuid
-  FROM tb_chat_message m
+	SELECT 
+	  m.room_id, 
+	  m.message_id, 
+	  #{uuid} AS uuid  
+	FROM tb_chat_message m
 	JOIN tb_chat_room r ON m.room_id = r.room_id
 	WHERE m.room_id = #{roomId}
 	  AND m.create_date > (
@@ -23,9 +26,8 @@
 	    WHERE r.room_id = m.room_id
 	      AND r.uuid = #{uuid}
 	  )
-	  AND m.uuid != #{uuid}
-
-  	</select>
+	  AND m.uuid != #{uuid} 
+	  	</select>
  
  
  <select id="getList" resultType="com.emr.slgi.DTO.ChatAlarmDTO" >

@@ -42,7 +42,6 @@ import { reactive , computed, onMounted } from 'vue'
 onMounted(() => {
   props.loadAlarmList()  // 알림 수동 새로고침할 때
 })
-
   const auth = useAuthStore()
   const uuid = auth.user.uuid
   

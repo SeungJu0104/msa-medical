@@ -26,25 +26,20 @@ public class ChatReadController {
 	
 	private final ChatReadService chatReadService;
 	
+	
+	//실시간 채팅시에 읽음표시
 	@PostMapping("/readtime")
-	public ResponseEntity<Object> readtime(@RequestBody ChatRead read) {
-		System.out.println(" 읽음 처리 요청: " + read);
-		int result = chatReadService.selectMessages(read);
-		
+	public ResponseEntity<Object> readtime(@RequestBody ChatRead read){
+		int result = chatReadService.readtime(read);
 		if (result < 0 ) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("채팅 읽음처리를 못했습니다");
 		}
 		return  ResponseEntity.ok().build();
-		
 	}
-	
+	// 채팅방 입장시에 안읽은 메세지 읽음처리
 	@PostMapping("/joinreadtime")
 	public ResponseEntity<Object> joinreadtime(@RequestBody ChatRead read) {
-		System.out.println("읽음 처리 요청: " + read);
-
 		int result= chatReadService.selectMessages(read);
-		System.out.println("읽음 처리 결과 count = " + result);  // ✅ 추가
-		
 		if (result < 0 ) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("채팅 읽음처리를 못했습니다");
 		}

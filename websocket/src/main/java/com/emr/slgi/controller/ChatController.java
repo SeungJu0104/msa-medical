@@ -31,6 +31,7 @@ public class ChatController {
 	public void message(ChatMessage content) {
 		chatMessageService.saveMessage(content);
 		messagingTemplate.convertAndSend("/sub/chatroom/" + content.getRoomId(), content);
+		
 		List<String> uuids = chatRoomService.getUuid(content.getRoomId());
 		 for(String uu : uuids) {
 			 List<ChatRoom> list = chatRoomService.getList(uu);

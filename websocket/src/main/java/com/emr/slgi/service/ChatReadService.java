@@ -20,7 +20,6 @@ public class ChatReadService {
 	public int selectMessages(ChatRead read) {
 		int result = 0;
 		List<ChatRead>	list = chatReadDAO.selectMessages(read); 
-		System.out.println("selectMessages result count = " + list.size());
 		for (ChatRead msg : list) {
 	        result += chatReadDAO.readtime(msg);
 	    }
@@ -29,5 +28,10 @@ public class ChatReadService {
 
 	public List<ChatAlarmDTO> getList(String uuid) {
 		return chatReadDAO.getList(uuid);
+	}
+
+	public int readtime(ChatRead read) {
+		int result = chatReadDAO.readtime(read);
+		return result;
 	}
 }

@@ -47,6 +47,7 @@ import { useRouter } from 'vue-router';
   });
 
   import { computed } from 'vue'
+import { ENDPOINTS } from '@/util/endpoints';
 
   const totalCount = computed(() => {
   return state.chatList.reduce((sum, room) => sum + room.count, 0)
@@ -58,27 +59,21 @@ import { useRouter } from 'vue-router';
     client.activate()
   })
 
-  const loadchatList= () =>{
-    customFetch({
-    url: `/chatroom/chatRoomList/${uuid}`,
-    method: 'GET'
-  })
-    .then(({ data, status }) => {
-    if (status === 200) {
-    state.chatList = data
-  }
-  })
-  .catch(e => {
-  alert("채팅방을 불러오지 못했습니다.")
-  console.error("에러:", e)
-})
+  const loadchatList= async () =>{
+    try {
+      const response = await customFetch(ENDPOINTS.chat.chatRoomList(uuid))
+    if(response.status===200){
+      state.chatList = response.data
+    }
+    } catch (error) {
+      console.error("에러:", error)
+    }
 };
 
 const client = new Client({
   webSocketFactory:() => new SockJS('/ws'),
   connectHeaders:{sender:uuid},
   onConnect: () => {
-    console.log("연결성공")
     client.subscribe(`/sub/chatrooms/${uuid}`,(message) =>{
     const list = JSON.parse(message.body)
     state.chatList = list
@@ -103,19 +98,16 @@ const loadList = (roomId) =>{
   router.push({name:'chatroom', params:{roomId}}) 
 }}
 
-const loadAlarmList = () => {
-  customFetch({
-          url: `/chatread/chatReadList/${uuid}`,
-          method : 'GET'
-      }).then(({data,status})=> {
-          if(status===200){
-            alarmList.value = data
-          }
-      }).catch(error => {
-          console.error("에러",error)
-      })
+const loadAlarmList = async () => {
+  try {
+    const response = await customFetch(ENDPOINTS.chat.chatReadList(uuid))
+    if(response.status===200){
+      alarmList.value = response.data
+  }
+  } catch (error) {
+    console.error("에러",error)
+  }
 }
-
 </script>
 
 

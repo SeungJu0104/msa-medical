@@ -20,11 +20,18 @@
 <script setup>
 import { useAuthStore } from '@/stores/counter';
 import { customFetch } from '@/util/customFetch';
+import { ENDPOINTS } from '@/util/endpoints';
 import { Client } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 
 import { onMounted, reactive } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+    onMounted(() => {
+        loadChatName()
+        joinTime()
+        loadChatMessage()
+        client.activate()
+    })
     const route = useRoute()
     const router = useRouter()
     const auth = useAuthStore()
@@ -44,33 +51,25 @@ import { useRoute, useRouter } from 'vue-router';
             sender:uuid
         },
         onConnect: ()=>{
-            console.log("연결성공")
-            client.subscribe(`/sub/chatroom/${roomId}`,(message) => {
+            client.subscribe(`/sub/chatroom/${roomId}`, async (message) => {
                 const msg = JSON.parse(message.body)
                 state.messages.push(msg)
-
-            if(msg.uuid !== uuid){
-                const data = {
-                    roomId,
-                    uuid,
-                    messageId: msg.messageId
-                }
-                customFetch({
-                    url : `/chatread/readtime`,
-                    method:"POST",
-                    data
-                })
-                .then(({data,status}) => {
-                    if(status===200){
-                        console.log(data)
+                console.log(msg.uuid)
+                console.log(uuid)
+                if(msg.uuid !== uuid){
+                    const data = {
+                        roomId,
+                        uuid,
+                        messageId: msg.messageId
                     }
+                    try {
+                        //실시간 채팅시에 읽음표시
+                        await customFetch(ENDPOINTS.chat.readtime,{data})
+                    } catch (error) {
+                        console.error("에러:", error)
+                    }
+                }
                 })
-                .catch(error=> {
-                    console.log("읽음처리 실패 ")
-                    console.log(error)
-                })
-            }
-            })
         },
         onStompError: (e) =>{
         console.error('연결 실패 : ' ,e)
@@ -91,91 +90,57 @@ import { useRoute, useRouter } from 'vue-router';
         }
     }
     // 채팅기록 가져오기
-    const loadChatMessage = () => {
-        customFetch({
-            url:`/chatmessage/messageList/${roomId}`,
-            method:"GET"
-        })
-        .then(({data,status})=>{
-            if(status===200 && data.length >0){
-                state.messages=data
+    const loadChatMessage = async () => {
+        try {
+            const response = await customFetch(ENDPOINTS.chat.messageList(roomId))
+            if(response.status===200 && response.data.length >0){
+                state.messages=response.data
                 // 안읽은거 있을시에 읽었다고 해주기
                 JoinTimeRead()
             }
-        })
-        .catch(e => {
-            console.log("에러:",e)
-        })
+        } catch (error) {
+            console.error("에러:", error)
+        }
     }
     // 채팅방 이름 가져오기
-    const loadChatName = () => {
-        customFetch({
-            url:`/chatroom/loadChatName/${roomId}`,
-            method:"GET"
-        })
-        .then(({data,status})=>{
-            if(status===200 ){
-                state.roomName=data 
+    const loadChatName = async () => {
+        try {
+            const response = await customFetch(ENDPOINTS.chat.loadChatName(roomId))
+            if(response.status===200 ){
+                state.roomName=response.data 
             }
-        })
-        .catch(e => {
-            console.log("에러:",e)
-        })
+        } catch (error) {
+            console.error("에러:", error)
+        }
     }
 
     // 입장시간 갱신
-    const joinTime = () => {
-        customFetch({
-            url : `/chatjoin/updateJoinTime`,
-            method:"PUT",
-            data : {roomId, uuid}
-        })
-        .then(({status,data})=>{
-            if(status===200){
-                console.log("입장시간 갱신 완료")
-            }
-        }).catch(e=>{
-            console.error("에러:", e)
-        })
+    const joinTime = async () => {
+        try {
+            await customFetch(ENDPOINTS.chat.updateJoinTime,{ data : {roomId, uuid}})
+        } catch (error) {
+            console.error("에러:", error)
+        }
     }
     //입장시 안읽은 메세지 읽음처리하기
-    const JoinTimeRead= () =>{
-        customFetch({
-            url :`/chatread/joinreadtime`,
-            method:"POST",
-            data : {roomId, uuid}
-        })
-        .then(({status,data})=>{
-            if(status===200){
-                console.log("입장시 읽음처리 완료")
-            }
-        }).catch(e=>{
-            console.error("에러:", e)
-        })
+    const JoinTimeRead= async () =>{
+        try {
+            await customFetch(ENDPOINTS.chat.joinreadtime,{ data:{ roomId, uuid }})
+        } catch (error) {
+            console.error("에러:", error)
+        }
     }
 
-    onMounted(() => {
-    loadChatName()
-    joinTime()
-    loadChatMessage()
-    client.activate()
-})
     // 퇴장 시간 갱신
-    const exitTime = () =>{
-        customFetch({
-            url: `/chatjoin/updateOutTime`,
-            method:"PUT",
-            data:{roomId,uuid}
-        })
-        .then(({data,status}) => {
-            if(status===200){
-                console.log("퇴장시간 갱신 완료")
+    const exitTime = async () =>{
+        try {
+            const response = await customFetch(ENDPOINTS.chat.updateOutTime,{ data:{roomId,uuid}})
+            if (response.status===200){
                 router.push({name:'chatrooms'})
             }
-        }).catch(error => {
-            console.error(에러)
-        })
-        
+        } catch (error) {
+            console.error("에러:", error)
+        }
     }
 
     // 나가기
@@ -186,7 +151,6 @@ import { useRoute, useRouter } from 'vue-router';
 
   }
 }
-
 
 </script>
 <style scoped>
