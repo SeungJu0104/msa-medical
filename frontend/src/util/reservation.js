@@ -14,10 +14,8 @@ export const patientMethods = {
 
         const alreadyReservatedSlots = new Set(
             reservationList.value.map(item => {
-                const date = new Date(item.reservationDate);
-                const hours = date.getHours().toString().padStart(2, '0');
-                const minutes = date.getMinutes().toString().padStart(2, '0');
-                return `${hours}:${minutes}`;
+                const date = dayjs(item.reservationDate);
+                return `${date.hour().toString().padStart(2, '0')}:${date.minute().toString().padStart(2, '0')}`;
             })
         );
 
@@ -46,10 +44,7 @@ export const patientMethods = {
 
         while (start <= end) {
 
-            const hours = start.hour().toString().padStart(2, '0');
-            const minutes = start.minute().toString().padStart(2, '0');
-
-            availableSlots.add(`${hours}:${minutes}`);
+            availableSlots.add(`${start.hour().toString().padStart(2, '0')}:${start.minute().toString().padStart(2, '0')}`);
             start = start.minute(start.minute() + 10);
 
         }
@@ -61,7 +56,7 @@ export const patientMethods = {
         const diff = new Set(
             [...availableSlots].filter(slot => {
                 const [hh] = slot.split(':');
-                return !alreadyReservatedSlots.has(slot) || hh !== '12';
+                return !alreadyReservatedSlots.has(slot) && hh !== '12';
             })
         );
 

@@ -148,7 +148,7 @@ import dayjs from "dayjs";
           @update:model-value = "handleDate" prevent-min-max-navigation
       />
     </div>
-    <template v-if="reservationChk.dateChk && reservationChk.doctorChk">
+    <template v-if="reservationChk.dateChk && reservationChk.doctorChk && reservationTime">
       <div class="my-3">
         <h3>시간</h3>
         <template v-for="time in Array.from(reservationTime).sort()" :key="time">
