@@ -7,7 +7,7 @@ import { patientMethods } from '@/util/reservation.js'
 import {omit} from 'lodash'
 import dayjs from "dayjs";
 
-const selectedVal = reactive({
+  const selectedVal = reactive({
     doctorUuid: null,
     reservationDate: new Date(),
     time: null,
@@ -25,8 +25,12 @@ const selectedVal = reactive({
 
   const doctorList = ref();
   const reservationTime = ref();
+  const today = dayjs();
+  const minDate = today.toDate();
+  const maxDate = today.add(6, 'day').toDate();
 
   const selectDoctor = (doctor) => {
+
     selectedVal.doctorUuid = doctor.uuid;
     selectedVal.name = doctor.name;
 
@@ -47,17 +51,15 @@ const selectedVal = reactive({
 
   }
 
-  const minDate = new Date();
-  const maxDate = new Date().setDate(minDate.getDate() + 7);
-
+  const disabledWeekends = (date) => {
+      const day = dayjs(date).toDate().getDay();
+      return day === 0 || day === 6; // 일요일, 토요일만 true = 비활성화
+  };
 
 
   const selectTime = (time) => {
-
     selectedVal.time = time;
-
     reservationChk.timeChk = true;
-
   }
 
   const writeSymptom = (symptom) => {
@@ -142,11 +144,9 @@ const selectedVal = reactive({
         <h3>일자</h3>
         <VueDatepicker
             :model-value = "selectedVal.reservationDate" :format="'yyyy-MM-dd'" :min-date="minDate" :max-date="maxDate"
-            :enable-time-picker="false"  :input-class="'form-control'" :esc-close = "false" :space-confirm = "false"
+            :disabled-dates="disabledWeekends" :enable-time-picker="false"  :input-class="'form-control'" :esc-close = "false" :space-confirm = "false"
             @update:model-value = "handleDate" prevent-min-max-navigation
         />
-
-
       </div>
     </template>
     <template v-if="reservationChk.dateChk && reservationTime">

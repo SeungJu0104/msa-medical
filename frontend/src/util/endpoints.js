@@ -20,12 +20,6 @@ export const ENDPOINTS = {
             method: 'post',
             url: '/member'
         },
-        reservation: {
-            method: 'post',
-            url: '/reservation',
-            // 추후 JWT에서 환자 UUID 포함해 전송.
-            // 추후 팀장님과 얘기해서 patient 속성쪽으로 이동할지 결정.
-        }
     },
     patient: {
         register: {
@@ -36,10 +30,6 @@ export const ENDPOINTS = {
             method: 'get',
             url: `/patient/search?searchValue=${searchValue}`
         }),
-        reservationList: (selectedVal) => ({
-                method: 'get',
-                url: `/reservation/getReservationList/${selectedVal.doctorUuid}/${selectedVal.dateTime}`
-        })
     },
     doctor: {
         list: {
@@ -51,6 +41,24 @@ export const ENDPOINTS = {
         list: {
             method: 'get',
             url: '/staff/list'
+        },
+    },
+    reception: {
+        acceptPatientByStaff: {
+            method: 'post',
+            url: 'staff/acceptPatientByStaff'
         }
+    },
+    reservation: {
+        reservation: {
+            method: 'post',
+            url: '/reservation',
+            // 추후 JWT에서 환자 UUID 포함해 전송.
+            // 추후 팀장님과 얘기해서 patient 속성쪽으로 이동할지 결정.
+        },
+        reservationList: (selectedVal) => ({
+            method: 'get',
+            url: `/reservation/getReservationList/${selectedVal.doctorUuid}/${selectedVal.dateTime}`
+        }),
     }
 }
