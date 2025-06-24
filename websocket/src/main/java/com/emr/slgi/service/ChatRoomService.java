@@ -46,10 +46,6 @@ public class ChatRoomService {
 		return chatRoomDAO.loadChatName(roomId);
 	}
 
-	public int totalCount(String uuid) {
-		
-		return 0;
-	}
 
 	public List<String> getUuid(Integer roomId) {
 		// TODO Auto-generated method stub
