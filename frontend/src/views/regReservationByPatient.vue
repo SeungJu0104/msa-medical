@@ -7,7 +7,7 @@ import { patientMethods } from '@/util/reservation.js'
 import {omit} from 'lodash'
 import dayjs from "dayjs";
 
-const selectedVal = reactive({
+  const selectedVal = reactive({
     doctorUuid: null,
     reservationDate: new Date(),
     time: null,
@@ -25,12 +25,18 @@ const selectedVal = reactive({
 
   const doctorList = ref();
   const reservationTime = ref();
+  const today = dayjs();
+  const minDate = today.toDate();
+  const maxDate = today.add(6, 'day').toDate();
 
   const selectDoctor = (doctor) => {
+
     selectedVal.doctorUuid = doctor.uuid;
     selectedVal.name = doctor.name;
 
     reservationChk.doctorChk = true;
+
+    handleDate(selectedVal.reservationDate);
 
   }
 
@@ -47,17 +53,14 @@ const selectedVal = reactive({
 
   }
 
-  const minDate = new Date();
-  const maxDate = new Date().setDate(minDate.getDate() + 7);
-
+  const disabledWeekends = (date) => {
+      return dayjs(date).toDate().getDay() === 0;
+  };
 
 
   const selectTime = (time) => {
-
     selectedVal.time = time;
-
     reservationChk.timeChk = true;
-
   }
 
   const writeSymptom = (symptom) => {
@@ -137,19 +140,15 @@ const selectedVal = reactive({
           </template>
       </ul>
     </div>
-    <template v-if="reservationChk.doctorChk">
-      <div class="my-3">
-        <h3>일자</h3>
-        <VueDatepicker
-            :model-value = "selectedVal.reservationDate" :format="'yyyy-MM-dd'" :min-date="minDate" :max-date="maxDate"
-            :enable-time-picker="false"  :input-class="'form-control'" :esc-close = "false" :space-confirm = "false"
-            @update:model-value = "handleDate" prevent-min-max-navigation
-        />
-
-
-      </div>
-    </template>
-    <template v-if="reservationChk.dateChk && reservationTime">
+    <div class="my-3">
+      <h3>일자</h3>
+      <VueDatepicker
+          :model-value = "selectedVal.reservationDate" :format="'yyyy-MM-dd'" :min-date="minDate" :max-date="maxDate"
+          :disabled-dates="disabledWeekends" :enable-time-picker="false"  :input-class="'form-control'" :esc-close = "false" :space-confirm = "false"
+          @update:model-value = "handleDate" prevent-min-max-navigation
+      />
+    </div>
+    <template v-if="reservationChk.dateChk && reservationChk.doctorChk && reservationTime">
       <div class="my-3">
         <h3>시간</h3>
         <template v-for="time in Array.from(reservationTime).sort()" :key="time">

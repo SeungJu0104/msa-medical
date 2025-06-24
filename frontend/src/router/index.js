@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import regReservationByPatient from '@/views/regReservationByPatient.vue'
 import ChatRooms from '@/components/chat/ChatRooms.vue'
 import ChatRoom from '@/components/chat/ChatRoom.vue'
 import Login from '@/components/chat/Login.vue'
@@ -8,6 +7,8 @@ import { patientRoutes } from './patientRoutes';
 const HomeView = () => import('@/views/HomeView.vue');
 const MainView = () => import('@/views/home/MainView.vue');
 const OtherView = () => import('@/views/other/OtherView.vue');
+const acceptPatientByStaff = () => import('@/views/acceptPatientByStaff.vue')
+const regReservationByPatient = () => import('@/views/regReservationByPatient.vue')
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -48,6 +49,11 @@ const router = createRouter({
       path: '/chatroom/:roomId',
       name : 'chatroom',
       component:ChatRoom
+    },
+    {
+      path: '/acceptPatientByStaff',
+      name: 'acceptPatientByStaff',
+      component: acceptPatientByStaff
     }
   ],
 })
