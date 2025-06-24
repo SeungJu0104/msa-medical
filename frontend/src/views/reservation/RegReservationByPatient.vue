@@ -6,6 +6,7 @@ import {common} from '@/util/common.js'
 import { patientMethods } from '@/util/reservation.js'
 import {omit} from 'lodash'
 import dayjs from "dayjs";
+import {errorMessage} from "@/util/errorMessage.js";
 
   const selectedVal = reactive({
     doctorUuid: null,
@@ -47,7 +48,13 @@ import dayjs from "dayjs";
 
     reservationChk.dateChk = true;
 
+    if(!reservationChk.doctorChk) {
+      alert(errorMessage.common.doctorChk);
+      return;
+    }
+
     reservationTime.value = await patientMethods.getReservationTime(selectedVal);
+
     console.log("다시 프론트");
     console.log(reservationTime.value);
 
@@ -57,7 +64,6 @@ import dayjs from "dayjs";
       return dayjs(date).toDate().getDay() === 0;
   };
 
-
   const selectTime = (time) => {
     selectedVal.time = time;
     reservationChk.timeChk = true;
@@ -65,11 +71,7 @@ import dayjs from "dayjs";
 
   const writeSymptom = (symptom) => {
 
-    if(symptom !== null) {
-
-      reservationChk.symptomChk = true;
-
-    }
+    reservationChk.symptomChk = symptom !== null && symptom.trim().length > 0;
 
   }
 
@@ -83,28 +85,14 @@ import dayjs from "dayjs";
     console.log(selectedValO.reservationDate);
     console.log(selectedValO.time);
 
-    // 전송 전 데이터 있는지 확인하는 검증 로직 추가하기
-    const fieldLabels = {
-      doctorChk: '의사를 선택해주세요.',
-      dateChk: '날짜를 선택해주세요.',
-      timeChk: '시간을 선택해주세요.',
-      symptomChk: '증상을 입력해주세요.'
-    };
-
     for (const [key, value] of Object.entries(reservationChk)) {
       if (!value) {
-        alert(fieldLabels[key]);
+        common.alertError(errorMessage.common[key]);
         return;
       }
     }
 
-    if(selectedValO.symptom.length === 0) {
-      alert("증상을 입력해주세요.");
-      return;
-    }
-
     console.log("예약 수행 : ", selectedValO);
-
 
     patientMethods.reservation({
       patientUuid : '550e8400-e29b-41d4-a716-446655440020', // 테스트용 환자 아이디
@@ -172,9 +160,7 @@ import dayjs from "dayjs";
         </div>
       </div>
     </template>
-    <template v-if="reservationChk.symptomChk">
-        <button type="button" class="btn btn-outline-success" @click="reservation(selectedVal)">예약</button>
-    </template>
+    <button type="button" class="btn btn-outline-success" @click="reservation(selectedVal)">예약</button>
     <button type="button" class="btn btn-outline-warning" @click="goHome">취소</button>
   </div>
 </template>

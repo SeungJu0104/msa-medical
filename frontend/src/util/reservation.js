@@ -7,6 +7,9 @@ import {common} from "@/util/common.js";
 import dayjs from "dayjs";
 
 export const patientMethods = {
+    makeSlots : (date, loc, data) => {
+        return `${date.hour().toString().padStart(loc, data)}:${date.minute().toString().padStart(loc, data)}`
+    },
     generateTimeSlots : (reservationList, {reservationDate, isToday}) => {
 
         console.log("예약 데이터 처리 부분");
@@ -14,8 +17,11 @@ export const patientMethods = {
 
         const alreadyReservatedSlots = new Set(
             reservationList.value.map(item => {
-                const date = dayjs(item.reservationDate);
-                return `${date.hour().toString().padStart(2, '0')}:${date.minute().toString().padStart(2, '0')}`;
+                return patientMethods.makeSlots(
+                    dayjs(item.reservationDate),
+                    2,
+                    '0'
+                );
             })
         );
 
@@ -44,7 +50,7 @@ export const patientMethods = {
 
         while (start <= end) {
 
-            availableSlots.add(`${start.hour().toString().padStart(2, '0')}:${start.minute().toString().padStart(2, '0')}`);
+            availableSlots.add(patientMethods.makeSlots(start, 2, '0'));
             start = start.minute(start.minute() + 10);
 
         }

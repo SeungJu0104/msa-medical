@@ -7,8 +7,8 @@ import { patientRoutes } from './patientRoutes';
 const HomeView = () => import('@/views/HomeView.vue');
 const MainView = () => import('@/views/home/MainView.vue');
 const OtherView = () => import('@/views/other/OtherView.vue');
-const acceptPatientByStaff = () => import('@/views/acceptPatientByStaff.vue')
-const regReservationByPatient = () => import('@/views/regReservationByPatient.vue')
+const acceptPatientByStaff = () => import('@/views/reception/AcceptPatientByStaff.vue')
+const regReservationByPatient = () => import('@/views/reservation/RegReservationByPatient.vue')
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
