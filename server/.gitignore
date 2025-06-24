@@ -35,3 +35,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+#DB 설정 담긴 yml 파일
+src/main/resources/application-db.yml

@@ -1,14 +1,25 @@
 spring:
     application:
-        name: slgi
+        name: server
 
-    datasource:
-        url: #jdbc:mariadb://localhost:3306/DATABASE_NAME?useSSL=false
-        driver-class-name: org.mariadb.jdbc.Driver
-        username: #USERNAME
-        password: #PASSWORD
+    devtools:
+      livereload:
+        enabled: true
+
+    #db 관련 내용은 application-db.yml 파일에 작성.
+    #gitignore로 git에 해당파일 커밋 안되도록 수정.
+    profiles:
+      active: db
+
+server:
+  port: 8080
 
 mybatis:
   mapper-locations: classpath:/mappers/**/*.xml
   configuration:
     map-underscore-to-camel-case: true
+#  type-aliases-package: com.emr.slgi.member
+
+springdoc:
+  swagger-ui:
+    path: /api-docs
