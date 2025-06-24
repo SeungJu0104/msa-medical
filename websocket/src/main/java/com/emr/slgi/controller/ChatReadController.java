@@ -30,7 +30,7 @@ public class ChatReadController {
 	//실시간 채팅시에 읽음표시
 	@PostMapping("/readtime")
 	public ResponseEntity<Object> readtime(@RequestBody ChatRead read){
-		int result = chatReadService.readtime(read);
+		int result = chatReadService.selectMessages(read);
 		if (result < 0 ) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("채팅 읽음처리를 못했습니다");
 		}

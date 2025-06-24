@@ -25,6 +25,7 @@ const login = () => {
     method: 'POST',
     data: {uuid: state.uuid}
   })
+  
   .then(({ data, status }) => {
   if (status === 200) {
     auth.setUser(data)

@@ -1,5 +1,3 @@
-import { method } from "lodash";
-
 export const ENDPOINTS = {
     auth: {
         register: {
