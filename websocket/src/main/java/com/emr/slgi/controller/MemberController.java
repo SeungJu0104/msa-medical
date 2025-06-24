@@ -45,7 +45,6 @@ public class MemberController {
 		if (memberList== null || memberList.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("회원 리스트를 불러 오지 못했습니다");
 		}
-		
 			return ResponseEntity.ok(memberList); 
 		}
 	

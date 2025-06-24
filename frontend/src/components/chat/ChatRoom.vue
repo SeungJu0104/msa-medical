@@ -54,8 +54,6 @@ import { useRoute, useRouter } from 'vue-router';
             client.subscribe(`/sub/chatroom/${roomId}`, async (message) => {
                 const msg = JSON.parse(message.body)
                 state.messages.push(msg)
-                console.log(msg.uuid)
-                console.log(uuid)
                 if(msg.uuid !== uuid){
                     const data = {
                         roomId,

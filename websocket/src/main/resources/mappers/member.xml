@@ -19,7 +19,6 @@
   </select>
   
   <select id="getList">
-    
     SELECT uuid, name, member_role as role
 	FROM tb_member
 	WHERE uuid != #{uuid}
@@ -28,5 +27,4 @@
 
   </select>
 
-  
   </mapper>

@@ -19,7 +19,6 @@ public class MemberService {
     }
 
 	public List<Member> getList(String uuid) {
-		// TODO Auto-generated method stub
 		return memberDAO.getList(uuid);
 	}
 }

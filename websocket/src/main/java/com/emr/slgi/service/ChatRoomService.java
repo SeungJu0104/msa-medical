@@ -48,7 +48,6 @@ public class ChatRoomService {
 
 
 	public List<String> getUuid(Integer roomId) {
-		// TODO Auto-generated method stub
 		return chatRoomDAO.getUuid(roomId);
 	}
 
