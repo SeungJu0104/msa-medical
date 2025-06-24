@@ -136,7 +136,6 @@ export const patientMethods = {
         // 오늘 날짜가 아니면 그냥 그대로 보내기
         if(reservationDate.isSame(today, 'day')) {
 
-
             selectedVal.isToday = true;
 
             // 오늘 날짜면 현재 시간 기준 1시간 뒤로 시간 데이터 수정해서
