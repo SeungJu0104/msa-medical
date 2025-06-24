@@ -1,4 +1,4 @@
-package com.emr.slgi.message;
+package com.emr.slgi.controller;
 
 import java.util.List;
 
@@ -8,18 +8,20 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.emr.slgi.DTO.ChatMessage;
+import com.emr.slgi.service.ChatMessageService;
+
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/chat")
-public class ChatRestMessageController {
+@RequestMapping("/chatmessage")
+public class ChatMessageController {
 	private final ChatMessageService chatMessageService;
 	
-	@GetMapping("/list/{roomId}")
-	public ResponseEntity<Object> list(@PathVariable("roomId") String roomId) {
-		List<ChatMessage> list = chatMessageService.getList(roomId);
-		return ResponseEntity.ok(list);
-		
+	@GetMapping("/messageList/{roomId}")
+	public ResponseEntity<Object> messageList(@PathVariable("roomId") String roomId) {
+		List<ChatMessage> messageList = chatMessageService.getList(roomId);
+		return ResponseEntity.ok(messageList);
 	}
 }

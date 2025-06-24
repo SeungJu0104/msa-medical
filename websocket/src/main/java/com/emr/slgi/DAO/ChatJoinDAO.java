@@ -1,6 +1,8 @@
-package com.emr.slgi.chatjoin;
+package com.emr.slgi.DAO;
 
 import org.apache.ibatis.annotations.Mapper;
+
+import com.emr.slgi.DTO.ChatJoin;
 
 @Mapper
 public interface ChatJoinDAO {

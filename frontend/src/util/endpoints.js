@@ -52,5 +52,52 @@ export const ENDPOINTS = {
             method: 'get',
             url: '/staff/list'
         }
+    },
+
+    chat: {
+        loadMemberList: (uuid) => ({
+            method: 'get',
+            url: `/member/memberList/${uuid}`
+        })
+        ,
+        createChatRoom: {
+            method: 'post',
+            url: `/chatroom/createChatRoom`
+        },
+        readtime : {
+            method:'post',
+            url:`/chatread/readtime`
+        },
+        messageList: (roomId) => ({
+            method:'get',
+            url:`/chatmessage/messageList/${roomId}`,
+        }),
+        loadChatName:(roomId) =>({
+            method:'get',
+            url:`/chatroom/loadChatName/${roomId}`,
+        }),
+        updateJoinTime:{
+            method:'put',
+            url:`/chatjoin/updateJoinTime`,
+        },
+        joinreadtime:{
+            method:'post',
+            url:`/chatread/joinreadtime`,
+        },
+        updateOutTime:{
+            method:'put',
+            url:`/chatjoin/updateOutTime`,
+        },
+
+        chatReadList:(uuid) => ({
+            method:'get',
+            url:`/chatread/chatReadList/${uuid}`
+        }),
+        chatRoomList:(uuid) => ({
+            method:'get',
+            url: `/chatroom/chatRoomList/${uuid}`,
+        })
     }
+
+    
 }
