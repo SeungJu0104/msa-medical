@@ -14,7 +14,7 @@
       update_date,
       delete_date
     FROM TB_MEMBER
-    WHERE id = #{id}
+    WHERE uuid = #{uuid}
   </select>
   <select id="getDoctorList">
     SELECT
