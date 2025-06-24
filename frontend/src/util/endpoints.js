@@ -27,17 +27,7 @@ export const ENDPOINTS = {
             // 추후 팀장님과 얘기해서 patient 속성쪽으로 이동할지 결정.
         }
     },
-    paitent: {
-        register: {
-            method: 'post',
-            url: '/patient'
-        },
-        search: (searchValue) => ({
-            method: 'get',
-            url: `/patient/search?searchValue=${searchValue}`
-        })
-    },
-    paitent: {
+    patient: {
         register: {
             method: 'post',
             url: '/patient'
