@@ -28,15 +28,22 @@ export const patientMethods = {
         console.log("당일 여부 : ", isToday);
         console.log("start : ", start);
 
+
         if(isToday) {
             start = start.minute(Math.floor(start.minute() / 10) * 10).second(0); // 초와 밀리초도 0으로 초기화
         } else {
-            start = start.hour(9).minute(0).second(0); // 9:00 AM
+            start = start.hour(9).minute(0).second(0);
         }
 
         console.log("시작 시각 : ", start);
 
-        end = end.hour(18).minute(0).second(0); // 6:00 PM
+        if(reservationDate.day() === 6) {
+            end = end.hour(14).minute(0).second(0);
+        } else {
+            end = end.hour(18).minute(0).second(0);
+        }
+
+        console.log("종료 시각 : ", end);
 
         while (start <= end) {
 

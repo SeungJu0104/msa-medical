@@ -52,8 +52,7 @@ import dayjs from "dayjs";
   }
 
   const disabledWeekends = (date) => {
-      const day = dayjs(date).toDate().getDay();
-      return day === 0 || day === 6; // 일요일, 토요일만 true = 비활성화
+      return dayjs(date).toDate().getDay() === 0; // 일요일, 토요일만 true = 비활성화
   };
 
 
