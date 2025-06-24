@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.emr.slgi.chatroom.ChatRoomDAO">
+  	<select id="getList">
+  	SELECT r.room_id, r.room_name
+  	FROM TB_CHAT_ROOM r
+  	JOIN TB_CHAT_JOIN j ON r.room_id = j.room_id
+  	WHERE j.uuid = #{uuid}
+	</select>
+	
+<insert id="insert" useGeneratedKeys="true" keyProperty="roomId">
+  INSERT INTO TB_CHAT_ROOM (room_name, create_date)
+  VALUES (#{roomName}, NOW())
+</insert>
+	
+	
+	
+  </mapper>

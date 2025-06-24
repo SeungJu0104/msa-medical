@@ -1,0 +1,15 @@
+package com.emr.slgi.chatroom;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
+
+@Mapper
+public interface ChatRoomDAO {
+
+	public List<ChatRoom> getList(String uuid);
+
+	public void insert(ChatRoom room);
+	
+
+}
