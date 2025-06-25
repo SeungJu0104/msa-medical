@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import ChatRooms from '@/components/chat/ChatRooms.vue'
 import ChatRoom from '@/components/chat/ChatRoom.vue'
 import { patientRoutes } from './patientRoutes';
+import StateList from '@/components/state/StateList.vue';
+import ShowStateList from '@/components/state/ShowStateList.vue';
 
 const HomeView = () => import('@/views/HomeView.vue');
 const MainView = () => import('@/views/home/MainView.vue');
@@ -48,7 +50,17 @@ const router = createRouter({
     //   path: '/acceptPatientByStaff',
     //   name: 'acceptPatientByStaff',
     //   component: acceptPatientByStaff
-    // }
+    // },
+    {
+      path: '/stateList',
+      name: 'stateList',
+      component: StateList
+    },
+    {
+      path: '/showStateList',
+      name: 'showStateList',
+      component: ShowStateList
+    },
   ],
 })
 
