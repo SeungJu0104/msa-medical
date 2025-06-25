@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 @Getter
 @Setter
@@ -26,7 +27,7 @@ public class ReservationForm {
     private String doctorUuid;
 
     @NotNull(message = ReservationErrorMessage.CHOOSE_DATE_TIME)
-    private LocalDateTime dateTime;
+    private OffsetDateTime dateTime;
 
     @NotEmpty(message = ReservationErrorMessage.WRITE_SYMPTOM)
     @Size(min = 1, max = 100)

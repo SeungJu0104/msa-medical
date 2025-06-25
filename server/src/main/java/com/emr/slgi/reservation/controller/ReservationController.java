@@ -18,6 +18,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -60,14 +61,12 @@ public class ReservationController {
             @PathVariable("doctorUuid") String doctorUuid,
             @PathVariable("dateTime")
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-            LocalDateTime dateTime) {
+            OffsetDateTime dateTime) {
 
         log.info(String.valueOf(dateTime));
         log.info(doctorUuid);
 
         FindReservationDate reservation = new FindReservationDate();
-
-
 
         if(doctorUuid == null || Validate.regexValidate(Map.of(Validate.MEMBER_UUID_REGEX, doctorUuid)).contains(false)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, ReservationErrorMessage.CHOOSE_DOCTOR);
