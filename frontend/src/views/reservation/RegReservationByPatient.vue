@@ -69,9 +69,9 @@ import {errorMessage} from "@/util/errorMessage.js";
     reservationChk.timeChk = true;
   }
 
-  const writeSymptom = (symptom) => {
+  const writeSymptom = () => {
 
-    reservationChk.symptomChk = symptom !== null && symptom.trim().length > 0;
+    reservationChk.symptomChk = selectedVal.symptom !== null && symptom.trim().length > 0;
 
   }
 
@@ -154,7 +154,7 @@ import {errorMessage} from "@/util/errorMessage.js";
         <div class="my-3 input-group">
           <span class="input-group-text">증상</span>
           <textarea class="form-control" aria-label="symptom" v-model="selectedVal.symptom"
-                    @change = "writeSymptom(selectedVal.symptom)" maxlength="100"
+                    @change = "writeSymptom()" maxlength="100"
                     placeholder="100자 이내로 작성해주세요.">
           </textarea>
         </div>
