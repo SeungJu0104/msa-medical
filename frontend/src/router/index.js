@@ -1,13 +1,14 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import ChatRooms from '@/components/chat/ChatRooms.vue'
 import ChatRoom from '@/components/chat/ChatRoom.vue'
-import Login from '@/components/chat/Login.vue'
 import { patientRoutes } from './patientRoutes';
+import StateList from '@/components/state/StateList.vue';
+import ShowStateList from '@/components/state/ShowStateList.vue';
 
 const HomeView = () => import('@/views/HomeView.vue');
 const MainView = () => import('@/views/home/MainView.vue');
 const OtherView = () => import('@/views/other/OtherView.vue');
-const acceptPatientByStaff = () => import('@/views/acceptPatientByStaff.vue')
+// const acceptPatientByStaff = () => import('@/views/acceptPatientByStaff.vue')
 const regReservationByPatient = () => import('@/views/regReservationByPatient.vue')
 
 const router = createRouter({
@@ -36,11 +37,6 @@ const router = createRouter({
       component: regReservationByPatient,
     },
     {
-      path: '/chatlogin',
-      name: 'login',
-      component: Login,
-    },
-    {
       path:'/chatrooms',
       name: 'chatrooms',
       component:ChatRooms,
@@ -50,11 +46,22 @@ const router = createRouter({
       name : 'chatroom',
       component:ChatRoom
     },
+    // {
+    //   path: '/acceptPatientByStaff',
+    //   name: 'acceptPatientByStaff',
+    //   component: acceptPatientByStaff
+    // },
+
     {
-      path: '/acceptPatientByStaff',
-      name: 'acceptPatientByStaff',
-      component: acceptPatientByStaff
-    }
+      path: '/stateList',
+      name: 'stateList',
+      component: StateList
+    },
+    {
+      path: '/showStateList',
+      name: 'showStateList',
+      component: ShowStateList
+    },
   ],
 })
 

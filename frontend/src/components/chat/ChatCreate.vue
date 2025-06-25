@@ -40,7 +40,7 @@ onMounted(()=>{
 
 const loadUuidList = async () => {
   try {
-    const response= await customFetch(ENDPOINTS.chat.loadMemberList(uuid))
+    const response= await customFetch(ENDPOINTS.staff.list(uuid))
     state.members = response.data
     
   } catch (error) {
