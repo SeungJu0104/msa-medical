@@ -6,11 +6,22 @@
   <insert id="acceptPatientByStaff">
     INSERT INTO
         TB_RECEPTION
+            (
+                PATIENT_UUID,
+                DOCTOR_UUID,
+                NAME,
+                RRN,
+                SYMPTOM,
+                CREATE_DATE
+            )
     VALUES
         (
             #{patientUuid},
             #{doctorUuid},
-            #{createdTime}
+            #{name},
+            #{rrn},
+            #{symptom},
+            #{dateTime}
         )
   </insert>
 </mapper>

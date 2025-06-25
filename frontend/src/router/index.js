@@ -7,7 +7,7 @@ import { patientRoutes } from './patientRoutes';
 const HomeView = () => import('@/views/HomeView.vue');
 const MainView = () => import('@/views/home/MainView.vue');
 const OtherView = () => import('@/views/other/OtherView.vue');
-// const acceptPatientByStaff = () => import('@/views/acceptPatientByStaff.vue')
+const acceptPatientByStaff = () => import('@/views/reception/acceptPatientByStaff.vue')
 const regReservationByPatient = () => import('@/views/reservation/RegReservationByPatient.vue')
 
 const router = createRouter({
@@ -50,11 +50,11 @@ const router = createRouter({
       name : 'chatroom',
       component:ChatRoom
     },
-    // {
-    //   path: '/acceptPatientByStaff',
-    //   name: 'acceptPatientByStaff',
-    //   component: acceptPatientByStaff
-    // }
+    {
+      path: '/acceptPatientByStaff',
+      name: 'acceptPatientByStaff',
+      component: acceptPatientByStaff
+    }
   ],
 })
 
