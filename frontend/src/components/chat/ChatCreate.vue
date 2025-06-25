@@ -40,8 +40,8 @@ onMounted(()=>{
 
 const loadUuidList = async () => {
   try {
-    const response= await customFetch(ENDPOINTS.chat.loadMemberList(uuid))
-    state.members = response.data
+    const response= await customFetch(ENDPOINTS.staff.list(uuid))
+    state.members = response.data.list
     
   } catch (error) {
     alert("채팅방 목록을 불러올 수 없습니다.")

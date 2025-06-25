@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import ChatRooms from '@/components/chat/ChatRooms.vue'
 import ChatRoom from '@/components/chat/ChatRoom.vue'
-import Login from '@/components/chat/Login.vue'
 import { patientRoutes } from './patientRoutes';
+
 
 const HomeView = () => import('@/views/HomeView.vue');
 const MainView = () => import('@/views/home/MainView.vue');
@@ -36,11 +36,6 @@ const router = createRouter({
       component: regReservationByPatient,
     },
     {
-      path: '/chatlogin',
-      name: 'login',
-      component: Login,
-    },
-    {
       path:'/chatrooms',
       name: 'chatrooms',
       component:ChatRooms,
@@ -54,7 +49,8 @@ const router = createRouter({
     //   path: '/acceptPatientByStaff',
     //   name: 'acceptPatientByStaff',
     //   component: acceptPatientByStaff
-    // }
+    // },
+
   ],
 })
 

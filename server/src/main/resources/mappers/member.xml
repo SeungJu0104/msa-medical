@@ -32,7 +32,12 @@
         WHEN 'R003' THEN '간호사'
       END as role
     FROM TB_MEMBER
-    WHERE member_role = 'R002' OR member_role = 'R003'
+    WHERE 
+      uuid != #{uuid}
+      AND (
+        member_role = 'R002'
+        OR member_role = 'R003'
+      )
   </select>
   <select id="search">
     SELECT

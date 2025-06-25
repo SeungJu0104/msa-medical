@@ -38,10 +38,10 @@ export const ENDPOINTS = {
         }
     },
     staff: {
-        list: {
+        list: (uuid) => ({
             method: 'get',
-            url: '/staff/list'
-        },
+            url: `/staff/list/${uuid}`
+        }),
     },
     reception: {
         acceptPatientByStaff: {

@@ -16,8 +16,8 @@ import lombok.RequiredArgsConstructor;
 public class StaffService {
   private final MemberDAO memberDAO;
 
-  public List<Member> getStaffList() {
-    List<Member> staffList = memberDAO.getStaffList();
+  public List<Member> getStaffList(String uuid) {
+    List<Member> staffList = memberDAO.getStaffList(uuid);
     if (staffList.isEmpty()) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
