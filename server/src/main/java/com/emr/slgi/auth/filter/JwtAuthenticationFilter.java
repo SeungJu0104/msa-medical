@@ -1,11 +1,13 @@
 package com.emr.slgi.auth.filter;
 
 import java.io.IOException;
-import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -37,8 +39,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             try {
                 Map<String, Object> claims = jwtUtil.parseToken(token, jwtSecret);
                 String uuid = (String) claims.get("uuid");
+                String role = (String) claims.get("role");
+                GrantedAuthority authority = new SimpleGrantedAuthority(role);
                 UsernamePasswordAuthenticationToken auth =
-                        new UsernamePasswordAuthenticationToken(uuid, null, Collections.emptyList());
+                        new UsernamePasswordAuthenticationToken(uuid, null, List.of(authority));
                 SecurityContextHolder.getContext().setAuthentication(auth);
             } catch (JwtException e) {
                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid JWT token");
