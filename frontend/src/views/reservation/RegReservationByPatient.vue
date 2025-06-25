@@ -81,9 +81,9 @@ import {errorMessage} from "@/util/errorMessage.js";
 
   }
 
-  function reservation (selectedValO) {
-    console.log(selectedValO.reservationDate);
-    console.log(selectedValO.time);
+  function reservation () {
+    console.log(selectedVal.reservationDate);
+    console.log(selectedVal.time);
 
     for (const [key, value] of Object.entries(reservationChk)) {
       if (!value) {
@@ -92,13 +92,13 @@ import {errorMessage} from "@/util/errorMessage.js";
       }
     }
 
-    console.log("예약 수행 : ", selectedValO);
+    console.log("예약 수행 : ", selectedVal);
 
     patientMethods.reservation({
       patientUuid : '550e8400-e29b-41d4-a716-446655440020', // 테스트용 환자 아이디
-      ...omit(selectedValO, ['reservationDate', 'time', 'name']), // date와 time, name 속성을 제외한 나머지 속성들을 복사
+      ...omit(selectedVal, ['reservationDate', 'time', 'name']), // date와 time, name 속성을 제외한 나머지 속성들을 복사
       dateTime:
-          `${dayjs(selectedValO.reservationDate).format('YYYY-MM-DD')}T${selectedValO.time}:00`
+          `${dayjs(selectedVal.reservationDate).format('YYYY-MM-DD')}T${selectedVal.time}:00`
     });
 
   }
@@ -160,7 +160,7 @@ import {errorMessage} from "@/util/errorMessage.js";
         </div>
       </div>
     </template>
-    <button type="button" class="btn btn-outline-success" @click="reservation(selectedVal)">예약</button>
+    <button type="button" class="btn btn-outline-success" @click="reservation()">예약</button>
     <button type="button" class="btn btn-outline-warning" @click="goHome">취소</button>
   </div>
 </template>
