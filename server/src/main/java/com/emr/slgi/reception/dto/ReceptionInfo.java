@@ -4,6 +4,7 @@ import com.emr.slgi.util.CommonErrorMessage;
 import com.emr.slgi.util.ReceptionErrorMessage;
 import com.emr.slgi.util.ReservationErrorMessage;
 import com.emr.slgi.util.Validate;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -11,6 +12,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 import static com.emr.slgi.util.ReceptionErrorMessage.*;
 
@@ -27,10 +29,10 @@ public class ReceptionInfo {
 
     @NotEmpty
     @Size(min = 2, max = 6)
-    private String name;
+    private String patientName;
 
     @NotEmpty
-//    @Pattern(regexp = Validate.RRN_REGEX, message = ReceptionErrorMessage.RRN_NOT_NULL)
+    @Pattern(regexp = Validate.RRN_REGEX, message = ReceptionErrorMessage.RRN_NOT_NULL)
     private String rrn;
 
     @NotEmpty(message = ReservationErrorMessage.WRITE_SYMPTOM)
@@ -38,7 +40,7 @@ public class ReceptionInfo {
     private String symptom;
 
     @NotNull(message = ReservationErrorMessage.CHOOSE_DATE_TIME)
-    private LocalDateTime dateTime;
+    private OffsetDateTime dateTime;
 
 
 }

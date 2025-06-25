@@ -98,7 +98,7 @@ onMounted(
   <div class="my-3 input-group">
     <span class="input-group-text">증상</span>
     <textarea class="form-control" aria-label="symptom" v-model="selectedVal.symptom"
-              @change = "writeSymptom" maxlength="100"
+              @input = "writeSymptom" maxlength="100"
               placeholder="100자 이내로 작성해주세요.">
       </textarea>
   </div>
