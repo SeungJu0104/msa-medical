@@ -16,6 +16,9 @@
 import { customFetch } from '@/util/customFetch';
 import { ENDPOINTS } from '@/util/endpoints';
 import { reactive } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 const user = reactive({
   userid: '',
@@ -26,6 +29,7 @@ async function login() {
   const response = await customFetch(ENDPOINTS.auth.login, {
     data: user
   });
-  console.log(response);
+  localStorage.setItem("accessToken", response.data.accessToken);
+  router.push({ name: 'home' });
 }
 </script>
