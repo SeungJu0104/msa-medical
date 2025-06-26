@@ -2,18 +2,17 @@ package com.emr.slgi.reception.controller;
 
 import com.emr.slgi.reception.dto.ReceptionInfo;
 import com.emr.slgi.reception.service.ReceptionService;
+import com.emr.slgi.reception.service.WaitingList;
 import com.emr.slgi.util.CommonErrorMessage;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -32,6 +31,17 @@ public class ReceptionController {
         }
 
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/getWaitingList")
+    public ResponseEntity<Map<String, List<WaitingList>>> getWaitingList() {
+
+        List<WaitingList> list = receptionService.getWaitingList();
+
+        return ResponseEntity.ok(
+                Map.of("waitingList", list)
+        );
+
     }
 
 }

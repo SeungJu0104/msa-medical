@@ -24,4 +24,14 @@
             #{dateTime}
         )
   </insert>
+
+    <select id="getWaitingList">
+        SELECT
+            PATIENT_UUID, DOCTOR_UUID, STATUS, NAME, RRN, CREATE_DATE
+        FROM
+            TB_RECEPTION
+        WHERE
+            STATUS IN ('RE01')
+    </select>
+
 </mapper>
