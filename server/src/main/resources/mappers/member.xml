@@ -5,18 +5,16 @@
 <mapper namespace="com.emr.slgi.member.MemberDAO">
   <select id="getByUuid">
     SELECT
-      m.uuid,
-      sc.name AS role,
-      m.name,
-      m.rrn,
-      m.phone,
-      m.create_date,
-      m.update_date,
-      m.delete_date
-    FROM TB_MEMBER m
-    JOIN TB_STATUS_CODE sc
-      ON m.member_role = sc.id
-    WHERE m.uuid=#{uuid}
+      uuid,
+      member_role AS role,
+      name,
+      rrn,
+      phone,
+      create_date,
+      update_date,
+      delete_date
+    FROM TB_MEMBER
+    WHERE uuid=#{uuid}
   </select>
   <select id="getDoctorList">
     SELECT

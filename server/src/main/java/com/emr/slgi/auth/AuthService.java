@@ -73,7 +73,7 @@ public class AuthService {
 
         Map<String, String> map = Map.of(
             "uuid", member.getUuid(),
-            "role", member.getRole()
+            "role", member.getRole().getCode()
         );
         Date thirtyMinutesLater = new Date(System.currentTimeMillis() + 30L * 60 * 1000);
 

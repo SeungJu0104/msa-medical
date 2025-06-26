@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.emr.slgi.member.enums.MemberRole;
 import com.emr.slgi.util.JwtUtil;
 
 import io.jsonwebtoken.JwtException;
@@ -48,8 +49,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             try {
                 Map<String, Object> claims = jwtUtil.parseToken(token, jwtSecret);
                 String uuid = (String) claims.get("uuid");
-                String role = (String) claims.get("role");
-                GrantedAuthority authority = new SimpleGrantedAuthority(role);
+                MemberRole role = MemberRole.fromCode((String) claims.get("role"));
+                GrantedAuthority authority = new SimpleGrantedAuthority(role.getAuthority());
                 UsernamePasswordAuthenticationToken auth =
                         new UsernamePasswordAuthenticationToken(uuid, null, List.of(authority));
                 SecurityContextHolder.getContext().setAuthentication(auth);
