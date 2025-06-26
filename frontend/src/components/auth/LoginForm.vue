@@ -13,6 +13,7 @@
 </template>
 
 <script setup>
+import { setAccessToken } from '@/auth/accessToken';
 import { customFetch } from '@/util/customFetch';
 import { ENDPOINTS } from '@/util/endpoints';
 import { reactive } from 'vue';
@@ -29,7 +30,7 @@ async function login() {
   const response = await customFetch(ENDPOINTS.auth.login, {
     data: user
   });
-  localStorage.setItem("accessToken", response.data.accessToken);
+  setAccessToken(response.data.accessToken);
   router.push({ name: 'home' });
 }
 </script>
