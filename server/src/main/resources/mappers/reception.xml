@@ -1,0 +1,37 @@
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.emr.slgi.reception.dao.ReceptionDAO">
+  <insert id="acceptPatientByStaff">
+    INSERT INTO
+        TB_RECEPTION
+            (
+                PATIENT_UUID,
+                DOCTOR_UUID,
+                NAME,
+                RRN,
+                SYMPTOM,
+                CREATE_DATE
+            )
+    VALUES
+        (
+            #{patientUuid},
+            #{doctorUuid},
+            #{patientName},
+            #{rrn},
+            #{symptom},
+            #{dateTime}
+        )
+  </insert>
+
+    <select id="getWaitingList">
+        SELECT
+            PATIENT_UUID, DOCTOR_UUID, STATUS, NAME, RRN, CREATE_DATE
+        FROM
+            TB_RECEPTION
+        WHERE
+            STATUS IN ('RE01')
+    </select>
+
+</mapper>
