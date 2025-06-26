@@ -104,5 +104,19 @@ export const ENDPOINTS = {
             method: 'get',
             url: `/reservation/getReservationList/${selectedVal.doctorUuid}/${selectedVal.dateTime}`
         }),
+    },
+
+    medicine:{
+        searchlist: (search) => ({
+            method:'get',
+            url: `/medicine/search?k=${search}`
+        })
+    },
+    disease:{
+        searchlist: (search) => ({
+            method:'get',
+            url: `/disease/search?k=${search}`
+        })
     }
+
 }
