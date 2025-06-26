@@ -51,7 +51,58 @@
                     <include refid="afterToday"/>
                 </otherwise>
             </choose>
-            STATUS IN ('RS01', 'RS02')
+            STATUS IN ('RS01', 'RS03')
+    </select>
+
+    <insert id="holdReesrvation">
+        INSERT INTO
+            TB_RESERVATION
+        VALUES
+            (
+             UUID(),
+             #{patientUuid},
+             #{doctorUuid},
+             'RS03',
+             CURRENT_TIMESTAMP,
+             NULL
+            )
+    </insert>
+
+    <update id="deleteHoldingReservation">
+        UPDATE
+            TB_RESERVATION
+        SET
+            STATUS = 'RSO2'
+        WHERE
+            PATIENT_UUID = #{patientUuid}
+            AND
+            STATUS = 'RS03'
+    </update>
+
+    <select id="getAffectedRowsCount">
+        SELECT
+            #{select}
+        FROM TB_RESERVATION
+        WHERE
+            #{where}
+    </select>
+
+    <select id="getReservationListByStaff" parameterType="map">
+        SELECT
+            PATIENT_UUID, DOCTOR_UUID, RESERVATION_DATE
+        FROM
+            TB_RESERVATION
+        WHERE
+            RESERVATION_DATE BETWEEN #{start} AND #{end}
+            AND
+            STATUS = 'RS01'
+    </select>
+
+    <select id="getWaitingList">
+        SELECT
+            PATIENT_UUID, DOCTOR_UUID, STATUS, NAME, RRN, CREATE_DATE
+        FROM
+            TB
     </select>
 
 </mapper>

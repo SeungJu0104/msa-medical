@@ -55,6 +55,11 @@ import {errorMessage} from "@/util/errorMessage.js";
 
     reservationTime.value = await patientMethods.getReservationTime(selectedVal);
 
+    // 예약 정보를 가져오지 못했을 때, 타임 슬롯 생성 막기
+    if(reservationTime.value === false) {
+      return;
+    }
+
     console.log("다시 프론트");
     console.log(reservationTime.value);
 
@@ -67,6 +72,12 @@ import {errorMessage} from "@/util/errorMessage.js";
   const selectTime = (time) => {
     selectedVal.time = time;
     reservationChk.timeChk = true;
+
+    const result = patientMethods.reservationHold({
+      doctorUuid: selectedVal.doctorUuid,
+      dateTime : `${common.dateFormatter(selectedVal.reservationDate, 'YYYY-MM-DD')}T${selectedVal.time}:00`
+    })
+
   }
 
   const writeSymptom = () => {

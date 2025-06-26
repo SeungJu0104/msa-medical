@@ -88,6 +88,7 @@ export const patientMethods = {
 
         } catch(err) {
             common.errMsg(err);
+            return false;
         }
 
     },
@@ -150,6 +151,10 @@ export const patientMethods = {
                 // `${dayjs(reservationDate).format('YYYY-MM-DDTHH:mm:00')}`
         });
 
+        if(response === false) {
+            return false;
+        }
+
         reservationList.value = Array.isArray(response) ? response : [];
 
         return patientMethods.generateTimeSlots(
@@ -173,4 +178,19 @@ export const patientMethods = {
         }
 
     },
+    reservationHold: async (selectedVal) => {
+        try{
+
+            const response = await customFetch(ENDPOINTS.reservation.reservationHold, {
+                data: selectedVal
+            });
+
+            if(response?.status === 200) {
+                return;
+            }
+
+        } catch(err) {
+            return common.errMsg(err);
+        }
+    }
 }
