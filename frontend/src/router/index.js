@@ -7,8 +7,8 @@ import { patientRoutes } from './patientRoutes';
 const HomeView = () => import('@/views/HomeView.vue');
 const MainView = () => import('@/views/home/MainView.vue');
 const OtherView = () => import('@/views/other/OtherView.vue');
-const acceptPatientByStaff = () => import('@/views/reception/acceptPatientByStaff.vue')
-const regReservationByPatient = () => import('@/views/reservation/RegReservationByPatient.vue')
+const AcceptPatientByStaff = () => import('@/views/reception/AcceptPatientByStaff.vue')
+const RegReservationByPatient = () => import('@/views/reservation/RegReservationByPatient.vue')
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -33,7 +33,7 @@ const router = createRouter({
     {
       path: '/regReservationByPatient',
       name: 'regReservationByPatient',
-      component: regReservationByPatient,
+      component: RegReservationByPatient,
     },
     {
       path: '/chatlogin',
@@ -53,7 +53,7 @@ const router = createRouter({
     {
       path: '/acceptPatientByStaff',
       name: 'acceptPatientByStaff',
-      component: acceptPatientByStaff
+      component: AcceptPatientByStaff
     }
   ],
 })
