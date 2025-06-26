@@ -11,7 +11,7 @@ import com.emr.slgi.member.dto.MemberSearchDTO;
 public interface MemberDAO {
     public Member getById(String id);
     public List<Member> getDoctorList();
-    public List<Member> getStaffList();
+    public List<Member> getStaffList(String uuid);
     public List<Member> search(MemberSearchDTO memberSearchDTO);
     public void createPatient(MemberCreateDTO memberCreateDTO);
 }
