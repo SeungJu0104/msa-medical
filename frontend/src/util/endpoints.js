@@ -104,5 +104,9 @@ export const ENDPOINTS = {
             method: 'get',
             url: `/reservation/getReservationList/${selectedVal.doctorUuid}/${selectedVal.dateTime}`
         }),
+        reservationHold: {
+            method: 'post',
+            url: '/reservation/hold'
+        }
     }
 }
