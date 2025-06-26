@@ -1,8 +1,21 @@
+import { getAccessToken } from '@/auth/accessToken';
 import axios from 'axios';
 
 const instance = axios.create({
     baseURL: '/api'
 });
+
+instance.interceptors.request.use(
+  config => {
+    const token = getAccessToken();
+    if (token) {
+      config.headers = config.headers || {};
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  error => Promise.reject(error)
+);
 
 /**
  * Axios 인스턴스를 이용한 커스텀 Fetch 함수
