@@ -32,4 +32,8 @@ public class RefreshTokenService {
         return jwtUtil.generateToken(map, twoWeeksLater, refreshTokenSecret);
     }
 
+    public Map<String, Object> parseRefreshToken(String refreshToken) {
+        return jwtUtil.parseToken(refreshToken, refreshTokenSecret);
+    }
+
 }

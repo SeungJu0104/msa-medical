@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.emr.slgi.auth.dto.LoginDTO;
+import com.emr.slgi.auth.dto.RefreshTokenDTO;
 import com.emr.slgi.auth.dto.RegisterByPatientDTO;
 import com.emr.slgi.credentials.Credentials;
 import com.emr.slgi.credentials.CredentialsDAO;
@@ -80,5 +81,11 @@ public class AuthService {
         Date thirtyMinutesLater = new Date(System.currentTimeMillis() + 30L * 60 * 1000);
 
         return jwtUtil.generateToken(map, thirtyMinutesLater, jwtSecret);
+    }
+
+    public String refreshToken(RefreshTokenDTO refreshTokenDTO) {
+        Map<String, Object> claims = refreshTokenService.parseRefreshToken(refreshTokenDTO.getRefreshToken());
+        String uuid = (String) claims.get("uuid");
+        return createAccessToken(uuid);
     }
 }
