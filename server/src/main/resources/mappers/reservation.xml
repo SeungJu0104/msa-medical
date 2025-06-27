@@ -98,10 +98,7 @@
     </select>
 
     <select id="getWaitingList">
-        SELECT
-            PATIENT_UUID, DOCTOR_UUID, STATUS, NAME, RRN, CREATE_DATE
-        FROM
-            TB
+
     </select>
 
     <update id="cancelReservation">
@@ -113,6 +110,15 @@
             ID = #{reservationId}
             AND
             STATUS = 'RS01'
+    </update>
+
+    <update id="changeReservation">
+        UPDATE
+            TB_RESERVATION
+        SET
+            RESERVATION_DATE = #{dateTime}
+        WHERE
+            ID = #{reservationId}
     </update>
 
 </mapper>
