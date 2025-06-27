@@ -88,6 +88,7 @@ export const patientMethods = {
 
         } catch(err) {
             common.errMsg(err);
+            return false;
         }
 
     },
@@ -146,8 +147,13 @@ export const patientMethods = {
             patientUuid : '550e8400-e29b-41d4-a716-446655440020', // 테스트용 환자 아이디
             ...omit(selectedVal, ['reservationDate', 'time', 'name']), // date와 time, name 속성을 제외한 나머지 속성들을 복사
             dateTime:
-                `${dayjs(reservationDate).format('YYYY-MM-DDTHH:mm:00')}`
+                reservationDate.toDate().toISOString()
+                // `${dayjs(reservationDate).format('YYYY-MM-DDTHH:mm:00')}`
         });
+
+        if(response === false) {
+            return false;
+        }
 
         reservationList.value = Array.isArray(response) ? response : [];
 
@@ -172,4 +178,19 @@ export const patientMethods = {
         }
 
     },
+    reservationHold: async (selectedVal) => {
+        try{
+
+            const response = await customFetch(ENDPOINTS.reservation.reservationHold, {
+                data: selectedVal
+            });
+
+            if(response?.status === 200) {
+                return;
+            }
+
+        } catch(err) {
+            return common.errMsg(err);
+        }
+    }
 }

@@ -55,6 +55,11 @@ import {errorMessage} from "@/util/errorMessage.js";
 
     reservationTime.value = await patientMethods.getReservationTime(selectedVal);
 
+    // 예약 정보를 가져오지 못했을 때, 타임 슬롯 생성 막기
+    if(reservationTime.value === false) {
+      return;
+    }
+
     console.log("다시 프론트");
     console.log(reservationTime.value);
 
@@ -67,21 +72,27 @@ import {errorMessage} from "@/util/errorMessage.js";
   const selectTime = (time) => {
     selectedVal.time = time;
     reservationChk.timeChk = true;
+
+    const result = patientMethods.reservationHold({
+      doctorUuid: selectedVal.doctorUuid,
+      dateTime : `${common.dateFormatter(selectedVal.reservationDate, 'YYYY-MM-DD')}T${selectedVal.time}:00`
+    })
+
   }
 
-  const writeSymptom = (symptom) => {
+  const writeSymptom = () => {
 
-    reservationChk.symptomChk = symptom !== null && symptom.trim().length > 0;
+    reservationChk.symptomChk = selectedVal.symptom !== null && selectedVal.symptom.trim().length > 0;
 
   }
 
-  function goHome () {
+  const goHome = () => {
 
     common.goHome();
 
   }
 
-  function reservation () {
+  const reservation = () => {
     console.log(selectedVal.reservationDate);
     console.log(selectedVal.time);
 
@@ -98,7 +109,8 @@ import {errorMessage} from "@/util/errorMessage.js";
       patientUuid : '550e8400-e29b-41d4-a716-446655440020', // 테스트용 환자 아이디
       ...omit(selectedVal, ['reservationDate', 'time', 'name']), // date와 time, name 속성을 제외한 나머지 속성들을 복사
       dateTime:
-          `${dayjs(selectedVal.reservationDate).format('YYYY-MM-DD')}T${selectedVal.time}:00`
+          dayjs(`${common.dateFormatter(selectedVal.reservationDate, 'YYYY-MM-DD')}T${selectedVal.time}:00`).toDate().toISOString()
+      // `${dayjs(selectedVal.reservationDate).format('YYYY-MM-DD')}T${selectedVal.time}:00`
     });
 
   }
@@ -154,13 +166,13 @@ import {errorMessage} from "@/util/errorMessage.js";
         <div class="my-3 input-group">
           <span class="input-group-text">증상</span>
           <textarea class="form-control" aria-label="symptom" v-model="selectedVal.symptom"
-                    @change = "writeSymptom(selectedVal.symptom)" maxlength="100"
+                    @change = "writeSymptom" maxlength="100"
                     placeholder="100자 이내로 작성해주세요.">
           </textarea>
         </div>
       </div>
     </template>
-    <button type="button" class="btn btn-outline-success" @click="reservation()">예약</button>
+    <button type="button" class="btn btn-outline-success" @click="reservation">예약</button>
     <button type="button" class="btn btn-outline-warning" @click="goHome">취소</button>
   </div>
 </template>

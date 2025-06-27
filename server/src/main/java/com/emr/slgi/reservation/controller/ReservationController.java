@@ -18,6 +18,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -55,12 +56,30 @@ public class ReservationController {
 
     }
 
+    @PostMapping("/hold")
+    public ResponseEntity<?> holdReservation(FindReservationDate reservationDate) {
+
+        if(reservationDate.getDoctorUuid() == null || Validate.regexValidate(Map.of(Validate.MEMBER_UUID_REGEX, reservationDate.getDoctorUuid())).contains(false)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, ReservationErrorMessage.CHOOSE_DOCTOR);
+        }
+
+        if(reservationDate.getDateTime() == null || reservationDate.getDateTime().toLocalDate().isBefore(LocalDate.now())) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, ReservationErrorMessage.CAN_NOT_FIND_RESERVATION_DATE);
+        }
+
+        if(rService.holdReservation(reservationDate) != 1) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, CommonErrorMessage.RETRY);
+        }
+
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping("/getReservationList/{doctorUuid}/{dateTime}")
     public ResponseEntity<Map<String, List<ReservationList>>> getReservationList(
             @PathVariable("doctorUuid") String doctorUuid,
             @PathVariable("dateTime")
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-            LocalDateTime dateTime) {
+            OffsetDateTime dateTime) {
 
         log.info(String.valueOf(dateTime));
         log.info(doctorUuid);
@@ -73,6 +92,7 @@ public class ReservationController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, ReservationErrorMessage.CHOOSE_DOCTOR);
         }
 
+        // 왜 전날 날짜가 날아오지?
         if(dateTime == null || dateTime.toLocalDate().isBefore(LocalDate.now())) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, ReservationErrorMessage.CAN_NOT_FIND_RESERVATION_DATE);
         }
@@ -86,8 +106,20 @@ public class ReservationController {
 
     }
 
+
+    @GetMapping("/getReservationList/{dateTime}")
+    public ResponseEntity<Map<String, List<ReservationList>>> getReservationList(@PathVariable("dateTime")
+                                                                                     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+                                                                                     OffsetDateTime dateTime) {
+        if(dateTime == null || dateTime.toLocalDate().isBefore(LocalDate.now())) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, ReservationErrorMessage.CAN_NOT_FIND_RESERVATION_DATE);
+        }
+
+        return ResponseEntity.ok(
+                Map.of("reservationList", rService.getReservationList(dateTime).orElse(List.of()))
+        );
+
+    }
+
     // 오버로딩으로 나중에 환자아이디로 예약 목록 가져오기 구현.
-
-
-
 }

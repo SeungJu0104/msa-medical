@@ -1,4 +1,5 @@
 import router from "@/router/index.js";
+import dayjs from "dayjs";
 
 export const common =  {
 
@@ -15,6 +16,9 @@ export const common =  {
     },
     alertError : (err) => {
         alert(err);
+    },
+    dateFormatter : (date, format) => {
+        return dayjs(date).format(format);
     }
 
 }

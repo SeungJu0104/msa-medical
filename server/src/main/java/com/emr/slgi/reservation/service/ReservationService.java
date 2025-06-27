@@ -9,7 +9,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Slf4j
@@ -20,8 +22,29 @@ public class ReservationService {
     private final ReservationDAO rDao;
 
     public int makeReservation(ReservationForm rf) {
-        
-        return rDao.makeReservation(rf);
+
+        int affectedRowsCount = rDao.getAffectedRowsCount(
+                Map.of(
+                        "select", "COUNT(*)",
+                        "where", "PATIENT_UUID = '" + rf.getPatientUuid() + "' AND STATUS = 'RS03'"
+                )
+        );
+
+        if(deleteHoldingReservation(rf) != affectedRowsCount) {
+            return 0;
+        }else {
+            return rDao.makeReservation(rf);
+        }
+
+    }
+
+    public int getAffectedRowsCount(Map reservationData) {
+        return rDao.getAffectedRowsCount(reservationData);
+    }
+
+    public int deleteHoldingReservation(ReservationForm rf) {
+
+        return rDao.deleteHoldingReservation(rf);
 
     }
 
@@ -36,6 +59,24 @@ public class ReservationService {
 
         return Optional.ofNullable(rDao.getReservationList(reservation));
 
+    }
+
+    public int holdReservation(FindReservationDate reservationDate) {
+
+        return rDao.holdReservationDate(reservationDate);
+
+    }
+
+    public Optional<List<ReservationList>> getReservationList(OffsetDateTime dateTime) {
+
+        return Optional.ofNullable(
+            rDao.getReservationListByStaff(
+                Map.of(
+                    "start", dateTime.toLocalDate().atStartOfDay(),
+                    "end", dateTime.toLocalDate().plusDays(1).atStartOfDay()
+                )
+            )
+        );
     }
 
 }

@@ -50,7 +50,7 @@ export const ENDPOINTS = {
     reception: {
         acceptPatientByStaff: {
             method: 'post',
-            url: 'staff/acceptPatientByStaff'
+            url: '/reception'
         }
     },
     chat: {
@@ -108,5 +108,9 @@ export const ENDPOINTS = {
             method: 'get',
             url: `/reservation/getReservationList/${selectedVal.doctorUuid}/${selectedVal.dateTime}`
         }),
+        reservationHold: {
+            method: 'post',
+            url: '/reservation/hold'
+        }
     }
 }
