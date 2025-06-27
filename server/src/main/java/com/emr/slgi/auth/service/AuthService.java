@@ -29,6 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 public class AuthService {
     private final MemberDAO memberDAO;
     private final CredentialsDAO credentialsDAO;
+    private final RefreshTokenService refreshTokenService;
     private final JwtUtil jwtUtil;
 
     @Value("${jwt.access-token-secret}")
@@ -65,6 +66,7 @@ public class AuthService {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "아이디나 비밀번호가 틀렸습니다.");
         }
         map.put("accessToken", createAccessToken(credentials.getUserUuid()));
+        map.put("refreshToken", refreshTokenService.createRefreshToken(credentials.getUserUuid()));
         return map;
     }
 
