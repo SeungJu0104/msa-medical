@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -147,6 +148,24 @@ public class ReservationController {
         return ResponseEntity.ok().build();
 
     }
+
+    @PutMapping("/change/{reservationId}/{dateTime}")
+    public ResponseEntity<Map<String, String>> changeReservation(@PathVariable("reservationId") String reservationId, @PathVariable("dateTime") LocalDateTime dateTime) {
+
+        if(reservationId == null || Validate.regexValidate(Map.of(Validate.MEMBER_UUID_REGEX, reservationId)).contains(false)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, ReservationErrorMessage.CHOOSE_DOCTOR);
+        }
+
+        if(!rService.changeReservation(reservationId, dateTime)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ReservationErrorMessage.RESERVATION_CHANGE_ERROR + CommonErrorMessage.RETRY);
+        }
+
+        return ResponseEntity.ok(
+                Map.of("message", "예약이 변경됐습니다.")
+        );
+
+    }
+
 
     // 오버로딩으로 나중에 환자아이디로 예약 목록 가져오기 구현.
 }

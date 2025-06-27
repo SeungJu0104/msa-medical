@@ -113,4 +113,14 @@ public class ReservationService {
 
 
     }
+
+    public boolean changeReservation(String reservationId, LocalDateTime dateTime) {
+
+        if(rDao.changeReservation(reservationId, dateTime) != 1) {
+            return false;
+        }else {
+            return true;
+        }
+
+    }
 }
