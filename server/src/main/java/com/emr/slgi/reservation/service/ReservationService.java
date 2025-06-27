@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
@@ -23,15 +24,8 @@ public class ReservationService {
 
     public int makeReservation(ReservationForm rf) {
 
-        int affectedRowsCount = rDao.getAffectedRowsCount(
-                Map.of(
-                        "select", "COUNT(*)",
-                        "where", "PATIENT_UUID = '" + rf.getPatientUuid() + "' AND STATUS = 'RS03'"
-                )
-        );
-
-        if(deleteHoldingReservation(rf) != affectedRowsCount) {
-            return 0;
+        if(!cancelHoldingReservation(rf.getPatientUuid())) {
+            return -1;
         }else {
             return rDao.makeReservation(rf);
         }
@@ -42,9 +36,22 @@ public class ReservationService {
         return rDao.getAffectedRowsCount(reservationData);
     }
 
-    public int deleteHoldingReservation(ReservationForm rf) {
+    public boolean cancelHoldingReservation(String patientUuid) {
 
-        return rDao.deleteHoldingReservation(rf);
+        int affectedRowsCount = getAffectedRowsCount(
+                Map.of(
+                        "where", "PATIENT_UUID = '550e8400-e29b-41d4-a716-446655440020' AND STATUS = 'RS03'"
+                        // 임시 환자 UUID
+                        // "PATIENT_UUID = " + reservationDate.getDoctorUuid() + " AND STATUS = 'RS03'"
+                )
+        );
+
+        if(rDao.cancelHoldingReservation(patientUuid) != affectedRowsCount) {
+            return false;
+        }else{
+            return true;
+        }
+
 
     }
 
@@ -54,7 +61,8 @@ public class ReservationService {
         // 오늘이면 today 값 true로
         if(reservation.getDateTime().toLocalDate().isEqual(LocalDate.now())) {
             reservation.setToday(true);
-            log.info(reservation.toString());
+        } else {
+            reservation.setDateTime(reservation.getDateTime().toLocalDate().atStartOfDay());
         }
 
         return Optional.ofNullable(rDao.getReservationList(reservation));
@@ -63,11 +71,17 @@ public class ReservationService {
 
     public int holdReservation(FindReservationDate reservationDate) {
 
-        return rDao.holdReservationDate(reservationDate);
+        reservationDate.setPatientUuid("550e8400-e29b-41d4-a716-446655440020"); // 임시 환자 데이터
+
+        if(!cancelHoldingReservation(reservationDate.getPatientUuid())) {
+            return -1;
+        }
+
+        return rDao.holdReservation(reservationDate);
 
     }
 
-    public Optional<List<ReservationList>> getReservationList(OffsetDateTime dateTime) {
+    public Optional<List<ReservationList>> getReservationList(LocalDateTime dateTime) {
 
         return Optional.ofNullable(
             rDao.getReservationListByStaff(
@@ -77,6 +91,7 @@ public class ReservationService {
                 )
             )
         );
+
     }
 
 }

@@ -107,6 +107,10 @@ export const ENDPOINTS = {
         reservationHold: {
             method: 'post',
             url: '/reservation/hold'
+        },
+        cancelHoldingReservation: {
+            method: 'put',
+            url: '/reservation/cancelHoldingReservation'
         }
     }
 }

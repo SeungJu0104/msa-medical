@@ -73,9 +73,10 @@ import {errorMessage} from "@/util/errorMessage.js";
     selectedVal.time = time;
     reservationChk.timeChk = true;
 
-    const result = patientMethods.reservationHold({
+    patientMethods.reservationHold({
       doctorUuid: selectedVal.doctorUuid,
-      dateTime : `${common.dateFormatter(selectedVal.reservationDate, 'YYYY-MM-DD')}T${selectedVal.time}:00`
+      dateTime :
+          dayjs(`${common.dateFormatter(selectedVal.reservationDate, 'YYYY-MM-DD')}T${selectedVal.time}:00`).toDate().toISOString()
     })
 
   }
@@ -86,9 +87,15 @@ import {errorMessage} from "@/util/errorMessage.js";
 
   }
 
-  const goHome = () => {
+  const goHome = async () => {
 
-    common.goHome();
+    if(!reservationChk.timeChk) {
+      await common.goHome();
+    }
+
+    if(await patientMethods.cancelHoldingReservation()) {
+      await common.goHome();
+    }
 
   }
 
