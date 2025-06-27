@@ -9,6 +9,10 @@ export const ENDPOINTS = {
         checkId: {
             method: 'get',
             url: '/auth/check-id'
+        },
+        login: {
+            method: 'post',
+            url: '/auth/login'
         }
     },
     member: {

@@ -9,6 +9,7 @@ const MainView = () => import('@/views/home/MainView.vue');
 const OtherView = () => import('@/views/other/OtherView.vue');
 const AcceptPatientByStaff = () => import('@/views/reception/AcceptPatientByStaff.vue')
 const RegReservationByPatient = () => import('@/views/reservation/RegReservationByPatient.vue')
+const LoginView = () => import('@/views/auth/LoginView.vue');
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -21,6 +22,11 @@ const router = createRouter({
           path: '/',
           name: 'home',
           component: MainView
+        },
+        {
+          path: '/login',
+          name: 'loginView',
+          component: LoginView
         },
         ...patientRoutes
       ]

@@ -8,4 +8,5 @@ import com.emr.slgi.credentials.dto.CredentialsCreateDTO;
 public interface CredentialsDAO {
     public void create(CredentialsCreateDTO credentialsCreateDTO);
     public boolean existsByUserid(String userid);
+    public Credentials getMemberCredentials(String userid);
 }

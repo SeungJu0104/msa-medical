@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.emr.slgi.auth.dto.LoginDTO;
 import com.emr.slgi.auth.dto.RegisterByPatientDTO;
 
 import lombok.RequiredArgsConstructor;
@@ -31,5 +32,10 @@ public class AuthController {
     public ResponseEntity<?> checkIdDuplicate(@RequestParam String userid) {
         boolean exists = authService.checkIdDuplicate(userid);
         return ResponseEntity.ok(Map.of("exists", exists));
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) {
+        return ResponseEntity.ok(authService.login(loginDTO));
     }
 }

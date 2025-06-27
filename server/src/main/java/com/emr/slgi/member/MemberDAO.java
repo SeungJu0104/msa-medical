@@ -9,7 +9,7 @@ import com.emr.slgi.member.dto.MemberSearchDTO;
 
 @Mapper
 public interface MemberDAO {
-    public Member getById(String id);
+    public Member getByUuid(String uuid);
     public List<Member> getDoctorList();
     public List<Member> getStaffList(String uuid);
     public List<Member> search(MemberSearchDTO memberSearchDTO);
