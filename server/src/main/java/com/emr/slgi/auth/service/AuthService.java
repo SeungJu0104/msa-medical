@@ -1,4 +1,4 @@
-package com.emr.slgi.auth;
+package com.emr.slgi.auth.service;
 
 import java.util.Date;
 import java.util.HashMap;

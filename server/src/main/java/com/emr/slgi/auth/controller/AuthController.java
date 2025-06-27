@@ -1,4 +1,4 @@
-package com.emr.slgi.auth;
+package com.emr.slgi.auth.controller;
 
 import java.util.Map;
 
@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.emr.slgi.auth.dto.LoginDTO;
 import com.emr.slgi.auth.dto.RegisterByPatientDTO;
+import com.emr.slgi.auth.service.AuthService;
 
 import lombok.RequiredArgsConstructor;
 
