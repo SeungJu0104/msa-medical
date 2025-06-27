@@ -3,20 +3,16 @@ import {onMounted, reactive} from "vue";
 import {reception} from "@/util/reception.js";
 
   const doctorName = reactive({
-    name: String
+
+    name: null
+
   });
 
-  const roleCheck = () => {
-    localStorage.getItem('role');
-  }
-
   const getDoctorName = () => {
-    if(roleCheck() === 'R') {
 
-    }
-    doctorName.name = reception.getDoctorName();
+    doctorName.name = reception.getDoctorName;
+
   }
-
 
   onMounted(
       getDoctorName

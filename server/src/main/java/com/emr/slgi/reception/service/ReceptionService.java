@@ -19,14 +19,26 @@ public class ReceptionService {
         return receptionDAO.acceptPatientByStaff(receptionInfo);
     }
 
-    public List<WaitingList> getWaitingList() {
+    public List<WaitingList> getWaitingList(String doctorUuid) {
 
-        List<WaitingList> waitingList = receptionDAO.getWaitingList();
+        List<WaitingList> waitingList = receptionDAO.getWaitingList(doctorUuid);
 
 //        현재 대기중인 환자 리스트에 진료 중인 환자 진료 테이블에 가져와서 추가. 함수명은 임의로 작성.
 //        waitingList.add(tDAO.getTreatingPatientInfo());
 
         return waitingList;
+
+    }
+
+    public String getDoctorNameByDoctor(String uuid) {
+
+        return receptionDAO.getDoctorNameByDoctor(uuid);
+
+    }
+
+    public String getDoctorNameByNurse() {
+
+        return receptionDAO.getDoctorNameByNurse();
 
     }
 
