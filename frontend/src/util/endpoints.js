@@ -51,6 +51,10 @@ export const ENDPOINTS = {
         acceptPatientByStaff: {
             method: 'post',
             url: '/reception'
+        },
+        getDoctorName : {
+            method: 'get',
+            url: '/reception/getDoctorName'
         }
     },
     chat: {
