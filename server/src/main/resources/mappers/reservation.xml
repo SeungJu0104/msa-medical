@@ -104,4 +104,15 @@
             TB
     </select>
 
+    <update id="cancelReservation">
+        UPDATE
+            TB_RESERVATION
+        SET
+            STATUS = 'RS05'
+        WHERE
+            ID = #{reservationId}
+            AND
+            STATUS = 'RS01'
+    </update>
+
 </mapper>

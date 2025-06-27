@@ -94,4 +94,23 @@ public class ReservationService {
 
     }
 
+    public boolean cancelReservation(String reservationId) {
+
+        log.info(reservationId);
+
+        int affectedRowsCount = getAffectedRowsCount(
+                Map.of(
+                        "where", "ID = '" + reservationId + "' AND STATUS = 'RS01'"
+                )
+        );
+
+
+        if(rDao.cancelReservation(reservationId) != affectedRowsCount) {
+            return false;
+        } else {
+            return true;
+        }
+
+
+    }
 }

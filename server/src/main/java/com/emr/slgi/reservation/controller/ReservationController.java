@@ -121,13 +121,28 @@ public class ReservationController {
     @PutMapping("/cancelHoldingReservation")
     public ResponseEntity<?> cancelHoldingReservation() {
         log.info("a");
-        String patientUuid = "550e8400-e29b-41d4-a716-446655440020";
+        String patientUuid = "550e8400-e29b-41d4-a716-446655440020"; // 테스트용 환자 UUID
 
         if(!rService.cancelHoldingReservation(patientUuid)) {
             log.info("b");
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, CommonErrorMessage.RETRY);
         }
         log.info("c");
+
+        return ResponseEntity.ok().build();
+
+    }
+
+    @PutMapping("/cancelReservation/{reservationId}")
+    public ResponseEntity<?> cancelReservation(@PathVariable("reservationId") String reservationId) {
+
+        if(reservationId == null || Validate.regexValidate(Map.of(Validate.MEMBER_UUID_REGEX, reservationId)).contains(false)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, ReservationErrorMessage.CHOOSE_DOCTOR);
+        }
+
+        if(!rService.cancelReservation(reservationId)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, CommonErrorMessage.RETRY);
+        }
 
         return ResponseEntity.ok().build();
 

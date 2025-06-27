@@ -26,4 +26,6 @@ public interface ReservationDAO {
 
     List<ReservationList> getReservationListByStaff(Map date);
 
+    int cancelReservation(String reservationId);
+
 }
