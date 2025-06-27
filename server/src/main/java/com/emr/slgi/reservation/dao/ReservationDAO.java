@@ -18,12 +18,14 @@ public interface ReservationDAO {
             FindReservationDate reservation
     );
 
-    int holdReservationDate(FindReservationDate reservationDate);
+    int holdReservation(FindReservationDate reservationDate);
 
-    int deleteHoldingReservation(ReservationForm rf);
+    int cancelHoldingReservation(String patientUuid);
 
     int getAffectedRowsCount(Map reservationData);
 
     List<ReservationList> getReservationListByStaff(Map date);
+
+    int cancelReservation(String reservationId);
 
 }

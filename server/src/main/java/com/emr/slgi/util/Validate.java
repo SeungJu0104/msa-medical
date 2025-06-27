@@ -1,11 +1,14 @@
 package com.emr.slgi.util;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Slf4j
 public class Validate {
 
     public static final String MEMBER_STATUS_REGEX = "^R\\d{3}$";
@@ -27,6 +30,8 @@ public class Validate {
             }
 
         });
+
+        log.info(res.toString());
 
         return res;
 

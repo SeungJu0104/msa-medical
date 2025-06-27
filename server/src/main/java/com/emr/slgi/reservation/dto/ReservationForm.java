@@ -27,7 +27,10 @@ public class ReservationForm {
     private String doctorUuid;
 
     @NotNull(message = ReservationErrorMessage.CHOOSE_DATE_TIME)
-    private OffsetDateTime dateTime;
+    private LocalDateTime dateTime;
+
+//    @NotNull(message = ReservationErrorMessage.CHOOSE_DATE_TIME)
+//    private OffsetDateTime dateTime;
 
     @NotEmpty(message = ReservationErrorMessage.WRITE_SYMPTOM)
     @Size(min = 1, max = 100)

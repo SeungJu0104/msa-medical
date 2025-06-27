@@ -6,7 +6,6 @@
 
     <sql id="afterToday">
         RESERVATION_DATE > #{dateTime}
-        AND
     </sql>
 
     <sql id="today">
@@ -14,7 +13,6 @@
             RESERVATION_DATE >= #{dateTime}
             AND
             RESERVATION_DATE < DATE_ADD(DATE(#{dateTime}), INTERVAL 1 DAY)
-            AND
         ]]>
     </sql>
 
@@ -51,10 +49,11 @@
                     <include refid="afterToday"/>
                 </otherwise>
             </choose>
+            AND
             STATUS IN ('RS01', 'RS03')
     </select>
 
-    <insert id="holdReesrvation">
+    <insert id="holdReservation">
         INSERT INTO
             TB_RESERVATION
         VALUES
@@ -63,28 +62,28 @@
              #{patientUuid},
              #{doctorUuid},
              'RS03',
-             CURRENT_TIMESTAMP,
+             #{dateTime},
              NULL
             )
     </insert>
 
-    <update id="deleteHoldingReservation">
+    <update id="cancelHoldingReservation">
         UPDATE
             TB_RESERVATION
         SET
-            STATUS = 'RSO2'
+            STATUS = 'RS05'
         WHERE
             PATIENT_UUID = #{patientUuid}
             AND
             STATUS = 'RS03'
     </update>
 
-    <select id="getAffectedRowsCount">
+    <select id="getAffectedRowsCount" resultType="int">
         SELECT
-            #{select}
+            IFNULL(COUNT(*), 0)
         FROM TB_RESERVATION
         WHERE
-            #{where}
+            ${where}
     </select>
 
     <select id="getReservationListByStaff" parameterType="map">
@@ -104,5 +103,16 @@
         FROM
             TB
     </select>
+
+    <update id="cancelReservation">
+        UPDATE
+            TB_RESERVATION
+        SET
+            STATUS = 'RS05'
+        WHERE
+            ID = #{reservationId}
+            AND
+            STATUS = 'RS01'
+    </update>
 
 </mapper>
