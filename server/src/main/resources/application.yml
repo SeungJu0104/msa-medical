@@ -6,10 +6,8 @@ spring:
       livereload:
         enabled: true
 
-    #db 관련 내용은 application-db.yml 파일에 작성.
-    #gitignore로 git에 해당파일 커밋 안되도록 수정.
     profiles:
-      active: db
+      active: env
 
 server:
   port: 8080
