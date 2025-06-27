@@ -27,10 +27,7 @@
     SELECT
       uuid,
       name,
-      CASE member_role
-        WHEN 'R002' THEN '의사'
-        WHEN 'R003' THEN '간호사'
-      END as role
+      member_role AS role
     FROM TB_MEMBER
     WHERE 
       uuid != #{uuid}
