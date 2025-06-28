@@ -3,19 +3,14 @@ import {customFetch} from "@/util/customFetch.js";
 import {common} from "@/util/common.js";
 
 export const reception = {
-    getWaitingList: async (doctorUuid) => {
+    getWaitingList: async () => {
         console.log("b");
         try {
             console.log("c");
-            const response = await customFetch(ENDPOINTS.reception.getWaitingList(doctorUuid));
+            const response = await customFetch(ENDPOINTS.reception.getWaitingList);
 
             if(response?.status === 200) {
-                console.log("d");
-                alert("a");
-                const res = response.data?.waitingList;
-                console.log(res);
-                return res;
-                // return response.data?.waitingList;
+                return response.data?.waitingList;
             }
 
         } catch(err) {
@@ -25,13 +20,12 @@ export const reception = {
 
 
     },
-    
-    // 여기서 처리? 팀장님과 상의하기
     getDoctorName : async () => {
 
         try {
-
-            const response = await customFetch(ENDPOINTS.reception.getDoctorName);
+            
+            const response = await customFetch(ENDPOINTS.doctor.name('bbf7cf49-971c-47be-82cd-f613c633aa57')); // 테스트용 의사 번호 데이터
+                // await customFetch(ENDPOINTS.doctor.name(localStorage.getItem('uuid')));
 
             if(response?.status === 200) {
 

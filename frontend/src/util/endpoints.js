@@ -56,14 +56,11 @@ export const ENDPOINTS = {
             method: 'post',
             url: '/reception'
         },
-        getDoctorName : {
+        getWaitingList: {
             method: 'get',
-            url: `/reception/getDoctorName/${localStorage.getItem('uuid')}/${localStorage.getItem('role')}`
+            // url: `/reception/getWaitingList/${localStorage.getItem('uuid')}`
+            url: '/reception/getWaitingList/550e8400-e29b-41d4-a716-446655440000' // 테스트용 데이터(localStorage에 데이터X)
         },
-        getWaitingList: (doctorUuid) => ({
-            method: 'get',
-            url: `/reception/getWaitingList/${doctorUuid}`
-        }),
     },
     chat: {
         loadMemberList: (uuid) => ({
