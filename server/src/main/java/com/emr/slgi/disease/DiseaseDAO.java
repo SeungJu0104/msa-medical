@@ -8,7 +8,4 @@ import org.apache.ibatis.annotations.Mapper;
 public interface DiseaseDAO {
 
 	public List<Disease> getKeyword(String keyword);	
-		
-	
-
 }

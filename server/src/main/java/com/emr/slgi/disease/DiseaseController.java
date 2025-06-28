@@ -25,6 +25,4 @@ public class DiseaseController {
 		List<Disease> word = diseaseService.getKeyword(keyword);
 		return ResponseEntity.ok(word);
 	}
-	
-
 }
