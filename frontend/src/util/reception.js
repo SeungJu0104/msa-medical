@@ -1,13 +1,31 @@
 import {ENDPOINTS} from "@/util/endpoints.js";
 import {customFetch} from "@/util/customFetch.js";
 import {common} from "@/util/common.js";
+import {successMessage} from "@/util/successMessage.js";
 
 export const reception = {
-    getWaitingList: async () => {
+    getDoctorList: async () => {
+
+        try {
+
+            const response = await customFetch(ENDPOINTS.doctor.list);
+
+            if(response?.status === 200) {
+                return response.data?.list;
+            }
+
+        } catch(err) {
+
+            common.errMsg(err);
+
+        }
+
+    },
+    getWaitingList: async (uuid) => {
         console.log("b");
         try {
             console.log("c");
-            const response = await customFetch(ENDPOINTS.reception.getWaitingList);
+            const response = await customFetch(ENDPOINTS.reception.getWaitingList(uuid));
 
             if(response?.status === 200) {
                 return response.data?.waitingList;
@@ -39,6 +57,22 @@ export const reception = {
 
         }
 
-    }
+    },
+    cancelReception : async (uuid) => {
 
+        try {
+
+            const response = await customFetch(ENDPOINTS.reception.cancelReception(uuid));
+
+            if(response?.status === 200) {
+                common.alertError(successMessage.common.cancel);
+            }
+
+        } catch(err) {
+
+            common.errMsg(err);
+
+        }
+
+    }
 }

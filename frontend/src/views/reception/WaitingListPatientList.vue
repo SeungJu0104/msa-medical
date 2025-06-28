@@ -2,29 +2,26 @@
 import {onMounted, ref} from "vue";
 import {reception} from "@/util/reception.js";
 
-  const patientList = ref();
+defineProps({
+  value: Object
+})
 
-  const getWaitingList = async () => {
-    console.log("a");
-    patientList.value = await reception.getWaitingList;
-    console.log(patientList.value);
-  }
+const cancelReception = (uuid) => {
+  const response = reception.cancelReception(uuid);
+}
 
-  onMounted(
-      getWaitingList
-  )
 </script>
 
 <template>
 
   <div class="container">
     <div class="my-3">
-      <template v-for="patient in patientList" :key="patient.uuid">
+      <template v-for="patient in value" :key="patient.uuid">
         <div>
           <button class="btn btn-primary" type="submit" v-cloak>{{patient.name}}</button>
           <input class="btn btn-primary" type="button" value="대기">
+          <button class="btn btn-primary" type="submit" @click="cancelReception(patient.uuid)">취소</button>
         </div>
-
       </template>
     </div>
   </div>

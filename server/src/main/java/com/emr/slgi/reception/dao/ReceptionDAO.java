@@ -13,4 +13,6 @@ public interface ReceptionDAO {
 
     List<WaitingList> getWaitingList(String doctorUuid);
 
+    int cancelReception(String uuid);
+
 }

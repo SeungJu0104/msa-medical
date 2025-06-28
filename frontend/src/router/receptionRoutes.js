@@ -1,12 +1,12 @@
-import AcceptPatientByStaff from "@/views/reception/AcceptPatientByStaff.vue";
-import WaitingListPatientList from '@/views/reception/WaitingListPatientList.vue'
-import WaitingListDoctorName from "@/views/reception/WaitingListDoctorName.vue";
-import WaitingList from "@/views/reception/WaitingList.vue";
+const AcceptPatientByStaff = () => import("@/views/reception/AcceptPatientByStaff.vue");
+const WaitingListPatientList = () => import('@/views/reception/WaitingListPatientList.vue');
+const WaitingListDoctorName = () => import("@/views/reception/WaitingListDoctorName.vue");
+const WaitingListPerDoctor = () => import('@/views/reception/WaitingListPerDoctor.vue');
 
 export const receptionRoutes = [
     {
-        path: '/',
-        name: 'reception',
+        path: '/acceptPatientByStaff',
+        name: 'acceptPatientByStaff',
         component: AcceptPatientByStaff
     },
     {
@@ -20,8 +20,8 @@ export const receptionRoutes = [
         component: WaitingListDoctorName
     },
     {
-        path: '/waitingList',
-        name: 'waitingList',
-        component: WaitingList
-    }
+        path: '/waitingListPerDoctor',
+        name: 'waitingListPerDoctor',
+        component: WaitingListPerDoctor
+    },
 ]

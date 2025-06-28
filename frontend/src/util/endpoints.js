@@ -54,13 +54,16 @@ export const ENDPOINTS = {
     reception: {
         acceptPatientByStaff: {
             method: 'post',
-            url: '/reception'
+            url: '/reception/acceptPatientByStaff'
         },
-        getWaitingList: {
+        getWaitingList: (uuid) => ({
             method: 'get',
-            // url: `/reception/getWaitingList/${localStorage.getItem('uuid')}`
-            url: '/reception/getWaitingList/550e8400-e29b-41d4-a716-446655440000' // 테스트용 데이터(localStorage에 데이터X)
-        },
+            url: `/reception/${uuid}`
+        }),
+        cancelReception: (uuid) => ({
+            method: 'put',
+            url: `/reception/${uuid}/cancel`
+        })
     },
     chat: {
         loadMemberList: (uuid) => ({

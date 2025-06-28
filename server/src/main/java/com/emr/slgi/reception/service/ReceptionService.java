@@ -30,4 +30,9 @@ public class ReceptionService {
 
     }
 
+    public int cancelReception(String uuid) {
+
+        return receptionDAO.cancelReception(uuid);
+
+    }
 }
