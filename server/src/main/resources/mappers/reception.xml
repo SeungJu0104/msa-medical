@@ -27,7 +27,7 @@
 
     <select id="getWaitingList">
         SELECT
-            PATIENT_UUID, DOCTOR_UUID, STATUS, NAME, RRN, CREATE_DATE
+            PATIENT_UUID, NAME
         FROM
             TB_RECEPTION
         WHERE

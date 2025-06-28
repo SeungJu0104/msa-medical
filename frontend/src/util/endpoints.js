@@ -56,6 +56,10 @@ export const ENDPOINTS = {
             method: 'get',
             url: `/reception/getDoctorName/${localStorage.getItem('uuid')}/${localStorage.getItem('role')}`
         },
+        getWaitingList: (doctorUuid) => ({
+            method: 'get',
+            url: `/reception/getWaitingList/${doctorUuid}`
+        }),
     },
     chat: {
         loadMemberList: (uuid) => ({
