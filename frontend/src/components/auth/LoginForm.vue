@@ -16,6 +16,7 @@
 import { setAccessToken } from '@/auth/accessToken';
 import { customFetch } from '@/util/customFetch';
 import { ENDPOINTS } from '@/util/endpoints';
+import { getMe } from '@/util/getMe';
 import { reactive } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -31,6 +32,7 @@ async function login() {
     data: user
   });
   setAccessToken(response.data.accessToken);
+  await getMe();
   router.push({ name: 'home' });
 }
 </script>
