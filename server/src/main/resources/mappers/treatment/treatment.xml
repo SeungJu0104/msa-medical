@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.emr.slgi.treatment.TreatmentDAO">
+
+  <insert id="insertTreatment"  parameterType="com.emr.slgi.treatment.Treatment" useGeneratedKeys="true" keyProperty="id" >
+    INSERT INTO TB_TREATMENT(patient_uuid, doctor_uuid, status,treat_content)
+    VALUES (#{patientUuid}, #{doctorUuid}, 'S002',#{treatContent})
+  </insert>
+  
+  <select id ="getHistory" parameterType="com.emr.slgi.treatment.Treatment" resultType="com.emr.slgi.treatment.Treatment">
+  	select treat_write_date,id
+	from tb_treatment
+	where  doctor_uuid = #{doctorUuid} and patient_uuid = #{patientUuid}
+	order by treat_write_date desc ;
+  </select>
+  
+  <select id ="selectTreatment" resultType="com.emr.slgi.treatment.Treatment">
+  	select *
+  	from tb_treatment
+  	where id =#{id}
+  
+  
+  </select>
+  
+</mapper>
