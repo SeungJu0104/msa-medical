@@ -23,6 +23,13 @@
     FROM TB_MEMBER
     WHERE member_role = 'R002'
   </select>
+  <select id="getDoctorName">
+    SELECT name
+    FROM TB_MEMBER
+    WHERE
+      member_role = 'R002'
+      AND uuid=#{uuid}
+  </select>
   <select id="getStaffList">
     SELECT
       uuid,
