@@ -43,9 +43,7 @@ public class AttachmentController {
 	
 	@GetMapping("/{fileName}")
 	public ResponseEntity<Object> getFile(@PathVariable("fileName") String fileName) throws IOException {
-		System.out.println("파일 이: " + fileName); // ← 로그 찍어서 실제 요청 확인
 		Path path = Paths.get(uploadDir).resolve(fileName);
-		System.out.println("파일 요청: " + path); // ← 로그 찍어서 실제 요청 확인
 		Resource resource = new UrlResource(path.toUri());
 		
 		if (!resource.exists()) {

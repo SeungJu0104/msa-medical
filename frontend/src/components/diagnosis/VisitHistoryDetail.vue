@@ -51,7 +51,6 @@ const state = reactive({
 })
 onMounted( async ()=> {
     try {
-        console.log(props.visitId)
         const response = await customFetch(ENDPOINTS.treatment.historyDetail(props.visitId))
         if(response.status ===200){
         const data = response.data.total
