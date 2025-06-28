@@ -14,6 +14,7 @@
 
 <script setup>
 import { setAccessToken } from '@/auth/accessToken';
+import { setRefreshToken } from '@/auth/refreshToken';
 import { useUserStore } from '@/stores/userStore';
 import { customFetch } from '@/util/customFetch';
 import { ENDPOINTS } from '@/util/endpoints';
@@ -34,6 +35,7 @@ async function login() {
     data: form
   });
   setAccessToken(response.data.accessToken);
+  setRefreshToken(response.data.refreshToken);
   await getMe();
   if (user.value.role === "PATIENT") {
     router.push({ name: 'home' });
