@@ -45,7 +45,7 @@ import { reactive, ref } from 'vue';
         state.files.splice(index,1)
         state.previewUrls.splice(index,1)
   }
-    
+  defineExpose({state})
 </script>
 
 <style>

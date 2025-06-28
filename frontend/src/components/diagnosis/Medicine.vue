@@ -14,6 +14,8 @@
 
       <li v-for="(item, index) in state.inputText" :key="index">
         {{ item.code }} - {{ item.name }}
+        <input type="number" v-model.number="item.volume" min="1" />
+        <button @click="removeMedicine(index)">삭제</button>
       </li>
 
     </div>
@@ -23,6 +25,7 @@
   import { customFetch } from '@/util/customFetch'
   import { ENDPOINTS } from '@/util/endpoints'
   
+
   const state = reactive({
     search: '',
     isFocus: false,
@@ -69,10 +72,21 @@
 
 const submit = () => {
     if (state.search.trim() !== '' && state.selectedMedicine) {
-    state.inputText.push(state.selectedMedicine)
+        state.inputText.push({
+        code: state.selectedMedicine.code,
+        name: state.selectedMedicine.name,
+        volume: 1 
+    })
     state.search = ''
     state.selectedMedicine = null
   }
 }
+  const removeMedicine = (index) => {
+    state.inputText.splice(index,1)
+}
+
+  defineExpose({
+    inputText: () => state.inputText
+})
   </script>
   

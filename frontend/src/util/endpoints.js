@@ -1,3 +1,5 @@
+import { method } from "lodash";
+
 export const ENDPOINTS = {
     auth: {
         register: {
@@ -117,6 +119,25 @@ export const ENDPOINTS = {
             method:'get',
             url: `/disease/search?k=${search}`
         })
+    },
+    treatment:{
+        totalTreatment:{
+            method:'post',
+            url:`/treatment/totalTreatment`
+        },
+        // history: (patientUuid) => ({
+        //     method:'post',
+        //     url:`/treatment/history/${patientUuid}`
+        // })
+        history: {
+            method:'post',
+            url:`/treatment/history`
+        },
+        historyDetail:(id) => ({
+            method:'get',
+            url:`/treatment/historyDetail/${id}`
+        })
     }
+    
 
 }

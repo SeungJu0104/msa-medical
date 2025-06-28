@@ -14,6 +14,7 @@
 
       <li v-for="(item, index) in state.inputText" :key="index">
         {{ item.code }} - {{ item.name }}
+        <button @click="removeDisease(index)">삭제</button> 
       </li>
     </div>
   </template>
@@ -27,7 +28,7 @@
     isFocus: false,
     diseaseList: [],
     selectedDisease: null,
-    inputText : []
+    inputText : [],
   })
   
   const onInput = async (e) => {
@@ -68,10 +69,18 @@
 
 const submit = () => {
     if (state.search.trim() !== '' && state.selectedDisease) {
-    state.inputText.push(state.selectedDisease)
-    state.search = ''
-    state.selectedDisease = null
+        state.inputText.push(state.selectedDisease)
+        state.search = ''
+        state.selectedDisease = null
   }
 }
+
+const removeDisease=  (index) => {
+    state.inputText.splice(index,1)
+}
+
+defineExpose({
+  inputText: () => state.inputText
+})
   </script>
   

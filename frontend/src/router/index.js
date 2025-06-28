@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import ChatRooms from '@/components/chat/ChatRooms.vue'
 import ChatRoom from '@/components/chat/ChatRoom.vue'
 import { patientRoutes } from './patientRoutes';
-import Diagnosis from '@/components/diagnosis/diagnosis.vue';
+import MedicalTreatment from '@/components/diagnosis/MedicalTreatment.vue';
 
 
 const HomeView = () => import('@/views/HomeView.vue');
@@ -54,11 +54,10 @@ const router = createRouter({
 
 
     {
-      path: '/diagnosis',
-      name : 'diagnosis',
-      component:Diagnosis
+      path: '/medicalTreatment',
+      name : 'medicalTreatment',
+      component:MedicalTreatment
     },
-
   ],
 })
 
