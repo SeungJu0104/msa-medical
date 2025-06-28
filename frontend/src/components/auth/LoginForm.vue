@@ -14,14 +14,16 @@
 
 <script setup>
 import { setAccessToken } from '@/auth/accessToken';
+import { useUserStore } from '@/stores/userStore';
 import { customFetch } from '@/util/customFetch';
 import { ENDPOINTS } from '@/util/endpoints';
 import { getMe } from '@/util/getMe';
-import { reactive } from 'vue';
+import { computed, reactive } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
 
+const user = computed(() => useUserStore().user);
 const form = reactive({
   userid: '',
   password: ''
@@ -33,6 +35,12 @@ async function login() {
   });
   setAccessToken(response.data.accessToken);
   await getMe();
-  router.push({ name: 'home' });
+  if (user.value.role === "PATIENT") {
+    router.push({ name: 'home' });
+  } else if (user.value.role === "DOCTOR" || user.value.role === "NURSE") {
+    router.push({ name: 'home'});
+  } else if (user.value.role === "ADMIN") {
+    router.push({ name: 'adminView' });
+  }
 }
 </script>
