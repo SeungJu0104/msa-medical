@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.emr.slgi.prescription.PrescriptionDAO">	
+	<insert id = "insertPrescription" parameterType="com.emr.slgi.prescription.Prescription">
+	 INSERT INTO tb_prescription 
+	 ( code, treatment_id, volume )
+	  VALUES 
+	  ( #{code}, #{treatmentId}, #{volume} )
+	  
+	</insert>
+<select id ="selectPrescriptions" resultType="com.emr.slgi.prescription.Prescription">
+	select pre.* , med.name
+	from tb_prescription pre
+	Join tb_medicine med on pre.code = med.code
+	where treatment_id = #{id}
+</select>
+	
+</mapper>
