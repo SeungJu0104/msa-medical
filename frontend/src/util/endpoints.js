@@ -39,7 +39,11 @@ export const ENDPOINTS = {
         list: {
             method: 'get',
             url: '/doctor/list'
-        }
+        },
+        name: (uuid) => ({
+            method: 'get',
+            url: `/doctor/${uuid}/name`
+        })
     },
     staff: {
         list: (uuid) => ({
