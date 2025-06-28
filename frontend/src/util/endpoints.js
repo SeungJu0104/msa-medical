@@ -24,6 +24,10 @@ export const ENDPOINTS = {
             method: 'post',
             url: '/member'
         },
+        me: {
+            method: 'get',
+            url: '/member/me'
+        }
     },
     patient: {
         register: {
