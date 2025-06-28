@@ -30,16 +30,4 @@ public class ReceptionService {
 
     }
 
-    public String getDoctorNameByDoctor(String uuid) {
-
-        return receptionDAO.getDoctorNameByDoctor(uuid);
-
-    }
-
-    public String getDoctorNameByNurse() {
-
-        return receptionDAO.getDoctorNameByNurse();
-
-    }
-
 }

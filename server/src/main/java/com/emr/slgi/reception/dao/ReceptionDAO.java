@@ -13,9 +13,4 @@ public interface ReceptionDAO {
 
     List<WaitingList> getWaitingList(String doctorUuid);
 
-    // 팀장님께 Member 테이블 코드 작성 요청하기.
-    String getDoctorNameByDoctor(String uuid);
-
-    String getDoctorNameByNurse();
-
 }

@@ -44,40 +44,12 @@ public class ReceptionController {
     public ResponseEntity<Map<String, List<WaitingList>>> getWaitingList(
             @PathVariable("doctorUuid") String doctorUuid
     ) {
-
+        log.info(doctorUuid);
+        log.info("a");
         List<WaitingList> list = receptionService.getWaitingList(doctorUuid);
-
+        System.out.println(list.toString());
         return ResponseEntity.ok(
                 Map.of("waitingList", list)
-        );
-
-    }
-
-    @PreAuthorize("hasAnyRole('DOCTOR', 'NURSE')")
-    @GetMapping("/getDoctorName/{uuid}/{role}")
-    public ResponseEntity<Map<String, String>> getDoctorName(
-            @PathVariable("uuid") String uuid,
-            @PathVariable("role") String role) {
-
-        String name;
-
-        if(Validate.regexValidate(Map.of(Validate.MEMBER_UUID_REGEX, uuid)).contains(false)) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ReceptionErrorMessage.CAN_NOT_FIND_DATA);
-        }
-
-        if(role == "R002") {
-            name = receptionService.getDoctorNameByDoctor(uuid);
-        }else {
-            // String 대신 Map 사용?
-            name = receptionService.getDoctorNameByNurse();
-        }
-
-        if(name.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, ReceptionErrorMessage.CAN_NOT_FIND_DATA);
-        }
-
-        return ResponseEntity.ok(
-                Map.of("name", name)
         );
 
     }
