@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Getter
@@ -18,11 +19,19 @@ public enum ReceptionStatus {
     private final String code;
     private final String status;
 
-    private static final Map<String, ReceptionStatus> Mapper =
+    private static final Map<String, ReceptionStatus> map =
             Arrays.stream(values()).collect(Collectors.toMap(ReceptionStatus::getCode, e -> e));
 
-//    public static ReceptionStatus fromCode(Object o) {
-//
-//    }
+    public static ReceptionStatus fromCode(String code) {
+        return map.get(code);
+    }
+
+    public static String statusFromCode(String code) {
+        return Optional.ofNullable(map.get(code))
+                .map(ReceptionStatus::getStatus)
+                .orElse(null);
+    }
 
 }
+
+

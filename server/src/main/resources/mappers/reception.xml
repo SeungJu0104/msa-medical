@@ -25,7 +25,7 @@
         )
   </insert>
 
-    <select id="getWaitingList">
+    <select id="getWaitingList" resultMap="waitingListMap">
         SELECT
             UUID, PATIENT_UUID, NAME, STATUS, CREATE_DATE
         FROM
@@ -40,6 +40,14 @@
         ORDER BY
             CREATE_DATE;
     </select>
+
+    <resultMap id="waitingListMap" type="com.emr.slgi.reception.dto.WaitingList">
+        <result property="uuid" column="UUID"/>
+        <result property="patientUuid" column="PATIENT_UUID"/>
+        <result property="name" column="NAME"/>
+        <result property="status" column="STATUS" typeHandler="com.emr.slgi.reception.typehandler.ReceptionStatusTypeHandler"/>
+        <result property="createDate" column="CREATE_DATE"/>
+    </resultMap>
 
     <update id="cancelReception">
         UPDATE
