@@ -5,3 +5,7 @@ export function getRefreshToken() {
 export function setRefreshToken(refreshToken) {
   localStorage.setItem("refreshToken", refreshToken);
 }
+
+export function removeRefreshToken() {
+  localStorage.removeItem("refreshToken");
+}
