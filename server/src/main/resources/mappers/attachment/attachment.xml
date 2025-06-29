@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.emr.slgi.attachment.AttachmentDAO">	
+	<insert id = "insertAttachment" parameterType="com.emr.slgi.attachment.Attachment">
+	 INSERT INTO tb_attachment (
+	    treatment_id,
+	    original_name,
+	    file_name,
+	    path,
+	    size,
+	    content_type,
+	    extension )
+	  VALUES (
+	    #{treatmentId},
+	    #{originalName},
+	    #{fileName},
+	    #{path},
+	    #{size},
+	    #{contentType},
+	    #{extension} )
+	  
+	</insert>
+	
+	<select id="selectAttachments" resultType="com.emr.slgi.attachment.Attachment">
+		select *
+		from tb_attachment
+		where treatment_id =#{id}	
+	</select>
+</mapper>

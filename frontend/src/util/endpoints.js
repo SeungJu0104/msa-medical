@@ -132,5 +132,33 @@ export const ENDPOINTS = {
             method: 'put',
             url: '/reservation/cancelHoldingReservation'
         }
-    }
+    },
+
+    medicine:{
+        searchlist: (search) => ({
+            method:'get',
+            url: `/medicine/search?k=${search}`
+        })
+    },
+    disease:{
+        searchlist: (search) => ({
+            method:'get',
+            url: `/disease/search?k=${search}`
+        })
+    },
+    treatment:{
+        totalTreatment:{
+            method:'post',
+            url:`/treatment/totalTreatment`
+        },
+        history: {
+            method:'post',
+            url:`/treatment/history`
+        },
+        historyDetail:(id) => ({
+            method:'get',
+            url:`/treatment/historyDetail/${id}`
+        })
+    },
+
 }

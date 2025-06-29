@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import ChatRooms from '@/components/chat/ChatRooms.vue'
 import ChatRoom from '@/components/chat/ChatRoom.vue'
 import { patientRoutes } from './patientRoutes';
+import MedicalTreatment from '@/components/diagnosis/MedicalTreatment.vue';
 import {receptionRoutes} from "@/router/receptionRoutes.js";
 
 
@@ -51,6 +52,13 @@ const router = createRouter({
       path: '/chatroom/:roomId',
       name : 'chatroom',
       component:ChatRoom
+    },
+
+
+    {
+      path: '/medicalTreatment',
+      name : 'medicalTreatment',
+      component:MedicalTreatment
     },
     {
       path: '/acceptPatientByStaff',
