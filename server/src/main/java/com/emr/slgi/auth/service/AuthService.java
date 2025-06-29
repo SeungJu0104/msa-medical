@@ -87,6 +87,10 @@ public class AuthService {
 
     public String refreshToken(RefreshTokenDTO refreshTokenDTO) {
         Claims claims = refreshTokenService.parseRefreshToken(refreshTokenDTO.getRefreshToken());
+        String jti = claims.get("jti", String.class);
+        if (jti == null || refreshTokenService.isTokenBlacklisted(jti)) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "토큰이 만료되었습니다.");
+        }
         String uuid = claims.get("uuid", String.class);
         return createAccessToken(uuid);
     }

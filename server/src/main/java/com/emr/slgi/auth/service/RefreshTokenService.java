@@ -46,4 +46,10 @@ public class RefreshTokenService {
         remaining = remaining.isNegative() ? Duration.ZERO : remaining;
         stringRedisTemplate.opsForValue().set(key, "1", remaining);
     }
+
+    public boolean isTokenBlacklisted(String jti) {
+        String key = "blacklist:jti:" + jti;
+        return Boolean.TRUE.equals(stringRedisTemplate.hasKey(key));
+    }
+
 }
