@@ -18,6 +18,10 @@ export const ENDPOINTS = {
             method: 'post',
             url: '/auth/refresh-token',
         },
+        logout: {
+            method: 'post',
+            url: '/auth/logout'
+        }
     },
     member: {
         detail: (memberId) => ({

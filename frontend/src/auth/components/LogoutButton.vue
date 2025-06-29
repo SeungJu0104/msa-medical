@@ -5,11 +5,16 @@
 <script setup>
 import { useRouter } from 'vue-router';
 import { removeAccessToken } from '../accessToken';
-import { removeRefreshToken } from '../refreshToken';
+import { getRefreshToken, removeRefreshToken } from '../refreshToken';
+import { customFetch } from '@/util/customFetch';
+import { ENDPOINTS } from '@/util/endpoints';
 
 const router = useRouter();
 
-function logout() {
+async function logout() {
+  await customFetch(ENDPOINTS.auth.logout, {
+    data: { refreshToken: getRefreshToken() }
+  });
   removeAccessToken();
   removeRefreshToken();
   router.push({ name: 'loginView' });

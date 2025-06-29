@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.emr.slgi.auth.dto.LoginDTO;
+import com.emr.slgi.auth.dto.LogoutDTO;
 import com.emr.slgi.auth.dto.RefreshTokenDTO;
 import com.emr.slgi.auth.dto.RegisterByPatientDTO;
 import com.emr.slgi.auth.service.AuthService;
@@ -46,5 +47,11 @@ public class AuthController {
         return ResponseEntity.ok(
             Map.of("accessToken", authService.refreshToken(refreshTokenDTO))
         );
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(@RequestBody LogoutDTO logoutDTO) {
+        authService.logout(logoutDTO);
+        return ResponseEntity.noContent().build();
     }
 }

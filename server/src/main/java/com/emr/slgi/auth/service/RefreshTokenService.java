@@ -1,5 +1,6 @@
 package com.emr.slgi.auth.service;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
@@ -7,6 +8,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import com.emr.slgi.util.JwtUtil;
@@ -19,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 public class RefreshTokenService {
 
     private final JwtUtil jwtUtil;
+    private final StringRedisTemplate stringRedisTemplate;
 
     @Value("${jwt.refresh-token-secret}")
     private String refreshTokenSecret;
@@ -37,4 +40,10 @@ public class RefreshTokenService {
         return jwtUtil.parseToken(refreshToken, refreshTokenSecret);
     }
 
+    public void blacklistTokenJti(String jti, Date exp) {
+        String key = "blacklist:jti:" + jti;
+        Duration remaining = Duration.between(Instant.now(), exp.toInstant());
+        remaining = remaining.isNegative() ? Duration.ZERO : remaining;
+        stringRedisTemplate.opsForValue().set(key, "1", remaining);
+    }
 }

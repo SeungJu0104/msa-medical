@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.emr.slgi.auth.dto.LoginDTO;
+import com.emr.slgi.auth.dto.LogoutDTO;
 import com.emr.slgi.auth.dto.RefreshTokenDTO;
 import com.emr.slgi.auth.dto.RegisterByPatientDTO;
 import com.emr.slgi.credentials.Credentials;
@@ -88,5 +89,13 @@ public class AuthService {
         Claims claims = refreshTokenService.parseRefreshToken(refreshTokenDTO.getRefreshToken());
         String uuid = claims.get("uuid", String.class);
         return createAccessToken(uuid);
+    }
+
+    public void logout(LogoutDTO logoutDTO) {
+        Claims claims = refreshTokenService.parseRefreshToken(logoutDTO.getRefreshToken());
+        refreshTokenService.blacklistTokenJti(
+            claims.get("jti", String.class),
+            claims.getExpiration()
+        );
     }
 }
