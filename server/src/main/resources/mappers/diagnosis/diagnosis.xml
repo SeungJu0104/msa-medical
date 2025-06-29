@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.emr.slgi.diagnosis.DiagnosisDAO">	
+	<insert id = "insertDiagnosis" parameterType="com.emr.slgi.diagnosis.Diagnosis">
+	 INSERT INTO tb_diagnosis ( id, treatment_id )
+	  VALUES 
+	  ( #{id}, #{treatmentId} )
+	</insert>
+	
+	<select id="selectDiagnosis" resultType="com.emr.slgi.diagnosis.Diagnosis">
+		select dia.* , dis.name
+		from tb_diagnosis dia
+		Join tb_disease dis on dia.id = dis.id
+		where treatment_id =#{id}	
+	</select>
+</mapper>

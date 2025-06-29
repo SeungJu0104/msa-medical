@@ -3,13 +3,15 @@ import ChatRooms from '@/components/chat/ChatRooms.vue'
 import ChatRoom from '@/components/chat/ChatRoom.vue'
 import { patientRoutes } from './patientRoutes';
 import { adminRoutes } from './adminRoutes';
+import MedicalTreatment from '@/components/diagnosis/MedicalTreatment.vue';
+import {receptionRoutes} from "@/router/receptionRoutes.js";
 
 const HomeView = () => import('@/views/HomeView.vue');
 const MainView = () => import('@/views/home/MainView.vue');
 const OtherView = () => import('@/views/other/OtherView.vue');
-const AcceptPatientByStaff = () => import('@/views/reception/AcceptPatientByStaff.vue')
 const RegReservationByPatient = () => import('@/views/reservation/RegReservationByPatient.vue')
 const LoginView = () => import('@/views/auth/LoginView.vue');
+const Reception = () => import('@/views/reception/WaitingList.vue')
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -52,10 +54,25 @@ const router = createRouter({
       name : 'chatroom',
       component:ChatRoom
     },
+
+
+    {
+      path: '/medicalTreatment',
+      name : 'medicalTreatment',
+      component:MedicalTreatment
+    },
     {
       path: '/acceptPatientByStaff',
       name: 'acceptPatientByStaff',
-      component: AcceptPatientByStaff
+
+    },
+    {
+      path: '/reception',
+      name: 'reception',
+      component: Reception,
+      children: [
+          ...receptionRoutes
+      ]
     }
   ],
 })

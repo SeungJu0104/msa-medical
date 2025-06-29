@@ -27,11 +27,27 @@
 
     <select id="getWaitingList">
         SELECT
-            PATIENT_UUID, DOCTOR_UUID, STATUS, NAME, RRN, CREATE_DATE
+            UUID, PATIENT_UUID, NAME, STATUS, CREATE_DATE
         FROM
             TB_RECEPTION
         WHERE
+            DOCTOR_UUID = #{doctorUuid}
+            AND
             STATUS IN ('RE01')
+--         오늘 날짜만 조회하기 위해 설정했지만 테스트위해 일단 생략
+--             AND
+--             CREATE_DATE BETWEEN CURDATE() AND CURDATE() + INTERVAL 1 DAY
+        ORDER BY
+            CREATE_DATE;
     </select>
+
+    <update id="cancelReception">
+        UPDATE
+            TB_RECEPTION
+        SET
+            STATUS = 'RE02'
+        WHERE
+            UUID = #{uuid}
+    </update>
 
 </mapper>

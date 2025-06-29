@@ -11,5 +11,8 @@ public interface ReceptionDAO {
 
     public int acceptPatientByStaff(ReceptionInfo receptionInfo);
 
-    List<WaitingList> getWaitingList();
+    List<WaitingList> getWaitingList(String doctorUuid);
+
+    int cancelReception(String uuid);
+
 }

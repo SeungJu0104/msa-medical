@@ -2,7 +2,9 @@ package com.emr.slgi.member;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -17,5 +19,13 @@ public class MemberService {
 
     public List<Member> getDoctorList() {
         return memberDAO.getDoctorList();
+    }
+
+    public String getDoctorName(String uuid) {
+        String name = memberDAO.getDoctorName(uuid);
+        if (name == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "의사를 찾을 수 없습니다.");
+        }
+        return name;
     }
 }

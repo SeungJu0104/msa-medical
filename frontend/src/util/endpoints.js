@@ -43,7 +43,11 @@ export const ENDPOINTS = {
         list: {
             method: 'get',
             url: '/doctor/list'
-        }
+        },
+        name: (uuid) => ({
+            method: 'get',
+            url: `/doctor/${uuid}/name`
+        })
     },
     staff: {
         list: (uuid) => ({
@@ -54,8 +58,16 @@ export const ENDPOINTS = {
     reception: {
         acceptPatientByStaff: {
             method: 'post',
-            url: '/reception'
-        }
+            url: '/reception/acceptPatientByStaff'
+        },
+        getWaitingList: (uuid) => ({
+            method: 'get',
+            url: `/reception/${uuid}`
+        }),
+        cancelReception: (uuid) => ({
+            method: 'put',
+            url: `/reception/${uuid}/cancel`
+        })
     },
     chat: {
         loadMemberList: (uuid) => ({
@@ -120,5 +132,33 @@ export const ENDPOINTS = {
             method: 'put',
             url: '/reservation/cancelHoldingReservation'
         }
-    }
+    },
+
+    medicine:{
+        searchlist: (search) => ({
+            method:'get',
+            url: `/medicine/search?k=${search}`
+        })
+    },
+    disease:{
+        searchlist: (search) => ({
+            method:'get',
+            url: `/disease/search?k=${search}`
+        })
+    },
+    treatment:{
+        totalTreatment:{
+            method:'post',
+            url:`/treatment/totalTreatment`
+        },
+        history: {
+            method:'post',
+            url:`/treatment/history`
+        },
+        historyDetail:(id) => ({
+            method:'get',
+            url:`/treatment/historyDetail/${id}`
+        })
+    },
+
 }
