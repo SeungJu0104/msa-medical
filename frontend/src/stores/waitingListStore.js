@@ -3,26 +3,51 @@ import {ref} from "vue";
 import {reception} from "@/util/reception.js";
 import {errorMessage} from "@/util/errorMessage.js";
 import {common} from "@/util/common.js";
+import {useUserStore} from "@/stores/userStore.js";
 
 export const useWaitingListStore = defineStore('waitingList', () => {
 
+    const user = useUserStore();
+    const userInfo = user.user;
     const doctorList = ref();
-    // const waitingList = ref();
-    // const doctorName = reactive({
-    //     name: null
-    // });
+    const waitingList = ref();
 
-    const waitingListByNurse = async () => {
+    const roleChk = async () => {
 
-        doctorList.value = await reception.getDoctorList();
+        console.log(userInfo.role);
 
-        console.log(doctorList.value);
+        if(userInfo.role === 'DOCTOR') {
 
-        if(doctorList.value == null) {
-            common.alertError(errorMessage.common.retry);
+            doctorList.value = [{
+                name: userInfo.name
+            }]
+
+        } else {
+
+            doctorList.value = await reception.getDoctorList();
+
         }
 
-        return await Promise.all(
+    }
+
+    const nullChk = async () => {
+
+        if(doctorList.value == null) {
+
+            common.alertError(errorMessage.common.retry);
+
+        }
+
+    }
+
+    const promiseAll = async () => {
+
+        await roleChk();
+
+        await nullChk();
+
+        waitingList.value = await Promise.all(
+
             doctorList.value.map(async (doctor) => {
 
                 const list = await reception.getWaitingList(doctor.uuid);
@@ -34,34 +59,11 @@ export const useWaitingListStore = defineStore('waitingList', () => {
 
             })
         );
-
-    }
-
-    const waitingListByDoctor = async () => {
-
-        doctorList.value = [{
-            name: await reception.getDoctorName()
-        }]
-
-        return await Promise.all(
-            doctorList.value.map(async (doctor) => {
-
-                const list = await reception.getWaitingList('550e8400-e29b-41d4-a716-446655440000'); // 더미 데이터
-                // await reception.getWaitingList(localStorage.getItem('uuid'));
-
-                return {
-                    doctor,
-                    patientList: list
-                }
-
-            })
-        );
-
     }
 
     return {
-        waitingListByNurse,
-        waitingListByDoctor
+        promiseAll,
+        waitingList
     };
 
 })
