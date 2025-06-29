@@ -9,19 +9,4 @@ export const receptionRoutes = [
         name: 'acceptPatientByStaff',
         component: AcceptPatientByStaff
     },
-    {
-        path: '/waitingListPatientList',
-        name: 'waitingListPatientList',
-        component: WaitingListPatientList
-    },
-    {
-        path: '/waitingListDoctorName',
-        name: 'waitingListDoctorName',
-        component: WaitingListDoctorName
-    },
-    {
-        path: '/waitingListPerDoctor',
-        name: 'waitingListPerDoctor',
-        component: WaitingListPerDoctor
-    },
 ]

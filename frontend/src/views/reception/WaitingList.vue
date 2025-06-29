@@ -1,6 +1,6 @@
 <script setup>
   import {useWaitingListStore} from "@/stores/waitingListStore.js";
-  import {onBeforeMount, ref} from "vue";
+  import {onBeforeMount, onMounted, onUnmounted, ref} from "vue";
   import WaitingListPerDoctor from "@/views/reception/WaitingListPerDoctor.vue";
   import WaitingListDoctorName from "@/views/reception/WaitingListDoctorName.vue";
   import WaitingListPatientList from "@/views/reception/WaitingListPatientList.vue";
@@ -20,16 +20,15 @@
 
     console.log(waitingList.value);
 
+  })
+
+  onMounted(() => {
     // 웹소켓 연결부
-    // socket = new WebSocket('wss://your-server.com/ws')
-    //
-    // socket.onmessage = (event) => {
-    //   const message = JSON.parse(event.data)
-    //
-    //   if (message.type === 'refresh-doctor-data') {
-    //     doctorStore.fetchDoctors() // ✅ 핀리아 상태 자동 업데이트
-    //   }
-    // }
+
+  })
+
+  onUnmounted(() => {
+    // 웹 소켓 연결 해제부
 
   })
 
