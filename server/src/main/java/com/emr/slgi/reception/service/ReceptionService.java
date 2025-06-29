@@ -18,6 +18,18 @@ public class ReceptionService {
     private final ReceptionDAO receptionDAO;
 //    private final TreatmentDAO tDAO; // 현재 진료 중인 환자 가져오기 위해 임시로 작성.
 
+    public int updateReceptionStatus (String uuid, String updateStatus) {
+
+        return receptionDAO.updateReceptionStatus(
+            WaitingList.builder()
+                .uuid(uuid)
+                .status(updateStatus)
+                .build()
+        );
+        // 역매퍼 동작 체크하기
+    }
+
+
     public int acceptPatientByStaff(ReceptionInfo receptionInfo) {
         return receptionDAO.acceptPatientByStaff(receptionInfo);
     }
@@ -44,4 +56,5 @@ public class ReceptionService {
         return Optional.ofNullable(receptionDAO.getReceptionStatusList());
 
     }
+
 }

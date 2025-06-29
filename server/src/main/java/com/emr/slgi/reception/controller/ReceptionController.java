@@ -5,6 +5,8 @@ import com.emr.slgi.reception.dto.ReceptionStatusList;
 import com.emr.slgi.reception.service.ReceptionService;
 import com.emr.slgi.reception.dto.WaitingList;
 import com.emr.slgi.util.CommonErrorMessage;
+import com.emr.slgi.util.ReservationErrorMessage;
+import com.emr.slgi.util.Validate;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -79,6 +81,24 @@ public class ReceptionController {
                 Map.of("statusList", list)
         );
 
+    }
+
+    @PreAuthorize("hasAnyRole('DOCTOR', 'NURSE')")
+    @PutMapping("/{uuid}/{updateStatus}/updateStatus")
+    public ResponseEntity<?> updateReceptionStatus(
+            @PathVariable("uuid") String uuid,
+            @PathVariable("updateStatus") String updateStatus) {
+
+        if(uuid == null || Validate.regexValidate(Map.of(Validate.MEMBER_UUID_REGEX, uuid)).contains(false)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, CommonErrorMessage.RETRY);
+        }
+
+
+        if(receptionService.updateReceptionStatus(uuid, updateStatus) != 1) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, CommonErrorMessage.UPDATE_ERR + CommonErrorMessage.RETRY);
+        }
+
+        return ResponseEntity.ok().build();
     }
 
 }

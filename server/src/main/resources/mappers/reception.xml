@@ -58,6 +58,15 @@
             UUID = #{uuid}
     </update>
 
+    <update id="updateReceptionStatus">
+        UPDATE
+            TB_RECEPTION
+        SET
+            STATUS = #{updateStatus}
+        WHERE
+            UUID = #{uuid}
+    </update>
+
 <!--    어디로 옮겨야할지 팀장님과 상의하기-->
     <select id="getReceptionStatusList">
         SELECT
@@ -65,7 +74,9 @@
         FROM
             TB_STATUS_CODE
         WHERE
-            GROUP_ID = 4;
+            GROUP_ID = 4
+            AND
+            ID IN ('RE01', 'RE02')
     </select>
 
 </mapper>

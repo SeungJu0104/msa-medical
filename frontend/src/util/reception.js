@@ -91,5 +91,20 @@ export const reception = {
 
         }
 
+    },
+    updateReceptionStatus : async ({uuid, updateStatus}) => {
+
+        try {
+
+            const response = await customFetch(ENDPOINTS.reception.updateReceptionStatus({uuid, updateStatus}));
+
+        } catch(err) {
+
+            common.errMsg(err);
+
+        }
+
+
+
     }
 }

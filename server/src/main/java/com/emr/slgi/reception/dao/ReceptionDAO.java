@@ -17,4 +17,7 @@ public interface ReceptionDAO {
     int cancelReception(String uuid);
 
     List<ReceptionStatusList> getReceptionStatusList();
+
+    int updateReceptionStatus(WaitingList updateStatus);
+
 }
