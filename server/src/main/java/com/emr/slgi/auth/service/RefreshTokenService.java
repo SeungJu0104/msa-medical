@@ -26,7 +26,7 @@ public class RefreshTokenService {
     public String createRefreshToken(String memberUuid) {
         Map<String, String> map = Map.of(
             "uuid", memberUuid,
-            "jtl", UUID.randomUUID().toString()
+            "jti", UUID.randomUUID().toString()
         );
         Date twoWeeksLater = Date.from(Instant.now().plus(14, ChronoUnit.DAYS));
 
