@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.emr.slgi.util.JwtUtil;
 
+import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -32,7 +33,7 @@ public class RefreshTokenService {
         return jwtUtil.generateToken(map, twoWeeksLater, refreshTokenSecret);
     }
 
-    public Map<String, Object> parseRefreshToken(String refreshToken) {
+    public Claims parseRefreshToken(String refreshToken) {
         return jwtUtil.parseToken(refreshToken, refreshTokenSecret);
     }
 

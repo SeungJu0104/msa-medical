@@ -21,6 +21,7 @@ import com.emr.slgi.member.MemberDAO;
 import com.emr.slgi.member.dto.MemberCreateDTO;
 import com.emr.slgi.util.JwtUtil;
 
+import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -84,8 +85,8 @@ public class AuthService {
     }
 
     public String refreshToken(RefreshTokenDTO refreshTokenDTO) {
-        Map<String, Object> claims = refreshTokenService.parseRefreshToken(refreshTokenDTO.getRefreshToken());
-        String uuid = (String) claims.get("uuid");
+        Claims claims = refreshTokenService.parseRefreshToken(refreshTokenDTO.getRefreshToken());
+        String uuid = claims.get("uuid", String.class);
         return createAccessToken(uuid);
     }
 }
