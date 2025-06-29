@@ -1,6 +1,7 @@
 package com.emr.slgi.reception.controller;
 
 import com.emr.slgi.reception.dto.ReceptionInfo;
+import com.emr.slgi.reception.dto.ReceptionStatusList;
 import com.emr.slgi.reception.service.ReceptionService;
 import com.emr.slgi.reception.service.WaitingList;
 import com.emr.slgi.util.CommonErrorMessage;
@@ -22,6 +23,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -65,6 +67,24 @@ public class ReceptionController {
         }
 
         return ResponseEntity.ok().build();
+
+    }
+
+    @PreAuthorize("hasAnyRole('DOCTOR', 'NURSE')")
+    @GetMapping("/statusList")
+    public ResponseEntity<Map<String, List<ReceptionStatusList>>> statusList() {
+
+        List<ReceptionStatusList> list = receptionService.getReceptionStatusList().get();
+
+        if(list == null || list.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, CommonErrorMessage.RETRY);
+        };
+
+        log.info("statusList : {}", list.toString());
+
+        return ResponseEntity.ok(
+                Map.of("statusList", list)
+        );
 
     }
 

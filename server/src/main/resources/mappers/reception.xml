@@ -50,4 +50,14 @@
             UUID = #{uuid}
     </update>
 
+<!--    어디로 옮겨야할지 팀장님과 상의하기-->
+    <select id="getReceptionStatusList">
+        SELECT
+            ID, NAME
+        FROM
+            TB_STATUS_CODE
+        WHERE
+            GROUP_ID = 4;
+    </select>
+
 </mapper>

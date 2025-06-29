@@ -6,13 +6,21 @@
 
   const waitingListStore = useWaitingListStore();
   const waitingList = ref();
+  const receptionStatusList = ref();
+
+  const getReceptionStatusList = async () => {
+    await waitingListStore.getReceptionStatusList();
+    receptionStatusList.value = waitingListStore.receptionStatusList;
+    console.log(receptionStatusList.value);
+  }
 
   onBeforeMount(async () => {
 
     await waitingListStore.promiseAll();
     waitingList.value = waitingListStore.waitingList;
 
-    console.log(waitingList.value);
+    await getReceptionStatusList();
+    receptionStatusList.value = waitingListStore.receptionStatusList;
 
   })
 
@@ -32,6 +40,6 @@
 <template>
   <template v-for="list in waitingList">
     <WaitingListDoctorName :value="list.doctor"/>
-    <WaitingListPatientList :value="list.patientList"/>
+    <WaitingListPatientList :value="list.patientList" :status="receptionStatusList"/>
   </template>
 </template>

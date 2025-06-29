@@ -1,6 +1,7 @@
 package com.emr.slgi.reception.dao;
 
 import com.emr.slgi.reception.dto.ReceptionInfo;
+import com.emr.slgi.reception.dto.ReceptionStatusList;
 import com.emr.slgi.reception.service.WaitingList;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -15,4 +16,5 @@ public interface ReceptionDAO {
 
     int cancelReception(String uuid);
 
+    List<ReceptionStatusList> getReceptionStatusList();
 }

@@ -2,10 +2,12 @@ package com.emr.slgi.reception.service;
 
 import com.emr.slgi.reception.dao.ReceptionDAO;
 import com.emr.slgi.reception.dto.ReceptionInfo;
+import com.emr.slgi.reception.dto.ReceptionStatusList;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -33,6 +35,12 @@ public class ReceptionService {
     public int cancelReception(String uuid) {
 
         return receptionDAO.cancelReception(uuid);
+
+    }
+
+    public Optional<List<ReceptionStatusList>> getReceptionStatusList() {
+
+        return Optional.ofNullable(receptionDAO.getReceptionStatusList());
 
     }
 }
