@@ -43,7 +43,11 @@ export const ENDPOINTS = {
         list: {
             method: 'get',
             url: '/doctor/list'
-        }
+        },
+        name: (uuid) => ({
+            method: 'get',
+            url: `/doctor/${uuid}/name`
+        })
     },
     staff: {
         list: (uuid) => ({
@@ -54,8 +58,16 @@ export const ENDPOINTS = {
     reception: {
         acceptPatientByStaff: {
             method: 'post',
-            url: '/reception'
-        }
+            url: '/reception/acceptPatientByStaff'
+        },
+        getWaitingList: (uuid) => ({
+            method: 'get',
+            url: `/reception/${uuid}`
+        }),
+        cancelReception: (uuid) => ({
+            method: 'put',
+            url: `/reception/${uuid}/cancel`
+        })
     },
     chat: {
         loadMemberList: (uuid) => ({
