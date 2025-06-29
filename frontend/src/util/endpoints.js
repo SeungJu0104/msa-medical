@@ -9,6 +9,10 @@ export const ENDPOINTS = {
         checkId: {
             method: 'get',
             url: '/auth/check-id'
+        },
+        login: {
+            method: 'post',
+            url: '/auth/login'
         }
     },
     member: {
@@ -20,6 +24,10 @@ export const ENDPOINTS = {
             method: 'post',
             url: '/member'
         },
+        me: {
+            method: 'get',
+            url: '/member/me'
+        }
     },
     patient: {
         register: {
@@ -46,7 +54,7 @@ export const ENDPOINTS = {
     reception: {
         acceptPatientByStaff: {
             method: 'post',
-            url: 'staff/acceptPatientByStaff'
+            url: '/reception'
         }
     },
     chat: {
@@ -104,6 +112,14 @@ export const ENDPOINTS = {
             method: 'get',
             url: `/reservation/getReservationList/${selectedVal.doctorUuid}/${selectedVal.dateTime}`
         }),
+        reservationHold: {
+            method: 'post',
+            url: '/reservation/hold'
+        },
+        cancelHoldingReservation: {
+            method: 'put',
+            url: '/reservation/cancelHoldingReservation'
+        }
     },
 
     medicine:{
@@ -123,10 +139,6 @@ export const ENDPOINTS = {
             method:'post',
             url:`/treatment/totalTreatment`
         },
-        // history: (patientUuid) => ({
-        //     method:'post',
-        //     url:`/treatment/history/${patientUuid}`
-        // })
         history: {
             method:'post',
             url:`/treatment/history`
@@ -136,6 +148,5 @@ export const ENDPOINTS = {
             url:`/treatment/historyDetail/${id}`
         })
     },
-    
 
 }

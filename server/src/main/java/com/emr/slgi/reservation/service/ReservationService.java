@@ -9,7 +9,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Slf4j
@@ -20,8 +23,35 @@ public class ReservationService {
     private final ReservationDAO rDao;
 
     public int makeReservation(ReservationForm rf) {
-        
-        return rDao.makeReservation(rf);
+
+        if(!cancelHoldingReservation(rf.getPatientUuid())) {
+            return -1;
+        }else {
+            return rDao.makeReservation(rf);
+        }
+
+    }
+
+    public int getAffectedRowsCount(Map reservationData) {
+        return rDao.getAffectedRowsCount(reservationData);
+    }
+
+    public boolean cancelHoldingReservation(String patientUuid) {
+
+        int affectedRowsCount = getAffectedRowsCount(
+                Map.of(
+                        "where", "PATIENT_UUID = '550e8400-e29b-41d4-a716-446655440020' AND STATUS = 'RS03'"
+                        // 임시 환자 UUID
+                        // "PATIENT_UUID = " + reservationDate.getDoctorUuid() + " AND STATUS = 'RS03'"
+                )
+        );
+
+        if(rDao.cancelHoldingReservation(patientUuid) != affectedRowsCount) {
+            return false;
+        }else{
+            return true;
+        }
+
 
     }
 
@@ -31,11 +61,66 @@ public class ReservationService {
         // 오늘이면 today 값 true로
         if(reservation.getDateTime().toLocalDate().isEqual(LocalDate.now())) {
             reservation.setToday(true);
-            log.info(reservation.toString());
+        } else {
+            reservation.setDateTime(reservation.getDateTime().toLocalDate().atStartOfDay());
         }
 
         return Optional.ofNullable(rDao.getReservationList(reservation));
 
     }
 
+    public int holdReservation(FindReservationDate reservationDate) {
+
+        reservationDate.setPatientUuid("550e8400-e29b-41d4-a716-446655440020"); // 임시 환자 데이터
+
+        if(!cancelHoldingReservation(reservationDate.getPatientUuid())) {
+            return -1;
+        }
+
+        return rDao.holdReservation(reservationDate);
+
+    }
+
+    public Optional<List<ReservationList>> getReservationList(LocalDateTime dateTime) {
+
+        return Optional.ofNullable(
+            rDao.getReservationListByStaff(
+                Map.of(
+                    "start", dateTime.toLocalDate().atStartOfDay(),
+                    "end", dateTime.toLocalDate().plusDays(1).atStartOfDay()
+                )
+            )
+        );
+
+    }
+
+    public boolean cancelReservation(String reservationId) {
+
+        log.info(reservationId);
+
+        int affectedRowsCount = getAffectedRowsCount(
+                Map.of(
+                        "where", "ID = '" + reservationId + "' AND STATUS = 'RS01'"
+                )
+        );
+
+
+        if(rDao.cancelReservation(reservationId) != affectedRowsCount) {
+            return false;
+        } else {
+            return true;
+        }
+
+
+    }
+
+    public boolean changeReservation(String reservationId, LocalDateTime dateTime) {
+
+        if(rDao.changeReservation(reservationId, dateTime) != 1) {
+            return false;
+        }else {
+            return true;
+        }
+
+    }
 }

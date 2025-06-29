@@ -8,6 +8,7 @@ public class ReservationErrorMessage {
     public static final String WRITE_SYMPTOM = "증상을 입력해주세요.";
     public static final String CAN_NOT_FIND_RESERVATION_DATE = "예약 정보를 가져올 수 없습니다.";
     public static final String RESERVATION_RUN_ERROR = "예약 중 에러가 발생했습니다.";
+    public static final String RESERVATION_CHANGE_ERROR = "예약 변경 중 에러가 발생했습니다.";
 
 }
 

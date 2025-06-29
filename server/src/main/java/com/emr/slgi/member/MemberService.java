@@ -11,8 +11,8 @@ import lombok.RequiredArgsConstructor;
 public class MemberService {
     private final MemberDAO memberDAO;
 
-    public Member getById(String id) {
-        return memberDAO.getById(id);
+    public Member getByUuid(String uuid) {
+        return memberDAO.getByUuid(uuid);
     }
 
     public List<Member> getDoctorList() {

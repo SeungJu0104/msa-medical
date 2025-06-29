@@ -7,6 +7,24 @@ import {common} from "@/util/common.js";
 import dayjs from "dayjs";
 
 export const patientMethods = {
+    cancelHoldingReservation: async () => {
+
+        try{
+
+            const response = await customFetch(ENDPOINTS.reservation.cancelHoldingReservation);
+
+            if(response.status === 200) {
+                return true;
+            }
+
+        } catch(err) {
+            
+            common.errMsg(err);
+            return false;
+
+        }
+
+    },
     makeSlots : (date, loc, data) => {
         return `${date.hour().toString().padStart(loc, data)}:${date.minute().toString().padStart(loc, data)}`
     },
@@ -32,7 +50,7 @@ export const patientMethods = {
         console.log("당일 여부 : ", isToday);
         console.log("start : ", start);
 
-        if(isToday) {
+        if(isToday && start.hour() >= 9) {
             start = start.minute(Math.floor(start.minute() / 10) * 10).second(0); // 초와 밀리초도 0으로 초기화
         } else {
             start = start.hour(9).minute(0).second(0);
@@ -88,6 +106,7 @@ export const patientMethods = {
 
         } catch(err) {
             common.errMsg(err);
+            return false;
         }
 
     },
@@ -126,7 +145,7 @@ export const patientMethods = {
 
             selectedVal.isToday = true;
 
-            if(reservationDate.hour() > 8  && reservationDate.hour() < 17) {
+            if(reservationDate.hour() > 8  && reservationDate.hour() < 18) {
 
                 reservationDate = reservationDate.add(1, 'hour');
                 console.log("당일 1시간 뒤 시간 : ", reservationDate);
@@ -146,8 +165,13 @@ export const patientMethods = {
             patientUuid : '550e8400-e29b-41d4-a716-446655440020', // 테스트용 환자 아이디
             ...omit(selectedVal, ['reservationDate', 'time', 'name']), // date와 time, name 속성을 제외한 나머지 속성들을 복사
             dateTime:
-                `${dayjs(reservationDate).format('YYYY-MM-DDTHH:mm:00')}`
+                reservationDate.toDate().toISOString()
+                // `${dayjs(reservationDate).format('YYYY-MM-DDTHH:mm:00')}`
         });
+
+        if(response === false) {
+            return false;
+        }
 
         reservationList.value = Array.isArray(response) ? response : [];
 
@@ -172,4 +196,22 @@ export const patientMethods = {
         }
 
     },
+    reservationHold: async (selectedVal) => {
+
+        console.log("예약 홀딩 데이터 : ", selectedVal);
+
+        try{
+
+            const response = await customFetch(ENDPOINTS.reservation.reservationHold, {
+                data: selectedVal
+            });
+
+            if(response?.status === 200) {
+                return;
+            }
+
+        } catch(err) {
+            return common.errMsg(err);
+        }
+    }
 }

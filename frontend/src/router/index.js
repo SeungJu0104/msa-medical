@@ -8,8 +8,9 @@ import MedicalTreatment from '@/components/diagnosis/MedicalTreatment.vue';
 const HomeView = () => import('@/views/HomeView.vue');
 const MainView = () => import('@/views/home/MainView.vue');
 const OtherView = () => import('@/views/other/OtherView.vue');
-// const acceptPatientByStaff = () => import('@/views/acceptPatientByStaff.vue')
-const regReservationByPatient = () => import('@/views/reservation/RegReservationByPatient.vue')
+const AcceptPatientByStaff = () => import('@/views/reception/AcceptPatientByStaff.vue')
+const RegReservationByPatient = () => import('@/views/reservation/RegReservationByPatient.vue')
+const LoginView = () => import('@/views/auth/LoginView.vue');
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -23,6 +24,11 @@ const router = createRouter({
           name: 'home',
           component: MainView
         },
+        {
+          path: '/login',
+          name: 'loginView',
+          component: LoginView
+        },
         ...patientRoutes
       ]
     },
@@ -34,7 +40,7 @@ const router = createRouter({
     {
       path: '/regReservationByPatient',
       name: 'regReservationByPatient',
-      component: regReservationByPatient,
+      component: RegReservationByPatient,
     },
     {
       path:'/chatrooms',
@@ -46,11 +52,6 @@ const router = createRouter({
       name : 'chatroom',
       component:ChatRoom
     },
-    // {
-    //   path: '/acceptPatientByStaff',
-    //   name: 'acceptPatientByStaff',
-    //   component: acceptPatientByStaff
-    // },
 
 
     {
@@ -58,6 +59,11 @@ const router = createRouter({
       name : 'medicalTreatment',
       component:MedicalTreatment
     },
+    {
+      path: '/acceptPatientByStaff',
+      name: 'acceptPatientByStaff',
+      component: AcceptPatientByStaff
+    }
   ],
 })
 
