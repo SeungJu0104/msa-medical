@@ -2,9 +2,9 @@ import { createRouter, createWebHistory } from 'vue-router'
 import ChatRooms from '@/components/chat/ChatRooms.vue'
 import ChatRoom from '@/components/chat/ChatRoom.vue'
 import { patientRoutes } from './patientRoutes';
+import { adminRoutes } from './adminRoutes';
 import MedicalTreatment from '@/components/diagnosis/MedicalTreatment.vue';
 import {receptionRoutes} from "@/router/receptionRoutes.js";
-
 
 const HomeView = () => import('@/views/HomeView.vue');
 const MainView = () => import('@/views/home/MainView.vue');
@@ -33,6 +33,7 @@ const router = createRouter({
         ...patientRoutes
       ]
     },
+    ...adminRoutes,
     {
       path: '/other',
       name: 'other',
