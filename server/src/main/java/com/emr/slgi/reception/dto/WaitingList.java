@@ -1,9 +1,9 @@
-package com.emr.slgi.reception.service;
+package com.emr.slgi.reception.dto;
 
+import com.emr.slgi.reception.enums.ReceptionStatus;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
 
 @Data
 public class WaitingList {
