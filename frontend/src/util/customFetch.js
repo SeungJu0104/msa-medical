@@ -1,5 +1,7 @@
-import { getAccessToken } from '@/auth/accessToken';
+import { getAccessToken, setAccessToken } from '@/auth/accessToken';
+import { getRefreshToken } from '@/auth/refreshToken';
 import axios from 'axios';
+import { ENDPOINTS } from './endpoints';
 
 const instance = axios.create({
     baseURL: '/api'
@@ -15,6 +17,33 @@ instance.interceptors.request.use(
     return config;
   },
   error => Promise.reject(error)
+);
+
+instance.interceptors.response.use(
+  response => response,
+  async error => {
+    const originalRequest = error.config;
+
+    if (error.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+
+      try {
+        const refreshToken = getRefreshToken();
+        if (!refreshToken) {
+          return Promise.reject(error);
+        }
+        const res = await customFetch(ENDPOINTS.auth.refreshToken, {
+          data: { refreshToken }
+        });
+        setAccessToken(res.data.accessToken);
+        return instance(originalRequest);
+      } catch (err) {
+        return Promise.reject(err);
+      } 
+    }
+
+    return Promise.reject(error);
+  }
 );
 
 /**
