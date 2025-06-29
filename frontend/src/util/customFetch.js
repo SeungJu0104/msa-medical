@@ -19,6 +19,20 @@ instance.interceptors.request.use(
   error => Promise.reject(error)
 );
 
+let isRefreshing = false;
+let retryQueue = [];
+
+const processQueue = (error) => {
+  retryQueue.forEach(retry => {
+    if (error) {
+      retry.reject(error);
+    } else {
+      retry.resolve();
+    }
+  });
+  retryQueue = [];
+};
+
 instance.interceptors.response.use(
   response => response,
   async error => {
@@ -26,6 +40,18 @@ instance.interceptors.response.use(
 
     if (error.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
+      if (isRefreshing) {
+        return new Promise((resolve, reject) => {
+          retryQueue.push({
+            resolve: () => {
+              resolve(instance(originalRequest));
+            },
+            reject
+          });
+        });
+      }
+
+      isRefreshing = true;
 
       try {
         const refreshToken = getRefreshToken();
@@ -36,10 +62,14 @@ instance.interceptors.response.use(
           data: { refreshToken }
         });
         setAccessToken(res.data.accessToken);
+        processQueue(null);
         return instance(originalRequest);
       } catch (err) {
+        processQueue(err);
         return Promise.reject(err);
-      } 
+      } finally {
+        isRefreshing = false;
+      }
     }
 
     return Promise.reject(error);
