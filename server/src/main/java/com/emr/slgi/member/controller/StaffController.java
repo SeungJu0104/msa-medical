@@ -19,7 +19,7 @@ public class StaffController {
 
   @PreAuthorize("hasAnyRole('DOCTOR', 'NURSE')")
   @GetMapping("/list")
-  public ResponseEntity<?> getStaffList(@AuthenticationPrincipal String uuid) {
-    return ResponseEntity.ok(memberService.getStaffList(uuid));
+  public ResponseEntity<?> getOtherStaffList(@AuthenticationPrincipal String uuid) {
+    return ResponseEntity.ok(memberService.getOtherStaffList(uuid));
   }
 }

@@ -30,7 +30,7 @@
       member_role = 'R002'
       AND uuid=#{uuid}
   </select>
-  <select id="getStaffList">
+  <select id="getOtherStaffList">
     SELECT
       uuid,
       name,

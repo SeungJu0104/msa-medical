@@ -47,8 +47,8 @@ public class MemberService {
     return name;
   }
 
-  public ListResponse<StaffSummary> getStaffList(String uuid) {
-    List<StaffSummary> staffList = memberDAO.getStaffList(uuid);
+  public ListResponse<StaffSummary> getOtherStaffList(String uuid) {
+    List<StaffSummary> staffList = memberDAO.getOtherStaffList(uuid);
     if (staffList.isEmpty()) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
