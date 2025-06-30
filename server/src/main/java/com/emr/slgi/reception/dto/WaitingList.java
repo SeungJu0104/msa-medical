@@ -15,5 +15,6 @@ public class WaitingList {
     private ReceptionStatus status;
     private String name;
     private LocalDateTime createDate;
+    private int turn;
 
 }

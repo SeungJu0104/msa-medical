@@ -22,9 +22,9 @@ export const reception = {
 
     },
     getWaitingList: async (uuid) => {
-        console.log("b");
+
         try {
-            console.log("c");
+
             const response = await customFetch(ENDPOINTS.reception.getWaitingList(uuid));
 
             if(response?.status === 200) {
@@ -82,7 +82,13 @@ export const reception = {
             const response = await customFetch(ENDPOINTS.reception.updateReceptionStatus({uuid, updateStatus}));
 
             if(response?.status === 200) {
-                common.alertError(response.data?.message);
+
+                if(response.data?.message !== undefined) {
+
+                    common.alertError(response.data?.message);
+
+                }
+
             }
 
         } catch(err) {

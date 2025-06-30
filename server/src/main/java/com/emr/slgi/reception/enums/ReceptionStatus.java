@@ -18,7 +18,7 @@ public enum ReceptionStatus {
 
     WAITING("RE01", "대기"),
     CANCELRECEPTION("RE02", "접수 취소"),
-    RECEPTIONCOMPLETE("RE03", "접수 완료");
+    ONTREATMENT("RE03", "진료 중");
 
     private final String code;
     @JsonValue // ENUM 상수명을 ENUM 내 한글 상태명으로 변경.

@@ -28,6 +28,11 @@
 
   }
 
+  // 의료진이 대기 리스트에서 이름을 누른 환자 UUID 가져오는 함수
+  const getPatientInfo = ({uuid}) => {
+
+  }
+
   onBeforeMount(async () => {
     await Promise.all([
       waitingListStore.promiseAll(),
@@ -56,6 +61,6 @@
 <template>
   <template v-for="list in waitingList">
     <WaitingListDoctorName :value="list.doctor"/>
-    <WaitingListPatientList @updateStatus="handleUpdateStatus" :value="list.patientList" :status="receptionStatusList"/>
+    <WaitingListPatientList @updateStatus="handleUpdateStatus" @getPatientInfo="getPatientInfo" :value="list.patientList" :status="receptionStatusList"/>
   </template>
 </template>

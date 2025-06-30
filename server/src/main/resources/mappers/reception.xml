@@ -27,18 +27,18 @@
 
     <select id="getWaitingList" resultMap="waitingListMap">
         SELECT
-            UUID, PATIENT_UUID, NAME, STATUS, CREATE_DATE
+            UUID, PATIENT_UUID, NAME, STATUS, CREATE_DATE, TURN
         FROM
             TB_RECEPTION
         WHERE
             DOCTOR_UUID = #{doctorUuid}
             AND
-            STATUS IN ('RE01')
---         오늘 날짜만 조회하기 위해 설정했지만 테스트위해 일단 생략
---             AND
---             CREATE_DATE BETWEEN CURDATE() AND CURDATE() + INTERVAL 1 DAY
+            STATUS IN ('RE01', 'RE03')
+--          오늘 날짜만 조회하기 위해 설정했지만 테스트위해 일단 생략
+--           AND
+--           CREATE_DATE BETWEEN CURDATE() AND CURDATE() + INTERVAL 1 DAY
         ORDER BY
-            CREATE_DATE;
+            TURN;
     </select>
 
     <resultMap id="waitingListMap" type="com.emr.slgi.reception.dto.WaitingList">
@@ -47,22 +47,15 @@
         <result property="name" column="NAME"/>
         <result property="status" column="STATUS" typeHandler="com.emr.slgi.reception.typehandler.ReceptionStatusTypeHandler"/>
         <result property="createDate" column="CREATE_DATE"/>
+        <result property="turn" column="TURN"/>
     </resultMap>
-
-    <update id="cancelReception">
-        UPDATE
-            TB_RECEPTION
-        SET
-            STATUS = 'RE02'
-        WHERE
-            UUID = #{uuid}
-    </update>
 
     <update id="updateReceptionStatus">
         UPDATE
             TB_RECEPTION
         SET
-            STATUS = #{updateStatus, typeHandler=com.emr.slgi.reception.typehandler.ReceptionStatusTypeHandler}
+            STATUS = #{updateStatus, typeHandler=com.emr.slgi.reception.typehandler.ReceptionStatusTypeHandler},
+            UPDATE_DATE = CURRENT_TIMESTAMP
         WHERE
             UUID = #{uuid}
     </update>
@@ -75,8 +68,6 @@
             TB_STATUS_CODE
         WHERE
             GROUP_ID = 4
-            AND
-            ID IN ('RE01', 'RE02')
     </select>
 
 </mapper>

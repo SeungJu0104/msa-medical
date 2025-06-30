@@ -18,9 +18,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -38,6 +36,7 @@ public class ReceptionController {
         }
 
         return ResponseEntity.ok().build();
+
     }
 
     @PreAuthorize("hasAnyRole('DOCTOR', 'NURSE')")
@@ -45,25 +44,14 @@ public class ReceptionController {
     public ResponseEntity<Map<String, List<WaitingList>>> getWaitingList(
             @PathVariable("doctorUuid") String doctorUuid
     ) {
-        log.info(doctorUuid);
-        log.info("a");
+
         List<WaitingList> list = receptionService.getWaitingList(doctorUuid);
-        System.out.println(list.toString());
+
+        log.info(list.toString());
+
         return ResponseEntity.ok(
                 Map.of("waitingList", list)
         );
-
-    }
-
-    @PreAuthorize("hasAnyRole('DOCTOR', 'NURSE')")
-    @PutMapping("/{uuid}/cancel")
-    public ResponseEntity<?> cancelReception(@PathVariable("uuid") String uuid) {
-
-        if(receptionService.cancelReception(uuid) != 1) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, CommonErrorMessage.RETRY);
-        }
-
-        return ResponseEntity.ok().build();
 
     }
 
@@ -77,8 +65,6 @@ public class ReceptionController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, CommonErrorMessage.RETRY);
         };
 
-        log.info("statusList : {}", list.toString());
-
         return ResponseEntity.ok(
                 Map.of("statusList", list)
         );
@@ -91,21 +77,29 @@ public class ReceptionController {
             @PathVariable("uuid") String uuid,
             @PathVariable("updateStatus") String updateStatus) {
 
-        log.info("updateStatus : {}", updateStatus);
+        Map<String, String> message = new HashMap<>();
 
         if(uuid == null || Validate.regexValidate(Map.of(Validate.MEMBER_UUID_REGEX, uuid)).contains(false)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, CommonErrorMessage.RETRY);
         }
 
-        if(receptionService.updateReceptionStatus(uuid, updateStatus) != 1) {
+        Map<String, ?> result = receptionService.updateReceptionStatus(uuid, updateStatus);
+
+        if (!Objects.equals(result.get("updateRes"), 1)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, CommonErrorMessage.UPDATE_ERR + CommonErrorMessage.RETRY);
         }
 
+        ReceptionStatus status = (ReceptionStatus) (result.get("status"));
+        if ("RE02".equals(status.getCode())) {
+            message.put("message", ReceptionMessage.CANCEL_SUCCESS.getMessage());
+        }
+
+        log.info(result.get("updateRes").toString());
+
         return ResponseEntity.ok(
-                Map.of(
-                        "message", ReceptionMessage.CANCEL_SUCCESS.getMessage()
-                )
+            message
         );
+
     }
 
 }

@@ -8,6 +8,8 @@ const { status, value } = defineProps({
 
 const patientCurrentStatus = computed(() => value);
 
+console.log(value);
+
 const leftOver = computed(() => {
   return status.filter(v => v.name !== value);
 });
@@ -22,15 +24,18 @@ const selectedStatus = (name) => {
 
 <template>
   <button
-      class="btn btn-secondary btn-sm dropdown-toggle"
+      class="btn btn-secondary btn-sm"
+      :class="{ 'dropdown-toggle': patientCurrentStatus.trim() !== '진료 중' }"
       type="button"
-      data-bs-toggle="dropdown"
-      aria-expanded="false"
+      v-bind="patientCurrentStatus.trim() !== '진료 중' ? { 'data-bs-toggle': 'dropdown', 'aria-expanded': 'false' } : {}"
   >
     {{ patientCurrentStatus }}
   </button>
-  <template v-if="patientCurrentStatus.trim() !== '진료 중'">
-  <ul class="dropdown-menu">
+
+  <ul
+      class="dropdown-menu"
+      v-if="patientCurrentStatus.trim() !== '진료 중'"
+  >
     <li
         v-for="left in leftOver"
         :key="left.id"
@@ -39,5 +44,5 @@ const selectedStatus = (name) => {
       {{ left.name }}
     </li>
   </ul>
-  </template>
 </template>
+

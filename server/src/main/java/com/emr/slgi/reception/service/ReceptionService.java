@@ -18,19 +18,21 @@ import java.util.Optional;
 public class ReceptionService {
 
     private final ReceptionDAO receptionDAO;
-//    private final TreatmentDAO tDAO; // 현재 진료 중인 환자 가져오기 위해 임시로 작성.
 
-    public int updateReceptionStatus (String uuid, String updateStatus) {
+    public Map<String, ?> updateReceptionStatus (String uuid, String updateStatus) {
 
         ReceptionStatus status = ReceptionStatus.from(updateStatus);
 
-        return receptionDAO.updateReceptionStatus(
-                UpdateReceptionStatus.builder()
-                        .uuid(uuid)
-                        .updateStatus(status)
-                        .build()
+        return Map.of(
+                "status", status,
+                "updateRes", receptionDAO.updateReceptionStatus(
+                                    UpdateReceptionStatus.builder()
+                                        .uuid(uuid)
+                                        .updateStatus(status)
+                                        .build()
+                                    )
         );
-        // 역매퍼 동작 체크하기
+
     }
 
 
@@ -41,9 +43,6 @@ public class ReceptionService {
     public List<WaitingList> getWaitingList(String doctorUuid) {
 
         List<WaitingList> waitingList = receptionDAO.getWaitingList(doctorUuid);
-
-//        현재 대기중인 환자 리스트에 진료 중인 환자 진료 테이블에 가져와서 추가. 함수명은 임의로 작성.
-//        waitingList.add(tDAO.getTreatingPatientInfo());
 
         return waitingList;
 

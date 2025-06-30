@@ -1,5 +1,5 @@
 import {defineStore} from "pinia";
-import {ref} from "vue";
+import {computed, ref} from "vue";
 import {reception} from "@/util/reception.js";
 import {errorMessage} from "@/util/errorMessage.js";
 import {common} from "@/util/common.js";
@@ -7,8 +7,7 @@ import {useUserStore} from "@/stores/userStore.js";
 
 export const useWaitingListStore = defineStore('waitingList', () => {
 
-    const user = useUserStore();
-    const userInfo = user.user;
+    const userInfo = computed(() => useUserStore().user);
     const doctorList = ref();
     const waitingList = ref();
     const receptionStatusList = ref();
@@ -22,12 +21,12 @@ export const useWaitingListStore = defineStore('waitingList', () => {
 
     const roleChk = async () => {
 
-        console.log(userInfo.role);
+        console.log(userInfo.value.role);
 
-        if(userInfo.role === 'DOCTOR') {
+        if(userInfo.value.role === 'DOCTOR') {
 
             doctorList.value = [{
-                name: userInfo.name
+                name: userInfo.value.name
             }]
 
         } else {
