@@ -11,6 +11,14 @@ export const useWaitingListStore = defineStore('waitingList', () => {
     const userInfo = user.user;
     const doctorList = ref();
     const waitingList = ref();
+    const receptionStatusList = ref();
+
+    const getReceptionStatusList = async () => {
+
+        receptionStatusList.value = await reception.getReceptionStatusList();
+
+    }
+
 
     const roleChk = async () => {
 
@@ -63,7 +71,9 @@ export const useWaitingListStore = defineStore('waitingList', () => {
 
     return {
         promiseAll,
-        waitingList
+        waitingList,
+        getReceptionStatusList,
+        receptionStatusList
     };
 
 })

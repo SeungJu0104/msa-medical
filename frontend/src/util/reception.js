@@ -58,14 +58,14 @@ export const reception = {
         }
 
     },
-    cancelReception : async (uuid) => {
+    getReceptionStatusList : async () =>  {
 
         try {
 
-            const response = await customFetch(ENDPOINTS.reception.cancelReception(uuid));
+            const response = await customFetch(ENDPOINTS.reception.getReceptionStatusList());
 
             if(response?.status === 200) {
-                common.alertError(successMessage.common.cancel);
+                return response.data?.statusList;
             }
 
         } catch(err) {
@@ -73,6 +73,25 @@ export const reception = {
             common.errMsg(err);
 
         }
+
+    },
+    updateReceptionStatus : async ({uuid, updateStatus}) => {
+
+        try {
+
+            const response = await customFetch(ENDPOINTS.reception.updateReceptionStatus({uuid, updateStatus}));
+
+            if(response?.status === 200) {
+                common.alertError(response.data?.message);
+            }
+
+        } catch(err) {
+
+            common.errMsg(err);
+
+        }
+
+
 
     }
 }

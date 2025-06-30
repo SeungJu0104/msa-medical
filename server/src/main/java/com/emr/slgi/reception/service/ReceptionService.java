@@ -2,11 +2,16 @@ package com.emr.slgi.reception.service;
 
 import com.emr.slgi.reception.dao.ReceptionDAO;
 import com.emr.slgi.reception.dto.ReceptionInfo;
+import com.emr.slgi.reception.dto.ReceptionStatusList;
+import com.emr.slgi.reception.dto.UpdateReceptionStatus;
 import com.emr.slgi.reception.dto.WaitingList;
+import com.emr.slgi.reception.enums.ReceptionStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -14,6 +19,20 @@ public class ReceptionService {
 
     private final ReceptionDAO receptionDAO;
 //    private final TreatmentDAO tDAO; // 현재 진료 중인 환자 가져오기 위해 임시로 작성.
+
+    public int updateReceptionStatus (String uuid, String updateStatus) {
+
+        ReceptionStatus status = ReceptionStatus.from(updateStatus);
+
+        return receptionDAO.updateReceptionStatus(
+                UpdateReceptionStatus.builder()
+                        .uuid(uuid)
+                        .updateStatus(status)
+                        .build()
+        );
+        // 역매퍼 동작 체크하기
+    }
+
 
     public int acceptPatientByStaff(ReceptionInfo receptionInfo) {
         return receptionDAO.acceptPatientByStaff(receptionInfo);
@@ -35,4 +54,11 @@ public class ReceptionService {
         return receptionDAO.cancelReception(uuid);
 
     }
+
+    public Optional<List<ReceptionStatusList>> getReceptionStatusList() {
+
+        return Optional.ofNullable(receptionDAO.getReceptionStatusList());
+
+    }
+
 }

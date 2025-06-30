@@ -1,6 +1,8 @@
 package com.emr.slgi.reception.dto;
 
 import com.emr.slgi.reception.enums.ReceptionStatus;
+import com.fasterxml.jackson.annotation.JsonValue;
+import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -10,7 +12,7 @@ public class WaitingList {
 
     private String uuid;
     private String patientUuid;
-    private String status;
+    private ReceptionStatus status;
     private String name;
     private LocalDateTime createDate;
 
