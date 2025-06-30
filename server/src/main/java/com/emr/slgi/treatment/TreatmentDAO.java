@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.emr.slgi.page.PageRequestDTO;
+import com.emr.slgi.page.TreatmentHitoryRequestDTO;
 
 @Mapper
 public interface TreatmentDAO {
@@ -13,9 +13,9 @@ public interface TreatmentDAO {
 
 	public Treatment selectTreatment(int id);
 
-	public int getHistoryCount(PageRequestDTO pageRequestDTO);
+	public int getHistoryCount(TreatmentHitoryRequestDTO treatmentHitoryRequestDTO);
 
-	public List<Treatment> getHistory(PageRequestDTO pageRequestDTO);
+	public List<Treatment> getHistory(TreatmentHitoryRequestDTO treatmentHitoryRequestDTO);
 
 
 }

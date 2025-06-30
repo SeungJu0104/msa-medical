@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.emr.slgi.page.PageRequestDTO;
+import com.emr.slgi.page.TreatmentHitoryRequestDTO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -38,8 +38,8 @@ public class TreatmentController {
 	}
 	
 	@GetMapping("/history")
-	public ResponseEntity<Object> history(@ModelAttribute PageRequestDTO pageRequestDTO){
-		return ResponseEntity.ok(treatmentService.getHistory(pageRequestDTO));
+	public ResponseEntity<Object> history(@ModelAttribute TreatmentHitoryRequestDTO treatmentHitoryRequestDTO){
+		return ResponseEntity.ok(treatmentService.getHistory(treatmentHitoryRequestDTO));
 	}
 	
 	@GetMapping("/historyDetail/{id}")

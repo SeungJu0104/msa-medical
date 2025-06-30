@@ -3,7 +3,7 @@ package com.emr.slgi.page;
 import lombok.Data;
 
 @Data
-public class PageRequestDTO {
+public class TreatmentHitoryRequestDTO {
 	private int pageNo = 1;
 	private int size = 5;	
 	private String doctorUuid; 
