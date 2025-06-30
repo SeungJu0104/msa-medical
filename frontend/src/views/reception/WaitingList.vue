@@ -3,23 +3,47 @@
   import {onBeforeMount, onMounted, onUnmounted, ref} from "vue";
   import WaitingListDoctorName from "@/views/reception/WaitingListDoctorName.vue";
   import WaitingListPatientList from "@/views/reception/WaitingListPatientList.vue";
+  import {reception} from "@/util/reception.js";
 
   const waitingListStore = useWaitingListStore();
   const waitingList = ref();
-  const role = 'R003'; // Role 더미 데이터
+  const receptionStatusList = ref();
+
+  // 상태 변경 시 동작하는 함수
+  const handleUpdateStatus = async ({uuid, updateStatus}) => {
+
+    await reception.updateReceptionStatus({uuid, updateStatus});
+
+    // 변경 사항 알리는 웹소켓 구현
+
+
+    // 성공이면 다시 접수 테이블 가져오기
+    await Promise.all([
+      waitingListStore.promiseAll(),
+      waitingListStore.getReceptionStatusList()
+    ]);
+
+    waitingList.value = waitingListStore.waitingList;
+    receptionStatusList.value = waitingListStore.receptionStatusList;
+
+  }
+
+  // 의료진이 대기 리스트에서 이름을 누른 환자 UUID 가져오는 함수
+  const getPatientInfo = ({uuid}) => {
+
+  }
 
   onBeforeMount(async () => {
+    await Promise.all([
+      waitingListStore.promiseAll(),
+      waitingListStore.getReceptionStatusList()
+    ]);
 
-    // if(localStorage.getItem('role') === 'R002') {
-    if(role === 'R002') {
-      waitingList.value = await waitingListStore.waitingListByDoctor();
-    } else {
-      waitingList.value = await waitingListStore.waitingListByNurse();
-    }
+    waitingList.value = waitingListStore.waitingList;
+    receptionStatusList.value = waitingListStore.receptionStatusList;
 
-    console.log(waitingList.value);
+  });
 
-  })
 
   onMounted(() => {
     // 웹소켓 연결부
@@ -37,6 +61,6 @@
 <template>
   <template v-for="list in waitingList">
     <WaitingListDoctorName :value="list.doctor"/>
-    <WaitingListPatientList :value="list.patientList"/>
+    <WaitingListPatientList @updateStatus="handleUpdateStatus" @getPatientInfo="getPatientInfo" :value="list.patientList" :status="receptionStatusList"/>
   </template>
 </template>

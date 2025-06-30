@@ -1,26 +1,33 @@
 <script setup>
-import {onMounted, ref} from "vue";
-import {reception} from "@/util/reception.js";
+import WaitingStatus from "@/views/reception/WaitingStatus.vue";
 
-defineProps({
-  value: Object
-})
+const {value, status} = defineProps({
+                value: Object,
+                status: Array
+              })
 
-const cancelReception = (uuid) => {
-  const response = reception.cancelReception(uuid);
+const emit = defineEmits(['updateStatus', 'getPatientInfo']);
+
+const onStatusChange = (patient, updateStatus) => {
+  patient.status = updateStatus;
+  emit('updateStatus', {uuid: patient.uuid, updateStatus});
 }
+
+const getPatientInfo = (patient) => {
+  emit('getPatientInfo', {uuid: patient.uuid});
+}
+
 
 </script>
 
 <template>
 
-  <div class="container">
+  <div class="container" v-if="value">
     <div class="my-3">
       <template v-for="patient in value" :key="patient.uuid">
         <div>
-          <button class="btn btn-primary" type="submit" v-cloak>{{patient.name}}</button>
-          <input class="btn btn-primary" type="button" value="대기">
-          <button class="btn btn-primary" type="submit" @click="cancelReception(patient.uuid)">취소</button>
+          <button class="btn btn-primary" type="submit" @click="getPatientInfo(patient)" v-cloak>{{patient.name}}</button>
+          <WaitingStatus @update:value="(updateStatus) => onStatusChange(patient, updateStatus)" :status="status" v-model:value="patient.status"/>
         </div>
       </template>
     </div>

@@ -72,9 +72,13 @@ export const ENDPOINTS = {
             method: 'get',
             url: `/reception/${uuid}`
         }),
-        cancelReception: (uuid) => ({
+        getReceptionStatusList: () => ({
+            method: 'get',
+            url: `/reception/statusList`
+        }),
+        updateReceptionStatus: ({uuid, updateStatus}) => ({
             method: 'put',
-            url: `/reception/${uuid}/cancel`
+            url: `/reception/${uuid}/${updateStatus}/updateStatus`
         })
     },
     chat: {
