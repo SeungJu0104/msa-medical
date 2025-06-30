@@ -16,6 +16,7 @@ import com.emr.slgi.member.dto.MemberCreateDTO;
 import com.emr.slgi.member.dto.MemberSearchDTO;
 import com.emr.slgi.member.dto.PatientRegisterDTO;
 import com.emr.slgi.member.dto.PatientSearchDTO;
+import com.emr.slgi.member.dto.PatientSummary;
 
 import lombok.RequiredArgsConstructor;
 
@@ -76,9 +77,9 @@ public class MemberService {
     memberDAO.createPatient(memberCreateDTO);
   }
 
-  public List<Member> search(PatientSearchDTO patientSearchDTO) {
+  public ListResponse<PatientSummary> search(PatientSearchDTO patientSearchDTO) {
     MemberSearchDTO memberSearchDTO = new MemberSearchDTO(patientSearchDTO.getSearchValue());
-    return memberDAO.search(memberSearchDTO);
+    return new ListResponse<>(memberDAO.search(memberSearchDTO));
   }
 
 }

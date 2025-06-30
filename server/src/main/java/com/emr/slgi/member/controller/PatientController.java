@@ -1,7 +1,5 @@
 package com.emr.slgi.member.controller;
 
-import java.util.Map;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,7 +29,7 @@ public class PatientController {
 
     @GetMapping("search")
     public ResponseEntity<?> search(PatientSearchDTO patientSearchDTO) {
-        return ResponseEntity.ok(Map.of("list", memberService.search(patientSearchDTO)));
+        return ResponseEntity.ok(memberService.search(patientSearchDTO));
     }
 
 }
