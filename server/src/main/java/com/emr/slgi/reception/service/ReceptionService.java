@@ -2,11 +2,11 @@ package com.emr.slgi.reception.service;
 
 import com.emr.slgi.reception.dao.ReceptionDAO;
 import com.emr.slgi.reception.dto.ReceptionInfo;
+import com.emr.slgi.reception.dto.WaitingList;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
