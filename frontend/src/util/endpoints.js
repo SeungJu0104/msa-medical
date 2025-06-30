@@ -60,7 +60,7 @@ export const ENDPOINTS = {
     staff: {
         list: (uuid) => ({
             method: 'get',
-            url: `/staff/list/${uuid}`
+            url: '/staff/list'
         }),
     },
     reception: {
