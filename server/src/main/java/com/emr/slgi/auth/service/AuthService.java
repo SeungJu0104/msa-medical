@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.emr.slgi.auth.dao.CredentialsDAO;
 import com.emr.slgi.auth.domain.Credentials;
 import com.emr.slgi.auth.dto.CredentialsCreateDTO;
 import com.emr.slgi.auth.dto.LoginDTO;
@@ -28,8 +27,9 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Slf4j
 public class AuthService {
+
+    private final CredentialsService credentialsService;
     private final MemberService memberService;
-    private final CredentialsDAO credentialsDAO;
     private final RefreshTokenService refreshTokenService;
     private final JwtUtil jwtUtil;
 
@@ -46,16 +46,16 @@ public class AuthService {
             registerByPatientDTO.getUserid(),
             registerByPatientDTO.getPassword()
         );
-        credentialsDAO.create(credentialsCreateDTO);
+        credentialsService.create(credentialsCreateDTO);
     }
 
     public boolean checkIdDuplicate(String userid) {
-        return credentialsDAO.existsByUserid(userid);
+        return credentialsService.existsByUserid(userid);
     }
 
     public Map<String, String> login(LoginDTO loginDTO) {
         Map<String, String> map = new HashMap<>();
-        Credentials credentials = credentialsDAO.getMemberCredentials(loginDTO.getUserid());
+        Credentials credentials = credentialsService.getMemberCredentials(loginDTO);
         if (credentials == null || !credentials.getPassword().equals(loginDTO.getPassword())) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "아이디나 비밀번호가 틀렸습니다.");
         }
