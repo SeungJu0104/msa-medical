@@ -17,6 +17,7 @@ import com.emr.slgi.member.dto.MemberSearchDTO;
 import com.emr.slgi.member.dto.PatientRegisterDTO;
 import com.emr.slgi.member.dto.PatientSearchDTO;
 import com.emr.slgi.member.dto.PatientSummary;
+import com.emr.slgi.member.dto.StaffSummary;
 
 import lombok.RequiredArgsConstructor;
 
@@ -46,12 +47,12 @@ public class MemberService {
     return name;
   }
 
-  public List<Member> getStaffList(String uuid) {
-    List<Member> staffList = memberDAO.getStaffList(uuid);
+  public ListResponse<StaffSummary> getStaffList(String uuid) {
+    List<StaffSummary> staffList = memberDAO.getStaffList(uuid);
     if (staffList.isEmpty()) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
-    return staffList;
+    return new ListResponse<>(staffList);
   }
 
   public String createPatient(RegisterByPatientDTO registerByPatientDTO) {

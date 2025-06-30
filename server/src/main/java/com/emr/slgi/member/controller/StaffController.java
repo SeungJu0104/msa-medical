@@ -1,7 +1,5 @@
 package com.emr.slgi.member.controller;
 
-import java.util.Map;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -22,6 +20,6 @@ public class StaffController {
   @PreAuthorize("hasAnyRole('DOCTOR', 'NURSE')")
   @GetMapping("/list")
   public ResponseEntity<?> getStaffList(@AuthenticationPrincipal String uuid) {
-    return ResponseEntity.ok(Map.of("list", memberService.getStaffList(uuid)));
+    return ResponseEntity.ok(memberService.getStaffList(uuid));
   }
 }
