@@ -3,7 +3,9 @@ package com.emr.slgi.reception.service;
 import com.emr.slgi.reception.dao.ReceptionDAO;
 import com.emr.slgi.reception.dto.ReceptionInfo;
 import com.emr.slgi.reception.dto.ReceptionStatusList;
+import com.emr.slgi.reception.dto.UpdateReceptionStatus;
 import com.emr.slgi.reception.dto.WaitingList;
+import com.emr.slgi.reception.enums.ReceptionStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,11 +22,13 @@ public class ReceptionService {
 
     public int updateReceptionStatus (String uuid, String updateStatus) {
 
+        ReceptionStatus status = ReceptionStatus.from(updateStatus);
+
         return receptionDAO.updateReceptionStatus(
-            WaitingList.builder()
-                .uuid(uuid)
-                .status(updateStatus)
-                .build()
+                UpdateReceptionStatus.builder()
+                        .uuid(uuid)
+                        .updateStatus(status)
+                        .build()
         );
         // 역매퍼 동작 체크하기
     }

@@ -58,23 +58,6 @@ export const reception = {
         }
 
     },
-    cancelReception : async (uuid) => {
-
-        try {
-
-            const response = await customFetch(ENDPOINTS.reception.cancelReception(uuid));
-
-            if(response?.status === 200) {
-                common.alertError(successMessage.common.cancel);
-            }
-
-        } catch(err) {
-
-            common.errMsg(err);
-
-        }
-
-    },
     getReceptionStatusList : async () =>  {
 
         try {
@@ -97,6 +80,10 @@ export const reception = {
         try {
 
             const response = await customFetch(ENDPOINTS.reception.updateReceptionStatus({uuid, updateStatus}));
+
+            if(response?.status === 200) {
+                common.alertError(response.data?.message);
+            }
 
         } catch(err) {
 

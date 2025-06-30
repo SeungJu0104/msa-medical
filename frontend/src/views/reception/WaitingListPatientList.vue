@@ -1,6 +1,4 @@
 <script setup>
-import {onBeforeMount, onMounted, ref} from "vue";
-import {reception} from "@/util/reception.js";
 import WaitingStatus from "@/views/reception/WaitingStatus.vue";
 
 const {value, status} = defineProps({
@@ -8,21 +6,12 @@ const {value, status} = defineProps({
                 status: Array
               })
 
-console.log(value);
-
-const emit = defineEmits(['cancel', 'updateStatus']);
-
-const cancelReception = async (uuid) => {
-  await reception.cancelReception(uuid);
-  emit('cancel', uuid);
-}
+const emit = defineEmits(['updateStatus']);
 
 const onStatusChange = (patient, updateStatus) => {
   patient.status = updateStatus;
   emit('updateStatus', {uuid: patient.uuid, updateStatus});
 }
-
-// 취소되면 emit으로 부모 컴포넌트에 전달.
 
 
 </script>
@@ -35,7 +24,6 @@ const onStatusChange = (patient, updateStatus) => {
         <div>
           <button class="btn btn-primary" type="submit" v-cloak>{{patient.name}}</button>
           <WaitingStatus @update:value="(updateStatus) => onStatusChange(patient, updateStatus)" :status="status" v-model:value="patient.status"/>
-          <button class="btn btn-primary" type="submit" @click="cancelReception(patient.uuid)">취소</button>
         </div>
       </template>
     </div>

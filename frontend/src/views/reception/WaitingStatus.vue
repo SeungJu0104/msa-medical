@@ -6,9 +6,6 @@ const { status, value } = defineProps({
   value: String
 });
 
-console.log(value);
-
-
 const patientCurrentStatus = computed(() => value);
 
 const leftOver = computed(() => {
@@ -20,6 +17,7 @@ const emit = defineEmits(["update:value"]);
 const selectedStatus = (name) => {
   emit("update:value", name);
 }
+
 </script>
 
 <template>

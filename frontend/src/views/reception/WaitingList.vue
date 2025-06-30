@@ -9,11 +9,22 @@
   const waitingList = ref();
   const receptionStatusList = ref();
 
+  // 상태 변경 시 동작하는 함수
   const handleUpdateStatus = async ({uuid, updateStatus}) => {
 
     await reception.updateReceptionStatus({uuid, updateStatus});
 
     // 변경 사항 알리는 웹소켓 구현
+
+
+    // 성공이면 다시 접수 테이블 가져오기
+    await Promise.all([
+      waitingListStore.promiseAll(),
+      waitingListStore.getReceptionStatusList()
+    ]);
+
+    waitingList.value = waitingListStore.waitingList;
+    receptionStatusList.value = waitingListStore.receptionStatusList;
 
   }
 
@@ -26,7 +37,6 @@
     waitingList.value = waitingListStore.waitingList;
     receptionStatusList.value = waitingListStore.receptionStatusList;
 
-    console.log(receptionStatusList.value);
   });
 
 

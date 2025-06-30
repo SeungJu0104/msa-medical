@@ -64,15 +64,11 @@ export const ENDPOINTS = {
             method: 'get',
             url: `/reception/${uuid}`
         }),
-        cancelReception: (uuid) => ({
-            method: 'put',
-            url: `/reception/${uuid}/cancel`
-        }),
         getReceptionStatusList: () => ({
             method: 'get',
             url: `/reception/statusList`
         }),
-        updateReceptionStatus: (uuid, updateStatus) => ({
+        updateReceptionStatus: ({uuid, updateStatus}) => ({
             method: 'put',
             url: `reception/${uuid}/${updateStatus}/updateStatus`
         })

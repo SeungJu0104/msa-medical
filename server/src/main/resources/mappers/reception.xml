@@ -62,7 +62,7 @@
         UPDATE
             TB_RECEPTION
         SET
-            STATUS = #{updateStatus}
+            STATUS = #{updateStatus, typeHandler=com.emr.slgi.reception.typehandler.ReceptionStatusTypeHandler}
         WHERE
             UUID = #{uuid}
     </update>

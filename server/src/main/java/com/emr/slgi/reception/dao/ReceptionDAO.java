@@ -2,6 +2,7 @@ package com.emr.slgi.reception.dao;
 
 import com.emr.slgi.reception.dto.ReceptionInfo;
 import com.emr.slgi.reception.dto.ReceptionStatusList;
+import com.emr.slgi.reception.dto.UpdateReceptionStatus;
 import com.emr.slgi.reception.dto.WaitingList;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -18,6 +19,6 @@ public interface ReceptionDAO {
 
     List<ReceptionStatusList> getReceptionStatusList();
 
-    int updateReceptionStatus(WaitingList updateStatus);
+    int updateReceptionStatus(UpdateReceptionStatus updateStatus);
 
 }

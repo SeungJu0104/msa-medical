@@ -11,34 +11,31 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-@MappedTypes(String.class)
+@MappedTypes(ReceptionStatus.class)
 @MappedJdbcTypes(JdbcType.VARCHAR)
-public class ReceptionStatusTypeHandler extends BaseTypeHandler<String> {
+public class ReceptionStatusTypeHandler extends BaseTypeHandler<ReceptionStatus> {
 
     @Override
-    public void setNonNullParameter(PreparedStatement ps, int i, String parameter, JdbcType jdbcType) throws SQLException {
-        ps.setString(i, parameter); // 한글 상태명을 저장하고자 할 경우
+    public void setNonNullParameter(PreparedStatement ps, int i, ReceptionStatus parameter, JdbcType jdbcType) throws SQLException {
+        ps.setString(i, parameter.getCode()); // ✅ 핵심 수정
     }
 
     @Override
-    public String getNullableResult(ResultSet rs, String columnName) throws SQLException {
-        String code = rs.getString(columnName);
-        return ReceptionStatus.statusFromCode(code); // 코드 → 한글
+    public ReceptionStatus getNullableResult(ResultSet rs, String columnName) throws SQLException {
+        return ReceptionStatus.fromCode(rs.getString(columnName));
     }
 
     @Override
-    public String getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
-        String code = rs.getString(columnIndex);
-        return ReceptionStatus.statusFromCode(code);
+    public ReceptionStatus getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
+        return ReceptionStatus.fromCode(rs.getString(columnIndex));
     }
 
     @Override
-    public String getNullableResult(CallableStatement cs, int columnIndex) throws SQLException {
-        String code = cs.getString(columnIndex);
-        return ReceptionStatus.statusFromCode(code);
+    public ReceptionStatus getNullableResult(CallableStatement cs, int columnIndex) throws SQLException {
+        return ReceptionStatus.fromCode(cs.getString(columnIndex));
     }
-
 }
+
 
 
 
