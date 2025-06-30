@@ -70,7 +70,7 @@ export const ENDPOINTS = {
         }),
         updateReceptionStatus: ({uuid, updateStatus}) => ({
             method: 'put',
-            url: `reception/${uuid}/${updateStatus}/updateStatus`
+            url: `/reception/${uuid}/${updateStatus}/updateStatus`
         })
     },
     chat: {
