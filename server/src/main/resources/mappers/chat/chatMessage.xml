@@ -6,9 +6,12 @@
   <mapper namespace="com.emr.slgi.chat.DAO.ChatMessageDAO">
   
   	<select id="getList">
-   	select *
-  	from tb_chat_message
-  	where room_id = #{roomId}
+   	select m.* , m1.name
+  	from tb_chat_message m
+  	join tb_member m1 on m.uuid = m1.uuid
+  	where m.room_id = #{roomId}
+  	order by m.create_date
+  	
 	</select>
 	
 	<insert id = "saveMessage"  useGeneratedKeys="true" keyProperty="messageId" >

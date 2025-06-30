@@ -1,5 +1,7 @@
 package com.emr.slgi.chat.controller;
 
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
@@ -13,6 +15,8 @@ import com.emr.slgi.chat.DTO.ChatRoom;
 import com.emr.slgi.chat.service.ChatMessageService;
 import com.emr.slgi.chat.service.ChatReadService;
 import com.emr.slgi.chat.service.ChatRoomService;
+import com.emr.slgi.member.Member;
+import com.emr.slgi.member.MemberService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,12 +30,17 @@ public class ChatController {
 	private final SimpMessageSendingOperations messagingTemplate;
 	private final ChatRoomService chatRoomService;
 	private final ChatReadService chatReadService;
+	private final MemberService memberService;
 
 	@MessageMapping("/chat/message")
 	public void message(ChatMessage content) {
+		
+		Member getName = memberService.getByUuid(content.getUuid());
+	    content.setName(getName.getName());
+	    content.setCreateDate(LocalDateTime.now());
 		chatMessageService.saveMessage(content);
 		messagingTemplate.convertAndSend("/sub/chatroom/" + content.getRoomId(), content);
-		
+
 		List<String> uuids = chatRoomService.getUuid(content.getRoomId());
 		 for(String uu : uuids) {
 			 List<ChatRoom> list = chatRoomService.getList(uu);

@@ -49,7 +49,7 @@ public class ChatReadController {
 	@GetMapping("/chatReadList/{uuid}")
 	public ResponseEntity<Object> chatReadList(@PathVariable("uuid") String uuid) {
 		List<ChatAlarmDTO> chatReadList = chatReadService.getList(uuid);
-		if(chatReadList == null || chatReadList.isEmpty()) {
+		if(chatReadList == null) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("채팅알림 목록을 불러 오지 못했습니다");
 		}
 		return ResponseEntity.ok(chatReadList);
