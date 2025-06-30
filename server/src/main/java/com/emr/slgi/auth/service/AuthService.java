@@ -1,4 +1,4 @@
-package com.emr.slgi.auth;
+package com.emr.slgi.auth.service;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.emr.slgi.auth.dto.LoginDTO;
+import com.emr.slgi.auth.dto.RefreshTokenDTO;
 import com.emr.slgi.auth.dto.RegisterByPatientDTO;
 import com.emr.slgi.credentials.Credentials;
 import com.emr.slgi.credentials.CredentialsDAO;
@@ -29,6 +30,7 @@ import lombok.extern.slf4j.Slf4j;
 public class AuthService {
     private final MemberDAO memberDAO;
     private final CredentialsDAO credentialsDAO;
+    private final RefreshTokenService refreshTokenService;
     private final JwtUtil jwtUtil;
 
     @Value("${jwt.access-token-secret}")
@@ -65,6 +67,7 @@ public class AuthService {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "아이디나 비밀번호가 틀렸습니다.");
         }
         map.put("accessToken", createAccessToken(credentials.getUserUuid()));
+        map.put("refreshToken", refreshTokenService.createRefreshToken(credentials.getUserUuid()));
         return map;
     }
 
@@ -78,5 +81,11 @@ public class AuthService {
         Date thirtyMinutesLater = new Date(System.currentTimeMillis() + 30L * 60 * 1000);
 
         return jwtUtil.generateToken(map, thirtyMinutesLater, jwtSecret);
+    }
+
+    public String refreshToken(RefreshTokenDTO refreshTokenDTO) {
+        Map<String, Object> claims = refreshTokenService.parseRefreshToken(refreshTokenDTO.getRefreshToken());
+        String uuid = (String) claims.get("uuid");
+        return createAccessToken(uuid);
     }
 }

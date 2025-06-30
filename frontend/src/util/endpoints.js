@@ -13,7 +13,11 @@ export const ENDPOINTS = {
         login: {
             method: 'post',
             url: '/auth/login'
-        }
+        },
+        refreshToken: {
+            method: 'post',
+            url: '/auth/refresh-token',
+        },
     },
     member: {
         detail: (memberId) => ({
