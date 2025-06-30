@@ -39,14 +39,6 @@ public class MemberService {
     return new ListResponse<>(list);
   }
 
-  public String getDoctorName(String uuid) {
-    String name = memberDAO.getDoctorName(uuid);
-    if (name == null) {
-      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "의사를 찾을 수 없습니다.");
-    }
-    return name;
-  }
-
   public ListResponse<StaffSummary> getOtherStaffList(String uuid) {
     List<StaffSummary> staffList = memberDAO.getOtherStaffList(uuid);
     if (staffList.isEmpty()) {

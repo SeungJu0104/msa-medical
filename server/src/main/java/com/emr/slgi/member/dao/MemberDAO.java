@@ -18,5 +18,4 @@ public interface MemberDAO {
     public List<StaffSummary> getOtherStaffList(String uuid);
     public List<PatientSummary> search(MemberSearchDTO memberSearchDTO);
     public void createPatient(MemberCreateDTO memberCreateDTO);
-    public String getDoctorName(String uuid);
 }
