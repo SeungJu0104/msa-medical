@@ -1,4 +1,4 @@
-package com.emr.slgi.patient;
+package com.emr.slgi.member.controller;
 
 import java.util.Map;
 
@@ -10,8 +10,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.emr.slgi.patient.dto.PatientRegisterDTO;
-import com.emr.slgi.patient.dto.PatientSearchDTO;
+import com.emr.slgi.member.dto.PatientRegisterDTO;
+import com.emr.slgi.member.dto.PatientSearchDTO;
+import com.emr.slgi.member.service.PatientService;
 
 import lombok.RequiredArgsConstructor;
 

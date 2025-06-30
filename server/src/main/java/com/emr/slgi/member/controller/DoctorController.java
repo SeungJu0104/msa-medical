@@ -1,4 +1,4 @@
-package com.emr.slgi.doctor;
+package com.emr.slgi.member.controller;
 
 import java.util.List;
 import java.util.Map;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.emr.slgi.member.Member;
-import com.emr.slgi.member.MemberService;
+import com.emr.slgi.member.service.MemberService;
 
 import lombok.RequiredArgsConstructor;
 

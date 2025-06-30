@@ -1,10 +1,13 @@
-package com.emr.slgi.member;
+package com.emr.slgi.member.service;
 
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
+import com.emr.slgi.member.Member;
+import com.emr.slgi.member.MemberDAO;
 
 import lombok.RequiredArgsConstructor;
 

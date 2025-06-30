@@ -1,4 +1,4 @@
-package com.emr.slgi.patient;
+package com.emr.slgi.member.service;
 
 import java.util.List;
 import java.util.UUID;
@@ -9,8 +9,8 @@ import com.emr.slgi.member.Member;
 import com.emr.slgi.member.MemberDAO;
 import com.emr.slgi.member.dto.MemberCreateDTO;
 import com.emr.slgi.member.dto.MemberSearchDTO;
-import com.emr.slgi.patient.dto.PatientRegisterDTO;
-import com.emr.slgi.patient.dto.PatientSearchDTO;
+import com.emr.slgi.member.dto.PatientRegisterDTO;
+import com.emr.slgi.member.dto.PatientSearchDTO;
 
 import lombok.RequiredArgsConstructor;
 

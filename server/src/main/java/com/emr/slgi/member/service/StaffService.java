@@ -1,4 +1,4 @@
-package com.emr.slgi.staff;
+package com.emr.slgi.member.service;
 
 import java.util.List;
 
