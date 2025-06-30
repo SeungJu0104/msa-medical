@@ -3,7 +3,6 @@ package com.emr.slgi.auth.service;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -18,8 +17,7 @@ import com.emr.slgi.credentials.Credentials;
 import com.emr.slgi.credentials.CredentialsDAO;
 import com.emr.slgi.credentials.dto.CredentialsCreateDTO;
 import com.emr.slgi.member.Member;
-import com.emr.slgi.member.MemberDAO;
-import com.emr.slgi.member.dto.MemberCreateDTO;
+import com.emr.slgi.member.service.MemberService;
 import com.emr.slgi.util.JwtUtil;
 
 import io.jsonwebtoken.Claims;
@@ -30,7 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Slf4j
 public class AuthService {
-    private final MemberDAO memberDAO;
+    private final MemberService memberService;
     private final CredentialsDAO credentialsDAO;
     private final RefreshTokenService refreshTokenService;
     private final JwtUtil jwtUtil;
@@ -42,14 +40,7 @@ public class AuthService {
         // TODO: transaction 추가
         // TODO: 주민번호, 전화번호 중복 확인 후 처리
         // TODO: 아이디 중복 확인 후 처리
-        String uuid = UUID.randomUUID().toString();
-        MemberCreateDTO memberCreateDTO = new MemberCreateDTO(
-            uuid,
-            registerByPatientDTO.getName(),
-            registerByPatientDTO.getRrn(),
-            registerByPatientDTO.getPhone()
-        );
-        memberDAO.createPatient(memberCreateDTO);
+        String uuid = memberService.createPatient(registerByPatientDTO);
         CredentialsCreateDTO credentialsCreateDTO = new CredentialsCreateDTO(
             uuid,
             registerByPatientDTO.getUserid(),
@@ -74,7 +65,7 @@ public class AuthService {
     }
 
     public String createAccessToken(String memberUuid) {
-        Member member = memberDAO.getByUuid(memberUuid);
+        Member member = memberService.getByUuid(memberUuid);
 
         Map<String, String> map = Map.of(
             "uuid", member.getUuid(),

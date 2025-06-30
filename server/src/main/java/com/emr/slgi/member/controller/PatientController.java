@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.emr.slgi.member.dto.PatientRegisterDTO;
 import com.emr.slgi.member.dto.PatientSearchDTO;
-import com.emr.slgi.member.service.PatientService;
+import com.emr.slgi.member.service.MemberService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -20,16 +20,18 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/patient")
 @RequiredArgsConstructor
 public class PatientController {
-    private final PatientService patientService;
+
+    private final MemberService memberService;
 
     @PostMapping
     public ResponseEntity<?> registerByStaff(@RequestBody PatientRegisterDTO patientRegisterDTO) {
-        patientService.createPatient(patientRegisterDTO);
+        memberService.createPatient(patientRegisterDTO);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("search")
     public ResponseEntity<?> search(PatientSearchDTO patientSearchDTO) {
-        return ResponseEntity.ok(Map.of("list", patientService.search(patientSearchDTO)));
+        return ResponseEntity.ok(Map.of("list", memberService.search(patientSearchDTO)));
     }
+
 }
