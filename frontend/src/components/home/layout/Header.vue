@@ -14,7 +14,7 @@
       </div>
       <div>
         <RouterLink>회원님</RouterLink>
-        <RouterLink>로그아웃</RouterLink>
+        <LogoutButton />
       </div>
     </div>
     <div>------------</div>
@@ -22,4 +22,5 @@
 </template>
 
 <script setup>
+import LogoutButton from '@/auth/components/LogoutButton.vue';
 </script>

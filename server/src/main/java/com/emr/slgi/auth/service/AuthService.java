@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.emr.slgi.auth.dto.LoginDTO;
+import com.emr.slgi.auth.dto.LogoutDTO;
 import com.emr.slgi.auth.dto.RefreshTokenDTO;
 import com.emr.slgi.auth.dto.RegisterByPatientDTO;
 import com.emr.slgi.credentials.Credentials;
@@ -21,6 +22,7 @@ import com.emr.slgi.member.MemberDAO;
 import com.emr.slgi.member.dto.MemberCreateDTO;
 import com.emr.slgi.util.JwtUtil;
 
+import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -84,8 +86,20 @@ public class AuthService {
     }
 
     public String refreshToken(RefreshTokenDTO refreshTokenDTO) {
-        Map<String, Object> claims = refreshTokenService.parseRefreshToken(refreshTokenDTO.getRefreshToken());
-        String uuid = (String) claims.get("uuid");
+        Claims claims = refreshTokenService.parseRefreshToken(refreshTokenDTO.getRefreshToken());
+        String jti = claims.get("jti", String.class);
+        if (jti == null || refreshTokenService.isTokenBlacklisted(jti)) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "토큰이 만료되었습니다.");
+        }
+        String uuid = claims.get("uuid", String.class);
         return createAccessToken(uuid);
+    }
+
+    public void logout(LogoutDTO logoutDTO) {
+        Claims claims = refreshTokenService.parseRefreshToken(logoutDTO.getRefreshToken());
+        refreshTokenService.blacklistTokenJti(
+            claims.get("jti", String.class),
+            claims.getExpiration()
+        );
     }
 }
