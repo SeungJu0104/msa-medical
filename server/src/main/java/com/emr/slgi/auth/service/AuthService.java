@@ -9,13 +9,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.emr.slgi.auth.dao.CredentialsDAO;
+import com.emr.slgi.auth.domain.Credentials;
+import com.emr.slgi.auth.dto.CredentialsCreateDTO;
 import com.emr.slgi.auth.dto.LoginDTO;
 import com.emr.slgi.auth.dto.LogoutDTO;
 import com.emr.slgi.auth.dto.RefreshTokenDTO;
 import com.emr.slgi.auth.dto.RegisterByPatientDTO;
-import com.emr.slgi.credentials.Credentials;
-import com.emr.slgi.credentials.CredentialsDAO;
-import com.emr.slgi.credentials.dto.CredentialsCreateDTO;
 import com.emr.slgi.member.Member;
 import com.emr.slgi.member.service.MemberService;
 import com.emr.slgi.util.JwtUtil;
