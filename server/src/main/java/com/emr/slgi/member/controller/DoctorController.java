@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.emr.slgi.member.Member;
+import com.emr.slgi.member.domain.Member;
 import com.emr.slgi.member.service.MemberService;
 
 import lombok.RequiredArgsConstructor;

@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.emr.slgi.auth.dto.RegisterByPatientDTO;
-import com.emr.slgi.member.Member;
-import com.emr.slgi.member.MemberDAO;
+import com.emr.slgi.member.dao.MemberDAO;
+import com.emr.slgi.member.domain.Member;
 import com.emr.slgi.member.dto.MemberCreateDTO;
 import com.emr.slgi.member.dto.MemberSearchDTO;
 import com.emr.slgi.member.dto.PatientRegisterDTO;

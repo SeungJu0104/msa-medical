@@ -16,7 +16,7 @@ import com.emr.slgi.auth.dto.LoginDTO;
 import com.emr.slgi.auth.dto.LogoutDTO;
 import com.emr.slgi.auth.dto.RefreshTokenDTO;
 import com.emr.slgi.auth.dto.RegisterByPatientDTO;
-import com.emr.slgi.member.Member;
+import com.emr.slgi.member.domain.Member;
 import com.emr.slgi.member.service.MemberService;
 import com.emr.slgi.util.JwtUtil;
 
