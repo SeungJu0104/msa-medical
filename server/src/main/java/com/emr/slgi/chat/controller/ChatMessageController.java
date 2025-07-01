@@ -22,7 +22,6 @@ public class ChatMessageController {
 	@GetMapping("/messageList/{roomId}")
 	public ResponseEntity<Object> messageList(@PathVariable("roomId") String roomId) {
 		List<ChatMessage> messageList = chatMessageService.getList(roomId);
-		System.out.println(messageList);
 		return ResponseEntity.ok(messageList);
 	}
 }

@@ -26,7 +26,6 @@ public class ChatReadController {
 	
 	private final ChatReadService chatReadService;
 	
-	
 	//실시간 채팅시에 읽음표시
 	@PostMapping("/readtime")
 	public ResponseEntity<Object> readtime(@RequestBody ChatRead read){
