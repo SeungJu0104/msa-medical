@@ -1,7 +1,7 @@
 <script setup>
 
-import WaitingListDoctorName from "@/reception/components/WaitingListDoctorName.vue";
-import WaitingListPatientList from "@/reception/components/WaitingListPatientList.vue";
+import WaitingListDoctorName from "@/common/components/WaitingListDoctorName.vue";
+import WaitingListPatientList from "@/common/components/WaitingListPatientList.vue";
 import {computed, onBeforeMount, onMounted, onUnmounted, ref} from "vue";
 import {useReservationListStore} from "@/stores/reservationListStore.js";
 import {patientMethods} from "@/reservation/util/reservation.js";
