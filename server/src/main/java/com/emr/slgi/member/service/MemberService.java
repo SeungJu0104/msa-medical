@@ -8,12 +8,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.emr.slgi.auth.dto.RegisterByPatientDTO;
+import com.emr.slgi.common.dto.ListResponse;
 import com.emr.slgi.member.dao.MemberDAO;
 import com.emr.slgi.member.domain.Member;
+import com.emr.slgi.member.dto.DoctorUuidName;
 import com.emr.slgi.member.dto.MemberCreateDTO;
 import com.emr.slgi.member.dto.MemberSearchDTO;
 import com.emr.slgi.member.dto.PatientRegisterDTO;
 import com.emr.slgi.member.dto.PatientSearchDTO;
+import com.emr.slgi.member.dto.PatientSummary;
+import com.emr.slgi.member.dto.StaffSummary;
 
 import lombok.RequiredArgsConstructor;
 
@@ -27,24 +31,20 @@ public class MemberService {
     return memberDAO.getByUuid(uuid);
   }
 
-  public List<Member> getDoctorList() {
-    return memberDAO.getDoctorList();
-  }
-
-  public String getDoctorName(String uuid) {
-    String name = memberDAO.getDoctorName(uuid);
-    if (name == null) {
-      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "의사를 찾을 수 없습니다.");
+  public ListResponse<DoctorUuidName> getDoctorList() {
+    List<DoctorUuidName> list = memberDAO.getDoctorList();
+    if (list.isEmpty()) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "의사가 없습니다.");
     }
-    return name;
+    return new ListResponse<>(list);
   }
 
-  public List<Member> getStaffList(String uuid) {
-    List<Member> staffList = memberDAO.getStaffList(uuid);
+  public ListResponse<StaffSummary> getOtherStaffList(String uuid) {
+    List<StaffSummary> staffList = memberDAO.getOtherStaffList(uuid);
     if (staffList.isEmpty()) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
-    return staffList;
+    return new ListResponse<>(staffList);
   }
 
   public String createPatient(RegisterByPatientDTO registerByPatientDTO) {
@@ -70,9 +70,9 @@ public class MemberService {
     memberDAO.createPatient(memberCreateDTO);
   }
 
-  public List<Member> search(PatientSearchDTO patientSearchDTO) {
+  public ListResponse<PatientSummary> search(PatientSearchDTO patientSearchDTO) {
     MemberSearchDTO memberSearchDTO = new MemberSearchDTO(patientSearchDTO.getSearchValue());
-    return memberDAO.search(memberSearchDTO);
+    return new ListResponse<>(memberDAO.search(memberSearchDTO));
   }
 
 }

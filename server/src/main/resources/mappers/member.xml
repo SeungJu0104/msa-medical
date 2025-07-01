@@ -23,14 +23,7 @@
     FROM TB_MEMBER
     WHERE member_role = 'R002'
   </select>
-  <select id="getDoctorName">
-    SELECT name
-    FROM TB_MEMBER
-    WHERE
-      member_role = 'R002'
-      AND uuid=#{uuid}
-  </select>
-  <select id="getStaffList">
+  <select id="getOtherStaffList">
     SELECT
       uuid,
       name,
@@ -57,5 +50,4 @@
     INSERT INTO TB_MEMBER (uuid, member_role, name, rrn, phone)
     VALUES (#{uuid}, 'R004', #{name}, #{rrn}, #{phone})
   </insert>
-
 </mapper>
