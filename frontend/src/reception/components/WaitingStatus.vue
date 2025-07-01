@@ -41,7 +41,7 @@ const selectedStatus = (name) => {
         :key="left.id"
         @click="selectedStatus(left.name)"
     >
-      {{ left.name }}
+      <span v-cloak>{{ left.name }}</span>
     </li>
   </ul>
 </template>

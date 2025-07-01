@@ -213,5 +213,44 @@ export const patientMethods = {
         } catch(err) {
             return common.errMsg(err);
         }
+    },
+    getFullReservationList: async(uuid) => {
+
+        try {
+
+            const response = await customFetch(ENDPOINTS.reservation.getFullReservationList(uuid));
+
+            if(response?.status === 200) {
+                return response.data?.reservationList;
+            }
+
+        } catch(err) {
+
+            return common.errMsg(err);
+
+        }
+
+    },
+    updateReservationStatus: async ({uuid, updateStatus}) => {
+
+        try {
+
+            const response = await customFetch(ENDPOINTS.reservation.updateReservationStatus({uuid, updateStatus}));
+
+            if(response?.status === 200) {
+
+                if(response.data?.message !== undefined) {
+                    common.alertError(response.data?.message);
+                }
+
+            }
+
+        } catch(err) {
+
+            common.errMsg(err);
+
+        }
+
+
     }
 }

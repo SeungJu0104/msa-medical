@@ -5,11 +5,11 @@ import { patientRoutes } from './patientRoutes';
 import { adminRoutes } from './adminRoutes';
 import MedicalTreatment from '@/components/diagnosis/MedicalTreatment.vue';
 import {receptionRoutes} from "@/router/receptionRoutes.js";
+import {reservationRoutes} from "@/router/reservationRoutes.js";
 
 const HomeView = () => import('@/views/HomeView.vue');
 const MainView = () => import('@/views/home/MainView.vue');
 const OtherView = () => import('@/views/other/OtherView.vue');
-const RegReservationByPatient = () => import('@/reservation/views/RegReservationByPatient.vue')
 const LoginView = () => import('@/views/auth/LoginView.vue');
 const Reception = () => import('@/reception/views/WaitingList.vue')
 
@@ -39,11 +39,7 @@ const router = createRouter({
       name: 'other',
       component: OtherView
     },
-    {
-      path: '/regReservationByPatient',
-      name: 'regReservationByPatient',
-      component: RegReservationByPatient,
-    },
+
     {
       path:'/chatrooms',
       name: 'chatrooms',
@@ -53,11 +49,6 @@ const router = createRouter({
       path: '/chatroom/:roomId',
       name : 'chatroom',
       component:ChatRoom
-    },
-    {
-      path: '/acceptPatientByStaff',
-      name: 'acceptPatientByStaff',
-
     },
     {
       path: '/reception',
@@ -72,7 +63,12 @@ const router = createRouter({
       name : 'medicalTreatment',
       component:MedicalTreatment
     },
-
+    {
+      path: '/reservation',
+      children: [
+          ...reservationRoutes
+      ]
+    }
   ],
 })
 

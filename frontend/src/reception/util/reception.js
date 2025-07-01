@@ -58,23 +58,6 @@ export const reception = {
         }
 
     },
-    getReceptionStatusList : async () =>  {
-
-        try {
-
-            const response = await customFetch(ENDPOINTS.reception.getReceptionStatusList());
-
-            if(response?.status === 200) {
-                return response.data?.statusList;
-            }
-
-        } catch(err) {
-
-            common.errMsg(err);
-
-        }
-
-    },
     updateReceptionStatus : async ({uuid, updateStatus}) => {
 
         try {

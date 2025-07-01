@@ -3,7 +3,7 @@ const AcceptPatientByStaff = () => import("@/reception/views/AcceptPatientByStaf
 
 export const receptionRoutes = [
     {
-        path: '/acceptPatientByStaff',
+        path: 'acceptPatientByStaff',
         name: 'acceptPatientByStaff',
         component: AcceptPatientByStaff
     },

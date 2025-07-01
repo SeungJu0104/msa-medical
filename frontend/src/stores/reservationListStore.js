@@ -1,24 +1,24 @@
 import {defineStore} from "pinia";
-import {computed, ref} from "vue";
-import {reception} from "@/reception/util/reception.js";
+import {useUserStore} from "@/stores/userStore.js";
+import {patientMethods} from "@/reservation/util/reservation.js";
 import {errorMessage} from "@/util/errorMessage.js";
 import {common} from "@/util/common.js";
-import {useUserStore} from "@/stores/userStore.js";
+import {computed, ref} from "vue";
+import {reception} from "@/reception/util/reception.js";
 import {status} from "@/status/util/status.js";
 
-export const useWaitingListStore = defineStore('waitingList', () => {
+export const useReservationListStore = defineStore('reservation', () =>  {
 
     const userInfo = computed(() => useUserStore().user);
     const doctorList = ref();
-    const waitingList = ref();
-    const receptionStatusList = ref();
+    const reservationStatusList = ref();
+    const reservationList = ref();
 
-    const getReceptionStatusList = async () => {
+    const getReservationStatusList = async () => {
 
-        receptionStatusList.value = await status.getReceptionStatusList();
+        reservationStatusList.value = await status.getReservationStatusList();
 
     }
-
 
     const roleChk = async () => {
 
@@ -54,11 +54,11 @@ export const useWaitingListStore = defineStore('waitingList', () => {
 
         await nullChk();
 
-        waitingList.value = await Promise.all(
+        reservationList.value = await Promise.all(
 
             doctorList.value.map(async (doctor) => {
 
-                const list = await reception.getWaitingList(doctor.uuid);
+                const list = await patientMethods.getFullReservationList(doctor.uuid);
 
                 return {
                     doctor,
@@ -71,9 +71,9 @@ export const useWaitingListStore = defineStore('waitingList', () => {
 
     return {
         promiseAll,
-        waitingList,
-        getReceptionStatusList,
-        receptionStatusList
+        getReservationStatusList,
+        reservationList,
+        reservationStatusList
     };
 
-})
+});

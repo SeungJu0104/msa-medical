@@ -1,13 +1,11 @@
 package com.emr.slgi.reception.controller;
 
 import com.emr.slgi.reception.dto.ReceptionInfo;
-import com.emr.slgi.reception.dto.ReceptionStatusList;
 import com.emr.slgi.reception.enums.ReceptionStatus;
 import com.emr.slgi.reception.service.ReceptionService;
 import com.emr.slgi.reception.dto.WaitingList;
 import com.emr.slgi.util.CommonErrorMessage;
-import com.emr.slgi.util.ReceptionMessage;
-import com.emr.slgi.util.ReservationErrorMessage;
+import com.emr.slgi.reception.enums.ReceptionMessage;
 import com.emr.slgi.util.Validate;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -51,22 +49,6 @@ public class ReceptionController {
 
         return ResponseEntity.ok(
                 Map.of("waitingList", list)
-        );
-
-    }
-
-    @PreAuthorize("hasAnyRole('DOCTOR', 'NURSE')")
-    @GetMapping("/statusList")
-    public ResponseEntity<Map<String, List<ReceptionStatusList>>> statusList() {
-
-        List<ReceptionStatusList> list = receptionService.getReceptionStatusList().get();
-
-        if(list == null || list.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, CommonErrorMessage.RETRY);
-        };
-
-        return ResponseEntity.ok(
-                Map.of("statusList", list)
         );
 
     }

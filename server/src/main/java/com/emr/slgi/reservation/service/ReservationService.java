@@ -1,9 +1,13 @@
 package com.emr.slgi.reservation.service;
 
+import com.emr.slgi.reception.dao.ReceptionDAO;
+import com.emr.slgi.reception.enums.ReceptionStatus;
 import com.emr.slgi.reservation.dao.ReservationDAO;
 import com.emr.slgi.reservation.dto.FindReservationDate;
 import com.emr.slgi.reservation.dto.ReservationForm;
 import com.emr.slgi.reservation.dto.ReservationList;
+import com.emr.slgi.reservation.dto.ReservationStatusList;
+import com.emr.slgi.reservation.enums.ReservationStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -11,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -21,6 +26,7 @@ import java.util.Optional;
 public class ReservationService {
 
     private final ReservationDAO rDao;
+    private final ReceptionDAO receptionDAO;
 
     public int makeReservation(ReservationForm rf) {
 
@@ -121,6 +127,31 @@ public class ReservationService {
         }else {
             return true;
         }
+
+    }
+
+    public Optional<List<ReservationList>> getFullReservationList(String doctorUuid) {
+
+        return Optional.ofNullable(rDao.getFullReservationList(doctorUuid));
+
+    }
+
+    public int updateReservationStatus(String uuid, String updateStatus) {
+
+        ReservationStatus status = ReservationStatus.from(updateStatus);
+
+        return rDao.updateReservationStatus(
+            ReservationList.builder()
+                    .uuid(uuid)
+                    .status(status)
+                    .build()
+        );
+
+    }
+
+    public int updateWaitingStatusOnReception(String uuid, String updateStatus) {
+
+        return receptionDAO.updateWaitingStatusOnReception(uuid, updateStatus);
 
     }
 }

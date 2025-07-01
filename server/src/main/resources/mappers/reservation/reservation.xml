@@ -97,17 +97,13 @@
             STATUS = 'RS01'
     </select>
 
-    <select id="getWaitingList">
-
-    </select>
-
     <update id="cancelReservation">
         UPDATE
             TB_RESERVATION
         SET
             STATUS = 'RS05'
         WHERE
-            ID = #{reservationId}
+            UUID = #{reservationId}
             AND
             STATUS = 'RS01'
     </update>
@@ -118,7 +114,38 @@
         SET
             RESERVATION_DATE = #{dateTime}
         WHERE
-            ID = #{reservationId}
+            UUID = #{reservationId}
+    </update>
+
+    <select id="getFullReservationList">
+        SELECT
+            R.UUID,
+            R.PATIENT_UUID,
+            M.NAME AS NAME,
+            R.DOCTOR_UUID,
+            R.STATUS,
+            R.RESERVATION_DATE
+        FROM
+            TB_RESERVATION R
+                JOIN
+            TB_MEMBER M
+                ON R.PATIENT_UUID = M.UUID
+        WHERE
+            R.DOCTOR_UUID = #{doctorUuid}
+            AND
+            R.STATUS = 'RS01'
+--         테스트 위해 오늘 날짜 조건은 주석 처리
+--             AND
+--             RESERVATION_DATE BETWEEN CURDATE() AND CURDATE() + INTERVAL 1 DAY
+    </select>
+
+    <update id="updateReservationStatus">
+        UPDATE
+            TB_RESERVATION
+        SET
+            STATUS = #{status}
+        WHERE
+            UUID = #{uuid}
     </update>
 
 </mapper>

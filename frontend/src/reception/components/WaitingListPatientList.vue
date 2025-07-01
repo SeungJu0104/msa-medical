@@ -1,5 +1,6 @@
 <script setup>
 import WaitingStatus from "@/reception/components/WaitingStatus.vue";
+import dayjs from "dayjs";
 
 const {value, status} = defineProps({
                 value: Object,
@@ -22,11 +23,14 @@ const getPatientInfo = (patient) => {
 
 <template>
 
-  <div class="container" v-if="value">
+  <div class="container">
     <div class="my-3">
       <template v-for="patient in value" :key="patient.uuid">
         <div>
           <button class="btn btn-primary" type="submit" @click="getPatientInfo(patient)" v-cloak>{{patient.name}}</button>
+          <span v-cloak v-if="patient.reservationDate">
+            {{ dayjs(patient.reservationDate).format("YYYY-MM-DD HH:mm:ss") }}
+          </span>
           <WaitingStatus @update:value="(updateStatus) => onStatusChange(patient, updateStatus)" :status="status" v-model:value="patient.status"/>
         </div>
       </template>
