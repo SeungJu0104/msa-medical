@@ -150,9 +150,9 @@ export const ENDPOINTS = {
             method: 'put',
             url: '/reservation/cancelHoldingReservation'
         },
-        getFullReservationList: (uuid) => ({
+        getFullReservationList: (uuid, date) => ({
             method: 'get',
-            url: `/reservation/${uuid}/list`
+            url: `/reservation/${uuid}/${date}/list`
         }),
         updateReservationStatus: ({uuid, updateStatus}) => ({
             method: 'put',

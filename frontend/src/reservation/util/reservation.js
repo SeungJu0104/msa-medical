@@ -214,11 +214,11 @@ export const patientMethods = {
             return common.errMsg(err);
         }
     },
-    getFullReservationList: async(uuid) => {
+    getFullReservationList: async(uuid, date) => {
 
         try {
 
-            const response = await customFetch(ENDPOINTS.reservation.getFullReservationList(uuid));
+            const response = await customFetch(ENDPOINTS.reservation.getFullReservationList(uuid, date));
 
             if(response?.status === 200) {
                 return response.data?.reservationList;

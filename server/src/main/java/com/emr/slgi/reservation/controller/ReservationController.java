@@ -179,14 +179,19 @@ public class ReservationController {
     }
 
     @PreAuthorize("hasAnyRole('DOCTOR', 'NURSE')")
-    @GetMapping("/{uuid}/list")
-    public ResponseEntity<Map<String, List<ReservationList>>> getFullReservationList(@PathVariable("uuid") String doctorUuid) {
+    @GetMapping("/{uuid}/{date}/list")
+    public ResponseEntity<Map<String, List<ReservationList>>> getFullReservationList(
+            @PathVariable("uuid") String doctorUuid,
+            @PathVariable("date") LocalDateTime date
+    ) {
+
+        log.info(String.valueOf(date));
 
         if(doctorUuid == null || Validate.regexValidate(Map.of(Validate.MEMBER_UUID_REGEX, doctorUuid)).contains(false)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, ReservationErrorMessage.CAN_NOT_FIND_DOCTOR_INFO + CommonErrorMessage.RETRY);
         }
 
-        List<ReservationList> reservationList = rService.getFullReservationList(doctorUuid).get();
+        List<ReservationList> reservationList = rService.getFullReservationList(doctorUuid, date).get();
 
         if(reservationList == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ReservationErrorMessage.CAN_NOT_FIND_RESERVATION_DATE + CommonErrorMessage.RETRY);

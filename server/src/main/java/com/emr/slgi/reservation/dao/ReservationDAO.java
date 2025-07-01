@@ -6,6 +6,7 @@ import com.emr.slgi.reservation.dto.ReservationList;
 import com.emr.slgi.reservation.dto.ReservationStatusList;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -32,7 +33,7 @@ public interface ReservationDAO {
 
     int changeReservation(String reservationId, LocalDateTime dateTime);
 
-    List<ReservationList> getFullReservationList(String doctorUuid);
+    List<ReservationList> getFullReservationList(String doctorUuid, LocalDate date);
 
     int updateReservationStatus(ReservationList build);
 }

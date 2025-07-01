@@ -50,7 +50,6 @@ public enum ReceptionStatus {
         return byStatus.containsKey(statusText);
     }
 
-
 }
 
 

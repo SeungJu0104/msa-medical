@@ -29,7 +29,7 @@ const getPatientInfo = (patient) => {
         <div>
           <button class="btn btn-primary" type="submit" @click="getPatientInfo(patient)" v-cloak>{{patient.name}}</button>
           <span v-cloak v-if="patient.reservationDate">
-            {{ dayjs(patient.reservationDate).format("YYYY-MM-DD HH:mm:ss") }}
+            {{ dayjs(patient.reservationDate).format("HH:mm") }}
           </span>
           <WaitingStatus @update:value="(updateStatus) => onStatusChange(patient, updateStatus)" :status="status" v-model:value="patient.status"/>
         </div>

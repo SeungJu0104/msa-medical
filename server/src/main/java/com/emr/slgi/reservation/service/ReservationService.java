@@ -130,9 +130,9 @@ public class ReservationService {
 
     }
 
-    public Optional<List<ReservationList>> getFullReservationList(String doctorUuid) {
+    public Optional<List<ReservationList>> getFullReservationList(String doctorUuid, LocalDateTime date) {
 
-        return Optional.ofNullable(rDao.getFullReservationList(doctorUuid));
+        return Optional.ofNullable(rDao.getFullReservationList(doctorUuid, date.toLocalDate()));
 
     }
 

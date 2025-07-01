@@ -48,7 +48,7 @@ export const useReservationListStore = defineStore('reservation', () =>  {
 
     }
 
-    const promiseAll = async () => {
+    const promiseAll = async (date) => {
 
         await roleChk();
 
@@ -58,7 +58,7 @@ export const useReservationListStore = defineStore('reservation', () =>  {
 
             doctorList.value.map(async (doctor) => {
 
-                const list = await patientMethods.getFullReservationList(doctor.uuid);
+                const list = await patientMethods.getFullReservationList(doctor.uuid, date);
 
                 return {
                     doctor,
