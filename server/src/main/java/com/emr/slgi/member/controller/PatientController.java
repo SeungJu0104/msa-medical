@@ -13,6 +13,7 @@ import com.emr.slgi.member.dto.PatientRegisterDTO;
 import com.emr.slgi.member.dto.PatientSearchDTO;
 import com.emr.slgi.member.service.MemberService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -24,14 +25,14 @@ public class PatientController {
 
     @PreAuthorize("hasAnyRole('DOCTOR', 'NURSE')")
     @PostMapping
-    public ResponseEntity<?> registerByStaff(@RequestBody PatientRegisterDTO patientRegisterDTO) {
+    public ResponseEntity<?> registerByStaff(@RequestBody @Valid PatientRegisterDTO patientRegisterDTO) {
         memberService.createPatient(patientRegisterDTO);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PreAuthorize("hasAnyRole('DOCTOR', 'NURSE')")
     @GetMapping("search")
-    public ResponseEntity<?> search(PatientSearchDTO patientSearchDTO) {
+    public ResponseEntity<?> search(@Valid PatientSearchDTO patientSearchDTO) {
         return ResponseEntity.ok(memberService.search(patientSearchDTO));
     }
 
