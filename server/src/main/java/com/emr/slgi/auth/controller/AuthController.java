@@ -1,7 +1,5 @@
 package com.emr.slgi.auth.controller;
 
-import java.util.Map;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,8 +39,7 @@ public class AuthController {
         @Pattern(regexp = RegexPatterns.USERID)
         String userid
     ) {
-        boolean exists = authService.checkIdDuplicate(userid);
-        return ResponseEntity.ok(Map.of("exists", exists));
+        return ResponseEntity.ok(authService.checkIdDuplicate(userid));
     }
 
     @PostMapping("/login")
@@ -52,9 +49,7 @@ public class AuthController {
 
     @PostMapping("/refresh-token")
     public ResponseEntity<?> refreshToken(@RequestBody @Valid RefreshTokenDTO refreshTokenDTO) {
-        return ResponseEntity.ok(
-            Map.of("accessToken", authService.refreshToken(refreshTokenDTO))
-        );
+        return ResponseEntity.ok(authService.refreshToken(refreshTokenDTO));
     }
 
     @PostMapping("/logout")

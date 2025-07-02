@@ -1,7 +1,6 @@
 package com.emr.slgi.auth.service;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -10,11 +9,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.emr.slgi.auth.domain.Credentials;
+import com.emr.slgi.auth.dto.AccessTokenResponse;
 import com.emr.slgi.auth.dto.CredentialsCreateDTO;
 import com.emr.slgi.auth.dto.LoginDTO;
+import com.emr.slgi.auth.dto.LoginResponse;
 import com.emr.slgi.auth.dto.LogoutDTO;
 import com.emr.slgi.auth.dto.RefreshTokenDTO;
 import com.emr.slgi.auth.dto.RegisterByPatientDTO;
+import com.emr.slgi.auth.dto.UseridExistsResponse;
 import com.emr.slgi.member.domain.Member;
 import com.emr.slgi.member.service.MemberService;
 import com.emr.slgi.util.JwtUtil;
@@ -49,19 +51,19 @@ public class AuthService {
         credentialsService.create(credentialsCreateDTO);
     }
 
-    public boolean checkIdDuplicate(String userid) {
-        return credentialsService.existsByUserid(userid);
+    public UseridExistsResponse checkIdDuplicate(String userid) {
+        return new UseridExistsResponse(credentialsService.existsByUserid(userid));
     }
 
-    public Map<String, String> login(LoginDTO loginDTO) {
-        Map<String, String> map = new HashMap<>();
+    public LoginResponse login(LoginDTO loginDTO) {
         Credentials credentials = credentialsService.getMemberCredentials(loginDTO);
         if (credentials == null || !credentials.getPassword().equals(loginDTO.getPassword())) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "아이디나 비밀번호가 틀렸습니다.");
         }
-        map.put("accessToken", createAccessToken(credentials.getUserUuid()));
-        map.put("refreshToken", refreshTokenService.createRefreshToken(credentials.getUserUuid()));
-        return map;
+        return new LoginResponse(
+            createAccessToken(credentials.getUserUuid()),
+            refreshTokenService.createRefreshToken(credentials.getUserUuid())
+        );
     }
 
     public String createAccessToken(String memberUuid) {
@@ -76,14 +78,14 @@ public class AuthService {
         return jwtUtil.generateToken(map, thirtyMinutesLater, jwtSecret);
     }
 
-    public String refreshToken(RefreshTokenDTO refreshTokenDTO) {
+    public AccessTokenResponse refreshToken(RefreshTokenDTO refreshTokenDTO) {
         Claims claims = refreshTokenService.parseRefreshToken(refreshTokenDTO.getRefreshToken());
         String jti = claims.get("jti", String.class);
         if (jti == null || refreshTokenService.isTokenBlacklisted(jti)) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "토큰이 만료되었습니다.");
         }
         String uuid = claims.get("uuid", String.class);
-        return createAccessToken(uuid);
+        return new AccessTokenResponse(createAccessToken(uuid));
     }
 
     public void logout(LogoutDTO logoutDTO) {
