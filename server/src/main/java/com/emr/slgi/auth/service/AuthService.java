@@ -1,5 +1,7 @@
 package com.emr.slgi.auth.service;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.Map;
 
@@ -73,8 +75,7 @@ public class AuthService {
             "uuid", member.getUuid(),
             "role", member.getRole().getCode()
         );
-        Date thirtyMinutesLater = new Date(System.currentTimeMillis() + 30L * 60 * 1000);
-
+        Date thirtyMinutesLater = Date.from(Instant.now().plus(30, ChronoUnit.MINUTES));
         return jwtUtil.generateToken(claims, thirtyMinutesLater, jwtSecret);
     }
 
