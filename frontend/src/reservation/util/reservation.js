@@ -220,7 +220,7 @@ export const patientMethods = {
 
             const response = await customFetch(ENDPOINTS.reservation.getFullReservationList(uuid, date));
 
-            if(response?.status === 200) {
+            if(response.status === 200) {
                 return response.data?.reservationList;
             }
 
