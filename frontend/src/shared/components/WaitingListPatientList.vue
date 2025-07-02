@@ -1,6 +1,6 @@
 <script setup>
 
-import WaitingStatus from "@/common/components/WaitingStatus.vue";
+import WaitingStatus from "@/shared/components/WaitingStatus.vue";
 
 const {value, status} = defineProps({
                 value: Object,
