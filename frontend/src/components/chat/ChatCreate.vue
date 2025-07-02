@@ -5,7 +5,7 @@
        <input v-model="state.roomName" placeholder="채팅방 이름" />
        <div v-for="member in state.members" :key="member.uuid">
          <input type="checkbox" :value="member.uuid" v-model="state.selectedMembers" />
-         {{ member.uuid }}
+         {{ member.name }}
        </div>
  
        <div class="modal-footer">
@@ -17,20 +17,21 @@
      
  </template>
 <script setup>
-import { inject, onMounted, reactive } from 'vue';
+import { computed, onMounted, reactive } from 'vue';
 import { useRouter } from 'vue-router';
-import { useAuthStore } from '@/stores/counter'
 import { customFetch } from '@/util/customFetch';
 import { ENDPOINTS } from '@/util/endpoints';
+import { useUserStore } from '@/stores/userStore';
+
+const userStore = useUserStore();
+const uuid = computed(() => userStore.user?.uuid ?? '');
 
 const router = useRouter()
-const auth = useAuthStore();
-const uuid = auth.user.uuid
 const emit = defineEmits(['close','refresh'])
 
 const state = reactive({
     roomName: '',
-    selectedMembers: [uuid],
+    selectedMembers: [uuid.value],
     members: [],
 })
 
@@ -40,7 +41,7 @@ onMounted(()=>{
 
 const loadUuidList = async () => {
   try {
-    const response= await customFetch(ENDPOINTS.staff.list(uuid))
+    const response= await customFetch(ENDPOINTS.staff.list(uuid.value))
     state.members = response.data.list
     
   } catch (error) {
@@ -61,7 +62,7 @@ const submit =   async ()  => {
   }
   const data = {
     roomName: state.roomName,
-    uuid: uuid,
+    uuid: uuid.value,
     members: state.selectedMembers
   }
 

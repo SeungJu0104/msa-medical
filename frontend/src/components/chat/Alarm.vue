@@ -24,28 +24,17 @@
   
     
   <script setup>
-  
-import { useAuthStore } from '@/stores/counter'
-import { customFetch } from '@/util/customFetch'
-import { reactive , computed, onMounted } from 'vue'
-
-
-  
-  const emit = defineEmits(['close'])
+import { computed, onMounted } from 'vue'
+const emit = defineEmits(['close'])
   
 
   const props = defineProps({
   alarms: Array,
   loadAlarmList: Function
 })
-
 onMounted(() => {
   props.loadAlarmList()  // 알림 수동 새로고침할 때
 })
-  const auth = useAuthStore()
-  const uuid = auth.user.uuid
-  
-
   const alarms = computed(() => {
     return props.alarms.filter(room => room.alarmCount > 0)
   })
