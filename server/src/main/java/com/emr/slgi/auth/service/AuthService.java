@@ -69,13 +69,13 @@ public class AuthService {
     public String createAccessToken(String memberUuid) {
         Member member = memberService.getByUuid(memberUuid);
 
-        Map<String, String> map = Map.of(
+        Map<String, String> claims = Map.of(
             "uuid", member.getUuid(),
             "role", member.getRole().getCode()
         );
         Date thirtyMinutesLater = new Date(System.currentTimeMillis() + 30L * 60 * 1000);
 
-        return jwtUtil.generateToken(map, thirtyMinutesLater, jwtSecret);
+        return jwtUtil.generateToken(claims, thirtyMinutesLater, jwtSecret);
     }
 
     public AccessTokenResponse refreshToken(RefreshTokenDTO refreshTokenDTO) {
