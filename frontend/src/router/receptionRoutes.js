@@ -1,4 +1,4 @@
-const WaitingListPatientList = () => import("@/common/components/WaitingListPatientList.vue")
+const WaitingListPatientList = () => import("@/shared/components/WaitingListPatientList.vue")
 const AcceptPatientByStaff = () => import("@/reception/views/AcceptPatientByStaff.vue");
 
 export const receptionRoutes = [
