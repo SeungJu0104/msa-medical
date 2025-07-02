@@ -24,19 +24,25 @@ const showCalendar = ref(false);
 // 날짜 증감에 따른 동작 함수들
 const setBeforeDate = () => {
 
-  selectedDate.date.subtract(1, 'day');
+  selectedDate.date = selectedDate.date.subtract(1, 'day');
 
 }
 
 const setAfterDate = () => {
 
-  selectedDate.date.add(1, 'day');
+  selectedDate.date = selectedDate.date.add(1, 'day');
 
 }
 
 const toggleCalendar = () => {
 
   showCalendar.value = !showCalendar.value;
+
+}
+
+const hideDateMovement = () => {
+
+  return (selectedDate.date >= minDate && selectedDate.date <= maxDate);
 
 }
 
@@ -106,7 +112,9 @@ onUnmounted(() => {
 <template>
 
   <div class="container">
-  <h1 @click="setBeforeDate">&lt;</h1><div @click="toggleCalendar">{{selectedDate.date.format("M월 D일")}}</div><h1 @click="setAfterDate">&gt;</h1>
+  <h1 v-show="hideDateMovement" @click="setBeforeDate">&lt;</h1>
+  <div @click="toggleCalendar">{{selectedDate.date.format("M월 D일")}}</div>
+  <h1 v-show="hideDateMovement" @click="setAfterDate">&gt;</h1>
   <template v-if="showCalendar" @blur="toggleCalendar">
     <VueDatepicker
         :model-value = "selectedDate.date"

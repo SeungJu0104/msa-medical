@@ -1,6 +1,6 @@
 <script setup>
-import WaitingStatus from "@/reception/components/WaitingStatus.vue";
-import dayjs from "dayjs";
+
+import WaitingStatus from "@/common/components/WaitingStatus.vue";
 
 const {value, status} = defineProps({
                 value: Object,
