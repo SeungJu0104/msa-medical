@@ -53,7 +53,6 @@ import { useRoute, useRouter } from 'vue-router';
     const chatSub =  (client) => {
         if(client && client.connected){
             chatRoomSub = subscribeChannel(client,`/sub/chatroom/${roomId}`,async (message) => {
-            console.log("[📩 수신]", message)
             state.messages.push(message)
             if(message.uuid !== uuid.value){
                 //읽음처리
@@ -79,7 +78,6 @@ import { useRoute, useRouter } from 'vue-router';
             uuid :uuid.value,
             content:state.content
             });
-            console.log("[📤 보냄]", state.content)
         }
             state.content=''
     }

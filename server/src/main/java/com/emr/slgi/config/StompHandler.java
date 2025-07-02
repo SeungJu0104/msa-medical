@@ -51,23 +51,18 @@ public class StompHandler implements ChannelInterceptor{
 
 		}
 		else if(StompCommand.SUBSCRIBE == accessor.getCommand()) {
-			log.info("SUBSCRIBE = {}", StompCommand.SUBSCRIBE);
-			
             String destination = accessor.getDestination();
-            
             if (destination != null && destination.startsWith("/sub/chatroom/")) {
                 String roomId = destination.substring("/sub/chatroom/".length());
                 String subscriptionId = accessor.getSubscriptionId();
                 accessor.getSessionAttributes().put("roomId", roomId);
                 accessor.getSessionAttributes().put(subscriptionId, roomId);
                 String uuid = (String) accessor.getSessionAttributes().get("uuid");
-                log.info("SUBSCRIBE 요청: roomId={}, uuid={}", roomId, uuid);
                 chatJoinDAO.updateJoinTime(roomId, uuid);
             }
 		}
 		
 		else if(StompCommand.UNSUBSCRIBE == accessor.getCommand()) {
-			log.info("UNSUBSCRIBE = {}", StompCommand.UNSUBSCRIBE);
 			String subscriptionId = accessor.getSubscriptionId();
 			String roomId = (String) accessor.getSessionAttributes().get(subscriptionId);
 		    String uuid = (String) accessor.getSessionAttributes().get("uuid");
