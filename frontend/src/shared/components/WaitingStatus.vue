@@ -40,6 +40,7 @@ const selectedStatus = (name) => {
         v-for="left in leftOver"
         :key="left.id"
         @click="selectedStatus(left.name)"
+        v-if="filterOptionFunc(date, )"
     >
       <span v-cloak>{{ left.name }}</span>
     </li>

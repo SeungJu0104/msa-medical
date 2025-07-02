@@ -6,6 +6,8 @@ import {common} from "@/util/common.js";
 import {computed, ref} from "vue";
 import {reception} from "@/reception/util/reception.js";
 import {status} from "@/status/util/status.js";
+import {ENDPOINTS} from "@/util/endpoints.js";
+import {customFetch} from "@/util/customFetch.js";
 
 export const useReservationListStore = defineStore('reservation', () =>  {
 
@@ -27,7 +29,8 @@ export const useReservationListStore = defineStore('reservation', () =>  {
         if(userInfo.value.role === 'DOCTOR') {
 
             doctorList.value = [{
-                name: userInfo.value.name
+                name: userInfo.value.name,
+                uuid: userInfo.value.uuid
             }]
 
         } else {

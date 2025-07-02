@@ -231,11 +231,11 @@ export const patientMethods = {
         }
 
     },
-    updateReservationStatus: async ({uuid, updateStatus}) => {
+    updateReservationStatus: async (data) => {
 
         try {
 
-            const response = await customFetch(ENDPOINTS.reservation.updateReservationStatus({uuid, updateStatus}));
+            const response = await customFetch(ENDPOINTS.reservation.updateReservationStatus(data));
 
             if(response?.status === 200) {
 

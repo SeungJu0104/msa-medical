@@ -135,7 +135,11 @@
             AND
             R.STATUS = 'RS01'
             AND
-            R.RESERVATION_DATE = #{date}
+            R.RESERVATION_DATE
+                BETWEEN DATE(#{date})
+                AND
+                DATE_ADD(DATE(#{date}), INTERVAL 1 DAY)
+
     </select>
 
     <update id="updateReservationStatus">

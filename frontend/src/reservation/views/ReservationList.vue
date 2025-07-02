@@ -1,7 +1,7 @@
 <script setup>
 
-import WaitingListDoctorName from "@/common/components/WaitingListDoctorName.vue";
-import WaitingListPatientList from "@/common/components/WaitingListPatientList.vue";
+import WaitingListDoctorName from "@/shared/components/WaitingListDoctorName.vue";
+import WaitingListPatientList from "@/shared/components/WaitingListPatientList.vue";
 import {computed, onBeforeMount, onMounted, onUnmounted, reactive, ref} from "vue";
 import {useReservationListStore} from "@/stores/reservationListStore.js";
 import {patientMethods} from "@/reservation/util/reservation.js";
@@ -13,24 +13,32 @@ import '@vuepic/vue-datepicker/dist/main.css'
 const reservationListStore = useReservationListStore();
 const reservationStatusList = ref();
 const fullReservationList = ref();
-const today = dayjs();
+const today = dayjs(new Date);
 const selectedDate = reactive({
-  date: dayjs()
+  date: today
 });
-const minDate = today.toISOString();
-const maxDate = today.add(6, 'day').toISOString();
+const minDate = today;
+const maxDate = today.add(6, 'day');
 const showCalendar = ref(false);
 
 // 날짜 증감에 따른 동작 함수들
-const setBeforeDate = () => {
+const setBeforeDate = async () => {
 
-  selectedDate.date = selectedDate.date.subtract(1, 'day');
+  handleDate(selectedDate.date.subtract(1, 'day'));
+
+  await reservationListStore.promiseAll(selectedDate.date.toISOString());
+
+  fullReservationList.value = reservationListStore.reservationList;
 
 }
 
-const setAfterDate = () => {
+const setAfterDate = async () => {
 
-  selectedDate.date = selectedDate.date.add(1, 'day');
+  handleDate(selectedDate.date.add(1, 'day'));
+
+  await reservationListStore.promiseAll(selectedDate.date.toISOString());
+
+  fullReservationList.value = reservationListStore.reservationList;
 
 }
 
@@ -40,26 +48,25 @@ const toggleCalendar = () => {
 
 }
 
-const hideDateMovement = () => {
+const hideBeforeDateMovement = computed(() => {
+  return (selectedDate.date.isAfter(minDate));
+});
 
-  return (selectedDate.date >= minDate && selectedDate.date <= maxDate);
-
-}
+const hideAfterDateMovement = computed(() => {
+  return (selectedDate.date.isBefore(maxDate));
+})
 
 
 // 상태 변경 시 동작하는 함수
 const handleUpdateStatus = async ({uuid, updateStatus}) => {
 
-    await patientMethods.updateReservationStatus({uuid, updateStatus});
-
-
-
-
-  // 변경 사항 알리는 웹소켓 구현
-
+    await patientMethods.updateReservationStatus({
+      uuid,
+      updateStatus
+    });
 
   // 성공이면 다시 예약 테이블 가져오기
-  await reservationListStore.promiseAll(minDate);
+  await reservationListStore.promiseAll(selectedDate.date.toISOString());
   fullReservationList.value = reservationListStore.reservationList;
 
 }
@@ -75,15 +82,26 @@ const disabledWeekends = (date) => {
 
 const handleDate = (date) => {
 
-  selectedDate.date = date;
+  selectedDate.date = dayjs(date);
 
 }
+
+// const filterOption = [
+//   "대기"
+// ];
+//
+// const filterOptionFunc = (date, selectedDate.date) => {
+//   const today = new Date();
+//
+//   return true;
+//
+// }
 
 onBeforeMount(async () => {
 
   await Promise.all([
 
-    reservationListStore.promiseAll(minDate),
+    reservationListStore.promiseAll(minDate.toISOString()),
     reservationListStore.getReservationStatusList()
 
   ]);
@@ -112,15 +130,15 @@ onUnmounted(() => {
 <template>
 
   <div class="container">
-  <h1 v-show="hideDateMovement" @click="setBeforeDate">&lt;</h1>
+  <h1 v-show="hideBeforeDateMovement" @click="setBeforeDate">&lt;</h1>
   <div @click="toggleCalendar">{{selectedDate.date.format("M월 D일")}}</div>
-  <h1 v-show="hideDateMovement" @click="setAfterDate">&gt;</h1>
+  <h1 v-show="hideAfterDateMovement" @click="setAfterDate">&gt;</h1>
   <template v-if="showCalendar" @blur="toggleCalendar">
     <VueDatepicker
         :model-value = "selectedDate.date"
         :format="'yyyy-MM-dd'"
-        :min-date="minDate"
-        :max-date="maxDate"
+        :min-date="minDate.toISOString()"
+        :max-date="maxDate.toISOString()"
         :disabled-dates="disabledWeekends"
         :enable-time-picker="false"  :input-class="'form-control'"
         :esc-close = "false"
@@ -139,7 +157,8 @@ onUnmounted(() => {
         @updateStatus="handleUpdateStatus"
         @getPatientInfo="getPatientInfo"
         :value="list.patientList"
-        :status="reservationStatusList"/>
+        :status="reservationStatusList"
+    />
     </div>
   </template>
   </div>

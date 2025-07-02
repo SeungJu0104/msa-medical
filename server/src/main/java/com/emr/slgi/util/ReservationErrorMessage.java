@@ -10,6 +10,7 @@ public class ReservationErrorMessage {
     public static final String RESERVATION_RUN_ERROR = "예약 중 에러가 발생했습니다.";
     public static final String RESERVATION_CHANGE_ERROR = "예약 변경 중 에러가 발생했습니다.";
     public static final String CAN_NOT_FIND_DOCTOR_INFO = "의사 정보를 가져올 수 없습니다.";
+    public static final String IS_NOT_VALID_DATE = "예약 가능한 날짜가 압니다.";
 
 }
 

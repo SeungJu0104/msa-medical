@@ -8,6 +8,7 @@ import com.emr.slgi.reservation.dto.ReservationStatusList;
 import com.emr.slgi.reservation.enums.ReservationMessage;
 import com.emr.slgi.reservation.enums.ReservationStatus;
 import com.emr.slgi.reservation.service.ReservationService;
+import com.emr.slgi.reservation.util.ReservationUtil;
 import com.emr.slgi.util.CommonErrorMessage;
 import com.emr.slgi.util.ReservationErrorMessage;
 import com.emr.slgi.util.Validate;
