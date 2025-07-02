@@ -27,7 +27,7 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/ko'
 import { computed, onMounted, reactive } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-dayjs.locale('ko') // 오후 || 오전 표시 해주는거
+    dayjs.locale('ko') // 오후 || 오전 표시 해주는거
     const route = useRoute()
     const router = useRouter()
     const roomId= route.params.roomId
@@ -41,10 +41,10 @@ dayjs.locale('ko') // 오후 || 오전 표시 해주는거
     })
     let client;
     onMounted(() => {
-        client = getStompClient(uuid.value,token)
-        client.onConnect = () => {
-            chatSub(client)
-  }
+        client = getStompClient(uuid.value,token,(client) => {
+        chatSub(client)
+        
+    })  
         loadChatName()
         loadChatMessage()
     })
@@ -53,14 +53,16 @@ dayjs.locale('ko') // 오후 || 오전 표시 해주는거
     const chatSub =  (client) => {
         if(client && client.connected){
             chatRoomSub = subscribeChannel(client,`/sub/chatroom/${roomId}`,async (message) => {
+            console.log("[📩 수신]", message)
             state.messages.push(message)
             if(message.uuid !== uuid.value){
                 //읽음처리
                 try {
-                    await customFetch(ENDPOINTS.chat.readtime,{data:{
-                    roomId,
-                    uuid: uuid.value,
-                    messageId: message.messageId
+                    await customFetch(ENDPOINTS.chat.readtime,{
+                    data:{
+                        roomId,
+                        uuid: uuid.value,
+                        messageId: message.messageId
                 }})
                 } catch (error) {
                     console.error("에러:", error)
@@ -77,6 +79,7 @@ dayjs.locale('ko') // 오후 || 오전 표시 해주는거
             uuid :uuid.value,
             content:state.content
             });
+            console.log("[📤 보냄]", state.content)
         }
             state.content=''
     }
@@ -113,18 +116,6 @@ dayjs.locale('ko') // 오후 || 오전 표시 해주는거
             console.error("에러:", error)
         }
     }
-
-    // // 퇴장 시간 갱신 // 지울예정입니다.
-    // const exitTime = async () =>{
-    //     try {
-    //         const response = await customFetch(ENDPOINTS.chat.updateOutTime,{ data:{roomId,uuid :uuid.value}})
-    //         if (response.status===200){
-    //             router.push({name:'chatrooms'})
-    //         }
-    //     } catch (error) {
-    //         console.error("에러:", error)
-    //     }
-    // }
 
     // 나가기
     const exit = () => {

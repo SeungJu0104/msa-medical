@@ -4,8 +4,10 @@ import SockJS from 'sockjs-client'
 
 let stompClient = null
 
-export function getStompClient(uuid, token) {
-  if (stompClient && stompClient.connected) return stompClient
+export function getStompClient(uuid, token,onConnectedCallback) {
+  if (stompClient && stompClient.connected){
+    if (onConnectedCallback) onConnectedCallback(stompClient)
+      return stompClient}
 
   stompClient = new Client({
     webSocketFactory: () => new SockJS('/ws'),
@@ -13,8 +15,18 @@ export function getStompClient(uuid, token) {
       sender: uuid,
       Authorization: `Bearer ${token}`,
     },
-    onConnect: () => console.log("Singleton 연결됨"),
-    onStompError: (error) => console.error("에러", error),
+    onConnect: () => {
+      console.log("Singleton 연결됨")
+      if (onConnectedCallback) onConnectedCallback(stompClient)
+    },
+    onStompError: (error) => {
+      console.error("에러", error)
+      // if (error.headers.message.includes("만료된 토큰")) {
+      //   alert("로그인 시간이 만료되었습니다. 다시 로그인해주세요.");
+      //   stompClient.deactivate();
+      //   router.push('/login')
+      // }
+    },
   })
 
   stompClient.activate()

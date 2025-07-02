@@ -30,8 +30,7 @@ public class ChatService {
 		content.setName(name.getName()); // 화면에 표여주기위해서 
 	    content.setCreateDate(LocalDateTime.now()); // 화면에 표여주기위해서 
 		chatMessageService.saveMessage(content);
-		messagingTemplate.convertAndSend("/sub/chatroom/" + content.getRoomId(), content);
-		
+		messagingTemplate.convertAndSend("/sub/chatroom/" + content.getRoomId(), content);	
 	}
 
 	public void getRoomId(ChatMessage content) {
@@ -51,10 +50,5 @@ public class ChatService {
 			 List<ChatRoom> list = chatRoomService.getList(uu);
 			  messagingTemplate.convertAndSend("/sub/chatrooms/" + uu, list);
 		 }
-	}
-	
-	
-	
-	
-	
+	}	
 }

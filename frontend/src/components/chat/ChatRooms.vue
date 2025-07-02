@@ -61,11 +61,10 @@ import { getStompClient, sendMsg, subscribeChannel } from '@/util/stompMethod';
   })
     let client;
   onMounted(()=>{
-    client = getStompClient(uuid.value,token)
-    client.onConnect = () => {
+    client = getStompClient(uuid.value,token,(client) => {
       subList(client)
       subAlarm(client)
-}
+    })  
     loadchatList()
     loadAlarmList()
   })

@@ -6,6 +6,7 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
+import org.springframework.messaging.MessagingException;
 import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.ChannelInterceptor;
@@ -22,6 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @RequiredArgsConstructor
 public class StompHandler implements ChannelInterceptor{
+	
 	private final JwtUtil jwtUtil;
 	private final ChatJoinDAO chatJoinDAO;
 	
@@ -42,21 +44,24 @@ public class StompHandler implements ChannelInterceptor{
 		    Date expiration =  jwt.getExpiration();
 		    
 		    if (expiration.getTime() < System.currentTimeMillis()) {
-		        throw new IllegalArgumentException("만료된 토큰입니다.");
+		        throw new MessagingException("만료된 토큰입니다.");
 		    }
 		   accessor.getSessionAttributes().put("uuid", uuid);
 		   accessor.getSessionAttributes().put("tokenExp", expiration.getTime());
 
 		}
 		else if(StompCommand.SUBSCRIBE == accessor.getCommand()) {
-			log.info("UNSUBSCRIBE = {}", StompCommand.SUBSCRIBE);
+			log.info("SUBSCRIBE = {}", StompCommand.SUBSCRIBE);
+			
             String destination = accessor.getDestination();
+            
             if (destination != null && destination.startsWith("/sub/chatroom/")) {
                 String roomId = destination.substring("/sub/chatroom/".length());
                 String subscriptionId = accessor.getSubscriptionId();
                 accessor.getSessionAttributes().put("roomId", roomId);
-                accessor.getSessionAttributes().put(subscriptionId, roomId); 
-                String uuid = (String) accessor.getSessionAttributes().get("uuid");               
+                accessor.getSessionAttributes().put(subscriptionId, roomId);
+                String uuid = (String) accessor.getSessionAttributes().get("uuid");
+                log.info("SUBSCRIBE 요청: roomId={}, uuid={}", roomId, uuid);
                 chatJoinDAO.updateJoinTime(roomId, uuid);
             }
 		}
@@ -69,6 +74,15 @@ public class StompHandler implements ChannelInterceptor{
 		    if (roomId != null && uuid != null) {
 		    	chatJoinDAO.updateOutTime(roomId, uuid);
             }
+		}
+		
+		else if (StompCommand.SEND == accessor.getCommand()) {
+			Long tokenExp = (Long) accessor.getSessionAttributes().get("tokenExp");
+			
+		    if (tokenExp == null || tokenExp < System.currentTimeMillis()) {
+		    	 throw new MessagingException("만료된 토큰입니다.");
+		    }
+		    
 		}
 		
 		return message;
