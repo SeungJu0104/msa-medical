@@ -1,18 +1,38 @@
 <script setup>
 import { computed, defineProps } from "vue";
+import dayjs from "dayjs";
 
-const { status, value } = defineProps({
+const { status, value, date } = defineProps({
   status: Array,
-  value: String
+  value: String,
+  date: dayjs
 });
 
 const patientCurrentStatus = computed(() => value);
 
-console.log(value);
+const filterStages = {
+  left: {
+    label: '현재 상태 제외',
+    condition: ({v, value}) => {
+      return (v.name !== value)
+    }
+  },
+  excludeWaiting: {
+    label: '오늘이 아니면 대기 제외',
+    condition: ({v, date}) => {
+      const isToday = dayjs().isSame(date, 'day');
+      return !(!isToday && v.name === '대기');
+
+    }
+  }
+};
 
 const leftOver = computed(() => {
-  return status.filter(v => v.name !== value);
+  return Object.values(filterStages).reduce((acc, stage) => {
+    return acc.filter(v => stage.condition({v, date, value}));
+  }, status);
 });
+
 
 const emit = defineEmits(["update:value"]);
 
@@ -40,7 +60,6 @@ const selectedStatus = (name) => {
         v-for="left in leftOver"
         :key="left.id"
         @click="selectedStatus(left.name)"
-        v-if="filterOptionFunc(date, )"
     >
       <span v-cloak>{{ left.name }}</span>
     </li>

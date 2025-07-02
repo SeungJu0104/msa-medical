@@ -4,9 +4,10 @@ import WaitingStatus from "@/shared/components/WaitingStatus.vue";
 import dayjs from "dayjs";
 import {reactive} from "vue";
 
-const {value, status} = defineProps({
+const {value, status, date} = defineProps({
                 value: Object,
-                status: Array
+                status: Array,
+                date: dayjs
               })
 
 const emit = defineEmits(['updateStatus', 'getPatientInfo']);
@@ -34,7 +35,12 @@ const getPatientInfo = (patient) => {
           <span v-cloak v-if="patient.reservationDate">
             {{ dayjs(patient.reservationDate).format("HH:mm") }}
           </span>
-          <WaitingStatus @update:value="(updateStatus) => onStatusChange(patient, updateStatus)" :status="status" v-model:value="patient.status"/>
+          <WaitingStatus
+              @update:value="(updateStatus) => onStatusChange(patient, updateStatus)"
+              :status="status"
+              :date="date"
+              v-model:value="patient.status"
+          />
         </div>
       </template>
     </div>

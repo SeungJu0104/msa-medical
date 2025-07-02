@@ -86,17 +86,6 @@ const handleDate = (date) => {
 
 }
 
-// const filterOption = [
-//   "대기"
-// ];
-//
-// const filterOptionFunc = (date, selectedDate.date) => {
-//   const today = new Date();
-//
-//   return true;
-//
-// }
-
 onBeforeMount(async () => {
 
   await Promise.all([
@@ -158,6 +147,7 @@ onUnmounted(() => {
         @getPatientInfo="getPatientInfo"
         :value="list.patientList"
         :status="reservationStatusList"
+        :date="selectedDate.date"
     />
     </div>
   </template>
