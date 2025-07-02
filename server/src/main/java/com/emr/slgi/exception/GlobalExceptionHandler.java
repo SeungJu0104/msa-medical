@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -43,4 +44,11 @@ public class GlobalExceptionHandler {
         map.put("message", "첨부파일크기가 너무 큽니다. 최대 허용 용량을 확인해 주세요");    
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(map);
     }
+
+    @ExceptionHandler(DuplicateKeyException.class)
+    public ResponseEntity<Map<String, Object>> handleDuplicateKeyException(MethodArgumentNotValidException e) {
+        Map<String, Object> map = Map.of("message", "데이터베이스 제약조건에 위배됩니다.");
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(map);
+    }
+
 }

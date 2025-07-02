@@ -8,6 +8,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.emr.slgi.auth.domain.Credentials;
@@ -20,6 +21,7 @@ import com.emr.slgi.auth.dto.RefreshTokenDTO;
 import com.emr.slgi.auth.dto.RegisterByPatientDTO;
 import com.emr.slgi.auth.dto.UseridExistsResponse;
 import com.emr.slgi.member.domain.Member;
+import com.emr.slgi.member.dto.PatientRegisterDTO;
 import com.emr.slgi.member.service.MemberService;
 import com.emr.slgi.util.JwtUtil;
 
@@ -40,11 +42,14 @@ public class AuthService {
     @Value("${jwt.access-token-secret}")
     private String jwtSecret;
 
+    @Transactional
     public void registerByPatient(RegisterByPatientDTO registerByPatientDTO) {
-        // TODO: transaction 추가
-        // TODO: 주민번호, 전화번호 중복 확인 후 처리
-        // TODO: 아이디 중복 확인 후 처리
-        String uuid = memberService.createPatient(registerByPatientDTO);
+        PatientRegisterDTO patientRegisterDTO = new PatientRegisterDTO(
+            registerByPatientDTO.getName(),
+            registerByPatientDTO.getRrn(),
+            registerByPatientDTO.getPhone()
+        );
+        String uuid = memberService.createPatient(patientRegisterDTO);
         CredentialsCreateDTO credentialsCreateDTO = new CredentialsCreateDTO(
             uuid,
             registerByPatientDTO.getUserid(),
