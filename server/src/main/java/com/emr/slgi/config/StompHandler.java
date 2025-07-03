@@ -1,40 +1,85 @@
 package com.emr.slgi.config;
 
-import java.util.Map.Entry;
 
+import java.util.Date;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
+import org.springframework.messaging.MessagingException;
 import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.stereotype.Component;
 
+import com.emr.slgi.chat.DAO.ChatJoinDAO;
+import com.emr.slgi.util.JwtUtil;
+
+import io.jsonwebtoken.Claims;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class StompHandler implements ChannelInterceptor{
+	
+	private final JwtUtil jwtUtil;
+	private final ChatJoinDAO chatJoinDAO;
+	
+	@Value("${jwt.access-token-secret}")
+    private String jwtSecret;
 	
 	@Override
 	public Message<?> preSend(Message<?> message, MessageChannel channel){
 		StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
-		for (Entry<String, Object> entry : message.getHeaders().entrySet()) {
-	          log.info("preSend() header -> {}", entry); 
-	        }
-		
 		if (StompCommand.CONNECT == accessor.getCommand()) {
-		    String sender = accessor.getFirstNativeHeader("sender");
-		    if (sender == null || sender.isBlank()) {
-		        log.warn("WebSocket CONNECT 거부: sender 정보 없음 (로그인 안 된 사용자)");
-		        log.info("preSend() CONNECT message = {}", message);
-	            log.info("preSend() CONNECT channel = {}", channel);
-	            log.info("preSend() CONNECT accessor = {}", accessor);
-	            
+		    String token = accessor.getFirstNativeHeader("Authorization");
+		    
+		    if (token == null || token.isBlank()) {
 		        throw new IllegalArgumentException("로그인된 사용자만 접속 가능합니다.");
 		    }
+		    Claims jwt = jwtUtil.parseToken(token.replace("Bearer ", ""), jwtSecret);
+		    String uuid = jwt.get("uuid",String.class);
+		    Date expiration =  jwt.getExpiration();
+		    
+		    if (expiration.getTime() < System.currentTimeMillis()) {
+		        throw new MessagingException("만료된 토큰입니다.");
+		    }
+		   accessor.getSessionAttributes().put("uuid", uuid);
+		   accessor.getSessionAttributes().put("tokenExp", expiration.getTime());
 
-		    log.info("CONNECT 요청한 사용자 = {}", sender);
 		}
+		else if(StompCommand.SUBSCRIBE == accessor.getCommand()) {
+            String destination = accessor.getDestination();
+            if (destination != null && destination.startsWith("/sub/chatroom/")) {
+                String roomId = destination.substring("/sub/chatroom/".length());
+                String subscriptionId = accessor.getSubscriptionId();
+                accessor.getSessionAttributes().put("roomId", roomId);
+                accessor.getSessionAttributes().put(subscriptionId, roomId);
+                String uuid = (String) accessor.getSessionAttributes().get("uuid");
+                chatJoinDAO.updateJoinTime(roomId, uuid);
+            }
+		}
+		
+		else if(StompCommand.UNSUBSCRIBE == accessor.getCommand()) {
+			String subscriptionId = accessor.getSubscriptionId();
+			String roomId = (String) accessor.getSessionAttributes().get(subscriptionId);
+		    String uuid = (String) accessor.getSessionAttributes().get("uuid");
+		    if (roomId != null && uuid != null) {
+		    	chatJoinDAO.updateOutTime(roomId, uuid);
+            }
+		}
+		
+		else if (StompCommand.SEND == accessor.getCommand()) {
+			Long tokenExp = (Long) accessor.getSessionAttributes().get("tokenExp");
+			
+		    if (tokenExp == null || tokenExp < System.currentTimeMillis()) {
+		    	 throw new MessagingException("만료된 토큰입니다.");
+		    }
+		    
+		}
+		
 		return message;
 	}
 	
