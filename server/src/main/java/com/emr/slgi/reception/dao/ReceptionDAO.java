@@ -1,10 +1,9 @@
 package com.emr.slgi.reception.dao;
 
 import com.emr.slgi.reception.dto.ReceptionInfo;
-import com.emr.slgi.reception.dto.ReceptionStatusList;
 import com.emr.slgi.reception.dto.UpdateReceptionStatus;
+import com.emr.slgi.reception.vo.UpdateReceptionStatusForm;
 import com.emr.slgi.reception.dto.WaitingList;
-import com.emr.slgi.reservation.dto.ReservationListByPatient;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -22,4 +21,7 @@ public interface ReceptionDAO {
 
     int updateWaitingStatusOnReception(String uuid, String updateStatus);
 
+    int checkOnTreatmentStatusExists(String doctorUuid);
+
+    int changeReceptionStatusToComplete();
 }

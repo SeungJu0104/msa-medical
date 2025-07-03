@@ -22,17 +22,20 @@ public class ReceptionStatusTypeHandler extends BaseTypeHandler<ReceptionStatus>
 
     @Override
     public ReceptionStatus getNullableResult(ResultSet rs, String columnName) throws SQLException {
-        return ReceptionStatus.fromCode(rs.getString(columnName));
+//        return ReceptionStatus.fromCode(rs.getString(columnName));
+        return ReceptionStatus.from(rs.getString(columnName));
     }
 
     @Override
     public ReceptionStatus getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
-        return ReceptionStatus.fromCode(rs.getString(columnIndex));
+//        return ReceptionStatus.fromCode(rs.getString(columnIndex));
+        return ReceptionStatus.from(rs.getString(columnIndex));
     }
 
     @Override
     public ReceptionStatus getNullableResult(CallableStatement cs, int columnIndex) throws SQLException {
-        return ReceptionStatus.fromCode(cs.getString(columnIndex));
+//        return ReceptionStatus.fromCode(cs.getString(columnIndex));
+        return ReceptionStatus.from(cs.getString(columnIndex));
     }
 }
 

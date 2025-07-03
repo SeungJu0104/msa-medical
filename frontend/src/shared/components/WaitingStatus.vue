@@ -1,17 +1,34 @@
 <script setup>
-import { computed, defineProps } from "vue";
+import {computed, defineProps} from "vue";
+import dayjs from "dayjs";
 
-const { status, value } = defineProps({
+const { status, value, date } = defineProps({
   status: Array,
-  value: String
+  value: String,
+  date: dayjs
 });
 
 const patientCurrentStatus = computed(() => value);
 
-console.log(value);
+const filterStages = {
+  left: { //'현재 상태 제외'
+    condition: ({v, value}) => {
+      return (v.name !== value)
+    }
+  },
+  excludeWaiting: { //'오늘이 아니면 대기 제외'
+    condition: ({v, date}) => {
+      const isToday = dayjs().isSame(date, 'day');
+      return !(!isToday && v.name === '대기');
+
+    }
+  }
+};
 
 const leftOver = computed(() => {
-  return status.filter(v => v.name !== value);
+  return Object.values(filterStages).reduce((acc, stage) => {
+    return acc.filter(v => stage.condition({v, date, value}));
+  }, status);
 });
 
 const emit = defineEmits(["update:value"]);
@@ -23,11 +40,12 @@ const selectedStatus = (name) => {
 </script>
 
 <template>
+
   <button
       class="btn btn-secondary btn-sm"
-      :class="{ 'dropdown-toggle': patientCurrentStatus.trim() !== '진료 중' }"
       type="button"
       v-bind="patientCurrentStatus.trim() !== '진료 중' ? { 'data-bs-toggle': 'dropdown', 'aria-expanded': 'false' } : {}"
+      :class="{ 'dropdown-toggle': patientCurrentStatus.trim() !== '진료 중' }"
   >
     {{ patientCurrentStatus }}
   </button>

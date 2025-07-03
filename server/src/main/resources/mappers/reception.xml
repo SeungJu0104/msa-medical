@@ -27,7 +27,7 @@
 
     <select id="getWaitingList" resultMap="waitingListMap">
         SELECT
-            UUID, PATIENT_UUID, NAME, STATUS, TURN
+            UUID, PATIENT_UUID, DOCTOR_UUID, NAME, STATUS, TURN
         FROM
             TB_RECEPTION
         WHERE
@@ -66,5 +66,24 @@
         WHERE UUID = #{uuid}
     </insert>
 
+    <select id="checkOnTreatmentStatusExists">
+        SELECT
+            COUNT(STATUS)
+        FROM
+            TB_RECEPTION
+        WHERE
+            STATUS = 'RE03'
+            AND
+            DOCTOR_UUID = #{doctorUuid}
+    </select>
+
+    <update id="changeReceptionStatusToComplete">
+        UPDATE
+            TB_RECEPTION
+        SET
+            STATUS = 'RS04'
+--         WHERE
+
+    </update>
 
 </mapper>

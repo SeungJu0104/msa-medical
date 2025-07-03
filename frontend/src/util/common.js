@@ -10,8 +10,8 @@ export const common =  {
         return router.back();
     },
     errMsg : (err) => {
-        err.response?.data?.message ?
-            alert(err.response?.data?.message) :
+        err.response.data?.message ?
+            alert(err.response.data?.message) :
             alert("오류가 발생했습니다. 다시 실행해주세요.");
     },
     alertError : (err) => {

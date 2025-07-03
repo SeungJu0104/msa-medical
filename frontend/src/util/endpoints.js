@@ -82,10 +82,10 @@ export const ENDPOINTS = {
             method: 'get',
             url: `/reception/${uuid}`
         }),
-        updateReceptionStatus: ({uuid, updateStatus}) => ({
+        updateReceptionStatus: {
             method: 'put',
-            url: `/reception/${uuid}/${updateStatus}/updateStatus`
-        })
+            url: `/reception/updateStatus`
+        }
     },
     chat: {
         loadMemberList: (uuid) => ({

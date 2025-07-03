@@ -1,18 +1,21 @@
 <script setup>
   import {useWaitingListStore} from "@/stores/waitingListStore.js";
   import {onBeforeMount, onMounted, onUnmounted, ref} from "vue";
-  import WaitingListDoctorName from "@/common/components/WaitingListDoctorName.vue";
-  import WaitingListPatientList from "@/common/components/WaitingListPatientList.vue";
+  import WaitingListDoctorName from "@/shared/components/WaitingListDoctorName.vue";
+  import WaitingListPatientList from "@/shared/components/WaitingListPatientList.vue";
   import {reception} from "@/reception/util/reception.js";
 
   const waitingListStore = useWaitingListStore();
   const waitingList = ref();
   const receptionStatusList = ref();
 
-  // 상태 변경 시 동작하는 함수
-  const handleUpdateStatus = async ({uuid, updateStatus}) => {
 
-    await reception.updateReceptionStatus({uuid, updateStatus});
+  // 상태 변경 시 동작하는 함수
+  const handleUpdateStatus = async (patient) => {
+
+    console.log(patient);
+
+    await reception.updateReceptionStatus(patient);
 
     // 변경 사항 알리는 웹소켓 구현
 

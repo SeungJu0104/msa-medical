@@ -38,31 +38,16 @@ export const reception = {
 
 
     },
-    getDoctorName : async () => {
-
-        try {
-            
-            const response = await customFetch(ENDPOINTS.doctor.name('bbf7cf49-971c-47be-82cd-f613c633aa57')); // 테스트용 의사 번호 데이터
-                // await customFetch(ENDPOINTS.doctor.name(localStorage.getItem('uuid')));
-
-            if(response?.status === 200) {
-
-                return response.data?.name;
-
-            }
-
-        } catch(err) {
-
-            common.errMsg(err);
-
-        }
-
-    },
-    updateReceptionStatus : async ({uuid, updateStatus}) => {
+    updateReceptionStatus : async (patient) => {
 
         try {
 
-            const response = await customFetch(ENDPOINTS.reception.updateReceptionStatus({uuid, updateStatus}));
+            const response = await customFetch(
+                ENDPOINTS.reception.updateReceptionStatus,
+                {
+                    data: patient
+                }
+            );
 
             if(response?.status === 200) {
 
