@@ -1,4 +1,4 @@
-const RegisterView = () => import("@/views/patient/RegisterView.vue");
+const RegisterView = () => import("@/patient/views/RegisterView.vue");
 
 export const patientRoutes = [
   {
