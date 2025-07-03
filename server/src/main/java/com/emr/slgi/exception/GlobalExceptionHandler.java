@@ -47,7 +47,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(DuplicateKeyException.class)
     public ResponseEntity<Map<String, Object>> handleDuplicateKeyException(MethodArgumentNotValidException e) {
-        Map<String, Object> map = Map.of("message", "데이터베이스 제약조건에 위배됩니다.");
+        Map<String, Object> map = Map.of("message", "이미 존재하는 리소스입니다.");
         return ResponseEntity.status(HttpStatus.CONFLICT).body(map);
     }
 
