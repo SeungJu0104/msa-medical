@@ -8,7 +8,6 @@ const {value, status, date} = defineProps({
                 value: Object,
                 status: Array,
                 date: dayjs
-              })
 
 const emit = defineEmits(['updateStatus', 'getPatientInfo']);
 
@@ -21,13 +20,11 @@ const getPatientInfo = (patient) => {
   emit('getPatientInfo', {uuid: patient.uuid});
 }
 
-
-
 </script>
 
 <template>
 
-  <div class="container">
+<div class="container">
     <div class="my-3">
       <template v-for="patient in value" :key="patient.uuid">
         <div>
