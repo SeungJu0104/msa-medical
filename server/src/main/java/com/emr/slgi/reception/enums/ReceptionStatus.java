@@ -46,6 +46,10 @@ public enum ReceptionStatus {
                 ));
     }
 
+    public static boolean fromStatusTextExists(String statusText) {
+        return byStatus.containsKey(statusText);
+    }
+
 }
 
 

@@ -64,8 +64,13 @@ import { createWebSocketModuleRunnerTransport } from "vite/module-runner";
 </script>
 
 <template>
-  <template v-for="list in waitingList">
-    <WaitingListDoctorName :value="list.doctor"/>
-    <WaitingListPatientList @updateStatus="handleUpdateStatus" @getPatientInfo="getPatientInfo" :value="list.patientList" :status="receptionStatusList"/>
-  </template>
+  <template v-for="list in waitingList" :key="list.doctor?.uuid">
+      <WaitingListDoctorName
+          :value="list.doctor"/>
+      <WaitingListPatientList
+          @updateStatus="handleUpdateStatus"
+          @getPatientInfo="getPatientInfo"
+          :value="list.patientList"
+          :status="receptionStatusList"/>
+    </template>
 </template>

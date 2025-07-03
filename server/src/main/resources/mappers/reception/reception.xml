@@ -27,7 +27,7 @@
 
     <select id="getWaitingList" resultMap="waitingListMap">
         SELECT
-            UUID, PATIENT_UUID, NAME, STATUS, CREATE_DATE, TURN
+            UUID, PATIENT_UUID, NAME, STATUS, TURN
         FROM
             TB_RECEPTION
         WHERE
@@ -46,7 +46,6 @@
         <result property="patientUuid" column="PATIENT_UUID"/>
         <result property="name" column="NAME"/>
         <result property="status" column="STATUS" typeHandler="com.emr.slgi.reception.typehandler.ReceptionStatusTypeHandler"/>
-        <result property="createDate" column="CREATE_DATE"/>
         <result property="turn" column="TURN"/>
     </resultMap>
 
@@ -60,14 +59,12 @@
             UUID = #{uuid}
     </update>
 
-<!--    어디로 옮겨야할지 팀장님과 상의하기-->
-    <select id="getReceptionStatusList">
-        SELECT
-            ID, NAME
-        FROM
-            TB_STATUS_CODE
-        WHERE
-            GROUP_ID = 3
-    </select>
+    <insert id="updateWaitingStatusOnReception">
+        INSERT INTO TB_RECEPTION (PATIENT_UUID, DOCTOR_UUID, SYMPTOM)
+        SELECT PATIENT_UUID, DOCTOR_UUID, SYMPTOM
+        FROM TB_RESERVATION
+        WHERE UUID = #{uuid}
+    </insert>
+
 
 </mapper>

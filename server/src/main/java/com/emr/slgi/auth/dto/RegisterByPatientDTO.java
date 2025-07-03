@@ -1,12 +1,30 @@
 package com.emr.slgi.auth.dto;
 
+import com.emr.slgi.common.constants.RegexPatterns;
+
+import jakarta.validation.constraints.*;
 import lombok.Data;
 
 @Data
 public class RegisterByPatientDTO {
+    @NotBlank
+    @Size(min = 5, max = 20)
+    @Pattern(regexp = RegexPatterns.USERID)
     private String userid;
+
+    @NotBlank
+    @Size(min = 8, max = 20)
+    @Pattern(regexp = RegexPatterns.PASSWORD)
     private String password;
+
+    @NotBlank
     private String name;
+
+    @NotBlank
+    @Pattern(regexp = RegexPatterns.RRN)
     private String rrn;
+
+    @NotBlank
+    @Pattern(regexp = RegexPatterns.PHONE)
     private String phone;
 }

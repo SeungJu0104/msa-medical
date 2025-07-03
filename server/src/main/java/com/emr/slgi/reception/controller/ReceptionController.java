@@ -73,22 +73,6 @@ public class ReceptionController {
     }
 
     @PreAuthorize("hasAnyRole('DOCTOR', 'NURSE')")
-    @GetMapping("/statusList")
-    public ResponseEntity<Map<String, List<ReceptionStatusList>>> statusList() {
-
-        List<ReceptionStatusList> list = receptionService.getReceptionStatusList().get();
-
-        if(list == null || list.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, CommonErrorMessage.RETRY);
-        };
-
-        return ResponseEntity.ok(
-                Map.of("statusList", list)
-        );
-
-    }
-
-    @PreAuthorize("hasAnyRole('DOCTOR', 'NURSE')")
     @PutMapping("/{patient}/{updateStatus}/updateStatus")
     public ResponseEntity<Map<String, String>> updateReceptionStatus(
             @PathVariable("patient") String uuid,

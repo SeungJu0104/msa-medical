@@ -17,7 +17,7 @@ public class ReceptionStatusTypeHandler extends BaseTypeHandler<ReceptionStatus>
 
     @Override
     public void setNonNullParameter(PreparedStatement ps, int i, ReceptionStatus parameter, JdbcType jdbcType) throws SQLException {
-        ps.setString(i, parameter.getCode()); // ✅ 핵심 수정
+        ps.setString(i, parameter.getCode());
     }
 
     @Override
