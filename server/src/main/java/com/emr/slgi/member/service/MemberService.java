@@ -1,6 +1,7 @@
 package com.emr.slgi.member.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
@@ -28,6 +29,10 @@ public class MemberService {
 
   public Member getByUuid(String uuid) {
     return memberDAO.getByUuid(uuid);
+  }
+
+  public Optional<String> getUuidByRrn(String rrn) {
+    return memberDAO.getUuidByRrn(rrn);
   }
 
   public ListResponse<DoctorUuidName> getDoctorList() {

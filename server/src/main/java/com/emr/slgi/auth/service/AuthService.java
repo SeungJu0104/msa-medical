@@ -44,12 +44,15 @@ public class AuthService {
 
     @Transactional
     public void registerByPatient(RegisterByPatientDTO registerByPatientDTO) {
-        PatientRegisterDTO patientRegisterDTO = new PatientRegisterDTO(
-            registerByPatientDTO.getName(),
-            registerByPatientDTO.getRrn(),
-            registerByPatientDTO.getPhone()
-        );
-        String uuid = memberService.createPatient(patientRegisterDTO);
+        String uuid = memberService.getUuidByRrn(registerByPatientDTO.getRrn())
+            .orElseGet(() -> {
+                PatientRegisterDTO patientRegisterDTO = new PatientRegisterDTO(
+                    registerByPatientDTO.getName(),
+                    registerByPatientDTO.getRrn(),
+                    registerByPatientDTO.getPhone()
+                );
+                return memberService.createPatient(patientRegisterDTO);
+            });
         CredentialsCreateDTO credentialsCreateDTO = new CredentialsCreateDTO(
             uuid,
             registerByPatientDTO.getUserid(),
