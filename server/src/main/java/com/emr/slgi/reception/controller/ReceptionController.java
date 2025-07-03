@@ -19,13 +19,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.emr.slgi.reception.dto.ReceptionInfo;
-import com.emr.slgi.reception.dto.ReceptionStatusList;
 import com.emr.slgi.reception.dto.WaitingList;
+import com.emr.slgi.reception.enums.ReceptionMessage;
 import com.emr.slgi.reception.enums.ReceptionStatus;
 import com.emr.slgi.reception.service.ReceptionService;
 import com.emr.slgi.treatment.TreatmentService;
 import com.emr.slgi.util.CommonErrorMessage;
-import com.emr.slgi.util.ReceptionMessage;
 import com.emr.slgi.util.Validate;
 
 import jakarta.validation.Valid;
