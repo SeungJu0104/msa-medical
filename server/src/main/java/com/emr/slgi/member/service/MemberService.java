@@ -1,13 +1,13 @@
 package com.emr.slgi.member.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.emr.slgi.auth.dto.RegisterByPatientDTO;
 import com.emr.slgi.common.dto.ListResponse;
 import com.emr.slgi.member.dao.MemberDAO;
 import com.emr.slgi.member.domain.Member;
@@ -31,6 +31,10 @@ public class MemberService {
     return memberDAO.getByUuid(uuid);
   }
 
+  public Optional<String> getUuidByRrn(String rrn) {
+    return memberDAO.getUuidByRrn(rrn);
+  }
+
   public ListResponse<DoctorUuidName> getDoctorList() {
     List<DoctorUuidName> list = memberDAO.getDoctorList();
     if (list.isEmpty()) {
@@ -47,19 +51,7 @@ public class MemberService {
     return new ListResponse<>(staffList);
   }
 
-  public String createPatient(RegisterByPatientDTO registerByPatientDTO) {
-    String uuid = UUID.randomUUID().toString();
-    MemberCreateDTO memberCreateDTO = new MemberCreateDTO(
-      uuid,
-      registerByPatientDTO.getName(),
-      registerByPatientDTO.getRrn(),
-      registerByPatientDTO.getPhone()
-    );
-    memberDAO.createPatient(memberCreateDTO);
-    return uuid;
-  }
-
-  public void createPatient(PatientRegisterDTO patientRegisterDTO) {
+  public String createPatient(PatientRegisterDTO patientRegisterDTO) {
     String uuid = UUID.randomUUID().toString();
     MemberCreateDTO memberCreateDTO = new MemberCreateDTO(
       uuid,
@@ -68,6 +60,7 @@ public class MemberService {
       patientRegisterDTO.getPhone()
     );
     memberDAO.createPatient(memberCreateDTO);
+    return uuid;
   }
 
   public ListResponse<PatientSummary> search(PatientSearchDTO patientSearchDTO) {

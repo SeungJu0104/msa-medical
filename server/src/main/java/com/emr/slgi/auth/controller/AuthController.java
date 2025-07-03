@@ -1,7 +1,5 @@
 package com.emr.slgi.auth.controller;
 
-import java.util.Map;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +14,10 @@ import com.emr.slgi.auth.dto.LogoutDTO;
 import com.emr.slgi.auth.dto.RefreshTokenDTO;
 import com.emr.slgi.auth.dto.RegisterByPatientDTO;
 import com.emr.slgi.auth.service.AuthService;
+import com.emr.slgi.common.constants.RegexPatterns;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.*;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -26,31 +27,33 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/register/patient")
-    public ResponseEntity<?> registerByPatient(@RequestBody RegisterByPatientDTO registerByPatient) {
+    public ResponseEntity<?> registerByPatient(@RequestBody @Valid RegisterByPatientDTO registerByPatient) {
         authService.registerByPatient(registerByPatient);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("/check-id")
-    public ResponseEntity<?> checkIdDuplicate(@RequestParam("userid") String userid) {
-        boolean exists = authService.checkIdDuplicate(userid);
-        return ResponseEntity.ok(Map.of("exists", exists));
+    public ResponseEntity<?> checkIdDuplicate(
+        @RequestParam("userid")
+        @NotBlank
+        @Pattern(regexp = RegexPatterns.USERID)
+        String userid
+    ) {
+        return ResponseEntity.ok(authService.checkIdDuplicate(userid));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) {
+    public ResponseEntity<?> login(@RequestBody @Valid LoginDTO loginDTO) {
         return ResponseEntity.ok(authService.login(loginDTO));
     }
 
     @PostMapping("/refresh-token")
-    public ResponseEntity<?> refreshToken(@RequestBody RefreshTokenDTO refreshTokenDTO) {
-        return ResponseEntity.ok(
-            Map.of("accessToken", authService.refreshToken(refreshTokenDTO))
-        );
+    public ResponseEntity<?> refreshToken(@RequestBody @Valid RefreshTokenDTO refreshTokenDTO) {
+        return ResponseEntity.ok(authService.refreshToken(refreshTokenDTO));
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<?> logout(@RequestBody LogoutDTO logoutDTO) {
+    public ResponseEntity<?> logout(@RequestBody @Valid LogoutDTO logoutDTO) {
         authService.logout(logoutDTO);
         return ResponseEntity.noContent().build();
     }

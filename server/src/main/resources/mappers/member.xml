@@ -16,6 +16,11 @@
     FROM TB_MEMBER
     WHERE uuid=#{uuid}
   </select>
+  <select id="getUuidByRrn">
+    SELECT uuid
+    FROM TB_MEMBER
+    WHERE rrn=#{rrn}
+  </select>
   <select id="getDoctorList">
     SELECT
       uuid,
