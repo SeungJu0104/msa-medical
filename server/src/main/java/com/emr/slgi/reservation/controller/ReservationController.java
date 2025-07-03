@@ -1,13 +1,11 @@
 package com.emr.slgi.reservation.controller;
 
 import com.emr.slgi.reception.enums.ReceptionStatus;
-import com.emr.slgi.reservation.dto.FindReservationDate;
-import com.emr.slgi.reservation.dto.ReservationForm;
-import com.emr.slgi.reservation.dto.ReservationList;
-import com.emr.slgi.reservation.dto.ReservationStatusList;
+import com.emr.slgi.reservation.dto.*;
 import com.emr.slgi.reservation.enums.ReservationMessage;
 import com.emr.slgi.reservation.enums.ReservationStatus;
 import com.emr.slgi.reservation.service.ReservationService;
+import com.emr.slgi.reservation.vo.ReservationCancelForm;
 import com.emr.slgi.util.CommonErrorMessage;
 import com.emr.slgi.util.ReservationErrorMessage;
 import com.emr.slgi.util.Validate;
@@ -27,6 +25,7 @@ import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @Slf4j
@@ -145,18 +144,22 @@ public class ReservationController {
     }
 
     @PreAuthorize("hasRole('PATIENT')")
-    @PutMapping("/cancelReservation/{reservationId}")
-    public ResponseEntity<?> cancelReservation(@PathVariable("reservationId") String reservationId) {
+    @PutMapping("/cancel")
+    public ResponseEntity<?> cancelReservation(@RequestBody ReservationCancelForm rcf) {
 
-        if(reservationId == null || Validate.regexValidate(Map.of(Validate.MEMBER_UUID_REGEX, reservationId)).contains(false)) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, ReservationErrorMessage.CHOOSE_DOCTOR);
+        if(rcf == null || Validate.regexValidation(Map.of(Validate.MEMBER_UUID_REGEX, rcf.getUuidForCancel())).contains(false)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, ReservationErrorMessage.CAN_NOT_FIND_RESERVATION_DATE);
         }
 
-        if(!rService.cancelReservation(reservationId)) {
+        if(!rService.cancelReservation(rcf.getUuidForCancel())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, CommonErrorMessage.RETRY);
         }
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(
+                Map.of(
+                        "message", ReservationMessage.CANCEL_RESERVATION_SUCCESS
+                )
+        );
 
     }
 
@@ -246,6 +249,29 @@ public class ReservationController {
 
     }
 
+    @PreAuthorize("hasAnyRole('DOCTOR', 'NURSE')")
+    @GetMapping("/{uuid}/patientlist")
+    public ResponseEntity<Map<String, List<ReservationListByPatient>>> getReservationListPerPatient(
+            @PathVariable("uuid") String patientUuid
+    ) {
 
-    // 오버로딩으로 나중에 환자아이디로 예약 목록 가져오기 구현.
+        if(patientUuid == null || Validate.regexValidate(Map.of(Validate.MEMBER_UUID_REGEX, patientUuid)).contains(false)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, ReservationErrorMessage.CAN_NOT_FIND_PATIENT + CommonErrorMessage.RETRY);
+        }
+
+        List<ReservationListByPatient> list = rService.getReservationListPerPatient(patientUuid);
+
+        if(list == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, ReservationErrorMessage.CAN_NOT_FIND_RESERVATION_DATE);
+        }
+
+        return ResponseEntity.ok(
+                Map.of(
+                    "patientReservationList", list
+                )
+        );
+    }
+
+
+
 }

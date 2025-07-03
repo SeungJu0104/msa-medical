@@ -19,6 +19,9 @@ export const common =  {
     },
     dateFormatter : (date, format) => {
         return dayjs(date).format(format);
+    },
+    alert : (message) => {
+        alert(message);
     }
 
 }

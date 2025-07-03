@@ -7,6 +7,23 @@ import {common} from "@/util/common.js";
 import dayjs from "dayjs";
 
 export const patientMethods = {
+    getReservationListPerPatient: async (uuid) => {
+
+        try{
+
+            const response = await customFetch(ENDPOINTS.reservation.getReservationListPerPatient(uuid));
+
+            if(response.status === 200) {
+                return response.data?.patientReservationList;
+            }
+
+        } catch(err) {
+
+            common.errMsg(err);
+
+        }
+
+    },
     cancelHoldingReservation: async () => {
 
         try{
@@ -213,6 +230,7 @@ export const patientMethods = {
         } catch(err) {
             return common.errMsg(err);
         }
+
     },
     getFullReservationList: async(uuid) => {
 
@@ -240,8 +258,33 @@ export const patientMethods = {
             if(response?.status === 200) {
 
                 if(response.data?.message !== undefined) {
-                    common.alertError(response.data?.message);
+                    common.alert(response.data?.message);
                 }
+
+            }
+
+        } catch(err) {
+
+            common.errMsg(err);
+
+        }
+
+
+    },
+    cancelReservation: async (selectedListByPatient) =>  {
+
+        try {
+
+            const response = await customFetch(
+                ENDPOINTS.reservation.cancelReservation,
+                {
+                    data: selectedListByPatient
+                }
+            );
+
+            if(response.status === 200) {
+
+                common.alert(response.data?.message);
 
             }
 

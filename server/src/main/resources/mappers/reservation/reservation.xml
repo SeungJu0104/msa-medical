@@ -101,11 +101,11 @@
         UPDATE
             TB_RESERVATION
         SET
-            STATUS = 'RS05'
-        WHERE
-            UUID = #{reservationId}
-            AND
-            STATUS = 'RS01'
+            STATUS = 'RS02'
+        WHERE UUID IN
+        <foreach collection="uuidForCancel" item="uuid" open="(" separator="," close=")">
+            #{uuid}
+        </foreach>
     </update>
 
     <update id="changeReservation">
@@ -147,5 +147,18 @@
         WHERE
             UUID = #{uuid}
     </update>
+
+    <select id="getReservationListPerPatient">
+        SELECT
+            R.UUID, M.NAME, R.RESERVATION_DATE
+        FROM
+            TB_RESERVATION R
+                JOIN TB_MEMBER M
+                ON(R.DOCTOR_UUID = M.UUID)
+        WHERE
+            R.PATIENT_UUID = #{patientUuid}
+            AND
+            R.STATUS = 'RS01'
+    </select>
 
 </mapper>

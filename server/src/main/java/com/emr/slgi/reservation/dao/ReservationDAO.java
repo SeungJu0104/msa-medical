@@ -1,15 +1,13 @@
 package com.emr.slgi.reservation.dao;
 
-import com.emr.slgi.reservation.dto.FindReservationDate;
-import com.emr.slgi.reservation.dto.ReservationForm;
-import com.emr.slgi.reservation.dto.ReservationList;
-import com.emr.slgi.reservation.dto.ReservationStatusList;
+import com.emr.slgi.reservation.dto.*;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Mapper
 public interface ReservationDAO {
@@ -28,11 +26,13 @@ public interface ReservationDAO {
 
     List<ReservationList> getReservationListByStaff(Map date);
 
-    int cancelReservation(String reservationId);
+    int cancelReservation(Set uuidForCancel);
 
     int changeReservation(String reservationId, LocalDateTime dateTime);
 
     List<ReservationList> getFullReservationList(String doctorUuid);
 
     int updateReservationStatus(ReservationList build);
+
+    List<ReservationListByPatient> getReservationListPerPatient(String patientUuid);
 }

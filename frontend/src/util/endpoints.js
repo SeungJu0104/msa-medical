@@ -158,6 +158,14 @@ export const ENDPOINTS = {
             method: 'put',
             url: `/reservation/${uuid}/${updateStatus}/updateStatus`
         }),
+        getReservationListPerPatient: (uuid) => ({
+            method: 'get',
+            url: `/reservation/${uuid}/patientlist`
+        }),
+        cancelReservation: {
+            method: 'put',
+            url: `/reservation/cancel`
+        }
     },
     medicine:{
         searchlist: (search) => ({
