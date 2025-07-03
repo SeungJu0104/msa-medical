@@ -3,6 +3,7 @@ package com.emr.slgi.member.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,9 +32,14 @@ public class PatientController {
     }
 
     @PreAuthorize("hasAnyRole('DOCTOR', 'NURSE')")
-    @GetMapping("search")
+    @GetMapping("/search")
     public ResponseEntity<?> search(@Valid PatientSearchDTO patientSearchDTO) {
         return ResponseEntity.ok(memberService.search(patientSearchDTO));
+    }
+
+    @GetMapping("/profile")
+    public ResponseEntity<?> getProfile(@AuthenticationPrincipal String uuid) {
+        return ResponseEntity.ok(memberService.getProfile(uuid));
     }
 
 }

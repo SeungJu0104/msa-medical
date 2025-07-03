@@ -13,6 +13,7 @@ import com.emr.slgi.member.dao.MemberDAO;
 import com.emr.slgi.member.domain.Member;
 import com.emr.slgi.member.dto.DoctorUuidName;
 import com.emr.slgi.member.dto.MemberCreateDTO;
+import com.emr.slgi.member.dto.MemberProfileResponse;
 import com.emr.slgi.member.dto.MemberSearchDTO;
 import com.emr.slgi.member.dto.PatientRegisterDTO;
 import com.emr.slgi.member.dto.PatientSearchDTO;
@@ -66,6 +67,10 @@ public class MemberService {
   public ListResponse<PatientSummary> search(PatientSearchDTO patientSearchDTO) {
     MemberSearchDTO memberSearchDTO = new MemberSearchDTO(patientSearchDTO.getSearchValue());
     return new ListResponse<>(memberDAO.search(memberSearchDTO));
+  }
+
+  public MemberProfileResponse getProfile(String uuid) {
+    return new MemberProfileResponse(memberDAO.getProfile(uuid));
   }
 
 }

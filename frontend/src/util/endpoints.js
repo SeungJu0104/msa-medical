@@ -46,6 +46,10 @@ export const ENDPOINTS = {
             method: 'get',
             url: `/patient/search?searchValue=${searchValue}`
         }),
+        profile: {
+            method: 'get',
+            url: '/patient/profile'
+        },
     },
     doctor: {
         list: {

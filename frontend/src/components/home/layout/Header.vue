@@ -13,7 +13,7 @@
         <RouterLink :to="{ name: 'patientRegister' }">회원가입</RouterLink>
       </div>
       <div>
-        <RouterLink>회원님</RouterLink>
+        <RouterLink :to="{ name: 'mypage' }">회원님</RouterLink>
         <LogoutButton />
       </div>
     </div>
