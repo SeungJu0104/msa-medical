@@ -1,8 +1,7 @@
-package com.emr.slgi.util;
+package com.emr.slgi.reception.enums;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.apache.el.parser.TokenMgrError;
 
 @Getter
 @RequiredArgsConstructor

@@ -14,7 +14,6 @@ public class WaitingList {
     private String patientUuid;
     private ReceptionStatus status;
     private String name;
-    private LocalDateTime createDate;
     private int turn;
 
 }

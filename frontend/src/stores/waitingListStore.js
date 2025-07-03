@@ -4,6 +4,7 @@ import {reception} from "@/reception/util/reception.js";
 import {errorMessage} from "@/util/errorMessage.js";
 import {common} from "@/util/common.js";
 import {useUserStore} from "@/stores/userStore.js";
+import {status} from "@/status/util/status.js";
 
 export const useWaitingListStore = defineStore('waitingList', () => {
 
@@ -14,7 +15,7 @@ export const useWaitingListStore = defineStore('waitingList', () => {
 
     const getReceptionStatusList = async () => {
 
-        receptionStatusList.value = await reception.getReceptionStatusList();
+        receptionStatusList.value = await status.getReceptionStatusList();
 
     }
 

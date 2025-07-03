@@ -1,4 +1,4 @@
-package com.emr.slgi.util;
+package com.emr.slgi.reception.util;
 
 public class ReceptionErrorMessage {
 

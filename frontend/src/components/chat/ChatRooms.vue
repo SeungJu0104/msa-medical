@@ -1,27 +1,30 @@
 <template>
-    <div>
-      <h2>채팅방 리스트</h2>
-      {{uuid}}님
+    <div class="chat-rooms">
+      <div class = "chat-header">
+      {{name}}님
       
-      <button class="btn" @click="showModal = true">
+      <button class="btn-alarm" @click="showModal = true">
         알림창 <span v-if="totalCount > 0">({{ totalCount }})</span>
       </button>
+    </div>
       <alarm v-if="showModal" :alarms="alarmList" @close="showModal = false " :loadAlarmList="loadAlarmList" />
-
-  
-      <ul class="list-group">
-        <li v-for="room in state.chatList" :key="room.roomId">
-          <router-link :to="{name : 'chatroom', params:{roomId : room.roomId }}">{{ room.roomName }}</router-link>
-          {{ room.content }}
-          {{ room.count }}
-          {{ room.finalReadTime }}
-        </li>
-        
-      </ul>
+      <ul class="chat-list">
+  <li v-for="room in state.chatList" :key="room.roomId" class="chat-item">
+    <router-link class="chat-link" :to="{ name: 'chatroom', params: { roomId: room.roomId } }">
+      <div class="chat-top">
+        <span class="chat-room-name">{{ room.roomName }}</span>
+        <span class="chat-content">{{ room.content }}</span>
+        <span v-if="room.count > 0" class="badge">{{ room.count }}</span>
+      </div>
+      <div class="chat-bottom">
+        {{ dayjs(room.lastMessageTime).format('A h:mm:ss') }}
+      </div>
+    </router-link>
+  </li>
+</ul>
     
-      <button class="btn" @click="create = true">등록하기</button>
+      <button class="btn-create" @click="create = true">등록하기</button>
     <ChatCreate v-if="create" @close="create = false" @refresh="loadList" />
-
   </div>
   </template>
   
@@ -29,15 +32,22 @@
   
 import ChatCreate from './ChatCreate.vue'
 import alarm from './Alarm.vue'
-import { useAuthStore} from '@/stores/counter';
 import { customFetch } from '@/util/customFetch';
-import {onMounted, onUnmounted, provide, reactive, ref } from 'vue';
-import { Client } from '@stomp/stompjs';
-import SockJS from 'sockjs-client';
+import {onMounted, computed, reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { ENDPOINTS } from '@/util/endpoints';
+import { useUserStore } from '@/stores/userStore';
+import { getAccessToken } from '@/auth/accessToken';
+import dayjs from 'dayjs';
+import 'dayjs/locale/ko'
+import { getStompClient, sendMsg, subscribeChannel } from '@/util/stompMethod';
+  dayjs.locale('ko') // 오후 || 오전 표시 해주는거
 
-  const auth = useAuthStore();
-  const uuid = auth.user.uuid;
+  const userStore = useUserStore();
+  const name = computed(() => userStore.user?.name ?? '');
+  const uuid = computed(() => userStore.user?.uuid ?? '');
+  const token = getAccessToken()
+
   const alarmList = ref([])
   const create = ref(false)
   const showModal = ref(false)
@@ -46,22 +56,21 @@ import { useRouter } from 'vue-router';
     chatList : [],
   });
 
-  import { computed } from 'vue'
-import { ENDPOINTS } from '@/util/endpoints';
-
   const totalCount = computed(() => {
   return state.chatList.reduce((sum, room) => sum + room.count, 0)
   })
-
+    let client;
   onMounted(()=>{
+    client = getStompClient(uuid.value,token,(client) => {
+      subList(client)
+      subAlarm(client)
+    })  
     loadchatList()
     loadAlarmList()
-    client.activate()
   })
-
   const loadchatList= async () =>{
     try {
-      const response = await customFetch(ENDPOINTS.chat.chatRoomList(uuid))
+      const response = await customFetch(ENDPOINTS.chat.chatRoomList(uuid.value))
     if(response.status===200){
       state.chatList = response.data
     }
@@ -69,38 +78,40 @@ import { ENDPOINTS } from '@/util/endpoints';
       console.error("에러:", error)
     }
 };
-
-const client = new Client({
-  webSocketFactory:() => new SockJS('/ws'),
-  connectHeaders:{sender:uuid},
-  onConnect: () => {
-    client.subscribe(`/sub/chatrooms/${uuid}`,(message) =>{
-    const list = JSON.parse(message.body)
-    state.chatList = list
-    })
-    client.subscribe(`/sub/alarms/${uuid}`, (message) => {
-    const list = JSON.parse(message.body)
-    alarmList.value = list
-  })
-  },
-  onStompError: (e) =>{
-  console.error('연결 실패 : ' ,e)
+const subList = (client) => {
+    try {
+      if(client.connected){
+        subscribeChannel(client,`/sub/chatrooms/${uuid.value}`,(message) => {
+        state.chatList = message
+      })
+      }
+    } catch (error) {
+      console.error("접속안됨",error)
+    }
   }
-})
+    const subAlarm = (client) => {
+    try {
+      if(client.connected){
+        subscribeChannel(client,`/sub/alarms/${uuid.value}`,(message)=>{
+        alarmList.value = message
+      })
+      }
+    } catch (error) {
+      console.error("접속안됨",error)
+    }}
+
 const loadList = (roomId) =>{
-  
   if (client.connected) {
-    client.publish({
-      destination: `/pub/chat/list`,
-      body: JSON.stringify({ uuid,roomId })
+    sendMsg(client,`/pub/chat/list`,{
+      uuid:uuid.value,roomId 
     });
   create.value =false;
   router.push({name:'chatroom', params:{roomId}}) 
 }}
 
-const loadAlarmList = async () => {
+const loadAlarmList = async ()=> {
   try {
-    const response = await customFetch(ENDPOINTS.chat.chatReadList(uuid))
+    const response = await customFetch(ENDPOINTS.chat.chatReadList(uuid.value))
     if(response.status===200){
       alarmList.value = response.data
   }
@@ -112,26 +123,84 @@ const loadAlarmList = async () => {
 
 
 <style scoped>
-.modal-overlay {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
-  background: rgba(0, 0, 0, 0.5);
+.chat-header {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  z-index: 999;
+  margin-bottom: 1rem;
+  padding: 0 0.5rem; /* 좌우 여백 추가 */
 }
-.modal-window {
-  background: white;
-  padding: 1.5rem;
-  border-radius: 8px;
-  min-width: 300px;
-}
-.modal-footer {
-  margin-top: 1rem;
+.chat-rooms {
+  width: 100%;
+  height: 100%;
+  padding: 1rem;
+  box-sizing: border-box;
+  overflow-y: auto;
   display: flex;
-  justify-content: flex-end;
-  gap: 0.5rem;
+  flex-direction: column;
 }
+.chat-list {
+  list-style: none;         /* ● 점 제거 */
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;             /* 각 채팅방 간격 */
+  overflow-y: auto;
+}
+.chat-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.chat-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.25rem;
+  position: relative;
+}
+
+.chat-room-name {
+  font-weight: bold;
+  font-size: 0.8rem;
+  white-space: nowrap;
+  overflow: hidden;            /* 넘치는 부분 숨김 */
+  text-overflow: ellipsis;     /* 말줄임 (...) 표시 */
+  max-width: 60px;            /* 최대 너비 지정 필수! */
+  display: inline-block; 
+}
+
+.chat-content {
+  position: absolute;
+  left: 50%;
+  text-align: center;  
+  transform: translateX(-50%);   
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #555;
+  max-width:  60px;          /* 최대 너비 지정 필수! */
+  font-size: 0.9rem;
+  pointer-events: none; /* 클릭 막힘 방지용 */
+}
+
+.badge {
+  background-color: #ff4d4f;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+
+.chat-bottom {
+  font-size: 0.75rem;
+  color: #888;
+  text-align: right;
+}
+
 </style>

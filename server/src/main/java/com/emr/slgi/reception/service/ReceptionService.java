@@ -48,16 +48,4 @@ public class ReceptionService {
 
     }
 
-    public int cancelReception(String uuid) {
-
-        return receptionDAO.cancelReception(uuid);
-
-    }
-
-    public Optional<List<ReceptionStatusList>> getReceptionStatusList() {
-
-        return Optional.ofNullable(receptionDAO.getReceptionStatusList());
-
-    }
-
 }
