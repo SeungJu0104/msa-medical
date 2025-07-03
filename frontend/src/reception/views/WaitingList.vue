@@ -1,8 +1,8 @@
 <script setup>
   import {useWaitingListStore} from "@/stores/waitingListStore.js";
   import {onBeforeMount, onMounted, onUnmounted, ref} from "vue";
-  import WaitingListDoctorName from "@/reception/components/WaitingListDoctorName.vue";
-  import WaitingListPatientList from "@/reception/components/WaitingListPatientList.vue";
+  import WaitingListDoctorName from "@/shared/components/WaitingListDoctorName.vue";
+  import WaitingListPatientList from "@/shared/components/WaitingListPatientList.vue";
   import {reception} from "@/reception/util/reception.js";
 
   const waitingListStore = useWaitingListStore();
@@ -59,8 +59,13 @@
 </script>
 
 <template>
-  <template v-for="list in waitingList">
-    <WaitingListDoctorName :value="list.doctor"/>
-    <WaitingListPatientList @updateStatus="handleUpdateStatus" @getPatientInfo="getPatientInfo" :value="list.patientList" :status="receptionStatusList"/>
-  </template>
+  <template v-for="list in waitingList" :key="list.doctor?.uuid">
+      <WaitingListDoctorName
+          :value="list.doctor"/>
+      <WaitingListPatientList
+          @updateStatus="handleUpdateStatus"
+          @getPatientInfo="getPatientInfo"
+          :value="list.patientList"
+          :status="receptionStatusList"/>
+    </template>
 </template>
