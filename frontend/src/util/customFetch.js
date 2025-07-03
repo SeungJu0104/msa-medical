@@ -1,5 +1,7 @@
-import { getAccessToken } from '@/auth/accessToken';
+import { getAccessToken, setAccessToken } from '@/auth/accessToken';
+import { getRefreshToken } from '@/auth/refreshToken';
 import axios from 'axios';
+import { ENDPOINTS } from './endpoints';
 
 const instance = axios.create({
     baseURL: '/api'
@@ -15,6 +17,63 @@ instance.interceptors.request.use(
     return config;
   },
   error => Promise.reject(error)
+);
+
+let isRefreshing = false;
+let retryQueue = [];
+
+const processQueue = (error) => {
+  retryQueue.forEach(retry => {
+    if (error) {
+      retry.reject(error);
+    } else {
+      retry.resolve();
+    }
+  });
+  retryQueue = [];
+};
+
+instance.interceptors.response.use(
+  response => response,
+  async error => {
+    const originalRequest = error.config;
+
+    if (error.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+      if (isRefreshing) {
+        return new Promise((resolve, reject) => {
+          retryQueue.push({
+            resolve: () => {
+              resolve(instance(originalRequest));
+            },
+            reject
+          });
+        });
+      }
+
+      isRefreshing = true;
+
+      try {
+        const refreshToken = getRefreshToken();
+        if (!refreshToken) {
+          return Promise.reject(error);
+        }
+        const res = await customFetch(ENDPOINTS.auth.refreshToken, {
+          data: { refreshToken }
+        });
+        setAccessToken(res.data.accessToken);
+        processQueue(null);
+        return instance(originalRequest);
+      } catch (err) {
+        processQueue(err);
+        return Promise.reject(err);
+      } finally {
+        isRefreshing = false;
+      }
+    }
+
+    return Promise.reject(error);
+  }
 );
 
 /**

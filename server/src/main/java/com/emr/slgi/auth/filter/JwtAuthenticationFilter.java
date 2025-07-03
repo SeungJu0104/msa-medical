@@ -2,7 +2,6 @@ package com.emr.slgi.auth.filter;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,6 +15,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import com.emr.slgi.member.enums.MemberRole;
 import com.emr.slgi.util.JwtUtil;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -47,9 +47,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             String token = authorizationHeader.substring(7);
             try {
-                Map<String, Object> claims = jwtUtil.parseToken(token, jwtSecret);
-                String uuid = (String) claims.get("uuid");
-                MemberRole role = MemberRole.fromCode((String) claims.get("role"));
+                Claims claims = jwtUtil.parseToken(token, jwtSecret);
+                String uuid = claims.get("uuid", String.class);
+                MemberRole role = MemberRole.fromCode(claims.get("role", String.class));
                 GrantedAuthority authority = new SimpleGrantedAuthority(role.getAuthority());
                 UsernamePasswordAuthenticationToken auth =
                         new UsernamePasswordAuthenticationToken(uuid, null, List.of(authority));

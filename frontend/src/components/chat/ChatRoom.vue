@@ -6,7 +6,7 @@
       <div class="chat-box">
         <div v-for="(msg, idx) in state.messages" :key="idx"
         :class="msg.uuid === uuid ? 'my-msg' : 'other-msg'">
-          [{{ msg.uuid }}] {{ msg.content }}
+          [{{ msg.name }}] {{ msg.content }} || {{ dayjs(msg.createDate).format('A h:mm:ss') }}
         </div>
       </div>
       <input v-model="state.content" @keyup.enter="sendMessage" placeholder="메시지를 입력하세요" />
@@ -18,74 +18,68 @@
 </template>
 
 <script setup>
-import { useAuthStore } from '@/stores/counter';
+import { getAccessToken } from '@/auth/accessToken';
+import { useUserStore } from '@/stores/userStore';
 import { customFetch } from '@/util/customFetch';
 import { ENDPOINTS } from '@/util/endpoints';
-import { Client } from '@stomp/stompjs';
-import SockJS from 'sockjs-client';
-
-import { onMounted, reactive } from 'vue';
+import { getStompClient, sendMsg, subscribeChannel } from '@/util/stompMethod';
+import dayjs from 'dayjs';
+import 'dayjs/locale/ko'
+import { computed, onMounted, reactive } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-    onMounted(() => {
-        loadChatName()
-        joinTime()
-        loadChatMessage()
-        client.activate()
-    })
+    dayjs.locale('ko') // 오후 || 오전 표시 해주는거
     const route = useRoute()
     const router = useRouter()
-    const auth = useAuthStore()
-    const uuid = auth.user.uuid
     const roomId= route.params.roomId
-
+    const userStore = useUserStore();
+    const uuid = computed(() => userStore.user?.uuid ?? '');
+    const token = getAccessToken()
     const state = reactive({
         content:'',
         messages:[],
         roomName: ''
     })
+    let client;
+    onMounted(() => {
+        client = getStompClient(uuid.value,token,(client) => {
+        chatSub(client)
+        
+    })  
+        loadChatName()
+        loadChatMessage()
+    })
+    let chatRoomSub;
 
-    // stomp 연결 및 읽음 처리(실시간 읽음 처리)
-    const client = new Client({
-        webSocketFactory:() => new SockJS('/ws'),
-        connectHeaders:{
-            sender:uuid
-        },
-        onConnect: ()=>{
-            client.subscribe(`/sub/chatroom/${roomId}`, async (message) => {
-                const msg = JSON.parse(message.body)
-                state.messages.push(msg)
-                if(msg.uuid !== uuid){
-                    const data = {
+    const chatSub =  (client) => {
+        if(client && client.connected){
+            chatRoomSub = subscribeChannel(client,`/sub/chatroom/${roomId}`,async (message) => {
+            state.messages.push(message)
+            if(message.uuid !== uuid.value){
+                //읽음처리
+                try {
+                    await customFetch(ENDPOINTS.chat.readtime,{
+                    data:{
                         roomId,
-                        uuid,
-                        messageId: msg.messageId
-                    }
-                    try {
-                        //실시간 채팅시에 읽음표시
-                        await customFetch(ENDPOINTS.chat.readtime,{data})
-                    } catch (error) {
-                        console.error("에러:", error)
-                    }
+                        uuid: uuid.value,
+                        messageId: message.messageId
+                }})
+                } catch (error) {
+                    console.error("에러:", error)
                 }
-                })
-        },
-        onStompError: (e) =>{
-        console.error('연결 실패 : ' ,e)
-  }
-    }) 
+            }
+        })
+        }
+    }
     //메세지 전송
     const sendMessage = () =>{
-        if(state.content.trim() && client.connected){
-            client.publish({
-                destination : `/pub/chat/message`,
-                body: JSON.stringify({
-                    roomId,
-                    uuid,
-                    content:state.content
-                })
-            })
-            state.content=''
+        if (state.content.trim() && client.connected) {
+            sendMsg(client,`/pub/chat/message`,{
+            roomId,
+            uuid :uuid.value,
+            content:state.content
+            });
         }
+            state.content=''
     }
     // 채팅기록 가져오기
     const loadChatMessage = async () => {
@@ -112,30 +106,10 @@ import { useRoute, useRouter } from 'vue-router';
         }
     }
 
-    // 입장시간 갱신
-    const joinTime = async () => {
-        try {
-            await customFetch(ENDPOINTS.chat.updateJoinTime,{ data : {roomId, uuid}})
-        } catch (error) {
-            console.error("에러:", error)
-        }
-    }
     //입장시 안읽은 메세지 읽음처리하기
     const JoinTimeRead= async () =>{
         try {
-            await customFetch(ENDPOINTS.chat.joinreadtime,{ data:{ roomId, uuid }})
-        } catch (error) {
-            console.error("에러:", error)
-        }
-    }
-
-    // 퇴장 시간 갱신
-    const exitTime = async () =>{
-        try {
-            const response = await customFetch(ENDPOINTS.chat.updateOutTime,{ data:{roomId,uuid}})
-            if (response.status===200){
-                router.push({name:'chatrooms'})
-            }
+            await customFetch(ENDPOINTS.chat.joinreadtime,{ data:{ roomId, uuid :uuid.value }})
         } catch (error) {
             console.error("에러:", error)
         }
@@ -143,11 +117,11 @@ import { useRoute, useRouter } from 'vue-router';
 
     // 나가기
     const exit = () => {
-    if (client && client.active) {
-    client.deactivate()
-    exitTime()
-
-  }
+        if (chatRoomSub) {
+            chatRoomSub.unsubscribe();
+            chatRoomSub = null;
+        }
+        router.push({ name: 'chatrooms' });
 }
 
 </script>

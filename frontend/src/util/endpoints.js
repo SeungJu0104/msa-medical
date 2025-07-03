@@ -13,6 +13,14 @@ export const ENDPOINTS = {
         login: {
             method: 'post',
             url: '/auth/login'
+        },
+        refreshToken: {
+            method: 'post',
+            url: '/auth/refresh-token',
+        },
+        logout: {
+            method: 'post',
+            url: '/auth/logout'
         }
     },
     member: {
@@ -44,15 +52,11 @@ export const ENDPOINTS = {
             method: 'get',
             url: '/doctor/list'
         },
-        name: (uuid) => ({
-            method: 'get',
-            url: `/doctor/${uuid}/name`
-        })
     },
     staff: {
         list: (uuid) => ({
             method: 'get',
-            url: `/staff/list/${uuid}`
+            url: '/staff/list'
         }),
     },
     reception: {
@@ -156,7 +160,7 @@ export const ENDPOINTS = {
             url:`/treatment/totalTreatment`
         },
         history: {
-            method:'post',
+            method:'get',
             url:`/treatment/history`
         },
         historyDetail:(id) => ({
