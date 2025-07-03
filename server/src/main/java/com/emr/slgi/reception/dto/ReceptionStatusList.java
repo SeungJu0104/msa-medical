@@ -5,7 +5,6 @@ import lombok.Data;
 @Data
 public class ReceptionStatusList {
 
-    private String id;
     private String name;
 
 }

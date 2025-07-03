@@ -1,20 +1,15 @@
 package com.emr.slgi.reception.dto;
 
-import com.emr.slgi.util.CommonErrorMessage;
-import com.emr.slgi.util.ReceptionErrorMessage;
+import com.emr.slgi.reception.util.ReceptionErrorMessage;
 import com.emr.slgi.util.ReservationErrorMessage;
 import com.emr.slgi.util.Validate;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
-
-import static com.emr.slgi.util.ReceptionErrorMessage.*;
 
 @Data
 public class ReceptionInfo {
