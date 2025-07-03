@@ -5,8 +5,6 @@ import { patientRoutes } from './patientRoutes';
 import { adminRoutes } from './adminRoutes';
 import MedicalTreatment from '@/components/diagnosis/MedicalTreatment.vue';
 import {receptionRoutes} from "@/router/receptionRoutes.js";
-import StateList from '@/components/status/StateList.vue';
-import ShowStateList from '@/components/status/ShowStateList.vue';
 
 const HomeView = () => import('@/views/HomeView.vue');
 const MainView = () => import('@/views/home/MainView.vue');
@@ -74,17 +72,6 @@ const router = createRouter({
       name : 'medicalTreatment',
       component:MedicalTreatment
     },
-    {
-      path:'/stateList',
-      name: 'stateList',
-      component:StateList,
-    },
-    {
-      path: '/showStateList',
-      name : 'showStateList',
-      component:ShowStateList
-    },
-
 
   ],
 })

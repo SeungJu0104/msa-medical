@@ -27,6 +27,7 @@ export function getStompClient(uuid, token,onConnectedCallback) {
       //   router.push('/login')
       // }
     },
+    reconnectDelay: 5000
   })
 
   stompClient.activate()

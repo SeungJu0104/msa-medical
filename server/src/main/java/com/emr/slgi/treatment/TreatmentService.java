@@ -28,32 +28,30 @@ public class TreatmentService {
 	private final DiagnosisDAO diagnosisDAO;
 	private final AttachmentDAO attachmentDAO;
 	
-	public int insertTreatment(Treatment treatment) {
-		treatmentDAO.insertTreatment(treatment);
-		return treatment.getId();
+	public void insertTreatment(String patientUuid , String doctorUuid) {
+		treatmentDAO.insertTreatment(patientUuid,doctorUuid);
 	}
 	
 	@Transactional
 	public void totalInsert(TotalTreatmentDTO data, MultipartFile[] files) {
 		
 		Treatment treatment = data.getTreatment();
-		treatmentDAO.insertTreatment(treatment);
-		Integer treatmentId = treatment.getId();
+		treatmentDAO.updateTreatment(treatment);
 		
 		if(files != null && files.length>0) {
-			attachmentService.insertAttachment(files, treatmentId);
+			attachmentService.insertAttachment(files, treatment.getId());
 		}
 		
 		if (data.getPrescriptions() != null) {
 			for (Prescription p : data.getPrescriptions()) {
-		        p.setTreatmentId(treatmentId);
+		        p.setTreatmentId(treatment.getId());
 		        prescriptionDAO.insertPrescription(p);
 		    }
 		}
 		
 		if (data.getDiagnosis() != null) {
 			for (Diagnosis d : data.getDiagnosis()) {
-		        d.setTreatmentId(treatmentId);
+		        d.setTreatmentId(treatment.getId());
 		        diagnosisDAO.insertDiagnosis(d);
 		    }
 			
@@ -80,6 +78,10 @@ public class TreatmentService {
 	    total.setAttachments(attachments); 
 		
 		return total;
+	}
+
+	public Treatment selectedPatientUuid(String doctorUuid) {
+		return treatmentDAO.selectedPatientUuid(doctorUuid);
 	}
 
 }

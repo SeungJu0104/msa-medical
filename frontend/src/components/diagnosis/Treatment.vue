@@ -5,12 +5,11 @@
 </template>
 
 <script setup>
-import { reactive } from 'vue';
+import {reactive } from 'vue';
+
     const state = reactive({
-        treatContent: '',
-        patientUuid : 'a', //환자 이건 상태전환 되는것까지 보고 빼겠습니다.
-        doctorUuid : 'b', //의사 이건 상태전환 되는것까지 보고 빼겠습니다.
-    })
+        treatContent: '',   
+     })
 
     defineExpose({ state })
 </script>

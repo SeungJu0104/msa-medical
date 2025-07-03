@@ -10,12 +10,16 @@ import com.emr.slgi.page.TreatmentHitoryRequestDTO;
 public interface TreatmentDAO {
 
 	public int insertTreatment(Treatment treatment);
-
+	public int updateTreatment(Treatment treatment);
+	
 	public Treatment selectTreatment(int id);
 
 	public int getHistoryCount(TreatmentHitoryRequestDTO treatmentHitoryRequestDTO);
 
 	public List<Treatment> getHistory(TreatmentHitoryRequestDTO treatmentHitoryRequestDTO);
+
+	public Treatment selectedPatientUuid(String doctorUuid);
+	public void insertTreatment(String patientUuid, String doctorUuid);
 
 
 }

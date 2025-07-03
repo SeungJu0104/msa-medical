@@ -10,7 +10,7 @@ const emit = defineEmits(['updateStatus', 'getPatientInfo']);
 
 const onStatusChange = (patient, updateStatus) => {
   patient.status = updateStatus;
-  emit('updateStatus', {uuid: patient.uuid, updateStatus});
+  emit('updateStatus', {uuid: patient, updateStatus});
 }
 
 const getPatientInfo = (patient) => {

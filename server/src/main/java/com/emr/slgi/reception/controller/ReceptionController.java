@@ -1,24 +1,36 @@
 package com.emr.slgi.reception.controller;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
+
 import com.emr.slgi.reception.dto.ReceptionInfo;
 import com.emr.slgi.reception.dto.ReceptionStatusList;
+import com.emr.slgi.reception.dto.WaitingList;
 import com.emr.slgi.reception.enums.ReceptionStatus;
 import com.emr.slgi.reception.service.ReceptionService;
-import com.emr.slgi.reception.dto.WaitingList;
+import com.emr.slgi.treatment.TreatmentService;
 import com.emr.slgi.util.CommonErrorMessage;
 import com.emr.slgi.util.ReceptionMessage;
-import com.emr.slgi.util.ReservationErrorMessage;
 import com.emr.slgi.util.Validate;
+
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
-
-import java.util.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -27,6 +39,8 @@ import java.util.*;
 public class ReceptionController {
 
     private final ReceptionService receptionService;
+    private final SimpMessageSendingOperations messagingTemplate;
+    private final TreatmentService treatmentService;
 
     @PostMapping("/acceptPatientByStaff")
     public ResponseEntity<?> acceptPatientByStaff(@RequestBody @Valid ReceptionInfo receptionInfo) {
@@ -44,10 +58,13 @@ public class ReceptionController {
     public ResponseEntity<Map<String, List<WaitingList>>> getWaitingList(
             @PathVariable("doctorUuid") String doctorUuid
     ) {
-
+    	
+    	log.info(doctorUuid);
+    	
         List<WaitingList> list = receptionService.getWaitingList(doctorUuid);
+        
 
-        log.info(list.toString());
+        log.info("대기목록 : {}", list.toString());
 
         return ResponseEntity.ok(
                 Map.of("waitingList", list)
@@ -72,13 +89,14 @@ public class ReceptionController {
     }
 
     @PreAuthorize("hasAnyRole('DOCTOR', 'NURSE')")
-    @PutMapping("/{uuid}/{updateStatus}/updateStatus")
+    @PutMapping("/{patient}/{updateStatus}/updateStatus")
     public ResponseEntity<Map<String, String>> updateReceptionStatus(
-            @PathVariable("uuid") String uuid,
+            @PathVariable("patient") String uuid,
             @PathVariable("updateStatus") String updateStatus) {
-
+    	
         Map<String, String> message = new HashMap<>();
-
+        log.info("uuid ={}",uuid);
+        log.info("uuid ={}",updateStatus);
         if(uuid == null || Validate.regexValidate(Map.of(Validate.MEMBER_UUID_REGEX, uuid)).contains(false)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, CommonErrorMessage.RETRY);
         }
@@ -91,10 +109,13 @@ public class ReceptionController {
 
         ReceptionStatus status = (ReceptionStatus) (result.get("status"));
         if ("RE02".equals(status.getCode())) {
-            message.put("message", ReceptionMessage.CANCEL_SUCCESS.getMessage());
+            message.put("message", ReceptionMessage.CANCEL_SUCCESS.getMessage());           
         }
 
         log.info(result.get("updateRes").toString());
+        
+        messagingTemplate.convertAndSend("/sub/status", "{}");
+//        treatmentService.insertTreatment(patientUuid,doctorUuid);
 
         return ResponseEntity.ok(
             message

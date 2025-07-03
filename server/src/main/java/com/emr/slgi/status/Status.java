@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class Status {
-	private String groupId;
-	private String name;
+	private String updateStatus;
+	private String uuid;
 
 }

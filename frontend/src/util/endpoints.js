@@ -72,9 +72,9 @@ export const ENDPOINTS = {
             method: 'get',
             url: `/reception/statusList`
         }),
-        updateReceptionStatus: ({uuid, updateStatus}) => ({
+        updateReceptionStatus: ({patient, updateStatus}) => ({
             method: 'put',
-            url: `/reception/${uuid}/${updateStatus}/updateStatus`
+            url: `/reception/${patient}/${updateStatus}/updateStatus`
         })
     },
     chat: {
@@ -156,7 +156,7 @@ export const ENDPOINTS = {
     },
     treatment:{
         totalTreatment:{
-            method:'post',
+            method:'put',
             url:`/treatment/totalTreatment`
         },
         history: {
@@ -166,7 +166,11 @@ export const ENDPOINTS = {
         historyDetail:(id) => ({
             method:'get',
             url:`/treatment/historyDetail/${id}`
-        })
+        }),
+        selectedPatientUuid:(doctorUuid) => ({
+            method:'get',
+            url:`/treatment/selectedPatientUuid/${doctorUuid}`
+        }),
     },
 
 }

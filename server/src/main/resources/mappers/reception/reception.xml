@@ -67,7 +67,7 @@
         FROM
             TB_STATUS_CODE
         WHERE
-            GROUP_ID = 4
+            GROUP_ID = 3
     </select>
 
 </mapper>

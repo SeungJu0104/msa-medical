@@ -79,7 +79,7 @@ export const reception = {
 
         try {
 
-            const response = await customFetch(ENDPOINTS.reception.updateReceptionStatus({uuid, updateStatus}));
+            const response = await customFetch(ENDPOINTS.reception.updateReceptionStatus({patient, updateStatus}));
 
             if(response?.status === 200) {
 
