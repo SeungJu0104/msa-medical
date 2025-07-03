@@ -145,7 +145,7 @@ public class ReservationController {
 
     @PreAuthorize("hasRole('PATIENT')")
     @PutMapping("/cancel")
-    public ResponseEntity<?> cancelReservation(@RequestBody ReservationCancelForm rcf) {
+    public ResponseEntity<?> cancelReservation(@RequestBody @Valid ReservationCancelForm rcf) {
 
         if(rcf == null || Validate.regexValidation(Map.of(Validate.MEMBER_UUID_REGEX, rcf.getUuidForCancel())).contains(false)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, ReservationErrorMessage.CAN_NOT_FIND_RESERVATION_DATE);
@@ -157,7 +157,7 @@ public class ReservationController {
 
         return ResponseEntity.ok(
                 Map.of(
-                        "message", ReservationMessage.CANCEL_RESERVATION_SUCCESS
+                        "message", ReservationMessage.CANCEL_RESERVATION_SUCCESS.getMessage()
                 )
         );
 
@@ -249,7 +249,7 @@ public class ReservationController {
 
     }
 
-    @PreAuthorize("hasAnyRole('DOCTOR', 'NURSE')")
+    @PreAuthorize("hasRole('PATIENT')")
     @GetMapping("/{uuid}/patientlist")
     public ResponseEntity<Map<String, List<ReservationListByPatient>>> getReservationListPerPatient(
             @PathVariable("uuid") String patientUuid

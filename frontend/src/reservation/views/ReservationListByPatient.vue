@@ -10,12 +10,12 @@ import {useUserStore} from "@/stores/userStore.js";
   const reservationList = ref();
   const userInfo = computed(() => useUserStore().user);
 
-  const checked = (uuid, e) => {
+  const checked = (e) => {
 
-    if(e.target.checked) {
-      selectedListByPatient.add(uuid);
-    }else{
-      selectedListByPatient.delete(uuid);
+    if (e.target.checked) {
+      selectedListByPatient.add(e.target.value);
+    } else {
+      selectedListByPatient.delete(e.target.value);
     }
 
     console.log(selectedListByPatient);
@@ -48,7 +48,7 @@ import {useUserStore} from "@/stores/userStore.js";
 
       <template v-for="reservation in reservationList" :key="reservation.uuid">
         <div class="form-check">
-          <input class="form-check-input" type="checkbox" @change="checked(reservation.uuid)" value="reservation.uuid">
+          <input class="form-check-input" type="checkbox" @change="checked" :value="reservation.uuid">
           <span v-cloak>{{reservation.name}}</span>
           <span v-cloak>{{dayjs(reservation.reservationDate).format('MM-DD')}}</span>
         </div>

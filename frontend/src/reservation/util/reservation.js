@@ -274,11 +274,13 @@ export const patientMethods = {
     cancelReservation: async (selectedListByPatient) =>  {
 
         try {
-
+            console.log(selectedListByPatient);
             const response = await customFetch(
                 ENDPOINTS.reservation.cancelReservation,
                 {
-                    data: selectedListByPatient
+                    data: {
+                        uuidForCancel: [...selectedListByPatient]
+                    }
                 }
             );
 
