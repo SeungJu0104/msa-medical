@@ -38,17 +38,14 @@ export const reception = {
 
 
     },
-    getDoctorName : async () => {
+    getReceptionStatusList : async () =>  {
 
         try {
-            
-            const response = await customFetch(ENDPOINTS.doctor.name('bbf7cf49-971c-47be-82cd-f613c633aa57')); // 테스트용 의사 번호 데이터
-                // await customFetch(ENDPOINTS.doctor.name(localStorage.getItem('uuid')));
+
+            const response = await customFetch(ENDPOINTS.reception.getReceptionStatusList());
 
             if(response?.status === 200) {
-
-                return response.data?.name;
-
+                return response.data?.statusList;
             }
 
         } catch(err) {
@@ -79,8 +76,6 @@ export const reception = {
             common.errMsg(err);
 
         }
-
-
 
     }
 }

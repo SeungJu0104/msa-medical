@@ -27,7 +27,8 @@ export const useWaitingListStore = defineStore('waitingList', () => {
         if(userInfo.value.role === 'DOCTOR') {
 
             doctorList.value = [{
-                name: userInfo.value.name
+                name: userInfo.value.name,
+                uuid: userInfo.value.uuid
             }]
 
         } else {
