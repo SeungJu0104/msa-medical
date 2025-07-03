@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.emr.slgi.member.dto.PatientRegisterDTO;
 import com.emr.slgi.member.dto.PatientSearchDTO;
+import com.emr.slgi.member.dto.UpdatePatientProfileRequest;
 import com.emr.slgi.member.service.MemberService;
 
 import jakarta.validation.Valid;
@@ -42,4 +44,12 @@ public class PatientController {
         return ResponseEntity.ok(memberService.getProfile(uuid));
     }
 
+    @PatchMapping("/profile")
+    public ResponseEntity<?> updateProfile(
+        @AuthenticationPrincipal String uuid,
+        @RequestBody @Valid UpdatePatientProfileRequest updatePatientProfileRequest
+    ) {
+        memberService.updateProfile(uuid, updatePatientProfileRequest);
+        return ResponseEntity.noContent().build();
+    }
 }

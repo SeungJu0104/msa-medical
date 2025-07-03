@@ -72,4 +72,12 @@
     JOIN TB_MEMBER_CREDENTIALS AS c
     ON m.uuid = c.user_uuid
   </select>
+  <update id="updateProfile">
+    UPDATE TB_MEMBER
+    SET
+      name = #{name},
+      phone = #{phone}
+    WHERE
+      uuid = #{uuid}
+  </update>
 </mapper>

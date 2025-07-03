@@ -12,6 +12,7 @@ import com.emr.slgi.member.dto.MemberProfile;
 import com.emr.slgi.member.dto.MemberSearchDTO;
 import com.emr.slgi.member.dto.PatientSummary;
 import com.emr.slgi.member.dto.StaffSummary;
+import com.emr.slgi.member.dto.UpdatePatientProfile;
 
 @Mapper
 public interface MemberDAO {
@@ -22,4 +23,5 @@ public interface MemberDAO {
     public List<PatientSummary> search(MemberSearchDTO memberSearchDTO);
     public void createPatient(MemberCreateDTO memberCreateDTO);
     public MemberProfile getProfile(String uuid);
+    public void updateProfile(UpdatePatientProfile updatePatientProfile);
 }

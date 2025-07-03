@@ -50,6 +50,10 @@ export const ENDPOINTS = {
             method: 'get',
             url: '/patient/profile'
         },
+        updateProfile: {
+            method: 'patch',
+            url: '/patient/profile'
+        },
     },
     doctor: {
         list: {
