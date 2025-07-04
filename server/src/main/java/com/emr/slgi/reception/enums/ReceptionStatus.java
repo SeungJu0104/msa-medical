@@ -1,16 +1,16 @@
 package com.emr.slgi.reception.enums;
 
-import com.emr.slgi.util.CommonErrorMessage;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonValue;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import com.emr.slgi.util.CommonErrorMessage;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor

@@ -6,9 +6,9 @@
 
 <mapper namespace="com.emr.slgi.treatment.TreatmentDAO">
 
-  <insert id="insertTreatment"  parameterType="com.emr.slgi.treatment.Treatment" useGeneratedKeys="true" keyProperty="id" >
-    INSERT INTO TB_TREATMENT(patient_uuid, doctor_uuid, status,treat_content)
-    VALUES (#{patientUuid}, #{doctorUuid}, 'S002',#{treatContent})
+  <insert id="insertTreatment"  parameterType="com.emr.slgi.treatment.Treatment">
+    INSERT INTO TB_TREATMENT(patient_uuid, doctor_uuid, status)
+    VALUES (#{patientUuid}, #{doctorUuid}, 'RE03')
   </insert>
   
   <select id ="getHistory" parameterType="map" resultType="com.emr.slgi.treatment.Treatment">
@@ -32,5 +32,21 @@
   	from tb_treatment
   	where id =#{id}
   </select>
+  
+  <select id ="selectedPatientUuid" resultType="com.emr.slgi.treatment.Treatment">
+  	select patient_uuid , id
+  	from tb_treatment 
+  	where doctor_uuid =#{doctorUuid} and status = 'RE03'
+  </select>
+  
+  <insert id="updateTreatment"  parameterType="com.emr.slgi.treatment.Treatment" useGeneratedKeys="true" keyProperty="id" >
+    update tb_treatment
+    	set treat_content = #{treatContent},
+    		status	='RE04',
+    		treat_date  = now(),
+    		treat_write_date= now(),
+    		reservation_date= now()
+	 where id = #{id} and patient_uuid = #{patientUuid} and doctor_uuid = #{doctorUuid}
+  </insert>
   
 </mapper>

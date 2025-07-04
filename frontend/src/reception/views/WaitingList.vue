@@ -1,53 +1,58 @@
 <script setup>
   import {useWaitingListStore} from "@/stores/waitingListStore.js";
-  import {onBeforeMount, onMounted, onUnmounted, ref} from "vue";
+  import {computed, onBeforeMount, onMounted, onUnmounted, ref} from "vue";
   import WaitingListDoctorName from "@/shared/components/WaitingListDoctorName.vue";
   import WaitingListPatientList from "@/shared/components/WaitingListPatientList.vue";
   import {reception} from "@/reception/util/reception.js";
+import { getStompClient, sendMsg, subscribeChannel } from "@/util/stompMethod";
+import { useUserStore } from "@/stores/userStore";
+import { getAccessToken } from "@/auth/accessToken";
+import { createWebSocketModuleRunnerTransport } from "vite/module-runner";
 
   const waitingListStore = useWaitingListStore();
   const waitingList = ref();
   const receptionStatusList = ref();
-
-  // 상태 변경 시 동작하는 함수
-  const handleUpdateStatus = async ({uuid, updateStatus}) => {
-
-    await reception.updateReceptionStatus({uuid, updateStatus});
-
-    // 변경 사항 알리는 웹소켓 구현
+  const userStore = useUserStore();
+  const uuid = computed(() => userStore.user?.uuid ?? '');
+  const token = getAccessToken()
+  let client;
 
 
-    // 성공이면 다시 접수 테이블 가져오기
+  const refreshWaitingList = async () => {
     await Promise.all([
-      waitingListStore.promiseAll(),
-      waitingListStore.getReceptionStatusList()
-    ]);
+    waitingListStore.promiseAll(),
+    waitingListStore.getReceptionStatusList()
+  ]);
 
     waitingList.value = waitingListStore.waitingList;
     receptionStatusList.value = waitingListStore.receptionStatusList;
+};
 
-  }
+  // 상태 변경 시 동작하는 함수
+  const handleUpdateStatus = async ({patient, updateStatus}) => {
 
-  // 의료진이 대기 리스트에서 이름을 누른 환자 UUID 가져오는 함수
-  const getPatientInfo = ({uuid}) => {
-
+    await reception.updateReceptionStatus({patient, updateStatus});
   }
 
   onBeforeMount(async () => {
-    await Promise.all([
-      waitingListStore.promiseAll(),
-      waitingListStore.getReceptionStatusList()
-    ]);
-
-    waitingList.value = waitingListStore.waitingList;
-    receptionStatusList.value = waitingListStore.receptionStatusList;
-
+    await refreshWaitingList()
   });
+
+  const statusSub = (client) => {
+    if(client?.connected){
+            subscribeChannel(client,`/sub/status`,() => {            
+            refreshWaitingList()
+            console.log("성공")
+        })
+      }
+  }
 
 
   onMounted(() => {
+    client = getStompClient(uuid.value,token,(client) => {
+      statusSub(client)
+    })
     // 웹소켓 연결부
-
   })
 
   onUnmounted(() => {

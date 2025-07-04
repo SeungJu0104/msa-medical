@@ -2,10 +2,10 @@
   <div class="diagnosis-wrapper">
     <div class="top-section">
       <div class="left">
-        <VisitHistory />
+        <VisitHistory :patient-uuid="patientUuid" :doctor-uuid="doctorUuid" />
       </div>
       <div class="center">
-        <Treatment ref ="treatmentRef"/>
+        <Treatment ref ="treatmentRef" :patient-uuid="patientUuid"/>
         <Disease ref="diseaseRef"/>
       </div>
       <div class="right">
@@ -20,7 +20,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import Attachment from './Attachment.vue'
 import Disease from './Disease.vue'
 import Medicine from './Medicine.vue'
@@ -28,6 +28,26 @@ import VisitHistory from './VisitHistory.vue'
 import { customFetch } from '@/util/customFetch'
 import { ENDPOINTS } from '@/util/endpoints'
 import Treatment from './Treatment.vue'
+import { useUserStore } from '@/stores/userStore'
+
+const userStore = useUserStore()
+const doctorUuid = computed(() => userStore.user?.uuid ?? '')
+const patientUuid = ref(''); 
+const treatmentId = ref(null)
+
+onMounted(async () => {
+  try {
+    const response = await customFetch(ENDPOINTS.treatment.selectedPatientUuid(doctorUuid.value))
+    if (response.status === 200) {
+      patientUuid.value = response.data.treatment.patientUuid
+      treatmentId.value = response.data.treatment.id
+
+      
+    }
+  } catch (e) {
+    console.error('환자 UUID 가져오기 실패', e)
+  }
+})
 
 const treatmentRef= ref()
 const diseaseRef = ref()
@@ -35,12 +55,12 @@ const attachmentRef = ref()
 const medicineRef= ref()
 
 const submit = async ()  => {
-  const treatment = treatmentRef.value?.state //진단 증상
+  const treatment = treatmentRef.value?.state.treatContent//진단 증상
   const disease = diseaseRef.value?.inputText() || [] // 질병 리스트 
   const attachment = attachmentRef.value?.state || [] // 첨부파일
   const medicine = medicineRef.value?.inputText() || []// 약 리스트
 
-  const isMissingDiagnosis = !treatment?.treatContent || treatment.treatContent.trim() === '';
+  const isMissingDiagnosis = !treatment || treatment.trim() === '';
   const isMissingMedicine = medicine.length === 0;
   const isMissingDisease = disease.length === 0;
 
@@ -52,7 +72,12 @@ const submit = async ()  => {
   const formData = new FormData();
 
   const data ={
-    treatment,
+    treatment : {
+      id: treatmentId.value,
+      patientUuid: patientUuid.value,
+      doctorUuid: doctorUuid.value,
+      treatContent : treatment
+    },
     prescriptions: medicine.map(item => ({
     code: item.code,
     volume: item.volume
