@@ -296,6 +296,5 @@ export const patientMethods = {
 
         }
 
-
     }
 }

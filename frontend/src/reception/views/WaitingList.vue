@@ -30,6 +30,11 @@ import { createWebSocketModuleRunnerTransport } from "vite/module-runner";
 
   };
 
+  // 의료진이 대기 리스트에서 이름을 누른 환자 UUID 가져오는 함수
+  const getPatientInfo = ({uuid}) => {
+
+  }
+
   // 상태 변경 시 동작하는 함수
   const handleUpdateStatus = async (patient) => {
 

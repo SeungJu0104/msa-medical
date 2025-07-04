@@ -36,7 +36,6 @@ export const reception = {
             common.errMsg(err);
         }
 
-
     },
     updateReceptionStatus : async (patient) => {
 
