@@ -6,12 +6,24 @@ import com.emr.slgi.reception.service.ReceptionService;
 import com.emr.slgi.reception.dto.WaitingList;
 import com.emr.slgi.reception.util.ReceptionErrorMessage;
 import com.emr.slgi.reception.vo.UpdateReceptionStatusForm;
+import com.emr.slgi.treatment.TreatmentService;
 import com.emr.slgi.util.CommonErrorMessage;
 import com.emr.slgi.reception.enums.ReceptionMessage;
 import com.emr.slgi.util.Validate;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -73,7 +85,7 @@ public class ReceptionController {
         log.info(urs.toString());
 
         // 나중에 상태에 맞춰 별도 함수로 분리하는 코드 리팩토링 수행하기
-        if (ReceptionStatus.ONTREATMENT.equals(ReceptionStatus.from(urs.getUpdateStatus()))) {
+        if (ReceptionStatus.ON_TREATMENT.equals(ReceptionStatus.from(urs.getUpdateStatus()))) {
 
             if(receptionService.checkOnTreatmentStatusExists(urs.getDoctorUuid()) > 0) {
 
@@ -87,7 +99,7 @@ public class ReceptionController {
             statusChk.put("RE03", false);
         }
 
-        if(ReceptionStatus.CANCELRECEPTION.equals(ReceptionStatus.from(urs.getUpdateStatus()))) {
+        if(ReceptionStatus.CANCEL_RECEPTION.equals(ReceptionStatus.from(urs.getUpdateStatus()))) {
 
             statusChk.put("RE02", true);
             message.put("message", ReceptionMessage.CANCEL_SUCCESS.getMessage());

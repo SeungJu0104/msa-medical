@@ -21,8 +21,9 @@ import java.util.stream.Collectors;
 public enum ReceptionStatus {
 
     WAITING("RE01", "대기"),
-    CANCELRECEPTION("RE02", "접수 취소"),
-    ONTREATMENT("RE03", "진료 중");
+    CANCEL_RECEPTION("RE02", "접수 취소"),
+    ON_TREATMENT("RE03", "진료 중"),
+    RECEPTION_COMPLETE("RE04", "진료 완료");
 
     private final String code;
     @JsonValue // ENUM 상수명을 ENUM 내 한글 상태명으로 변경.

@@ -19,19 +19,22 @@ import { createWebSocketModuleRunnerTransport } from "vite/module-runner";
 
 
   const refreshWaitingList = async () => {
+
     await Promise.all([
-    waitingListStore.promiseAll(),
-    waitingListStore.getReceptionStatusList()
-  ]);
+      waitingListStore.promiseAll(),
+      waitingListStore.getReceptionStatusList()
+    ]);
 
     waitingList.value = waitingListStore.waitingList;
     receptionStatusList.value = waitingListStore.receptionStatusList;
-};
+
+  };
 
   // 상태 변경 시 동작하는 함수
-  const handleUpdateStatus = async ({patient, updateStatus}) => {
+  const handleUpdateStatus = async (patient) => {
 
-    await reception.updateReceptionStatus({patient, updateStatus});
+    await reception.updateReceptionStatus(patient);
+
   }
 
   onBeforeMount(async () => {

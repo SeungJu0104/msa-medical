@@ -32,7 +32,7 @@ export const reception = {
             }
 
         } catch(err) {
-            console.log("f");
+
             common.errMsg(err);
         }
 
@@ -47,6 +47,7 @@ export const reception = {
                 {
                     data: patient
                 }
+
             );
 
             if(response?.status === 200) {

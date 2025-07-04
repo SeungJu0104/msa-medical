@@ -19,7 +19,7 @@
         FROM
             TB_STATUS_CODE
         WHERE
-            GROUP_ID = 4
+            ID IN ('RE01', 'RE02', 'RE03')
     </select>
 
 </mapper>
