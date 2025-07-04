@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>------------</div>
-    <div>로고</div>
+    <RouterLink :to="{ name: 'home' }">로고</RouterLink>
     <div>
       <div>진료예약</div>
       <div>병원소개</div>
@@ -13,7 +13,7 @@
         <RouterLink :to="{ name: 'patientRegister' }">회원가입</RouterLink>
       </div>
       <div>
-        <RouterLink>회원님</RouterLink>
+        <RouterLink :to="{ name: 'mypage' }">회원님</RouterLink>
         <LogoutButton />
       </div>
     </div>

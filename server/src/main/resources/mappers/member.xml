@@ -55,4 +55,29 @@
     INSERT INTO TB_MEMBER (uuid, member_role, name, rrn, phone)
     VALUES (#{uuid}, 'R004', #{name}, #{rrn}, #{phone})
   </insert>
+  <select id="getProfile">
+    SELECT
+      id as userid,
+      name,
+      phone,
+      c.create_date as register_date
+    FROM (
+      SELECT
+        uuid,
+        name,
+        phone
+      FROM TB_MEMBER
+      WHERE uuid = #{uuid}
+    ) as m
+    JOIN TB_MEMBER_CREDENTIALS AS c
+    ON m.uuid = c.user_uuid
+  </select>
+  <update id="updateProfile">
+    UPDATE TB_MEMBER
+    SET
+      name = #{name},
+      phone = #{phone}
+    WHERE
+      uuid = #{uuid}
+  </update>
 </mapper>

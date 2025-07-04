@@ -13,11 +13,14 @@ import com.emr.slgi.member.dao.MemberDAO;
 import com.emr.slgi.member.domain.Member;
 import com.emr.slgi.member.dto.DoctorUuidName;
 import com.emr.slgi.member.dto.MemberCreateDTO;
+import com.emr.slgi.member.dto.MemberProfileResponse;
 import com.emr.slgi.member.dto.MemberSearchDTO;
 import com.emr.slgi.member.dto.PatientRegisterDTO;
 import com.emr.slgi.member.dto.PatientSearchDTO;
 import com.emr.slgi.member.dto.PatientSummary;
 import com.emr.slgi.member.dto.StaffSummary;
+import com.emr.slgi.member.dto.UpdatePatientProfile;
+import com.emr.slgi.member.dto.UpdatePatientProfileRequest;
 
 import lombok.RequiredArgsConstructor;
 
@@ -66,6 +69,18 @@ public class MemberService {
   public ListResponse<PatientSummary> search(PatientSearchDTO patientSearchDTO) {
     MemberSearchDTO memberSearchDTO = new MemberSearchDTO(patientSearchDTO.getSearchValue());
     return new ListResponse<>(memberDAO.search(memberSearchDTO));
+  }
+
+  public MemberProfileResponse getProfile(String uuid) {
+    return new MemberProfileResponse(memberDAO.getProfile(uuid));
+  }
+
+  public void updateProfile(String uuid, UpdatePatientProfileRequest updatePatientProfileRequest) {
+    UpdatePatientProfile updatePatientProfile = new UpdatePatientProfile();
+    updatePatientProfile.setUuid(uuid);
+    updatePatientProfile.setName(updatePatientProfileRequest.getName());
+    updatePatientProfile.setPhone(updatePatientProfileRequest.getPhone());
+    memberDAO.updateProfile(updatePatientProfile);
   }
 
 }
