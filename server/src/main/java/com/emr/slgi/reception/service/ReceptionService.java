@@ -57,9 +57,10 @@ public class ReceptionService {
 
     }
 
-    public int changeReceptionStatusToComplete() {
+    // 진료 완료 시 Status 변경
+    public int changeReceptionStatusToComplete(String uuid) {
 
-        receptionDAO.changeReceptionStatusToComplete();
+        return receptionDAO.changeReceptionStatusToComplete(uuid);
 
     }
 }

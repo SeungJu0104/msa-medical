@@ -23,5 +23,5 @@ public interface ReceptionDAO {
 
     int checkOnTreatmentStatusExists(String doctorUuid);
 
-    int changeReceptionStatusToComplete();
+    int changeReceptionStatusToComplete(String uuid);
 }

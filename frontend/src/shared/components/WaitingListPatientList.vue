@@ -41,7 +41,6 @@ const getPatientInfo = (patient) => {
               :value="patient.status"
               :key="patient.uuid + '-' + patient.status"
           />
-<!--          v-model:value="patient.status"-->
         </div>
       </template>
     </div>

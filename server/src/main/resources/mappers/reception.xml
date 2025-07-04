@@ -81,9 +81,9 @@
         UPDATE
             TB_RECEPTION
         SET
-            STATUS = 'RS04'
---         WHERE
-
+            STATUS = 'RE04'
+        WHERE
+            UUID = #{uuid}
     </update>
 
 </mapper>
