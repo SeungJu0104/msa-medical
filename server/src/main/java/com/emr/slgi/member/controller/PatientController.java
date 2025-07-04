@@ -44,6 +44,7 @@ public class PatientController {
         return ResponseEntity.ok(memberService.getProfile(uuid));
     }
 
+    @PreAuthorize("hasRole('PATIENT')")
     @PatchMapping("/profile")
     public ResponseEntity<?> updateProfile(
         @AuthenticationPrincipal String uuid,
