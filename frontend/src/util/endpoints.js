@@ -78,14 +78,10 @@ export const ENDPOINTS = {
             method: 'get',
             url: `/reception/${uuid}`
         }),
-        getReceptionStatusList: () => ({
-            method: 'get',
-            url: `/reception/statusList`
-        }),
-        updateReceptionStatus: ({patient, updateStatus}) => ({
+        updateReceptionStatus: {
             method: 'put',
-            url: `/reception/${patient}/${updateStatus}/updateStatus`
-        })
+            url: `/reception/updateStatus`
+        }
     },
     chat: {
         loadMemberList: (uuid) => ({
@@ -158,6 +154,14 @@ export const ENDPOINTS = {
             method: 'put',
             url: `/reservation/${uuid}/${updateStatus}/updateStatus`
         }),
+        getReservationListPerPatient: (uuid) => ({
+            method: 'get',
+            url: `/reservation/${uuid}/patientlist`
+        }),
+        cancelReservation: {
+            method: 'put',
+            url: `/reservation/cancel`
+        }
     },
     medicine:{
         searchlist: (search) => ({
@@ -173,7 +177,7 @@ export const ENDPOINTS = {
     },
     treatment:{
         totalTreatment:{
-            method:'put',
+            method:'post',
             url:`/treatment/totalTreatment`
         },
         history: {

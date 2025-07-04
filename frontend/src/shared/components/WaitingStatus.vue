@@ -1,5 +1,5 @@
 <script setup>
-import { computed, defineProps } from "vue";
+import {computed, defineProps} from "vue";
 import dayjs from "dayjs";
 
 const { status, value, date } = defineProps({
@@ -11,14 +11,12 @@ const { status, value, date } = defineProps({
 const patientCurrentStatus = computed(() => value);
 
 const filterStages = {
-  left: {
-    label: '현재 상태 제외',
+  left: { //'현재 상태 제외'
     condition: ({v, value}) => {
       return (v.name !== value)
     }
   },
-  excludeWaiting: {
-    label: '오늘이 아니면 대기 제외',
+  excludeWaiting: { //'오늘이 아니면 대기 제외'
     condition: ({v, date}) => {
       const isToday = dayjs().isSame(date, 'day');
       return !(!isToday && v.name === '대기');
@@ -42,11 +40,12 @@ const selectedStatus = (name) => {
 </script>
 
 <template>
+
   <button
       class="btn btn-secondary btn-sm"
-      :class="{ 'dropdown-toggle': patientCurrentStatus.trim() !== '진료 중' }"
       type="button"
       v-bind="patientCurrentStatus.trim() !== '진료 중' ? { 'data-bs-toggle': 'dropdown', 'aria-expanded': 'false' } : {}"
+      :class="{ 'dropdown-toggle': patientCurrentStatus.trim() !== '진료 중' }"
   >
     {{ patientCurrentStatus }}
   </button>
@@ -64,5 +63,4 @@ const selectedStatus = (name) => {
     </li>
   </ul>
 </template>
-
 

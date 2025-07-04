@@ -32,34 +32,22 @@ export const reception = {
             }
 
         } catch(err) {
-            console.log("f");
+
             common.errMsg(err);
         }
 
-
     },
-    getReceptionStatusList : async () =>  {
+    updateReceptionStatus : async (patient) => {
 
         try {
 
-            const response = await customFetch(ENDPOINTS.reception.getReceptionStatusList());
+            const response = await customFetch(
+                ENDPOINTS.reception.updateReceptionStatus,
+                {
+                    data: patient
+                }
 
-            if(response?.status === 200) {
-                return response.data?.statusList;
-            }
-
-        } catch(err) {
-
-            common.errMsg(err);
-
-        }
-
-    },
-    updateReceptionStatus : async ({uuid, updateStatus}) => {
-
-        try {
-
-            const response = await customFetch(ENDPOINTS.reception.updateReceptionStatus({patient, updateStatus}));
+            );
 
             if(response?.status === 200) {
 

@@ -2,7 +2,7 @@
 
 import WaitingListDoctorName from "@/shared/components/WaitingListDoctorName.vue";
 import WaitingListPatientList from "@/shared/components/WaitingListPatientList.vue";
-import {computed, onBeforeMount, onMounted, onUnmounted, reactive, ref} from "vue";
+import {computed, onBeforeMount, onMounted, onUnmounted, ref} from "vue";
 import {useReservationListStore} from "@/stores/reservationListStore.js";
 import {patientMethods} from "@/reservation/util/reservation.js";
 import VueDatepicker from "@vuepic/vue-datepicker";

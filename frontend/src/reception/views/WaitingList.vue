@@ -19,19 +19,27 @@ import { createWebSocketModuleRunnerTransport } from "vite/module-runner";
 
 
   const refreshWaitingList = async () => {
+
     await Promise.all([
-    waitingListStore.promiseAll(),
-    waitingListStore.getReceptionStatusList()
-  ]);
+      waitingListStore.promiseAll(),
+      waitingListStore.getReceptionStatusList()
+    ]);
 
     waitingList.value = waitingListStore.waitingList;
     receptionStatusList.value = waitingListStore.receptionStatusList;
-};
+
+  };
+
+  // 의료진이 대기 리스트에서 이름을 누른 환자 UUID 가져오는 함수
+  const getPatientInfo = ({uuid}) => {
+
+  }
 
   // 상태 변경 시 동작하는 함수
-  const handleUpdateStatus = async ({patient, updateStatus}) => {
+  const handleUpdateStatus = async (patient) => {
 
-    await reception.updateReceptionStatus({patient, updateStatus});
+    await reception.updateReceptionStatus(patient);
+
   }
 
   onBeforeMount(async () => {
@@ -40,7 +48,7 @@ import { createWebSocketModuleRunnerTransport } from "vite/module-runner";
 
   const statusSub = (client) => {
     if(client?.connected){
-            subscribeChannel(client,`/sub/status`,() => {            
+            subscribeChannel(client,`/sub/status`,() => {
             refreshWaitingList()
             console.log("성공")
         })

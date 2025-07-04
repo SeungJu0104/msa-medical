@@ -12,6 +12,7 @@ public class WaitingList {
 
     private String uuid;
     private String patientUuid;
+    private String doctorUuid;
     private ReceptionStatus status;
     private String name;
     private int turn;

@@ -3,10 +3,7 @@ package com.emr.slgi.reservation.service;
 import com.emr.slgi.reception.dao.ReceptionDAO;
 import com.emr.slgi.reception.enums.ReceptionStatus;
 import com.emr.slgi.reservation.dao.ReservationDAO;
-import com.emr.slgi.reservation.dto.FindReservationDate;
-import com.emr.slgi.reservation.dto.ReservationForm;
-import com.emr.slgi.reservation.dto.ReservationList;
-import com.emr.slgi.reservation.dto.ReservationStatusList;
+import com.emr.slgi.reservation.dto.*;
 import com.emr.slgi.reservation.enums.ReservationStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,10 +12,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -100,23 +94,20 @@ public class ReservationService {
 
     }
 
-    public boolean cancelReservation(String reservationId) {
+    public boolean cancelReservation(Set uuidForCancel) {
 
-        log.info(reservationId);
-
-        int affectedRowsCount = getAffectedRowsCount(
-                Map.of(
-                        "where", "ID = '" + reservationId + "' AND STATUS = 'RS01'"
-                )
-        );
+//        int affectedRowsCount = getAffectedRowsCount(
+//                Map.of(
+//                        "where", "ID = '" + reservationId + "' AND STATUS = 'RS01'"
+//                )
+//        );
 
 
-        if(rDao.cancelReservation(reservationId) != affectedRowsCount) {
+        if(rDao.cancelReservation(uuidForCancel) < 1) {
             return false;
         } else {
             return true;
         }
-
 
     }
 
@@ -152,6 +143,12 @@ public class ReservationService {
     public int updateWaitingStatusOnReception(String uuid, String updateStatus) {
 
         return receptionDAO.updateWaitingStatusOnReception(uuid, updateStatus);
+
+    }
+
+    public List<ReservationListByPatient> getReservationListPerPatient(String patientUuid) {
+
+        return rDao.getReservationListPerPatient(patientUuid);
 
     }
 }

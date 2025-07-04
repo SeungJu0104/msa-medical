@@ -1,8 +1,11 @@
 package com.emr.slgi.util;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -36,5 +39,41 @@ public class Validate {
         return res;
 
     }
+
+    public static List<Boolean> regexValidation(Map<String, Collection<?>> regexToValues) {
+
+        List<Boolean> result = new ArrayList<>();
+
+        try {
+
+            regexToValues.forEach((regex, values) -> {
+
+                if (regex == null || values == null) {
+                    values.forEach(v -> result.add(false));
+                } else {
+                    Pattern pattern = Pattern.compile(regex);
+                    for (Object value : values) {
+                        if (value == null) {
+                            result.add(false);
+                        } else {
+                            Matcher matcher = pattern.matcher(String.valueOf(value));
+                            result.add(matcher.matches());
+                        }
+                    }
+                }
+
+            });
+
+        } catch(Exception e) {
+
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, CommonErrorMessage.RETRY);
+
+        }
+
+        return result;
+
+    }
+
+
 
 }

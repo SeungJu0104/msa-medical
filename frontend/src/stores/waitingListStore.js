@@ -41,7 +41,7 @@ export const useWaitingListStore = defineStore('waitingList', () => {
 
     const nullChk = async () => {
 
-        if(doctorList.value == null) {
+        if(doctorList.value === null || doctorList.value === undefined) {
 
             common.alertError(errorMessage.common.retry);
 
@@ -54,6 +54,8 @@ export const useWaitingListStore = defineStore('waitingList', () => {
         await roleChk();
 
         await nullChk();
+
+        console.log("실행 시 의사 정보 : ", doctorList.value);
 
         waitingList.value = await Promise.all(
 

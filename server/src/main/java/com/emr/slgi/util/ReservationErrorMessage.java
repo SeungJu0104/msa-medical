@@ -12,5 +12,7 @@ public class ReservationErrorMessage {
     public static final String CAN_NOT_FIND_DOCTOR_INFO = "의사 정보를 가져올 수 없습니다.";
     public static final String IS_NOT_VALID_DATE = "예약 가능한 날짜가 압니다.";
 
+
+
 }
 
