@@ -1,12 +1,13 @@
 <script setup>
 import WaitingStatus from "@/shared/components/WaitingStatus.vue";
 import dayjs from "dayjs";
+import {reactive} from "vue";
 
-const {value, status} = defineProps({
+const {value, status, date} = defineProps({
                 value: Object,
-                status: Array
-              })
-
+                status: Array,
+                date: dayjs
+})
 const emit = defineEmits(['updateStatus', 'getPatientInfo']);
 
 const onStatusChange = (patient, updateStatus) => {
@@ -21,7 +22,6 @@ const onStatusChange = (patient, updateStatus) => {
 const getPatientInfo = (patient) => {
   emit('getPatientInfo', {uuid: patient.uuid});
 }
-
 
 </script>
 

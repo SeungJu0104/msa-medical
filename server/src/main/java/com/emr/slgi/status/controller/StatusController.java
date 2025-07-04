@@ -29,7 +29,7 @@ public class StatusController {
     @GetMapping("/receptionList")
     public ResponseEntity<Map<String, List<ReceptionStatusList>>> getReceptionStatusList() {
 
-        List<ReceptionStatusList> list = statusService.getReceptionStatusList().get();
+        List<ReceptionStatusList> list = statusService.getReceptionStatusList();
 
         if(list == null || list.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, CommonErrorMessage.RETRY);
@@ -45,7 +45,7 @@ public class StatusController {
     @GetMapping("/reservationList")
     public ResponseEntity<Map<String, List<ReservationStatusList>>> getReservationStatusList() {
 
-        List<ReservationStatusList> list = statusService.getReservationStatusList().get();
+        List<ReservationStatusList> list = statusService.getReservationStatusList();
 
         if(list == null || list.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, CommonErrorMessage.RETRY);

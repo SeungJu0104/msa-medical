@@ -134,9 +134,12 @@
             R.DOCTOR_UUID = #{doctorUuid}
             AND
             R.STATUS = 'RS01'
---         테스트 위해 오늘 날짜 조건은 주석 처리
---             AND
---             RESERVATION_DATE BETWEEN CURDATE() AND CURDATE() + INTERVAL 1 DAY
+            AND
+            R.RESERVATION_DATE
+                BETWEEN DATE(#{date})
+                AND
+                DATE_ADD(DATE(#{date}), INTERVAL 1 DAY)
+
     </select>
 
     <update id="updateReservationStatus">

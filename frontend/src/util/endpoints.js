@@ -52,15 +52,11 @@ export const ENDPOINTS = {
             method: 'get',
             url: '/doctor/list'
         },
-        name: (uuid) => ({
-            method: 'get',
-            url: `/doctor/${uuid}/name`
-        })
     },
     staff: {
         list: (uuid) => ({
             method: 'get',
-            url: `/staff/list/${uuid}`
+            url: '/staff/list'
         }),
     },
     status: {
@@ -150,9 +146,9 @@ export const ENDPOINTS = {
             method: 'put',
             url: '/reservation/cancelHoldingReservation'
         },
-        getFullReservationList: (uuid) => ({
+        getFullReservationList: (uuid, date) => ({
             method: 'get',
-            url: `/reservation/${uuid}/list`
+            url: `/reservation/${uuid}/${date}/list`
         }),
         updateReservationStatus: ({uuid, updateStatus}) => ({
             method: 'put',
@@ -191,7 +187,11 @@ export const ENDPOINTS = {
         historyDetail:(id) => ({
             method:'get',
             url:`/treatment/historyDetail/${id}`
-        })
+        }),
+        selectedPatientUuid:(doctorUuid) => ({
+            method:'get',
+            url:`/treatment/selectedPatientUuid/${doctorUuid}`
+        }),
     },
 
 }

@@ -16,15 +16,15 @@ public class StatusService {
 
     private final StatusDAO statusDAO;
 
-    public Optional<List<ReceptionStatusList>> getReceptionStatusList() {
+    public List<ReceptionStatusList> getReceptionStatusList() {
 
-        return Optional.ofNullable(statusDAO.getReceptionStatusList());
+        return statusDAO.getReceptionStatusList();
 
     }
 
-    public Optional<List<ReservationStatusList>> getReservationStatusList() {
+    public List<ReservationStatusList> getReservationStatusList() {
 
-        return Optional.ofNullable(statusDAO.getReservationStatusList());
+        return statusDAO.getReservationStatusList();
 
     }
 }

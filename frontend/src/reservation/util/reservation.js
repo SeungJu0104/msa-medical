@@ -232,13 +232,13 @@ export const patientMethods = {
         }
 
     },
-    getFullReservationList: async(uuid) => {
+    getFullReservationList: async(uuid, date) => {
 
         try {
 
-            const response = await customFetch(ENDPOINTS.reservation.getFullReservationList(uuid));
+            const response = await customFetch(ENDPOINTS.reservation.getFullReservationList(uuid, date));
 
-            if(response?.status === 200) {
+            if(response.status === 200) {
                 return response.data?.reservationList;
             }
 
@@ -249,11 +249,11 @@ export const patientMethods = {
         }
 
     },
-    updateReservationStatus: async ({uuid, updateStatus}) => {
+    updateReservationStatus: async (data) => {
 
         try {
 
-            const response = await customFetch(ENDPOINTS.reservation.updateReservationStatus({uuid, updateStatus}));
+            const response = await customFetch(ENDPOINTS.reservation.updateReservationStatus(data));
 
             if(response?.status === 200) {
 

@@ -12,13 +12,6 @@ import com.emr.slgi.util.Validate;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
-
-import java.util.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -27,6 +20,8 @@ import java.util.*;
 public class ReceptionController {
 
     private final ReceptionService receptionService;
+    private final SimpMessageSendingOperations messagingTemplate;
+    private final TreatmentService treatmentService;
 
     @PostMapping("/acceptPatientByStaff")
     public ResponseEntity<?> acceptPatientByStaff(@RequestBody @Valid ReceptionInfo receptionInfo) {
@@ -44,8 +39,6 @@ public class ReceptionController {
     public ResponseEntity<Map<String, List<WaitingList>>> getWaitingList(
             @PathVariable("doctorUuid") String doctorUuid
     ) {
-
-        log.info(doctorUuid);
 
         List<WaitingList> list = receptionService.getWaitingList(doctorUuid);
 
@@ -78,7 +71,7 @@ public class ReceptionController {
         }
 
         log.info(urs.toString());
-        
+
         // 나중에 상태에 맞춰 별도 함수로 분리하는 코드 리팩토링 수행하기
         if (ReceptionStatus.ONTREATMENT.equals(ReceptionStatus.from(urs.getUpdateStatus()))) {
 
@@ -106,17 +99,20 @@ public class ReceptionController {
         Map<String, ?> result = receptionService.updateReceptionStatus(urs.getUuid(), urs.getUpdateStatus());
 
         if (!Objects.equals(result.get("updateRes"), 1)) {
-
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, CommonErrorMessage.UPDATE_ERR + CommonErrorMessage.RETRY);
         }
 
         if(statusChk.get("RE03")) {
 
             // 여기서 진료 테이블 내에 INSERT문 수행하도록 treatment 쪽 서비스 연결
-            
-            
-            
+
+
+
         }
+        log.info(result.get("updateRes").toString());
+
+        messagingTemplate.convertAndSend("/sub/status", "{}");
+//        treatmentService.insertTreatment(patientUuid,doctorUuid);
 
         return ResponseEntity.ok(
             message

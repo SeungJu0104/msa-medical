@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,7 +25,7 @@ import lombok.RequiredArgsConstructor;
 public class TreatmentController {
 	private final TreatmentService treatmentService;
 	
-	@PostMapping("/totalTreatment")
+	@PutMapping("/totalTreatment")
 	public ResponseEntity<Object> totalTreatment(
 			@RequestPart("data") TotalTreatmentDTO data,
 			@RequestPart(value = "files",required = false )MultipartFile[] files){
@@ -54,6 +55,12 @@ public class TreatmentController {
 		return ResponseEntity.ok(Map.of("total",total));	
 				
 	}
+	@GetMapping("/selectedPatientUuid/{doctorUuid}")
+	public ResponseEntity<Object> selectedPatientUuid(@PathVariable("doctorUuid") String doctorUuid){
+		Treatment treatment = treatmentService.selectedPatientUuid(doctorUuid);
+		return ResponseEntity.ok(Map.of("treatment",treatment));
+	}
+	
 	
 
 }

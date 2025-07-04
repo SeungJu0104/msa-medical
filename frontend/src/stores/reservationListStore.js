@@ -6,6 +6,8 @@ import {common} from "@/util/common.js";
 import {computed, ref} from "vue";
 import {reception} from "@/reception/util/reception.js";
 import {status} from "@/status/util/status.js";
+import {ENDPOINTS} from "@/util/endpoints.js";
+import {customFetch} from "@/util/customFetch.js";
 
 export const useReservationListStore = defineStore('reservation', () =>  {
 
@@ -49,7 +51,7 @@ export const useReservationListStore = defineStore('reservation', () =>  {
 
     }
 
-    const promiseAll = async () => {
+    const promiseAll = async (date) => {
 
         await roleChk();
 
@@ -59,7 +61,7 @@ export const useReservationListStore = defineStore('reservation', () =>  {
 
             doctorList.value.map(async (doctor) => {
 
-                const list = await patientMethods.getFullReservationList(doctor.uuid);
+                const list = await patientMethods.getFullReservationList(doctor.uuid, date);
 
                 return {
                     doctor,
