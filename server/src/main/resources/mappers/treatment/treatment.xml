@@ -42,7 +42,7 @@
   <insert id="updateTreatment"  parameterType="com.emr.slgi.treatment.Treatment" useGeneratedKeys="true" keyProperty="id" >
     update tb_treatment
     	set treat_content = #{treatContent},
-    		status	='RE05',
+    		status	='RE04',
     		treat_date  = now(),
     		treat_write_date= now(),
     		reservation_date= now()

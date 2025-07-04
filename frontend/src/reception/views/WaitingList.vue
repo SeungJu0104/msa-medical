@@ -1,8 +1,8 @@
 <script setup>
   import {useWaitingListStore} from "@/stores/waitingListStore.js";
   import {computed, onBeforeMount, onMounted, onUnmounted, ref} from "vue";
-  import WaitingListDoctorName from "@/reception/components/WaitingListDoctorName.vue";
-  import WaitingListPatientList from "@/reception/components/WaitingListPatientList.vue";
+  import WaitingListDoctorName from "@/shared/components/WaitingListDoctorName.vue";
+  import WaitingListPatientList from "@/shared/components/WaitingListPatientList.vue";
   import {reception} from "@/reception/util/reception.js";
 import { getStompClient, sendMsg, subscribeChannel } from "@/util/stompMethod";
 import { useUserStore } from "@/stores/userStore";

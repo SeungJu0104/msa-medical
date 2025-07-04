@@ -8,7 +8,7 @@ const {value, status, date} = defineProps({
                 value: Object,
                 status: Array,
                 date: dayjs
-
+})
 const emit = defineEmits(['updateStatus', 'getPatientInfo']);
 
 const onStatusChange = (patient, updateStatus) => {
