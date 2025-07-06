@@ -9,7 +9,6 @@ import com.emr.slgi.page.TreatmentHitoryRequestDTO;
 @Mapper
 public interface TreatmentDAO {
 
-	public int insertTreatment(Treatment treatment);
 	public int updateTreatment(Treatment treatment);
 	
 	public Treatment selectTreatment(int id);
@@ -18,8 +17,7 @@ public interface TreatmentDAO {
 
 	public List<Treatment> getHistory(TreatmentHitoryRequestDTO treatmentHitoryRequestDTO);
 
-	public Treatment selectedPatientUuid(String doctorUuid);
-	public void insertTreatment(String patientUuid, String doctorUuid);
+	public void insertTreatment(String uuid);
 
 
 }

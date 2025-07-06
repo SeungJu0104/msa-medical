@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,16 +24,17 @@ import lombok.RequiredArgsConstructor;
 public class TreatmentController {
 	private final TreatmentService treatmentService;
 	
-	@PutMapping("/totalTreatment")
+	@PostMapping("/totalTreatment")
 	public ResponseEntity<Object> totalTreatment(
 			@RequestPart("data") TotalTreatmentDTO data,
 			@RequestPart(value = "files",required = false )MultipartFile[] files){
 
-		if (data.getTreatment().getDoctorUuid() == null || data.getTreatment().getPatientUuid() == null) {
+		if (data.getTreatment().getId() == 0) {
 			 throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"생성되지 않았습니다.");
 		}
 		treatmentService.totalInsert(data,files);
 		
+	
 		return ResponseEntity.ok().build();
 	}
 	
@@ -44,7 +44,7 @@ public class TreatmentController {
 	}
 	
 	@GetMapping("/historyDetail/{id}")
-	public ResponseEntity<Object> historyDetail(@PathVariable("id") int id ){
+	public ResponseEntity<Object> historyDetail(@PathVariable("id")int id ){
 		if(id ==0 ) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"환자의 접수 번호가 없습니다.");
 		}
@@ -55,12 +55,5 @@ public class TreatmentController {
 		return ResponseEntity.ok(Map.of("total",total));	
 				
 	}
-	@GetMapping("/selectedPatientUuid/{doctorUuid}")
-	public ResponseEntity<Object> selectedPatientUuid(@PathVariable("doctorUuid") String doctorUuid){
-		Treatment treatment = treatmentService.selectedPatientUuid(doctorUuid);
-		return ResponseEntity.ok(Map.of("treatment",treatment));
-	}
-	
-	
 
 }

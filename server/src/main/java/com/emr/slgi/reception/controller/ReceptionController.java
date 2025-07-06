@@ -6,6 +6,7 @@ import com.emr.slgi.reception.service.ReceptionService;
 import com.emr.slgi.reception.dto.WaitingList;
 import com.emr.slgi.reception.util.ReceptionErrorMessage;
 import com.emr.slgi.reception.vo.UpdateReceptionStatusForm;
+import com.emr.slgi.treatment.TreatmentDAO;
 import com.emr.slgi.treatment.TreatmentService;
 import com.emr.slgi.util.CommonErrorMessage;
 import com.emr.slgi.reception.enums.ReceptionMessage;
@@ -33,7 +34,7 @@ public class ReceptionController {
 
     private final ReceptionService receptionService;
     private final SimpMessageSendingOperations messagingTemplate;
-    private final TreatmentService treatmentService;
+    private final TreatmentDAO treatmentDAO;
 
     @PostMapping("/acceptPatientByStaff")
     public ResponseEntity<?> acceptPatientByStaff(@RequestBody @Valid ReceptionInfo receptionInfo) {
@@ -117,14 +118,12 @@ public class ReceptionController {
         if(statusChk.get("RE03")) {
 
             // 여기서 진료 테이블 내에 INSERT문 수행하도록 treatment 쪽 서비스 연결
-
-
+        	treatmentDAO.insertTreatment(urs.getUuid());
 
         }
         log.info(result.get("updateRes").toString());
 
         messagingTemplate.convertAndSend("/sub/status", "{}");
-//        treatmentService.insertTreatment(patientUuid,doctorUuid);
 
         return ResponseEntity.ok(
             message

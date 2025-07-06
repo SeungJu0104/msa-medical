@@ -24,7 +24,7 @@ const onStatusChange = (patient, updateStatus) => {
 }
 
 const getPatientInfo = (patient) => {
-  emit('getPatientInfo', {uuid: patient.uuid});
+  emit('getPatientInfo', {patientUuid: patient.patientUuid,doctorUuid: patient.doctorUuid,});
 }
 
 </script>
