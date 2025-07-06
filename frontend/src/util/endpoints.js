@@ -66,6 +66,10 @@ export const ENDPOINTS = {
             method: 'get',
             url: '/staff/list'
         }),
+        register: {
+            method: 'post',
+            url: '/patient'
+        }
     },
     status: {
         getReceptionStatusList: {
