@@ -186,7 +186,7 @@ import {number} from "sockjs-client/lib/utils/random.js";
               </div>
 
               <label for="rrn" class="col-form-label">주민등록번호</label>
-              <div class="col-auto rrnNo">
+              <div class="input-group mb-3">
                 <input
                     type="text"
                     inputmode="numeric"
@@ -198,11 +198,7 @@ import {number} from "sockjs-client/lib/utils/random.js";
                     maxlength="6"
                     @input="handleRrnFrontInput"
                 />
-              </div>
-              <div class="col-auto">
-                <span>-</span>
-              </div>
-              <div class="col-auto rrnNo">
+                <span class="input-group-text">-</span>
                 <input
                     type="password"
                     inputmode="numeric"
