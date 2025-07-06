@@ -43,7 +43,6 @@ import { useRoute, useRouter } from 'vue-router';
     onMounted(() => {
         client = getStompClient(uuid.value,token,(client) => {
         chatSub(client)
-        
     })  
         loadChatName()
         loadChatMessage()
@@ -51,7 +50,6 @@ import { useRoute, useRouter } from 'vue-router';
     let chatRoomSub;
 
     const chatSub =  (client) => {
-        if(client && client.connected){
             chatRoomSub = subscribeChannel(client,`/sub/chatroom/${roomId}`,async (message) => {
             state.messages.push(message)
             if(message.uuid !== uuid.value){
@@ -69,7 +67,6 @@ import { useRoute, useRouter } from 'vue-router';
             }
         })
         }
-    }
     //메세지 전송
     const sendMessage = () =>{
         if (state.content.trim() && client.connected) {

@@ -1,13 +1,18 @@
-// stompSingleton.js
+import { getAccessToken, setAccessToken } from '@/auth/accessToken'
+import { getRefreshToken } from '@/auth/refreshToken'
 import { Client } from '@stomp/stompjs'
 import SockJS from 'sockjs-client'
+import { customFetch } from './customFetch'
+import { ENDPOINTS } from './endpoints'
 
 let stompClient = null
-
+let reconnectTimer = null
+let prepareToken = null;
 export function getStompClient(uuid, token,onConnectedCallback) {
   if (stompClient && stompClient.connected){
     if (onConnectedCallback) onConnectedCallback(stompClient)
-      return stompClient}
+      return stompClient
+    }
 
   stompClient = new Client({
     webSocketFactory: () => new SockJS('/ws'),
@@ -16,16 +21,23 @@ export function getStompClient(uuid, token,onConnectedCallback) {
       Authorization: `Bearer ${token}`,
     },
     onConnect: () => {
-      console.log("Singleton 연결됨")
       if (onConnectedCallback) onConnectedCallback(stompClient)
+      prepareAccessToken(token);
     },
-    onStompError: (error) => {
-      console.error("에러", error)
-      // if (error.headers.message.includes("만료된 토큰")) {
-      //   alert("로그인 시간이 만료되었습니다. 다시 로그인해주세요.");
-      //   stompClient.deactivate();
-      //   router.push('/login')
-      // }
+    onStompError: async (error) => {
+      if (error.headers.message.includes("만료된 토큰")) {
+        await stompClient.deactivate();
+        stompClient = null;
+        try {
+          const token = prepareToken;
+          prepareToken = null
+          getStompClient(uuid, token, onConnectedCallback)
+          console.log("연결 성공")
+        } catch (e) {
+          console.error("재접속  실패", e)
+          window.location.href = '/login'
+        }
+      }
     },
     reconnectDelay: 5000
   })
@@ -34,12 +46,47 @@ export function getStompClient(uuid, token,onConnectedCallback) {
   return stompClient
 }
 
-export function subscribeChannel(client, destination, callback) {
-    if (!client || !client.connected) {
-      console.warn("STOMP 클라이언트가 연결되지 않았습니다.");
-      return null;
+function getTokenExpirationTime(token) {
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]))
+    return payload.exp * 1000
+  } catch {
+    return 0
+  }
+}
+
+async function prepareAccessToken(token) {
+  if (reconnectTimer) {
+    clearTimeout(reconnectTimer);
+    reconnectTimer = null;
+  }
+
+  const expTime = getTokenExpirationTime(token);
+  const now = Date.now();
+  const delay = expTime - now - 60 * 1000  // 1분 전
+
+  reconnectTimer = setTimeout(async () => {
+    try {
+      prepareToken = await getNewAccessToken();
+    } catch (e) {
+      console.error("미리 갱신 실패 ",e)
     }
-  
+  }, delay);
+}
+
+async function getNewAccessToken() {
+  const refreshToken = getRefreshToken();
+  const response = await customFetch(ENDPOINTS.auth.refreshToken,{
+    data: {
+      refreshToken
+    }
+  });
+  setAccessToken(response.data.accessToken);
+  const newAccessToken = getAccessToken();
+  return newAccessToken;
+}
+
+export function subscribeChannel(client, destination, callback) {
     try {
       return client.subscribe(destination, (message) => {
         try {
@@ -57,11 +104,6 @@ export function subscribeChannel(client, destination, callback) {
   
 
   export function sendMsg(client, destination, Object) {
-    if (!client || !client.connected) {
-      console.warn("메시지를 보낼 수 없습니다. STOMP 클라이언트가 연결되지 않았습니다.");
-      return;
-    }
-  
     try {
       client.publish({
         destination,
