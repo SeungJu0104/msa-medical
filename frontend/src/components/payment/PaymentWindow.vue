@@ -3,7 +3,6 @@
         <h3>수납 내역</h3>
         {{props.item.name }}님
         <p>받을 금액{{ props.item.payment.toLocaleString() }}원</p>
-        <p>받을 금액{{ props.item }}원</p>
 
         <div v-for="(pay,index) in state.paymentList" :key="index">
             {{ pay.method }} : {{ pay.amount.toLocaleString() }}원

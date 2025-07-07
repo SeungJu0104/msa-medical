@@ -11,7 +11,7 @@
         <Payment
         v-if="selectedItem"
         :item="selectedItem"
-         :key="selectedItem.id"
+        :key="selectedItem.id"
         />
     </div>
 </template>
