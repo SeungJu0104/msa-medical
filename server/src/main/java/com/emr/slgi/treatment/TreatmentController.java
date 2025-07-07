@@ -1,5 +1,6 @@
 package com.emr.slgi.treatment;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
@@ -54,6 +55,12 @@ public class TreatmentController {
 	    }
 		return ResponseEntity.ok(Map.of("total",total));	
 				
+	}
+	
+	@GetMapping("/getDocument/{treatmentId}")
+	public ResponseEntity<Object> getDocument(@PathVariable("treatmentId")int treatmentId ){
+		List<DocumentDTO> document =  treatmentService.getDocument(treatmentId);
+		return ResponseEntity.ok(Map.of("list",document));
 	}
 
 }
