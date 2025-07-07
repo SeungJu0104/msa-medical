@@ -8,8 +8,8 @@ import {receptionRoutes} from "@/router/receptionRoutes.js";
 import {reservationRoutes} from "@/router/reservationRoutes.js";
 import {staffRoutes} from "@/router/staffRoutes.js";
 
-const HomeView = () => import('@/views/HomeView.vue');
-const MainView = () => import('@/views/home/MainView.vue');
+const PatientLayout = () => import('@/patient/layouts/PatientLayout.vue');
+const MainView = () => import('@/patient/views/MainView.vue');
 const OtherView = () => import('@/views/other/OtherView.vue');
 const LoginView = () => import('@/views/auth/LoginView.vue');
 const Reception = () => import('@/reception/views/WaitingList.vue')
@@ -21,7 +21,7 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      component: HomeView,
+      component: PatientLayout,
       children: [
         {
           path: '/',
