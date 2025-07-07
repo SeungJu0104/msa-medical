@@ -5,7 +5,7 @@
       <ul v-if="state.list.length > 0" >
         <li class="history-box" v-for="(item, index) in state.list" :key="index">
             <p class="date" @click="division(item)" style="cursor: pointer;">
-                {{ dayjs(item.treatDate).format('YYYY-MM-DD HH:mm:ss') }}</p>
+                {{ dayjs(item.treatDate).format('YYYY-MM-DD') }}</p>
         </li>
       </ul>
       <p v-else style="text-align: center; margin-top: 20px;">내원이력이 없습니다.</p>
