@@ -2,10 +2,9 @@
   <div class="diagnosis-wrapper">
     <div class="top-section">
       <div class="left">
-        <VisitHistory :patient-uuid="patientUuid" :doctor-uuid="doctorUuid" />
       </div>
       <div class="center">
-        <Treatment ref ="treatmentRef" :patient-uuid="patientUuid"/>
+        <Treatment ref ="treatmentRef" />
         <Disease ref="diseaseRef"/>
       </div>
       <div class="right">
@@ -16,6 +15,7 @@
       <Medicine ref="medicineRef"/>
     </div>
     <button @click="submit">진료 완료</button>
+    <button @click="emit('back')">목록으로</button>
   </div>
 </template>
 
@@ -24,30 +24,16 @@ import { computed, onMounted, ref } from 'vue'
 import Attachment from './Attachment.vue'
 import Disease from './Disease.vue'
 import Medicine from './Medicine.vue'
-import VisitHistory from './VisitHistory.vue'
 import { customFetch } from '@/util/customFetch'
 import { ENDPOINTS } from '@/util/endpoints'
 import Treatment from './Treatment.vue'
 import { useUserStore } from '@/stores/userStore'
 
-const userStore = useUserStore()
-const doctorUuid = computed(() => userStore.user?.uuid ?? '')
-const patientUuid = ref(''); 
-const treatmentId = ref(null)
-
-onMounted(async () => {
-  try {
-    const response = await customFetch(ENDPOINTS.treatment.selectedPatientUuid(doctorUuid.value))
-    if (response.status === 200) {
-      patientUuid.value = response.data.treatment.patientUuid
-      treatmentId.value = response.data.treatment.id
-
-      
-    }
-  } catch (e) {
-    console.error('환자 UUID 가져오기 실패', e)
-  }
-})
+const props = defineProps({
+                  id:Number,
+                  uuid:String
+                })
+const emit = defineEmits(['back'])
 
 const treatmentRef= ref()
 const diseaseRef = ref()
@@ -73,9 +59,8 @@ const submit = async ()  => {
 
   const data ={
     treatment : {
-      id: treatmentId.value,
-      patientUuid: patientUuid.value,
-      doctorUuid: doctorUuid.value,
+      id: props.id,
+      uuid : props.uuid,
       treatContent : treatment
     },
     prescriptions: medicine.map(item => ({

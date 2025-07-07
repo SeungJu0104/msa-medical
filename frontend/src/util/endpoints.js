@@ -70,6 +70,10 @@ export const ENDPOINTS = {
             method: 'get',
             url: `/patient/search?searchValue=${searchVal}`
         }),
+        register: {
+            method: 'post',
+            url: '/patient'
+        }
     },
     status: {
         getReceptionStatusList: {
@@ -196,9 +200,9 @@ export const ENDPOINTS = {
             method:'get',
             url:`/treatment/history`
         },
-        historyDetail:(id) => ({
+        historyDetail:(uuid) => ({
             method:'get',
-            url:`/treatment/historyDetail/${id}`
+            url:`/treatment/historyDetail/${uuid}`
         }),
         selectedPatientUuid:(doctorUuid) => ({
             method:'get',

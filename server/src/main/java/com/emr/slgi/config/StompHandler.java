@@ -48,9 +48,14 @@ public class StompHandler implements ChannelInterceptor{
 		    }
 		   accessor.getSessionAttributes().put("uuid", uuid);
 		   accessor.getSessionAttributes().put("tokenExp", expiration.getTime());
+		   log.info("CONNECT 요청: uuid={}, 만료시간={}", uuid, expiration);
 
 		}
 		else if(StompCommand.SUBSCRIBE == accessor.getCommand()) {
+			Long tokenExp = (Long) accessor.getSessionAttributes().get("tokenExp");
+		    if (tokenExp == null || tokenExp < System.currentTimeMillis()) {
+		        throw new MessagingException("만료된 토큰입니다.");
+		    }
             String destination = accessor.getDestination();
             if (destination != null && destination.startsWith("/sub/chatroom/")) {
                 String roomId = destination.substring("/sub/chatroom/".length());
@@ -59,13 +64,19 @@ public class StompHandler implements ChannelInterceptor{
                 accessor.getSessionAttributes().put(subscriptionId, roomId);
                 String uuid = (String) accessor.getSessionAttributes().get("uuid");
                 chatJoinDAO.updateJoinTime(roomId, uuid);
+                log.info("SUBSCRIBE: roomId={}, uuid={}", roomId, uuid);
             }
 		}
 		
 		else if(StompCommand.UNSUBSCRIBE == accessor.getCommand()) {
+			Long tokenExp = (Long) accessor.getSessionAttributes().get("tokenExp");
+		    if (tokenExp == null || tokenExp < System.currentTimeMillis()) {
+		        throw new MessagingException("만료된 토큰입니다.");
+		    }
 			String subscriptionId = accessor.getSubscriptionId();
 			String roomId = (String) accessor.getSessionAttributes().get(subscriptionId);
 		    String uuid = (String) accessor.getSessionAttributes().get("uuid");
+		    log.info("UNSUBSCRIBE: roomId={}, uuid={}", roomId, uuid);
 		    if (roomId != null && uuid != null) {
 		    	chatJoinDAO.updateOutTime(roomId, uuid);
             }

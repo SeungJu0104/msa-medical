@@ -2,6 +2,7 @@ package com.emr.slgi.treatment;
 
 import java.util.List;
 
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,10 +13,12 @@ import com.emr.slgi.attachment.AttachmentService;
 import com.emr.slgi.diagnosis.Diagnosis;
 import com.emr.slgi.diagnosis.DiagnosisDAO;
 import com.emr.slgi.page.PageDTO;
-import com.emr.slgi.page.TreatmentHitoryRequestDTO;
 import com.emr.slgi.page.PageResponseDTO;
+import com.emr.slgi.page.TreatmentHitoryRequestDTO;
+import com.emr.slgi.payment.PayMentDAO;
 import com.emr.slgi.prescription.Prescription;
 import com.emr.slgi.prescription.PrescriptionDAO;
+import com.emr.slgi.reception.dao.ReceptionDAO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -27,11 +30,15 @@ public class TreatmentService {
 	private final PrescriptionDAO prescriptionDAO;
 	private final DiagnosisDAO diagnosisDAO;
 	private final AttachmentDAO attachmentDAO;
+	private final ReceptionDAO receptionDAO;
+	private final SimpMessageSendingOperations messagingTemplate;
+	private final PayMentDAO payMentDAO;
 	
-	public void insertTreatment(String patientUuid , String doctorUuid) {
-		treatmentDAO.insertTreatment(patientUuid,doctorUuid);
+	// 대기에서 접수 상태 전환시에 만들어진다.
+	public void insertTreatment(String uuid) {
+		treatmentDAO.insertTreatment(uuid);
 	}
-	
+	// 전체적인 업데이트 
 	@Transactional
 	public void totalInsert(TotalTreatmentDTO data, MultipartFile[] files) {
 		
@@ -56,6 +63,11 @@ public class TreatmentService {
 		    }
 			
 		}
+		
+		receptionDAO.changeReceptionStatusToComplete(treatment.getUuid());
+		
+		payMentDAO.insertPayMent(treatment.getId());
+		messagingTemplate.convertAndSend("/sub/status", "{}");
 	}
 
 	public PageResponseDTO<Treatment> getHistory(TreatmentHitoryRequestDTO treatmentHitoryRequestDTO) {
@@ -66,22 +78,18 @@ public class TreatmentService {
 	}
 	
 	public TotalTreatmentDTO getTotalDetail(int id) {
-		Treatment treatment = treatmentDAO.selectTreatment(id);
+		Treatment treatmentDetail = treatmentDAO.selectTreatment(id);
 	    List<Prescription> prescriptions = prescriptionDAO.selectPrescriptions(id);
 	    List<Diagnosis> diagnosis = diagnosisDAO.selectDiagnosis(id);
 	    List<Attachment> attachments = attachmentDAO.selectAttachments(id);
 
 	    TotalTreatmentDTO total = new TotalTreatmentDTO();
-	    total.setTreatment(treatment);
+	    total.setTreatment(treatmentDetail);
 	    total.setPrescriptions(prescriptions);
 	    total.setDiagnosis(diagnosis);
 	    total.setAttachments(attachments); 
 		
 		return total;
-	}
-
-	public Treatment selectedPatientUuid(String doctorUuid) {
-		return treatmentDAO.selectedPatientUuid(doctorUuid);
 	}
 
 }

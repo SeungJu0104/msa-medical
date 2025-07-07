@@ -6,7 +6,7 @@ import {customFetch} from "@/util/customFetch.js";
 import {ENDPOINTS} from "@/util/endpoints.js";
 import {omit} from "lodash";
 import {errorMessage} from "@/util/errorMessage.js";
-import {REGEX} from "@/util/regex.js";
+import {REGEX} from "@/util/RegexPattern.js";
 
 const selectedVal = reactive({
   doctorUuid: null,

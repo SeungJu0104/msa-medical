@@ -13,6 +13,7 @@ const MainView = () => import('@/views/home/MainView.vue');
 const OtherView = () => import('@/views/other/OtherView.vue');
 const LoginView = () => import('@/views/auth/LoginView.vue');
 const Reception = () => import('@/reception/views/WaitingList.vue')
+// const Staff = () => import('@/views/staff/StaffMainView.vue')
 
 
 const router = createRouter({
@@ -41,7 +42,6 @@ const router = createRouter({
       name: 'other',
       component: OtherView
     },
-
     {
       path:'/chatrooms',
       name: 'chatrooms',
