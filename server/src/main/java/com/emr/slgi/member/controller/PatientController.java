@@ -25,9 +25,7 @@ import lombok.RequiredArgsConstructor;
 public class PatientController {
 
     private final MemberService memberService;
-
-    // 이미 있는 사람일 경우 예외처리 팀장님께 요청.
-    // 환자 등록 메세지 보내도록 요청.
+    
     @PreAuthorize("hasAnyRole('DOCTOR', 'NURSE')")
     @PostMapping
     public ResponseEntity<?> registerByStaff(@RequestBody @Valid PatientRegisterDTO patientRegisterDTO) {
