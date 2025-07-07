@@ -202,4 +202,15 @@ export const ENDPOINTS = {
         }),
     },
 
+    payment:{
+        loadPaymentList:{
+            method : 'post',
+            url:`/payment/paymentList`
+        },
+
+        statusPayment: (id) => ({
+            method : 'get',
+            url:`/payment/statusPayment/${id}`
+        }),
+    },
 }

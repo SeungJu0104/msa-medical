@@ -6,6 +6,7 @@ import { adminRoutes } from './adminRoutes';
 import MedicalTreatment from '@/components/diagnosis/MedicalTreatment.vue';
 import {receptionRoutes} from "@/router/receptionRoutes.js";
 import {reservationRoutes} from "@/router/reservationRoutes.js";
+import PaymentList from '@/components/payment/PaymentList.vue';
 
 const HomeView = () => import('@/views/HomeView.vue');
 const MainView = () => import('@/views/home/MainView.vue');
@@ -68,6 +69,10 @@ const router = createRouter({
       children: [
           ...reservationRoutes
       ]
+    },
+    {
+      path:`/paymentList`,
+      component:PaymentList
     }
   ],
 })

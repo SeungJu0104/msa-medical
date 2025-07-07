@@ -85,5 +85,4 @@ import VisitHistory from "@/components/diagnosis/VisitHistory.vue";
         :patientUuid="selectedPatientUuid"
         :doctorUuid="selectedDoctorUuid"
       />
-    
 </template>
