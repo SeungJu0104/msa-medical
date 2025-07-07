@@ -9,7 +9,7 @@ import { renewAccessToken } from '@/auth/renewAccessToken'
 let stompClient = null
 let reconnectTimer = null
 let prepareToken = null;
-export function getStompClient(uuid, token,onConnectedCallback) {
+export function getStompClient(uuid,onConnectedCallback) {
   const token = getAccessToken();
   if (stompClient && stompClient.connected){
     if (onConnectedCallback) onConnectedCallback(stompClient)
@@ -33,7 +33,7 @@ export function getStompClient(uuid, token,onConnectedCallback) {
         try {
           const token = prepareToken;
           prepareToken = null
-          getStompClient(uuid, token, onConnectedCallback)
+          getStompClient(uuid, onConnectedCallback)
           console.log("연결 성공")
         } catch (e) {
           console.error("재접속  실패", e)
