@@ -32,8 +32,7 @@ public class PatientController {
         memberService.createPatient(patientRegisterDTO);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
-    
-    // 매개변수 받을 수 있도록 수정 요청
+
     @PreAuthorize("hasAnyRole('DOCTOR', 'NURSE')")
     @GetMapping("/search")
     public ResponseEntity<?> search(@Valid PatientSearchDTO patientSearchDTO) {
