@@ -25,7 +25,7 @@ import lombok.RequiredArgsConstructor;
 public class PatientController {
 
     private final MemberService memberService;
-
+    
     @PreAuthorize("hasAnyRole('DOCTOR', 'NURSE')")
     @PostMapping
     public ResponseEntity<?> registerByStaff(@RequestBody @Valid PatientRegisterDTO patientRegisterDTO) {
