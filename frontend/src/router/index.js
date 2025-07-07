@@ -15,6 +15,7 @@ const LoginView = () => import('@/views/auth/LoginView.vue');
 const Reception = () => import('@/reception/views/WaitingList.vue')
 // const Staff = () => import('@/views/staff/StaffMainView.vue')
 
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -74,7 +75,7 @@ const router = createRouter({
       path: '/staff',
       // name: 'staff',
       children: [
-          ...staffRoutes
+        ...staffRoutes
       ]
     }
   ],

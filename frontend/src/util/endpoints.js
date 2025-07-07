@@ -66,6 +66,10 @@ export const ENDPOINTS = {
             method: 'get',
             url: '/staff/list'
         }),
+        search: (searchVal) => ({
+            method: 'get',
+            url: `/patient/search?searchValue=${searchVal}`
+        }),
         register: {
             method: 'post',
             url: '/patient'
