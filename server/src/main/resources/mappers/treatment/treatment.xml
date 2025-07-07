@@ -6,47 +6,42 @@
 
 <mapper namespace="com.emr.slgi.treatment.TreatmentDAO">
 
-  <insert id="insertTreatment"  parameterType="com.emr.slgi.treatment.Treatment">
-    INSERT INTO TB_TREATMENT(patient_uuid, doctor_uuid, status)
-    VALUES (#{patientUuid}, #{doctorUuid}, 'RE03')
+  <insert id="insertTreatment"  parameterType="com.emr.slgi.treatment.Treatment" >
+    INSERT INTO TB_TREATMENT(uuid)
+    VALUES (#{uuid})
   </insert>
   
   <select id ="getHistory" parameterType="map" resultType="com.emr.slgi.treatment.Treatment">
-  	select treat_write_date,id
-	from tb_treatment
-	where  doctor_uuid = #{doctorUuid} and patient_uuid = #{patientUuid}
-	order by treat_write_date desc
+  	select t.*
+	from tb_treatment t
+	join tb_reception r on t.uuid = r.uuid
+	where  r.doctor_uuid = #{doctorUuid} and r.patient_uuid = #{patientUuid}
+	order by t.treat_date desc
 	limit #{start}, #{size}
   </select>
   
   
   <select id="getHistoryCount" parameterType="map" resultType="int">
 	  SELECT COUNT(*)
-	  FROM tb_treatment
-	  WHERE doctor_uuid = #{doctorUuid}
-	    AND patient_uuid = #{patientUuid}
+	  FROM TB_TREATMENT T 
+	  JOIN TB_RECEPTION R ON T.uuid = R.uuid
+	  WHERE R.doctor_uuid = #{doctorUuid}
+    	AND R.patient_uuid = #{patientUuid}
 </select>
   
   <select id ="selectTreatment" resultType="com.emr.slgi.treatment.Treatment">
   	select *
-  	from tb_treatment
-  	where id =#{id}
+  	from tb_treatment t
+  	where t.id =#{id}
+  	
   </select>
   
-  <select id ="selectedPatientUuid" resultType="com.emr.slgi.treatment.Treatment">
-  	select patient_uuid , id
-  	from tb_treatment 
-  	where doctor_uuid =#{doctorUuid} and status = 'RE03'
-  </select>
-  
-  <insert id="updateTreatment"  parameterType="com.emr.slgi.treatment.Treatment" useGeneratedKeys="true" keyProperty="id" >
+ 
+  <insert id="updateTreatment"  parameterType="com.emr.slgi.treatment.Treatment"  >
     update tb_treatment
     	set treat_content = #{treatContent},
-    		status	='RE04',
-    		treat_date  = now(),
-    		treat_write_date= now(),
-    		reservation_date= now()
-	 where id = #{id} and patient_uuid = #{patientUuid} and doctor_uuid = #{doctorUuid}
+    		write_yn = 'Y'
+	 where id = #{id}
   </insert>
   
 </mapper>
