@@ -1,11 +1,7 @@
 <template>
     <div>
-        <h3>{{ props.visitId }}번 진료 상세</h3>
-
-        <h3>{{ state.treatment.patientUuid }}</h3>
-        <h3>{{ state.treatment.doctorUuid }}</h3>
         <h3>{{ state.treatment.treatContent }}</h3>
-        <h3>{{ state.treatment.treatWriteDate }}</h3>
+        <h3>{{ state.treatment.treatDate }}</h3>
         <ul>
         <li v-for="d in state.diagnosis" :key="d.id">
             질병명: {{ d.id }} || {{ d.name }}
@@ -41,7 +37,7 @@ import { ENDPOINTS } from '@/util/endpoints';
 import { onMounted, reactive } from 'vue';
 
 
-const props = defineProps({visitId:Number})
+const props = defineProps({id:Number})
 const emit = defineEmits(['back'])
 const state = reactive({
     treatment: {},
@@ -51,7 +47,7 @@ const state = reactive({
 })
 onMounted( async ()=> {
     try {
-        const response = await customFetch(ENDPOINTS.treatment.historyDetail(props.visitId))
+        const response = await customFetch(ENDPOINTS.treatment.historyDetail(props.id))
         if(response.status ===200){
         const data = response.data.total
         state.treatment = data.treatment

@@ -1,11 +1,11 @@
 <template>
     <div>
       <h2>내원이력</h2>
-      <template v-if="!selectedId">
+      <template v-if="!selecte.id">
       <ul v-if="state.list.length > 0" >
         <li class="history-box" v-for="(item, index) in state.list" :key="index">
-            <p class="date" @click="selectedId = item.id" style="cursor: pointer;">
-                {{ dayjs(item.treatWriteDate).format('YYYY-MM-DD HH:mm:ss') }}</p>
+            <p class="date" @click="division(item)" style="cursor: pointer;">
+                {{ dayjs(item.treatDate).format('YYYY-MM-DD') }}</p>
         </li>
       </ul>
       <p v-else style="text-align: center; margin-top: 20px;">내원이력이 없습니다.</p>
@@ -24,9 +24,12 @@
         </button>
     </div>
       </template>
-      
-    <template v-else>
-        <VisitHistoryDetail :visitId="selectedId" @back="selectedId = null" />
+
+    <template v-else-if="mode === 'treatmentDetail'">
+      <VisitHistoryDetail :id="selecte.id" @back = "goBack"/>
+    </template>
+    <template v-else-if="mode === 'treatment'">
+    <MedicalTreatment :id="selecte.id" :uuid="selecte.uuid" @back = "goBack"/>
     </template>
     </div>
   </template>
@@ -35,17 +38,27 @@
 import { customFetch } from '@/util/customFetch';
 import { ENDPOINTS } from '@/util/endpoints';
 import dayjs from 'dayjs';
-import { computed, onMounted, reactive, ref } from 'vue';
+import { computed, onMounted, reactive, ref, watch } from 'vue';
 import VisitHistoryDetail from './VisitHistoryDetail.vue';
-
+import MedicalTreatment from './MedicalTreatment.vue';
+    
     const props = defineProps({
       patientUuid: String,
       doctorUuid: String
     })
+
+
     onMounted(() => {
-        historyList()
+      historyList()
     })
-    const selectedId = ref(null)
+    const selecte = reactive({ id: null, uuid: null })
+    const mode = ref('')
+
+  const division = (item) => {
+    selecte.id = item.id
+    selecte.uuid = item.uuid ?? null
+    mode.value = item.writeYn === 'Y' ? 'treatmentDetail' : 'treatment';
+};
     const state = reactive({
         list:[],
         pageInfo: {},
@@ -57,14 +70,14 @@ import VisitHistoryDetail from './VisitHistoryDetail.vue';
     try {
         const response = await customFetch(ENDPOINTS.treatment.history,
         {params:{
-            doctorUuid : props.doctorUuid,
-            patientUuid : props.patientUuid,
+            patientUuid: props.patientUuid,
+            doctorUuid: props.doctorUuid,
             pageNo: state.pageNo,
             size: state.size,
         }})
         if(response.status===200){
-            state.list =  response.data.list
-            state.pageInfo =  response.data.pageInfo
+          state.list =  response.data.list
+          state.pageInfo =  response.data.pageInfo
         }
     } catch (error) {
     console.error("에러",error)
@@ -82,6 +95,23 @@ import VisitHistoryDetail from './VisitHistoryDetail.vue';
     }
     return pages;
     });
+    const goBack = () => {
+      selecte.id = null
+      selecte.uuid = null
+      mode.value = '';
+    }
+
+    watch(
+      () => props.patientUuid, (newUuid, oldUuid) => {
+        if (newUuid && newUuid !== oldUuid) {
+          state.pageNo = 1;
+          historyList();
+          selecte.id = null;
+          selecte.uuid = null;
+          mode.value = '';
+    }
+  }
+);
   </script>
   
   <style scoped>

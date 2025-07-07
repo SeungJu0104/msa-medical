@@ -8,10 +8,13 @@ import { getStompClient, sendMsg, subscribeChannel } from "@/util/stompMethod";
 import { useUserStore } from "@/stores/userStore";
 import { getAccessToken } from "@/auth/accessToken";
 import { createWebSocketModuleRunnerTransport } from "vite/module-runner";
+import VisitHistory from "@/components/diagnosis/VisitHistory.vue";
 
   const waitingListStore = useWaitingListStore();
   const waitingList = ref();
   const receptionStatusList = ref();
+  const selectedPatientUuid = ref(null)
+  const selectedDoctorUuid = ref(null)
   const userStore = useUserStore();
   const uuid = computed(() => userStore.user?.uuid ?? '');
   const token = getAccessToken()
@@ -31,8 +34,12 @@ import { createWebSocketModuleRunnerTransport } from "vite/module-runner";
   };
 
   // 의료진이 대기 리스트에서 이름을 누른 환자 UUID 가져오는 함수
-  const getPatientInfo = ({uuid}) => {
-
+  const getPatientInfo = ({patientUuid,doctorUuid}) => {
+    console.log("환자 UUID:", patientUuid);
+    console.log("의사 UUID:", doctorUuid);
+    selectedPatientUuid.value = patientUuid;
+    selectedDoctorUuid.value = doctorUuid;
+   
   }
 
   // 상태 변경 시 동작하는 함수
@@ -47,12 +54,10 @@ import { createWebSocketModuleRunnerTransport } from "vite/module-runner";
   });
 
   const statusSub = (client) => {
-    if(client?.connected){
-            subscribeChannel(client,`/sub/status`,() => {
-            refreshWaitingList()
-            console.log("성공")
-        })
-      }
+      subscribeChannel(client,`/sub/status`,() => {
+      refreshWaitingList()
+      console.log("성공")
+    })
   }
 
 
@@ -60,14 +65,7 @@ import { createWebSocketModuleRunnerTransport } from "vite/module-runner";
     client = getStompClient(uuid.value,token,(client) => {
       statusSub(client)
     })
-    // 웹소켓 연결부
   })
-
-  onUnmounted(() => {
-    // 웹 소켓 연결 해제부
-
-  })
-
 
 </script>
 
@@ -81,4 +79,11 @@ import { createWebSocketModuleRunnerTransport } from "vite/module-runner";
           :value="list.patientList"
           :status="receptionStatusList"/>
     </template>
+
+    <VisitHistory
+        v-if="selectedPatientUuid"
+        :patientUuid="selectedPatientUuid"
+        :doctorUuid="selectedDoctorUuid"
+      />
+    
 </template>
