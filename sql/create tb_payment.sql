@@ -1,5 +1,5 @@
 CREATE TABLE `TB_PAYMENT` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) AUTO_INCREMENT,
   `treatment_id` varchar(36) NOT NULL,
   `payment_status` varchar(4) NOT NULL,
   `payment` int(11) NOT NULL,
