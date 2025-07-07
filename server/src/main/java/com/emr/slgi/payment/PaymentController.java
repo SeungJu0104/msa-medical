@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/payment")
 public class PaymentController {
 	private final PaymentService paymentService;
+	private final SimpMessageSendingOperations messagingTemplate;
 	
 	@PostMapping("/paymentList")
 	public ResponseEntity<Object> paymentList (PayMent payMent){
@@ -31,6 +33,7 @@ public class PaymentController {
 	@GetMapping("statusPayment/{id}")
 	public ResponseEntity<Object> statusPayment(@PathVariable("id") int id){
 		paymentService.statusPayment(id);
+		messagingTemplate.convertAndSend("/sub/status", "{}");
 		return ResponseEntity.ok().build();
 	}
 }

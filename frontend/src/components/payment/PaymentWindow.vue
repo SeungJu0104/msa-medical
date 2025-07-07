@@ -1,6 +1,7 @@
 <template>
     <div>
         <h3>수납 내역</h3>
+        {{props.item.name }}님
         <p>받을 금액{{ props.item.payment.toLocaleString() }}원</p>
         <p>받을 금액{{ props.item }}원</p>
 
@@ -49,15 +50,6 @@ import { ENDPOINTS } from '@/util/endpoints';
 import { getStompClient } from '@/util/stompMethod';
 import { computed, onMounted, reactive, ref } from 'vue';
 
-    onMounted(() => {
-
-    })
-    const statusSub = (client) => {
-      subscribeChannel(client,`/sub/status`,() => {
-      refreshWaitingList()
-      console.log("성공")
-    })
-  }
     const isSubmit = ref(false) // 결재완료 버튼 누를시 없어짐
     const props = defineProps({
         item: Object

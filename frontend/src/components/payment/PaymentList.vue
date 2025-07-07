@@ -11,6 +11,7 @@
         <Payment
         v-if="selectedItem"
         :item="selectedItem"
+         :key="selectedItem.id"
         />
     </div>
 </template>
@@ -18,18 +19,32 @@
 <script setup>
 import { customFetch } from '@/util/customFetch';
 import { ENDPOINTS } from '@/util/endpoints';
-import { onMounted, reactive, ref } from 'vue';
+import { computed, onMounted, reactive, ref } from 'vue';
 import Payment from './Payment.vue';
+import { getStompClient, subscribeChannel } from '@/util/stompMethod';
+import { useUserStore } from '@/stores/userStore';
 
-
+    const userStore = useUserStore()
+    const uuid = computed(()=>{userStore.user?.uuid ?? ''})
     const selectedItem = ref(null)
+    let client ;
     const state = reactive({
         list : [],
     })
 
     onMounted(()=>{
         loadPaymentList()
+        client = getStompClient(uuid.value,(client) => {
+      statusSub(client)
     })
+    })
+
+    const statusSub = (client) => {
+        subscribeChannel(client,`/sub/status`,() => {
+        loadPaymentList()
+      console.log("성공")
+    })
+  }
 
     const loadPaymentList = async () => {
         try {
