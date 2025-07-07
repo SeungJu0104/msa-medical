@@ -34,7 +34,6 @@ import VisitHistory from "@/components/diagnosis/VisitHistory.vue";
   };
 
   // 의료진이 대기 리스트에서 이름을 누른 환자 UUID 가져오는 함수 // uuid보단 환자이름 가져오는게 더 좋아보아서 환자이름,의사이름 가져왔습니다.
-  // 지금은 이렇게하고 나중에 조건 붙여서 간호사는 눌러도 안보이게 해야할것같습니다.
   const getPatientInfo = ({patientUuid,doctorUuid}) => {
     console.log("환자 UUID:", patientUuid);
     console.log("의사 UUID:", doctorUuid);
