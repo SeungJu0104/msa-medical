@@ -1,5 +1,5 @@
 CREATE TABLE `TB_TREATMENT` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) AUTO_INCREMENT,
   `treat_content` text DEFAULT NULL,
   `treat_date` date NOT NULL DEFAULT current_timestamp(),
   `uuid` varchar(36) NOT NULL,
