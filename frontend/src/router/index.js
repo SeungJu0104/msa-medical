@@ -6,6 +6,7 @@ import { adminRoutes } from './adminRoutes';
 import MedicalTreatment from '@/components/diagnosis/MedicalTreatment.vue';
 import {receptionRoutes} from "@/router/receptionRoutes.js";
 import {reservationRoutes} from "@/router/reservationRoutes.js";
+import {staffRoutes} from "@/router/staffRoutes.js";
 import PaymentList from '@/components/payment/PaymentList.vue';
 
 const HomeView = () => import('@/views/HomeView.vue');
@@ -13,6 +14,8 @@ const MainView = () => import('@/views/home/MainView.vue');
 const OtherView = () => import('@/views/other/OtherView.vue');
 const LoginView = () => import('@/views/auth/LoginView.vue');
 const Reception = () => import('@/reception/views/WaitingList.vue')
+// const Staff = () => import('@/views/staff/StaffMainView.vue')
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -40,7 +43,6 @@ const router = createRouter({
       name: 'other',
       component: OtherView
     },
-
     {
       path:'/chatrooms',
       name: 'chatrooms',
@@ -68,6 +70,13 @@ const router = createRouter({
       path: '/reservation',
       children: [
           ...reservationRoutes
+      ]
+    },
+    {
+      path: '/staff',
+      // name: 'staff',
+      children: [
+        ...staffRoutes
       ]
     },
     {
