@@ -18,7 +18,6 @@
 </template>
 
 <script setup>
-import { getAccessToken } from '@/auth/accessToken';
 import { useUserStore } from '@/stores/userStore';
 import { customFetch } from '@/util/customFetch';
 import { ENDPOINTS } from '@/util/endpoints';
@@ -33,7 +32,6 @@ import { useRoute, useRouter } from 'vue-router';
     const roomId= route.params.roomId
     const userStore = useUserStore();
     const uuid = computed(() => userStore.user?.uuid ?? '');
-    const token = getAccessToken()
     const state = reactive({
         content:'',
         messages:[],
@@ -41,9 +39,8 @@ import { useRoute, useRouter } from 'vue-router';
     })
     let client;
     onMounted(() => {
-        client = getStompClient(uuid.value,token,(client) => {
+        client = getStompClient(uuid.value,(client) => {
         chatSub(client)
-        
     })  
         loadChatName()
         loadChatMessage()
@@ -51,7 +48,6 @@ import { useRoute, useRouter } from 'vue-router';
     let chatRoomSub;
 
     const chatSub =  (client) => {
-        if(client && client.connected){
             chatRoomSub = subscribeChannel(client,`/sub/chatroom/${roomId}`,async (message) => {
             state.messages.push(message)
             if(message.uuid !== uuid.value){
@@ -69,7 +65,6 @@ import { useRoute, useRouter } from 'vue-router';
             }
         })
         }
-    }
     //메세지 전송
     const sendMessage = () =>{
         if (state.content.trim() && client.connected) {
