@@ -37,7 +37,6 @@ import {onMounted, computed, reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { ENDPOINTS } from '@/util/endpoints';
 import { useUserStore } from '@/stores/userStore';
-import { getAccessToken } from '@/auth/accessToken';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko'
 import { getStompClient, sendMsg, subscribeChannel } from '@/util/stompMethod';
@@ -46,7 +45,6 @@ import { getStompClient, sendMsg, subscribeChannel } from '@/util/stompMethod';
   const userStore = useUserStore();
   const name = computed(() => userStore.user?.name ?? '');
   const uuid = computed(() => userStore.user?.uuid ?? '');
-  const token = getAccessToken()
 
   const alarmList = ref([])
   const create = ref(false)
@@ -61,7 +59,7 @@ import { getStompClient, sendMsg, subscribeChannel } from '@/util/stompMethod';
   })
     let client;
   onMounted(()=>{
-    client = getStompClient(uuid.value,token,(client) => {
+    client = getStompClient(uuid.value,(client) => {
       subList(client)
       subAlarm(client)
     })  

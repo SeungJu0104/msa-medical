@@ -18,7 +18,6 @@
 </template>
 
 <script setup>
-import { getAccessToken } from '@/auth/accessToken';
 import { useUserStore } from '@/stores/userStore';
 import { customFetch } from '@/util/customFetch';
 import { ENDPOINTS } from '@/util/endpoints';
@@ -33,7 +32,6 @@ import { useRoute, useRouter } from 'vue-router';
     const roomId= route.params.roomId
     const userStore = useUserStore();
     const uuid = computed(() => userStore.user?.uuid ?? '');
-    const token = getAccessToken()
     const state = reactive({
         content:'',
         messages:[],
@@ -41,7 +39,7 @@ import { useRoute, useRouter } from 'vue-router';
     })
     let client;
     onMounted(() => {
-        client = getStompClient(uuid.value,token,(client) => {
+        client = getStompClient(uuid.value,(client) => {
         chatSub(client)
     })  
         loadChatName()

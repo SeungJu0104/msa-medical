@@ -4,11 +4,13 @@ import { Client } from '@stomp/stompjs'
 import SockJS from 'sockjs-client'
 import { customFetch } from './customFetch'
 import { ENDPOINTS } from './endpoints'
+import { renewAccessToken } from '@/auth/renewAccessToken'
 
 let stompClient = null
 let reconnectTimer = null
 let prepareToken = null;
 export function getStompClient(uuid, token,onConnectedCallback) {
+  const token = getAccessToken();
   if (stompClient && stompClient.connected){
     if (onConnectedCallback) onConnectedCallback(stompClient)
       return stompClient
@@ -35,11 +37,9 @@ export function getStompClient(uuid, token,onConnectedCallback) {
           console.log("연결 성공")
         } catch (e) {
           console.error("재접속  실패", e)
-          window.location.href = '/login'
         }
       }
     },
-    reconnectDelay: 5000
   })
 
   stompClient.activate()
@@ -75,13 +75,7 @@ async function prepareAccessToken(token) {
 }
 
 async function getNewAccessToken() {
-  const refreshToken = getRefreshToken();
-  const response = await customFetch(ENDPOINTS.auth.refreshToken,{
-    data: {
-      refreshToken
-    }
-  });
-  setAccessToken(response.data.accessToken);
+  await renewAccessToken();
   const newAccessToken = getAccessToken();
   return newAccessToken;
 }
