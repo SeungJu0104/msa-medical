@@ -45,15 +45,11 @@
   </insert>
   
   
-  <insert id ="getDocument">
-  SELECT p.code as prescription_code, p.volume, m.name AS medicine_name, t.treat_date, r.name,r.rrn,r.patient_uuid,me.name as doctor_name,di.name,di.code as disease_code
-	FROM tb_prescription p
-	JOIN tb_medicine m ON p.code = m.code
-	JOIN tb_treatment t ON p.treatment_id = t.id
+  <select id ="getDocument" resultType="com.emr.slgi.treatment.DocumentDTO" >
+  SELECT t.treat_date, t.treat_content, r.name,r.uuid,r.rrn, me.name as doctor_name
+	FROM tb_treatment t
 	JOIN tb_reception r ON t.uuid = r.uuid
 	join tb_member me on me.uuid = r.doctor_uuid
-	join tb_diagnosis d on d.treatment_id = t.id 
-	join tb_disease di on di.id = d.id
-	where p.treatment_id = #{treatmentId}
-  </insert>
+	where t.id = #{treatmentId}
+  </select>
 </mapper>

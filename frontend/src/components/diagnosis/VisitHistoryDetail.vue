@@ -27,7 +27,8 @@
         </li>
         </ul>
 
-    <button @click="emit('back')">목록으로</button>
+    <button @click="emit('back')">목록으로</button> 
+    <!-- 닫기로 바꿀껍니다. -->
     </div>
 </template>
 

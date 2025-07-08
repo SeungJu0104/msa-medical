@@ -5,14 +5,10 @@ import lombok.Data;
 
 @Data
 public class DocumentDTO {
-    private String prescriptionCode;
-    private int volume;
-    private String medicineName;
     private String treatDate;
-    private String patientName;
+    private String name;
+    private String treateContent;
     private String rrn;
-    private String patientUuid;
+    private String uuid;
     private String doctorName;
-    private String diseaseName;
-    private String diseaseCode;
 }

@@ -3,26 +3,30 @@
     <h2>처방전</h2>
 
     <div class="patient-info">
-      <p>환자명: {{ document.patientName }}</p>
-      <p>주민등록번호: {{ document.rrn }}</p>
-      <p>환자 UUID: {{ document.patientUuid }}</p>
+      <p>환자명: {{ state.documentList.name }}</p>
+      <p>주민등록번호: {{ state.documentList.rrn }}</p>
+      <p>접수 번호: {{ state.documentList.uuid }}</p>
     </div>
 
     <div class="doctor-info">
-      <p>진료일: {{ document.treatDate }}</p>
-      <p>담당의: {{ document.doctorName }}</p>
+      <p>진료일: {{ state.documentList.treatDate }}</p>
+      <p>담당의: {{ state.documentList.doctorName }}</p>
     </div>
 
     <div class="disease-info">
-      <p>병명: {{ document.diseaseName }}</p>
-      <p>질병코드: {{ document.diseaseCode }}</p>
+      <h3>질병명</h3>
+      <ul>
+        <li v-for="(dis, index) in state.diseaseList" :key="index">
+          {{ dis.code }} : {{ dis.name }}
+        </li>
+      </ul>
     </div>
 
     <div class="medicine-list">
       <h3>처방 약 목록</h3>
       <ul>
-        <li v-for="(med, index) in documentList" :key="index">
-          {{ med.medicineName }} ({{ med.prescriptionCode }}) - {{ med.volume }}정
+        <li v-for="(med, index) in state.medicineList" :key="index">
+          {{ med.code }} ({{ med.name }}) - 총 투약 일수 {{ med.volume }}  
         </li>
       </ul>
     </div>
@@ -32,26 +36,30 @@
 <script setup>
 import { customFetch } from '@/util/customFetch'
 import { ENDPOINTS } from '@/util/endpoints'
-import { onMounted, reactive } from 'vue'
-
+import { onMounted, reactive, ref } from 'vue'
     const props = defineProps({
-    treatmentId: Number
+      treatmentId: Number
     })
     const state = reactive({
-        diseaseList : []
+      documentList : {},
+      diseaseList:[],
+      medicineList:[],
     })
     onMounted(()=>{
         loadDocument()
     })
     const loadDocument = async () => {
         try {
-        const response = await customFetch(ENDPOINTS.treatment.document(props.item.treatmentId))
+        const response = await customFetch(ENDPOINTS.treatment.document(props.treatmentId))
         if(response.status===200){
-            state.diseaseList = response.data.list
+            state.documentList = response.data.documentList
+            state.diseaseList = response.data.diseaseList
+            state.medicineList = response.data.medicineList
         }
     } catch (error) {
         console.error("에러",error)
     }}
+
 </script>
 
 <style lang="scss" scoped>

@@ -19,7 +19,7 @@ public interface TreatmentDAO {
 
 	public void insertTreatment(String uuid);
 
-	public List<DocumentDTO> getDocument(int treatmentId);
+	public DocumentDTO getDocument(int treatmentId);
 
 
 }

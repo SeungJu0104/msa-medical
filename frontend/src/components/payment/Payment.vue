@@ -3,7 +3,7 @@
         <VisitHistoryDetail :id="props.item.treatmentId"/>
 
         <PaymentWindow :item="props.item" />
-        <Document :item="props.item" />
+        <Document :id="props.item.treatmentId" />
     </div>
 </template>
 

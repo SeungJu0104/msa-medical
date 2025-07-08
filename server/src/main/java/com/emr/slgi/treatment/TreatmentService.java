@@ -91,7 +91,7 @@ public class TreatmentService {
 		
 		return total;
 	}
-	public List<DocumentDTO> getDocument(int treatmentId) {
+	public DocumentDTO getDocument(int treatmentId) {
 		return treatmentDAO.getDocument(treatmentId);
 	}
 

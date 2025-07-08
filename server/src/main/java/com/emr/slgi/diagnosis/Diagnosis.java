@@ -7,4 +7,5 @@ public class Diagnosis {
 	private int treatmentId;
 	private int id;
 	private String name;
+	private String code;
 }
