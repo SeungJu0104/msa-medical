@@ -29,27 +29,24 @@
 import { customFetch } from '@/util/customFetch'
 import { ENDPOINTS } from '@/util/endpoints'
 import { onMounted, reactive } from 'vue'
-
-    const props = defineProps({
-      treatmentId: Number
-    })
-    const state = reactive({
-      documentList : {},
-      diseaseList:[],
-    })
-    onMounted(()=>{
-        loadDocument()
-    })
-    const loadDocument = async () => {
-        try {
-        const response = await customFetch(ENDPOINTS.treatment.document(props.treatmentId))
-        if(response.status===200){
-            state.documentList = response.data.documentList
-            state.diseaseList = response.data.diseaseList
-        }
-    } catch (error) {
-        console.error("에러",error)
-    }}
+  const props = defineProps({
+    treatmentId: Number
+  })
+  const state = reactive({
+    documentList : {},
+    diseaseList:[],
+  })
+  onMounted(async ()=>{
+    try {
+      const response = await customFetch(ENDPOINTS.treatment.document(props.treatmentId))
+      if(response.status===200){
+          state.documentList = response.data.documentList
+          state.diseaseList = response.data.diseaseList
+      }
+  } catch (error) {
+      console.error("에러",error)
+  }
+})
 </script>
 
 <style lang="scss" scoped>
