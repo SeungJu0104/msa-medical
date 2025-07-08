@@ -30,6 +30,7 @@
         </li>
       </ul>
     </div>
+    <button @click="printDocument">출력하기</button>
   </div>
 </template>
 
@@ -57,6 +58,9 @@ import { onMounted, reactive, ref } from 'vue'
       console.error("에러",error)
   }}
 )
+function printDocument() {
+  window.print()
+}
 
 </script>
 
