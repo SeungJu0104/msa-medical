@@ -10,36 +10,21 @@ import { createPinia } from 'pinia'
 import piniaPersistedstate from 'pinia-plugin-persistedstate'
 import { getMe } from './util/getMe'
 
-// async function initApp() {
-//   const app = createApp(App)
+async function initApp() {
+  const app = createApp(App)
 
-//   const pinia = createPinia()
-//   pinia.use(piniaPersistedstate)
+  const pinia = createPinia()
+  pinia.use(piniaPersistedstate)
 
-//   app.use(pinia)
-//   try {
-//     await getMe();
-//   } catch (err) {
-//   }
+  app.use(pinia)
+  try {
+    await getMe();
+  } catch (err) {
+  }
 
-//   app.use(router)
+  app.use(router)
 
-//   app.mount('#app')
-// }
+  app.mount('#app')
+}
 
-// initApp();
-
-const app = createApp(App)
-
-const pinia = createPinia()
-pinia.use(piniaPersistedstate)
-
-app.use(pinia)
-// try {
-//   await getMe();
-// } catch (err) {
-// }
-
-app.use(router)
-
-app.mount('#app')
+initApp();
