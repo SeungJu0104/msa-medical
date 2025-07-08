@@ -1,13 +1,19 @@
 version: "3"
 services:
-  frontend:
+
+  mariadb:
     build:
-      context: ./frontend
-    ports:
-      - "80:80"
-    depends_on:
-      - backend
-  
+      context: ./mariadb
+    environment:
+      MARIADB_ROOT_PASSWORD: 1004
+      MARIADB_DATABASE: slgi_emr_db
+    volumes:
+      - ./mariadb/data:/var/lib/mysql
+
+  redis:
+    build:
+      context: ./redis
+
   backend:
     build:
       context: ./server
@@ -17,18 +23,18 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mariadb://mariadb:3306/slgi_emr_db?useSSL=false
       SPRING_DATASOURCE_USER: root
       SPRING_DATASOURCE_PASSWORD: 1004
-
+    volumes:
+      - ./server/build/libs/server-0.0.1-SNAPSHOT.jar:/app/app.jar
     depends_on:
       - redis
       - mariadb
 
-  mariadb:
+  frontend:
     build:
-      context: ./mariadb
-    environment:
-      MARIADB_ROOT_PASSWORD: 1004
-      MARIADB_DATABASE: slgi_emr_db
-
-  redis:
-    build:
-      context: ./redis
+      context: ./frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend/dist:/usr/share/nginx/html
