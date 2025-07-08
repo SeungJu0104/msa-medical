@@ -6,7 +6,7 @@ import {customFetch} from "@/util/customFetch.js";
 import {ENDPOINTS} from "@/util/endpoints.js";
 import {omit} from "lodash";
 import {errorMessage} from "@/util/errorMessage.js";
-import {REGEX} from "@/util/RegexPattern.js";
+import {REGEX_PATTERN} from "@/util/RegexPattern.js";
 
 const selectedVal = reactive({
   doctorUuid: null,
@@ -30,7 +30,7 @@ const selectDoctor = (doctor) => {
   selectedVal.doctorUuid = doctor.uuid;
   selectedVal.name = doctor.name;
 
-  acceptChk.doctorChk = selectedVal.doctorUuid !== null && REGEX.MEMBER_UUID_REGEX.test(selectedVal.doctorUuid);
+  acceptChk.doctorChk = selectedVal.doctorUuid !== null && REGEX_PATTERN.MEMBER_UUID_REGEX.test(selectedVal.doctorUuid);
 
 }
 
