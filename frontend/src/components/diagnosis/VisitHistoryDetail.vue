@@ -27,7 +27,8 @@
         </li>
         </ul>
 
-    <button @click="emit('back')">목록으로</button>
+    <button @click="emit('back')">목록으로</button> 
+    <!-- 닫기로 바꿀껍니다. -->
     </div>
 </template>
 
@@ -49,11 +50,11 @@ onMounted( async ()=> {
     try {
         const response = await customFetch(ENDPOINTS.treatment.historyDetail(props.id))
         if(response.status ===200){
-        const data = response.data.total
-        state.treatment = data.treatment
-        state.diagnosis = data.diagnosis
-        state.prescriptions = data.prescriptions
-        state.attachments = data.attachments
+            const data = response.data.total
+            state.treatment = data.treatment
+            state.diagnosis = data.diagnosis
+            state.prescriptions = data.prescriptions
+            state.attachments = data.attachments
     }    
     } catch (error) {
         console.error("에러",error)

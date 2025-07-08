@@ -208,6 +208,21 @@ export const ENDPOINTS = {
             method:'get',
             url:`/treatment/selectedPatientUuid/${doctorUuid}`
         }),
+        document:(treatmentId) =>({
+            method:'get',
+            url:`/treatment/getDocument/${treatmentId}`
+        })
     },
 
+    payment:{
+        loadPaymentList:{
+            method : 'post',
+            url:`/payment/paymentList`
+        },
+
+        statusPayment: (id) => ({
+            method : 'get',
+            url:`/payment/statusPayment/${id}`
+        }),
+    },
 }

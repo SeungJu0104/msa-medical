@@ -12,7 +12,7 @@
 	</insert>
 	
 	<select id="selectDiagnosis" resultType="com.emr.slgi.diagnosis.Diagnosis">
-		select dia.* , dis.name
+		select dia.* , dis.name,dis.code
 		from tb_diagnosis dia
 		Join tb_disease dis on dia.id = dis.id
 		where treatment_id =#{id}	

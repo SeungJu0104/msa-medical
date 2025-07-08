@@ -44,4 +44,12 @@
 	 where id = #{id}
   </insert>
   
+  
+  <select id ="getDocument" resultType="com.emr.slgi.treatment.DocumentDTO" >
+  SELECT t.treat_date, t.treat_content, r.name,r.uuid,r.rrn, me.name as doctor_name
+	FROM tb_treatment t
+	JOIN tb_reception r ON t.uuid = r.uuid
+	join tb_member me on me.uuid = r.doctor_uuid
+	where t.id = #{treatmentId}
+  </select>
 </mapper>

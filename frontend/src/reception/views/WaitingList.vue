@@ -17,7 +17,6 @@ import VisitHistory from "@/components/diagnosis/VisitHistory.vue";
   const selectedDoctorUuid = ref(null)
   const userStore = useUserStore();
   const uuid = computed(() => userStore.user?.uuid ?? '');
-  const token = getAccessToken()
   let client;
 
 
@@ -62,7 +61,7 @@ import VisitHistory from "@/components/diagnosis/VisitHistory.vue";
 
 
   onMounted(() => {
-    client = getStompClient(uuid.value,token,(client) => {
+    client = getStompClient(uuid.value,(client) => {
       statusSub(client)
     })
   })
@@ -85,5 +84,4 @@ import VisitHistory from "@/components/diagnosis/VisitHistory.vue";
         :patientUuid="selectedPatientUuid"
         :doctorUuid="selectedDoctorUuid"
       />
-    
 </template>

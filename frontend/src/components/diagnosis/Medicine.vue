@@ -7,7 +7,7 @@
       </div>
       <ul v-if="state.isFocus">
         <li v-if="state.medicineList.length === 0"> 검색 결과가 없습니다. </li>
-        <li v-else v-for="item in state.medicineList" :key="item.code" @mousedown="selectMedicine(item)">
+        <li v-else v-for="item in state.medicineList" :key="item.code" @click="selectMedicine(item)">
           {{ item.code }} || {{ item.name }}
         </li>
       </ul>

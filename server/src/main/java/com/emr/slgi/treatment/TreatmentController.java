@@ -1,5 +1,7 @@
 package com.emr.slgi.treatment;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
@@ -14,7 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.emr.slgi.diagnosis.Diagnosis;
+import com.emr.slgi.diagnosis.DiagnosisDAO;
 import com.emr.slgi.page.TreatmentHitoryRequestDTO;
+import com.emr.slgi.prescription.Prescription;
+import com.emr.slgi.prescription.PrescriptionDAO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,6 +29,8 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/treatment")
 public class TreatmentController {
 	private final TreatmentService treatmentService;
+	private final PrescriptionDAO prescriptionDAO;
+	private final DiagnosisDAO  diagnosisDAO; 
 	
 	@PostMapping("/totalTreatment")
 	public ResponseEntity<Object> totalTreatment(
@@ -54,6 +62,16 @@ public class TreatmentController {
 	    }
 		return ResponseEntity.ok(Map.of("total",total));	
 				
+	}
+	
+	@GetMapping("/getDocument/{treatmentId}")
+	public ResponseEntity<Object> getDocument(@PathVariable("treatmentId")int treatmentId ){
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("medicineList", prescriptionDAO.selectPrescriptions(treatmentId));
+		map.put("diseaseList", diagnosisDAO.selectDiagnosis(treatmentId));
+		map.put("documentList", treatmentService.getDocument(treatmentId));
+		
+		return ResponseEntity.ok(map);
 	}
 
 }

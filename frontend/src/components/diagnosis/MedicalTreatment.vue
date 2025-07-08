@@ -14,7 +14,7 @@
     <div class="bottom-section">
       <Medicine ref="medicineRef"/>
     </div>
-    <button @click="submit">진료 완료</button>
+    <button @click="submit && !isSubmit">진료 완료</button>
     <button @click="emit('back')">목록으로</button>
   </div>
 </template>
@@ -29,6 +29,7 @@ import { ENDPOINTS } from '@/util/endpoints'
 import Treatment from './Treatment.vue'
 import { useUserStore } from '@/stores/userStore'
 
+const isSubmit = ref(false);
 const props = defineProps({
                   id:Number,
                   uuid:String
@@ -83,6 +84,7 @@ const submit = async ()  => {
       data: formData,})
       
       if(response.status ===200){
+        isSubmit.value = true
         alert("진료 작성이 등록되었습니다.")
       }
   } catch (error) {

@@ -7,6 +7,7 @@ import MedicalTreatment from '@/components/diagnosis/MedicalTreatment.vue';
 import {receptionRoutes} from "@/router/receptionRoutes.js";
 import {reservationRoutes} from "@/router/reservationRoutes.js";
 import {staffRoutes} from "@/router/staffRoutes.js";
+import PaymentList from '@/components/payment/PaymentList.vue';
 
 const OtherView = () => import('@/views/other/OtherView.vue');
 const Reception = () => import('@/reception/views/WaitingList.vue')
@@ -57,6 +58,10 @@ const router = createRouter({
       children: [
         ...staffRoutes
       ]
+    },
+    {
+      path:`/paymentList`,
+      component:PaymentList
     }
   ],
 })

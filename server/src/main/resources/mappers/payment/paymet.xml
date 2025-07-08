@@ -9,4 +9,21 @@
 	insert into tb_payment(treatment_id,payment_status,payment)
 	value(#{id},'RR01','10000')
 	</insert>
+	
+	<select id ="getList">
+	select r.name, p.*
+	from tb_payment p 
+	join tb_treatment t on p.treatment_id = t.id
+	join tb_reception r on r.uuid = t.uuid
+	where p.payment_status = 'RR01'
+	order by t.treat_date
+	</select>
+	
+	<update id="statusPayment">
+	update tb_payment
+	set payment_status ='RR02',
+		payment_date = now()
+	where id = #{id}
+	
+	</update>
 </mapper>
