@@ -1,21 +1,40 @@
+const MainView = () => import('@/patient/views/MainView.vue');
 const MyPageView = () => import("@/patient/views/MyPageView.vue");
+const PatientLayout = () => import('@/patient/layouts/PatientLayout.vue');
 const RegisterView = () => import("@/patient/views/RegisterView.vue");
 const UpdateProfile = () => import("@/patient/views/UpdateProfile.vue");
+const LoginView = () => import('@/views/auth/LoginView.vue');
 
 export const patientRoutes = [
   {
-    path: '/patient/register',
-    name: 'patientRegister',
-    component: RegisterView
-  },
-  {
-    path: '/mypage',
-    name: 'mypage',
-    component: MyPageView
-  },
-  {
-    path: '/patient/update',
-    name: 'updateProfile',
-    component: UpdateProfile
+    path: '/',
+    component: PatientLayout,
+    children: [
+      {
+        path: '/',
+        name: 'home',
+        component: MainView
+      },
+      {
+        path: '/login',
+        name: 'loginView',
+        component: LoginView
+      },
+      {
+        path: '/register',
+        name: 'patientRegister',
+        component: RegisterView
+      },
+      {
+        path: '/mypage',
+        name: 'mypage',
+        component: MyPageView
+      },
+      {
+        path: '/profile/update',
+        name: 'updateProfile',
+        component: UpdateProfile
+      },
+    ]
   },
 ];

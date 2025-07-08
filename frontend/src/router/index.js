@@ -8,34 +8,14 @@ import {receptionRoutes} from "@/router/receptionRoutes.js";
 import {reservationRoutes} from "@/router/reservationRoutes.js";
 import {staffRoutes} from "@/router/staffRoutes.js";
 
-const HomeView = () => import('@/views/HomeView.vue');
-const MainView = () => import('@/views/home/MainView.vue');
 const OtherView = () => import('@/views/other/OtherView.vue');
-const LoginView = () => import('@/views/auth/LoginView.vue');
 const Reception = () => import('@/reception/views/WaitingList.vue')
 // const Staff = () => import('@/views/staff/StaffMainView.vue')
-
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    {
-      path: '/',
-      component: HomeView,
-      children: [
-        {
-          path: '/',
-          name: 'home',
-          component: MainView
-        },
-        {
-          path: '/login',
-          name: 'loginView',
-          component: LoginView
-        },
-        ...patientRoutes
-      ]
-    },
+    ...patientRoutes,
     ...adminRoutes,
     {
       path: '/other',
