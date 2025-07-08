@@ -3,18 +3,22 @@
     <nav class="navbar navbar-expand navbar-light bg-secondary-subtle py-0">
       <div class="container-fluid justify-content-end">
         <ul class="navbar-nav">
-          <li class="nav-item">
-            <RouterLink :to="{ name: 'loginView' }" class="nav-link px-2 text-secondary fs-sm">로그인</RouterLink>
-          </li>
-          <li class="nav-item">
-            <RouterLink :to="{ name: 'patientRegister' }" class="nav-link px-2 text-secondary fs-sm">회원가입</RouterLink>
-          </li>
-          <li class="nav-item">
-            <RouterLink :to="{ name: 'mypage' }" class="nav-link px-2 text-secondary fs-sm">회원님</RouterLink>
-          </li>
-          <li class="nav-item">
-            <LogoutButton class="nav-link px-2 text-secondary fs-sm" />
-          </li>
+          <template v-if="user">
+            <li class="nav-item">
+              <RouterLink :to="{ name: 'mypage' }" class="nav-link px-2 text-secondary fs-sm">마이페이지</RouterLink>
+            </li>
+            <li class="nav-item">
+              <LogoutButton class="nav-link px-2 text-secondary fs-sm" />
+            </li>
+          </template>
+          <template v-else>
+            <li class="nav-item">
+              <RouterLink :to="{ name: 'loginView' }" class="nav-link px-2 text-secondary fs-sm">로그인</RouterLink>
+            </li>
+            <li class="nav-item">
+              <RouterLink :to="{ name: 'patientRegister' }" class="nav-link px-2 text-secondary fs-sm">회원가입</RouterLink>
+            </li>
+          </template>
         </ul>
       </div>
     </nav>
@@ -40,4 +44,8 @@
 
 <script setup>
 import LogoutButton from '@/auth/components/LogoutButton.vue';
+import { useUserStore } from '@/stores/userStore';
+import { computed } from 'vue';
+
+const user = computed(() => useUserStore().user);
 </script>
