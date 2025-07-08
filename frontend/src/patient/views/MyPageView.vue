@@ -1,7 +1,9 @@
 <template>
-  <div>마이페이지</div>
-  <Profile />
-  <RouterLink :to="{ name: 'updateProfile' }">수정</RouterLink>
+  <div class="d-flex flex-column justify-content-center align-items-center mb-5">
+    <h2 class="fw-bold mt-5">마이페이지</h2>
+    <hr class="w-100" style="max-width: 720px;" />
+    <Profile />
+  </div>
 </template>
 
 <script setup>
