@@ -75,10 +75,13 @@ const acceptPatientByStaff = async () => {
       }
 
   } catch(err) {
+
     common.errMsg(err);
+
     selectedVal.name = null;
     selectedVal.doctorUuid = null;
     selectedVal.symptom = null;
+
   }
 
 }
