@@ -1,12 +1,10 @@
 package com.emr.slgi.reception.dto;
 
+import com.emr.slgi.common.constants.RegexPatterns;
 import com.emr.slgi.reception.util.ReceptionErrorMessage;
 import com.emr.slgi.util.ReservationErrorMessage;
 import com.emr.slgi.util.Validate;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 
 import java.time.OffsetDateTime;
@@ -14,28 +12,24 @@ import java.time.OffsetDateTime;
 @Data
 public class ReceptionInfo {
 
-    @NotEmpty
+    @NotBlank
     @Pattern(regexp = Validate.MEMBER_UUID_REGEX, message = ReservationErrorMessage.CHOOSE_DOCTOR)
     private String doctorUuid;
 
-    @NotEmpty
+    @NotBlank
     @Pattern(regexp = Validate.MEMBER_UUID_REGEX, message = ReservationErrorMessage.CAN_NOT_FIND_PATIENT)
     private String patientUuid;
 
-    @NotEmpty
+    @NotBlank
     @Size(min = 2, max = 6)
     private String patientName;
 
-    @NotEmpty
-    @Pattern(regexp = Validate.RRN_REGEX, message = ReceptionErrorMessage.RRN_NOT_NULL)
-    private String rrn;
+    @NotBlank
+//    @Pattern(regexp = RegexPatterns.BIRTH_DATE, message = ReceptionErrorMessage.BIRTH_DATE_IS_NOT_VALID)
+    private String birthDate;
 
-    @NotEmpty(message = ReservationErrorMessage.WRITE_SYMPTOM)
+    @NotBlank(message = ReservationErrorMessage.WRITE_SYMPTOM)
     @Size(min = 1, max = 100)
     private String symptom;
-
-    @NotNull(message = ReservationErrorMessage.CHOOSE_DATE_TIME)
-    private OffsetDateTime dateTime;
-
 
 }

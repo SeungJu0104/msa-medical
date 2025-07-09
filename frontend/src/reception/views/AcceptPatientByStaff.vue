@@ -7,14 +7,14 @@ import {ENDPOINTS} from "@/util/endpoints.js";
 import {omit} from "lodash";
 import {errorMessage} from "@/util/errorMessage.js";
 import {REGEX_PATTERN} from "@/util/RegexPattern.js";
+import {useRoute, useRouter } from "vue-router";
 
 const selectedVal = reactive({
   doctorUuid: null,
-  patientUuid: '550e8400-e29b-41d4-a716-446655440020',
-  dateTime: new Date(),
+  patientUuid: null,
   name: null,
-  patientName: '김영선',
-  rrn: '950610-2111111',
+  birthDate: null,
+  patientName: null,
   symptom: null
 });
 
@@ -24,6 +24,8 @@ const acceptChk = reactive({
 });
 
 const doctorList = ref();
+const route = useRoute();
+const router = useRouter();
 
 const selectDoctor = (doctor) => {
 
@@ -33,7 +35,6 @@ const selectDoctor = (doctor) => {
   acceptChk.doctorChk = selectedVal.doctorUuid !== null && REGEX_PATTERN.MEMBER_UUID_REGEX.test(selectedVal.doctorUuid);
 
 }
-
 
 const writeSymptom = () => {
 
@@ -62,23 +63,38 @@ const acceptPatientByStaff = async () => {
 
     const response = await customFetch(
       ENDPOINTS.reception.acceptPatientByStaff, {
-          data: selectedVal
+          data: {
+            ...omit(selectedVal, ['name'])
+          }
         }
       )
 
-      if(response.status === 200) {
+      if(response.status === 201) {
         common.alertError("접수가 완료됐습니다.");
+        await router.push({name: 'staff'});
       }
 
   } catch(err) {
     common.errMsg(err);
+    selectedVal.name = null;
+    selectedVal.doctorUuid = null;
+    selectedVal.symptom = null;
   }
 
 }
 
-onMounted(
-    getDoctorList
-)
+const insertSelectedValData = () => {
+
+  selectedVal.patientUuid = route.query.patientUuid;
+  selectedVal.patientName = route.query.patientName;
+  selectedVal.birthDate = route.query.birthDate;
+
+}
+
+onMounted(() => {
+      getDoctorList();
+      insertSelectedValData();
+});
 
 </script>
 

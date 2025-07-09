@@ -9,6 +9,7 @@ import { useUserStore } from "@/stores/userStore";
 import { getAccessToken } from "@/auth/accessToken";
 import { createWebSocketModuleRunnerTransport } from "vite/module-runner";
 import VisitHistory from "@/components/diagnosis/VisitHistory.vue";
+  import {useRouter} from "vue-router";
 
   const waitingListStore = useWaitingListStore();
   const waitingList = ref();
@@ -17,6 +18,7 @@ import VisitHistory from "@/components/diagnosis/VisitHistory.vue";
   const selectedDoctorUuid = ref(null)
   const userStore = useUserStore();
   const uuid = computed(() => userStore.user?.uuid ?? '');
+  const router = useRouter();
   let client;
 
 
@@ -61,9 +63,13 @@ import VisitHistory from "@/components/diagnosis/VisitHistory.vue";
 
 
   onMounted(() => {
+
     client = getStompClient(uuid.value,(client) => {
       statusSub(client)
-    })
+    });
+
+
+
   })
 
 </script>

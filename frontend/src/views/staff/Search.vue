@@ -14,7 +14,6 @@ import {useRouter} from 'vue-router'
 
   const router = useRouter();
   const searchRes = ref();
-  // const emit = defineEmits(['searchRes']);
 
   const search = async () => {
 
@@ -25,9 +24,6 @@ import {useRouter} from 'vue-router'
       if(response.status === 200) {
 
         searchRes.value = response.data?.list;
-        console.log(searchRes.value);
-
-        // emit('searchRes', searchRes.value);
 
       }
 
@@ -48,9 +44,16 @@ import {useRouter} from 'vue-router'
 
   }
 
-  const waiting = () => {
+  const waiting = ({uuid, name, rrn}) => {
 
-
+    router.push({
+      name: 'acceptPatientByStaff',
+      query: {
+        patientUuid: uuid,
+        patientName: name,
+        birthDate: rrn
+      }
+    });
 
   }
 
@@ -77,7 +80,7 @@ import {useRouter} from 'vue-router'
           <td v-cloak>{{res.rrn}}</td>
           <td v-cloak>{{res.phone}}</td>
           <button class="btn btn-outline-secondary" type="button" @click="reservation(res.uuid)">예약</button>
-          <button class="btn btn-outline-secondary" type="button" @click="waiting">대기</button>
+          <button class="btn btn-outline-secondary" type="button" @click="waiting(res)">대기</button>
         </tr>
       </table>
     </div>

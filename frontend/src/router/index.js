@@ -10,7 +10,6 @@ import {staffRoutes} from "@/router/staffRoutes.js";
 import PaymentList from '@/components/payment/PaymentList.vue';
 
 const OtherView = () => import('@/views/other/OtherView.vue');
-const Reception = () => import('@/reception/views/WaitingList.vue')
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -34,8 +33,6 @@ const router = createRouter({
     },
     {
       path: '/reception',
-      name: 'reception',
-      component: Reception,
       children: [
           ...receptionRoutes
       ]

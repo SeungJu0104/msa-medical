@@ -6,5 +6,5 @@ public class ReceptionErrorMessage {
     public static final String CAN_NOT_FIND_DATA = "데이터를 찾을 수 없습니다.";
     public static final String RECEPTION_DATA_NOT_VALID = "유효한 접수 정보를 찾을 수 없습니다.";
     public static final String ON_TREATMENT_STATUS_ALREADY_EXISTS = "현재 진료 중인 환자가 있습니다.";
-
+    public static final String BIRTH_DATE_IS_NOT_VALID = "유효한 생년월일이 아닙니다.";
 }
