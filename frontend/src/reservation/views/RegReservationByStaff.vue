@@ -8,15 +8,13 @@ import {omit} from 'lodash'
 import dayjs from "dayjs";
 import {errorMessage} from "@/util/errorMessage.js";
 import {useUserStore} from "@/stores/userStore.js";
-import {useRouter, useRoute} from "vue-router";
+import { useRoute } from 'vue-router';
 
-  const userInfo = computed(() => useUserStore().user);
-  const router = useRouter();
   const route = useRoute();
 
   const selectedVal = reactive({
     doctorUuid: null,
-    patientUuid: null,
+    patientUuid: route.query.patientUuid,
     reservationDate: new Date(),
     time: null,
     symptom: null,
@@ -81,7 +79,6 @@ import {useRouter, useRoute} from "vue-router";
     reservationChk.timeChk = true;
 
     patientMethods.reservationHold({
-      patientUuid: selectedVal.patientUuid,
       doctorUuid: selectedVal.doctorUuid,
       dateTime :
           dayjs(`${common.dateFormatter(selectedVal.reservationDate, 'YYYY-MM-DD')}T${selectedVal.time}:00`).toDate().toISOString()
@@ -101,7 +98,7 @@ import {useRouter, useRoute} from "vue-router";
       await common.goHome();
     }
 
-    if(await patientMethods.cancelHoldingReservation(selectedVal.patientUuid)) {
+    if(await patientMethods.cancelHoldingReservation()) {
       await common.goHome();
     }
 
@@ -126,8 +123,7 @@ import {useRouter, useRoute} from "vue-router";
       dateTime:
           dayjs(`${common.dateFormatter(selectedVal.reservationDate, 'YYYY-MM-DD')}T${selectedVal.time}:00`).toDate().toISOString()
       // `${dayjs(selectedVal.reservationDate).format('YYYY-MM-DD')}T${selectedVal.time}:00`
-
-    }, router, userInfo.value.role);
+    });
 
   }
 
@@ -135,26 +131,29 @@ import {useRouter, useRoute} from "vue-router";
     doctorList.value = await patientMethods.getDoctorList();
   }
 
-  const checkRole = () => {
+  // 환자인지 의료진인지 구분
 
-    if(userInfo.value.role === 'PATIENT') {
+  // 환자면 pinia에서 uuid 넣기
 
-      selectedVal.patientUuid = userInfo.value.uuid;
+  // 간호사면 넘겨받은 uuid로 넣기
 
-    }
+  // const checkRole = () => {
+  //
+  //   if(userInfo.value.role === 'patient') {
+  //
+  //     selectedVal.patientUuid = userInfo.value.uuid;
+  //
+  //   }else if(userInfo.value.role === 'DOCTOR' || userInfo.value.role === 'NURSE') {
+  //
+  //     selectedVal.patientUuid = route.query.patientUuid;
+  //
+  //   }
+  //
+  // }
 
-    if(userInfo.value.role === 'DOCTOR' || userInfo.value.role === 'NURSE') {
-
-      selectedVal.patientUuid = route.query.patientUuid;
-
-    }
-
-  }
-
-  onMounted(() => {
-    getDoctorList();
-    checkRole();
-  });
+  onMounted(
+      getDoctorList
+  );
 
 
 </script>

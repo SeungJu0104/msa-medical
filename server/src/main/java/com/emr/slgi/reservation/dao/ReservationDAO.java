@@ -33,7 +33,7 @@ public interface ReservationDAO {
 
     List<ReservationList> getFullReservationList(String doctorUuid, LocalDateTime date);
 
-    int updateReservationStatus(ReservationList build);
+    int updateReservationStatus(String uuid, String updateStatus);
 
     List<ReservationListByPatient> getReservationListPerPatient(String patientUuid);
 }

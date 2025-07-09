@@ -1,4 +1,4 @@
-import {ref} from 'vue'
+import {computed, ref} from 'vue'
 import {customFetch} from "@/util/customFetch.js";
 import {ENDPOINTS} from "@/util/endpoints.js";
 import { useRouter } from "vue-router";
@@ -24,11 +24,17 @@ export const patientMethods = {
         }
 
     },
-    cancelHoldingReservation: async () => {
+    cancelHoldingReservation: async (patientUuid) => {
+
+        console.log("예약 취소하는 환자 번호 : ", patientUuid);
 
         try{
 
-            const response = await customFetch(ENDPOINTS.reservation.cancelHoldingReservation);
+            const response = await customFetch(ENDPOINTS.reservation.cancelHoldingReservation, {
+                data: {
+                    patientUuid: patientUuid
+                }
+            });
 
             if(response.status === 200) {
                 return true;
@@ -127,7 +133,18 @@ export const patientMethods = {
         }
 
     },
-    reservation : (selectedVal) => {
+    routeByRole : (role, router) => {
+
+        if(role === 'PATIENT') {
+            router.push({name: 'home'});
+        }
+
+        if(role === 'DOCTOR' || role === 'NURSE') {
+            router.push({name: 'staff'});
+        }
+
+    },
+    reservation : (selectedVal, router, role) => {
 
         console.log(selectedVal);
 
@@ -140,13 +157,18 @@ export const patientMethods = {
         .then(
             response => {
                 if(response.status === 200) {
+
                     alert(response.data?.message);
+
+                    patientMethods.routeByRole(role, router);
+
                 }
             }
         )
         .catch(
             err => {
                 common.errMsg(err);
+                router.push({name: 'regReservationByPatient'});
             }
         )
     },
@@ -179,7 +201,6 @@ export const patientMethods = {
         console.log("인코딩 후 시간 : ", reservationDate);
 
         const response = await patientMethods.reservationTime({
-            patientUuid : '550e8400-e29b-41d4-a716-446655440020', // 테스트용 환자 아이디
             ...omit(selectedVal, ['reservationDate', 'time', 'name']), // date와 time, name 속성을 제외한 나머지 속성들을 복사
             dateTime:
                 reservationDate.toDate().toISOString()

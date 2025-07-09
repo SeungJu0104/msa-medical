@@ -30,10 +30,7 @@
             )
     </insert>
 
-    <select id="getReservationList"
-            parameterType="com.emr.slgi.reservation.dto.FindReservationDate"
-            resultType="com.emr.slgi.reservation.dto.ReservationList"
-    >
+    <select id="getReservationList" resultType="com.emr.slgi.reservation.dto.ReservationList">
         SELECT
             PATIENT_UUID, DOCTOR_UUID, RESERVATION_DATE
         FROM

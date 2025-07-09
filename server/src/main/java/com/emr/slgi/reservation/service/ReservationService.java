@@ -24,27 +24,35 @@ public class ReservationService {
 
     public int makeReservation(ReservationForm rf) {
 
+
         if(!cancelHoldingReservation(rf.getPatientUuid())) {
+            log.info("a");
+            log.info(rf.getPatientUuid());
             return -1;
         }else {
+            log.info("b");
             return rDao.makeReservation(rf);
         }
 
     }
 
     public int getAffectedRowsCount(Map reservationData) {
+
         return rDao.getAffectedRowsCount(reservationData);
+
     }
 
     public boolean cancelHoldingReservation(String patientUuid) {
 
         int affectedRowsCount = getAffectedRowsCount(
                 Map.of(
-                        "where", "PATIENT_UUID = '550e8400-e29b-41d4-a716-446655440020' AND STATUS = 'RS03'"
-                        // 임시 환자 UUID
-                        // "PATIENT_UUID = " + reservationDate.getDoctorUuid() + " AND STATUS = 'RS03'"
+                        "where",
+                        "PATIENT_UUID = '" + patientUuid + "' AND STATUS = 'RS03'"
                 )
         );
+
+        log.info("취소 개수 : {}", affectedRowsCount);
+        log.info("취소할 번호 : {}", patientUuid);
 
         if(rDao.cancelHoldingReservation(patientUuid) != affectedRowsCount) {
             return false;
@@ -70,8 +78,6 @@ public class ReservationService {
     }
 
     public int holdReservation(FindReservationDate reservationDate) {
-
-        reservationDate.setPatientUuid("550e8400-e29b-41d4-a716-446655440020"); // 임시 환자 데이터
 
         if(!cancelHoldingReservation(reservationDate.getPatientUuid())) {
             return -1;
@@ -131,12 +137,7 @@ public class ReservationService {
 
         ReservationStatus status = ReservationStatus.from(updateStatus);
 
-        return rDao.updateReservationStatus(
-            ReservationList.builder()
-                    .uuid(uuid)
-                    .status(status)
-                    .build()
-        );
+        return rDao.updateReservationStatus(uuid, updateStatus);
 
     }
 
