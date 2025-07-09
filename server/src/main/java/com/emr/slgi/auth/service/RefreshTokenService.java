@@ -27,29 +27,32 @@ public class RefreshTokenService {
     private String refreshTokenSecret;
 
     public String createRefreshToken(String memberUuid) {
+        String jti = UUID.randomUUID().toString();
         Map<String, String> map = Map.of(
             "uuid", memberUuid,
-            "jti", UUID.randomUUID().toString()
+            "jti", jti
         );
         Date twoWeeksLater = Date.from(Instant.now().plus(14, ChronoUnit.DAYS));
 
-        return jwtUtil.generateToken(map, twoWeeksLater, refreshTokenSecret);
+        String refreshToken = jwtUtil.generateToken(map, twoWeeksLater, refreshTokenSecret);
+        whitelistTokenJti(jti, twoWeeksLater);
+        return refreshToken;
     }
 
     public Claims parseRefreshToken(String refreshToken) {
         return jwtUtil.parseToken(refreshToken, refreshTokenSecret);
     }
 
-    public void blacklistTokenJti(String jti, Date exp) {
-        String key = "blacklist:jti:" + jti;
+    public void whitelistTokenJti(String jti, Date exp) {
+        String key = "whitelist:jti:" + jti;
         Duration remaining = Duration.between(Instant.now(), exp.toInstant());
         remaining = remaining.isNegative() ? Duration.ZERO : remaining;
         stringRedisTemplate.opsForValue().set(key, "1", remaining);
     }
 
-    public boolean isTokenBlacklisted(String jti) {
-        String key = "blacklist:jti:" + jti;
-        return Boolean.TRUE.equals(stringRedisTemplate.hasKey(key));
+    public boolean deleteWhitelist(String jti) {
+        String key = "whitelist:jti:" + jti;
+        return stringRedisTemplate.delete(key);
     }
 
 }
