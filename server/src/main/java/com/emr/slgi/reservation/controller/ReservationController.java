@@ -36,7 +36,7 @@ public class ReservationController {
 
     private final ReservationService rService;
 
-//    @PreAuthorize("hasRole('PATIENT')")
+    @PreAuthorize("hasAnyRole('PATIENT', 'DOCTOR', 'NURSE')")
     @PostMapping
     public ResponseEntity<Map<String, String>> makeReservationByPatient(@Valid @RequestBody ReservationForm rf){
 
@@ -63,7 +63,7 @@ public class ReservationController {
 
     }
 
-//    @PreAuthorize("hasRole('PATIENT')")
+    @PreAuthorize("hasAnyRole('PATIENT', 'DOCTOR', 'NURSE')")
     @PostMapping("/hold")
     public ResponseEntity<?> holdReservation(@RequestBody FindReservationDate reservationDate) {
 
@@ -86,7 +86,7 @@ public class ReservationController {
         return ResponseEntity.ok().build();
     }
 
-//    @PreAuthorize("hasRole('PATIENT')")
+    @PreAuthorize("hasAnyRole('PATIENT', 'DOCTOR', 'NURSE')")
     @GetMapping("/getReservationList/{doctorUuid}/{dateTime}")
     public ResponseEntity<Map<String, List<ReservationList>>> getReservationList(
             @PathVariable("doctorUuid") String doctorUuid,
@@ -124,7 +124,7 @@ public class ReservationController {
 
     }
 
-//    @PreAuthorize("hasRole('PATIENT')")
+    @PreAuthorize("hasAnyRole('PATIENT', 'DOCTOR', 'NURSE')")
     @PutMapping("/cancelHoldingReservation")
     public ResponseEntity<?> cancelHoldingReservation(@RequestBody ReservationList rl) {
 
@@ -274,7 +274,5 @@ public class ReservationController {
                 )
         );
     }
-
-
-
+    
 }
