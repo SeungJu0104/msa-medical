@@ -8,8 +8,10 @@ import {receptionRoutes} from "@/router/receptionRoutes.js";
 import {reservationRoutes} from "@/router/reservationRoutes.js";
 import {staffRoutes} from "@/router/staffRoutes.js";
 import PaymentList from '@/components/payment/PaymentList.vue';
+import WaitingReservationParent from "@/views/staff/components/WaitingReservationParent.vue";
 
 const OtherView = () => import('@/views/other/OtherView.vue');
+const StaffLayOut = () => import('@/views/staff/StaffMainView.vue');
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -50,6 +52,7 @@ const router = createRouter({
     },
     {
       path: '/staff',
+      component: StaffLayOut,
       children: [
         ...staffRoutes
       ]

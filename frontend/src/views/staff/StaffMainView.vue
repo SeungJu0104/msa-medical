@@ -1,11 +1,14 @@
 <template>
-  
+    <router-view />
     <div class= "chat-container">
       
     </div>
   
     <div class="body">
     <aside class="left">왼쪽
+      <div class="my-3">
+        <router-view name="waitingReservationParent"/>
+      </div>
   
     </aside>
     <section class="center">중앙</section>
@@ -14,7 +17,7 @@
       
     </aside>
   </div>
-    <router-view/>
+
   </template>
   
   <script setup>

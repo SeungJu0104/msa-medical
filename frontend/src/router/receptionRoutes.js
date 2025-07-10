@@ -3,7 +3,7 @@ const Reception = () => import('@/reception/views/WaitingList.vue');
 
 export const receptionRoutes = [
     {
-        path: '',
+        path: 'receptionList',
         name: 'reception',
         component: Reception,
     },
