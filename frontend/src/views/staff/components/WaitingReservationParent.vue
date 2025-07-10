@@ -33,7 +33,7 @@ onMounted (() => {
       <div id="reservationList" @click="linkReservationList">예약</div>
       <div id="waitingList" @click="linkWaitingList">대기</div>
     </div>
-    <div>
+    <div class="scroll">
       <router-view/>
     </div>
   </div>

@@ -37,7 +37,7 @@ import ChatRooms from '@/components/chat/ChatRooms.vue';
   }
   
   .left {
-    width: 200px;
+    width: 20vw;
     background: #f0f0f0;
   }
   
