@@ -45,7 +45,7 @@
     SELECT
       uuid,
       name,
-      rrn,
+      LEFT(rrn, 6) AS rrn,
       phone,
       create_date
     FROM TB_MEMBER
