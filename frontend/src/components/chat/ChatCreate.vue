@@ -1,33 +1,28 @@
 <template>
-    <div class="modal-overlay">
-     <div class="modal-window">
-       <h3>채팅방 만들기</h3>
-       <input v-model="state.roomName" placeholder="채팅방 이름" />
-       <div v-for="member in state.members" :key="member.uuid">
-         <input type="checkbox" :value="member.uuid" v-model="state.selectedMembers" />
-         {{ member.name }}
-       </div>
- 
-       <div class="modal-footer">
-         <button @click="submit">등록</button>
-         <button @click="$emit('close')">닫기</button>
-       </div>
-     </div>
-   </div>
-     
+  <div class="chat-create">
+    <h3>채팅방 만들기</h3>
+    <input v-model="state.roomName" placeholder="채팅방 이름" />
+    <div v-for="member in state.members" :key="member.uuid" class="chat-member">
+      <input type="checkbox" :value="member.uuid" v-model="state.selectedMembers" />
+      {{ member.name }}
+    </div>
+
+    <div class="chat-createBtn">
+      <button @click="submit">등록</button>
+      <button @click="$emit('close')">닫기</button>
+    </div>
+  </div>
  </template>
 <script setup>
 import { computed, onMounted, reactive } from 'vue';
-import { useRouter } from 'vue-router';
 import { customFetch } from '@/util/customFetch';
 import { ENDPOINTS } from '@/util/endpoints';
 import { useUserStore } from '@/stores/userStore';
+import '@/assets/css/chat.css';
 
 const userStore = useUserStore();
 const uuid = computed(() => userStore.user?.uuid ?? '');
-
-const router = useRouter()
-const emit = defineEmits(['close','refresh'])
+const emit = defineEmits(['close','refresh','open'])
 
 const state = reactive({
     roomName: '',
@@ -50,7 +45,6 @@ const loadUuidList = async () => {
   }
 }
 
-
 const submit =   async ()  => {
     if (!state.roomName.trim()) {
     alert('채팅방 이름을 입력하세요.')
@@ -65,12 +59,12 @@ const submit =   async ()  => {
     uuid: uuid.value,
     members: state.selectedMembers
   }
-
   try {
     const response = await customFetch(ENDPOINTS.chat.createChatRoom,{data})
     if(response.status===200){
       const roomId = response.data.roomId;
       alert("채팅방 등록이 완료되었습니다.")
+      emit('open', roomId)
       emit('refresh',roomId)
       emit('close')
   } }

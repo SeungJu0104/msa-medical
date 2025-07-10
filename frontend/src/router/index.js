@@ -11,7 +11,7 @@ import PaymentList from '@/components/payment/PaymentList.vue';
 
 const OtherView = () => import('@/views/other/OtherView.vue');
 const Reception = () => import('@/reception/views/WaitingList.vue')
-// const Staff = () => import('@/views/staff/StaffMainView.vue')
+const StaffMainView = () => import('@/views/staff/StaffMainView.vue')
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -23,16 +23,8 @@ const router = createRouter({
       name: 'other',
       component: OtherView
     },
-    {
-      path:'/chatrooms',
-      name: 'chatrooms',
-      component:ChatRooms,
-    },
-    {
-      path: '/chatroom/:roomId',
-      name : 'chatroom',
-      component:ChatRoom
-    },
+    
+    
     {
       path: '/reception',
       name: 'reception',
@@ -54,7 +46,7 @@ const router = createRouter({
     },
     {
       path: '/staff',
-      // name: 'staff',
+      component: StaffMainView,
       children: [
         ...staffRoutes
       ]

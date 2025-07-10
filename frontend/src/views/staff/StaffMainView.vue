@@ -11,7 +11,7 @@
     <section class="center">중앙</section>
     
     <aside class="right">오른쪽
-      
+      <ChatRooms/>
     </aside>
   </div>
     <router-view></router-view>
@@ -19,6 +19,7 @@
   
   <script setup>
 import ChatRooms from '@/components/chat/ChatRooms.vue';
+
 
   </script>
   <style scoped>
