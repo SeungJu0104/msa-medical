@@ -9,8 +9,6 @@
             (
                 PATIENT_UUID,
                 DOCTOR_UUID,
-                NAME,
-                RRN,
                 SYMPTOM,
                 CREATE_DATE
             )
@@ -18,8 +16,6 @@
         (
             #{patientUuid},
             #{doctorUuid},
-            #{patientName},
-            #{birthDate},
             #{symptom},
             CURRENT_TIMESTAMP
         )
@@ -27,16 +23,17 @@
 
     <select id="getWaitingList" resultMap="waitingListMap">
         SELECT
-            UUID, PATIENT_UUID, DOCTOR_UUID, NAME, STATUS, TURN
+            R.UUID, R.PATIENT_UUID, R.DOCTOR_UUID, M.NAME, R.STATUS, R.TURN
         FROM
-            TB_RECEPTION
+            TB_RECEPTION R
+            JOIN TB_MEMBER M ON R.PATIENT_UUID = M.UUID
         WHERE
-            DOCTOR_UUID = #{doctorUuid}
+            R.DOCTOR_UUID = #{doctorUuid}
             AND
-            STATUS IN ('RE01', 'RE03')
+            R.STATUS IN ('RE01', 'RE03')
 --          오늘 날짜만 조회하기 위해 설정했지만 테스트위해 일단 생략
 --           AND
---           CREATE_DATE BETWEEN CURDATE() AND CURDATE() + INTERVAL 1 DAY
+--           R.CREATE_DATE BETWEEN CURDATE() AND CURDATE() + INTERVAL 1 DAY
         ORDER BY
             TURN;
     </select>
@@ -44,6 +41,7 @@
     <resultMap id="waitingListMap" type="com.emr.slgi.reception.dto.WaitingList">
         <result property="uuid" column="UUID"/>
         <result property="patientUuid" column="PATIENT_UUID"/>
+        <result property="doctorUuid" column="DOCTOR_UUID"/>
         <result property="name" column="NAME"/>
         <result property="status" column="STATUS" typeHandler="com.emr.slgi.reception.typehandler.ReceptionStatusTypeHandler"/>
         <result property="turn" column="TURN"/>
