@@ -84,7 +84,7 @@ export const patientMethods = {
         if(reservationDate.day() === 6) {
             end = end.hour(14).minute(0).second(0);
         } else {
-            end = end.hour(18).minute(0).second(0);
+            end = end.hour(17).minute(50).second(0);
         }
 
         console.log("종료 시각 : ", end);
@@ -140,7 +140,7 @@ export const patientMethods = {
         }
 
         if(role === 'DOCTOR' || role === 'NURSE') {
-            router.push({name: 'staff'});
+            router.push({name: 'staffMain'});
         }
 
     },
@@ -168,7 +168,6 @@ export const patientMethods = {
         .catch(
             err => {
                 common.errMsg(err);
-                router.push({name: 'regReservationByPatient'});
             }
         )
     },

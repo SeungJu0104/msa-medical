@@ -20,7 +20,6 @@ const filterStages = {
     condition: ({v, date}) => {
       const isToday = dayjs().isSame(date, 'day');
       return !(!isToday && v.name === '대기');
-
     }
   }
 };

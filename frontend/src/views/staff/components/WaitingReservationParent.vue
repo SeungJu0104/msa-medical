@@ -2,7 +2,7 @@
 import '@/css/waitingreservaion.css'
 import {useRouter} from "vue-router";
 import {reactive} from "vue";
-import ReservationList from "@/reservation/views/ReservationList.vue";
+import ReservationListByStaff from "@/reservation/views/ReservationListByStaff.vue";
 import WaitingList from "@/reception/views/WaitingList.vue";
 
 const router = useRouter();
@@ -30,7 +30,7 @@ const list = (selectedKey) => {
       <div id="waitingList" @click="list('waitingList')">대기</div>
     </div>
     <div class="scroll">
-      <ReservationList v-if="showList.reservationList"/>
+      <ReservationListByStaff v-if="showList.reservationList"/>
       <WaitingList v-if="showList.waitingList" />
     </div>
   </div>

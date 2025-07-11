@@ -5,14 +5,11 @@ import {reactive} from "vue";
 
 const {value, status, date} = defineProps({
                 value: Object,
-                status: Array,
-                date: dayjs
+                status: Array
 })
 const emit = defineEmits(['updateStatus', 'getPatientInfo']);
 
 const onStatusChange = (patient, updateStatus) => {
-
-  // patient.status = updateStatus;
 
   emit('updateStatus', {
     uuid: patient.uuid,
@@ -43,6 +40,7 @@ const getPatientInfo = (patient) => {
               @update:value="(updateStatus) => onStatusChange(patient, updateStatus)"
               :status="status"
               :value="patient.status"
+              :date="dayjs(patient.reservationDate)"
           />
         </div>
       </template>
