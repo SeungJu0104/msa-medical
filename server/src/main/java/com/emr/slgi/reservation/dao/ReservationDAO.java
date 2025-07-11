@@ -1,6 +1,7 @@
 package com.emr.slgi.reservation.dao;
 
 import com.emr.slgi.reservation.dto.*;
+import com.emr.slgi.reservation.enums.ReservationStatus;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -34,7 +35,7 @@ public interface ReservationDAO {
 
     List<ReservationList> getFullReservationList(@Param("doctorUuid") String doctorUuid, @Param("date") LocalDateTime date);
 
-    int updateReservationStatus(String uuid, String updateStatus);
+    int updateReservationStatus(String uuid, ReservationStatus status);
 
     List<ReservationListByPatient> getReservationListPerPatient(String patientUuid);
 }
