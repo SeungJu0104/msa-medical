@@ -1,5 +1,5 @@
 <script setup>
-import {computed, defineProps} from "vue";
+import { computed } from "vue";
 import dayjs from "dayjs";
 
 const { status, value, date } = defineProps({
