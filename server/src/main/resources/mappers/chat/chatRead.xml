@@ -6,7 +6,7 @@
   <mapper namespace="com.emr.slgi.chat.DAO.ChatReadDAO">
   
   <insert id = "readtime">
-  INSERT INTO tb_chat_read (room_id, message_id,uuid, read_time)
+  INSERT INTO TB_CHAT_READ (room_id, message_id,uuid, read_time)
   VALUES (#{roomId}, #{messageId},#{uuid}, NOW() )
   ON DUPLICATE KEY UPDATE read_time = NOW()
   
@@ -17,12 +17,12 @@
 	  m.room_id, 
 	  m.message_id, 
 	  #{uuid} AS uuid  
-	FROM tb_chat_message m
-	JOIN tb_chat_room r ON m.room_id = r.room_id
+	FROM TB_CHAT_MESSAGE m
+	JOIN TB_CHAT_ROOM r ON m.room_id = r.room_id
 	WHERE m.room_id = #{roomId}
 	  AND m.create_date > (
 	    SELECT IFNULL(MAX(r.read_time), r.create_date)
-	    FROM tb_chat_read r
+	    FROM TB_CHAT_READ
 	    WHERE r.room_id = m.room_id
 	      AND r.uuid = #{uuid}
 	  )
@@ -36,11 +36,11 @@
 	  cr.room_name as roomName, 
 	  (
 	    SELECT m1.content
-	    FROM tb_chat_message m1
+	    FROM TB_CHAT_MESSAGE m1
 	    WHERE m1.room_id = cr.room_id
 	      AND m1.create_date > (
 	        SELECT IFNULL(MAX(r.read_time), cr.create_date)
-	        FROM tb_chat_read r
+	        FROM TB_CHAT_READ r
 	        WHERE r.room_id = cr.room_id
 	          AND r.uuid = #{uuid}
 	      )
@@ -49,15 +49,15 @@
 	    LIMIT 1
 	  ) as content,
 	  COUNT(m.message_id) AS alarmCount
-	FROM tb_chat_message m
-	JOIN tb_chat_room cr ON m.room_id = cr.room_id
-	JOIN tb_chat_join j ON j.room_id = m.room_id
+	FROM TB_CHAT_MESSAGE m
+	JOIN TB_CHAT_ROOM cr ON m.room_id = cr.room_id
+	JOIN TB_CHAT_JOIN j ON j.room_id = m.room_id
 	
 	WHERE j.uuid = #{uuid}
 	  AND m.uuid != #{uuid}
 	  AND m.create_date > (
 	    SELECT IFNULL(MAX(r.read_time), cr.create_date)
-	    FROM tb_chat_read r
+	    FROM TB_CHAT_READ r
 	    WHERE r.room_id = m.room_id
 	      AND r.uuid = #{uuid}
 	  )

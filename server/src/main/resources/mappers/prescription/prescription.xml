@@ -6,7 +6,7 @@
 
 <mapper namespace="com.emr.slgi.prescription.PrescriptionDAO">	
 	<insert id = "insertPrescription" parameterType="com.emr.slgi.prescription.Prescription">
-	 INSERT INTO tb_prescription 
+	 INSERT INTO TB_PRESCRIPTION
 	 ( code, treatment_id, volume )
 	  VALUES 
 	  ( #{code}, #{treatmentId}, #{volume} )
@@ -14,8 +14,8 @@
 	</insert>
 <select id ="selectPrescriptions" resultType="com.emr.slgi.prescription.Prescription">
 	select pre.* , med.name
-	from tb_prescription pre
-	Join tb_medicine med on pre.code = med.code
+	from TB_PRESCRIPTION pre
+	Join TB_MEDICINE med on pre.code = med.code
 	where treatment_id = #{id}
 </select>
 	

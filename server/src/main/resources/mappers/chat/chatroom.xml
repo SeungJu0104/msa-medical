@@ -2,62 +2,62 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  
-  <mapper namespace="com.emr.slgi.chat.DAO.ChatRoomDAO">
-  	<select id="getList">
-	SELECT 
-	  r.room_id,
-	  r.room_name,
-	  mes.content AS content,
-	  mes.create_date AS last_message_time,
-	  COUNT(
-	    CASE
-	      WHEN m.create_date > (
-	        SELECT IFNULL(MAX(r2.read_time), r.create_date)
-	        FROM TB_CHAT_READ r2
-	        WHERE r2.room_id = r.room_id AND r2.uuid = #{uuid}
-	      )
-	      AND m.uuid != #{uuid}
-	      THEN 1
-	    END
-	  ) AS count
-	
-	FROM TB_CHAT_ROOM r
-	JOIN TB_CHAT_JOIN j ON r.room_id = j.room_id AND j.uuid = #{uuid}
-	
-	LEFT JOIN (
-	  SELECT room_id, content, create_date
-	  FROM (
-	    SELECT *,
-	           ROW_NUMBER() OVER (PARTITION BY room_id ORDER BY create_date DESC) AS rn
-	    FROM TB_CHAT_MESSAGE
-	  ) sub
-	  WHERE rn = 1
-	) mes ON r.room_id = mes.room_id
-	
-	LEFT JOIN TB_CHAT_MESSAGE m ON r.room_id = m.room_id
-	
-	GROUP BY r.room_id, r.room_name, mes.content, mes.create_date, r.create_date
-	ORDER BY r.room_id;
 
-	</select>
-	
-<insert id="insert" useGeneratedKeys="true" keyProperty="roomId">
-  INSERT INTO TB_CHAT_ROOM (room_name)
-  VALUES (#{roomName})
-</insert>
+<mapper namespace="com.emr.slgi.chat.DAO.ChatRoomDAO">
 
-<select id="loadChatName" parameterType="int">
-	select room_name
-	from tb_chat_room r
-	where r.room_id = #{roomId}
-</select>
+  <select id="getList">
+    SELECT 
+      r.room_id,
+      r.room_name,
+      mes.content AS content,
+      mes.create_date AS last_message_time,
+      COUNT(
+        CASE
+          WHEN m.create_date > (
+            SELECT IFNULL(MAX(r2.read_time), r.create_date)
+            FROM TB_CHAT_READ r2
+            WHERE r2.room_id = r.room_id AND r2.uuid = #{uuid}
+          )
+          AND m.uuid != #{uuid}
+          THEN 1
+        END
+      ) AS count
 
-<select id ="getUuid" >
-	select j.uuid
-	from tb_chat_room r
-	join tb_chat_join j on r.room_id = j.room_id
-	where r.room_id = #{room_id};
-</select>
+    FROM TB_CHAT_ROOM r
+    JOIN TB_CHAT_JOIN j ON r.room_id = j.room_id AND j.uuid = #{uuid}
 
-  </mapper>
+    LEFT JOIN (
+      SELECT room_id, content, create_date
+      FROM (
+        SELECT *,
+               ROW_NUMBER() OVER (PARTITION BY room_id ORDER BY create_date DESC) AS rn
+        FROM TB_CHAT_MESSAGE
+      ) sub
+      WHERE rn = 1
+    ) mes ON r.room_id = mes.room_id
+
+    LEFT JOIN TB_CHAT_MESSAGE m ON r.room_id = m.room_id
+
+    GROUP BY r.room_id, r.room_name, mes.content, mes.create_date, r.create_date
+    ORDER BY r.room_id;
+  </select>
+
+  <insert id="insert" useGeneratedKeys="true" keyProperty="roomId">
+    INSERT INTO TB_CHAT_ROOM (room_name)
+    VALUES (#{roomName})
+  </insert>
+
+  <select id="loadChatName" parameterType="int">
+    SELECT room_name
+    FROM TB_CHAT_ROOM r
+    WHERE r.room_id = #{roomId}
+  </select>
+
+  <select id="getUuid">
+    SELECT j.uuid
+    FROM TB_CHAT_ROOM r
+    JOIN TB_CHAT_JOIN j ON r.room_id = j.room_id
+    WHERE r.room_id = #{room_id};
+  </select>
+
+</mapper>

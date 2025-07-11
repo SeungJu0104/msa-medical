@@ -6,7 +6,7 @@
   
   <select id="getKeyword">
 	select *
-	from tb_disease
+	from TB_DISEASE
 	where code like concat(#{keyword},'%') or name like concat(#{keyword},'%')
 	limit 15
 </select>
