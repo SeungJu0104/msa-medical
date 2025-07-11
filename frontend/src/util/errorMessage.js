@@ -6,6 +6,9 @@ export const errorMessage = {
         timeChk: '시간을 선택해주세요.',
         symptomChk: '증상을 입력해주세요.',
         retry: '다시 시도해주세요.'
+    },
+    staff : {
+        searchValLength: "검색어는 최소 1자 이상 입력해야합니다.",
     }
 
 }
