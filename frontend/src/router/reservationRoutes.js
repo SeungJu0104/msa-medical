@@ -8,14 +8,10 @@ export const reservationRoutes = [
         name: 'reservationList',
         component: ReservationList
     },
-    {
+    { // 테스트 후 삭제
         path: 'regReservationByPatient',
         name: 'regReservationByPatient',
         component: RegReservationByPatient,
     },
-    {
-        path: 'reservationListByPatient',
-        name: 'reservationListByPatient',
-        component: ReservationListByPatient
-    },
+
 ]
