@@ -14,27 +14,27 @@ export const patientRoutes = [
     component: PatientLayout,
     children: [
       {
-        path: '/',
+        path: '',
         name: 'home',
         component: MainView
       },
       {
-        path: '/login',
+        path: 'login',
         name: 'loginView',
         component: LoginView
       },
       {
-        path: '/register',
+        path: 'register',
         name: 'patientRegister',
         component: RegisterView
       },
       {
-        path: '/mypage',
+        path: 'mypage',
         name: 'mypage',
         component: MyPageView
       },
       {
-        path: '/profile/update',
+        path: 'profile/update',
         name: 'updateProfile',
         component: UpdateProfile
       },
