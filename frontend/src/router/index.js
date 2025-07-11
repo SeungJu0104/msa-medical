@@ -3,6 +3,8 @@ import { patientRoutes } from './patientRoutes';
 import { adminRoutes } from './adminRoutes';
 import { staffRoutes } from './staffRoutes';
 
+const StaffLayOut = () => import('@/staff/views/StaffLayOut.vue')
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -10,7 +12,7 @@ const router = createRouter({
     ...adminRoutes,
     {
       path: '/staff',
-      // component: StaffLayOut,
+      component: StaffLayOut,
       children: [
         ...staffRoutes
       ]
