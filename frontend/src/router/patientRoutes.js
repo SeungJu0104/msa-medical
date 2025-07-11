@@ -4,6 +4,8 @@ const PatientLayout = () => import('@/patient/layouts/PatientLayout.vue');
 const RegisterView = () => import("@/patient/views/RegisterView.vue");
 const UpdateProfile = () => import("@/patient/views/UpdateProfile.vue");
 const LoginView = () => import('@/patient/views/LoginView.vue');
+const RegReservation = () => import('@/reservation/views/RegReservationByPatient.vue')
+const ReservationListByPatient = () => import('@/reservation/views/ReservationListByPatient.vue')
 
 export const patientRoutes = [
   {
@@ -34,6 +36,16 @@ export const patientRoutes = [
         path: '/profile/update',
         name: 'updateProfile',
         component: UpdateProfile
+      },
+      {
+        path: 'regReservation',
+        name: 'regReservation',
+        component: RegReservation,
+      },
+      {
+        path: 'reservationListByPatient',
+        name: 'reservationListByPatient',
+        component: ReservationListByPatient
       },
     ]
   },
