@@ -61,7 +61,7 @@ CREATE TABLE if not EXISTS TB_RECEPTION (
 );
 
 create table if not EXISTS TB_RESERVATION (
-        ID VARCHAR(36) default (UUID()) PRIMARY key,
+        UUID VARCHAR(36) default (UUID()) PRIMARY key,
         PATIENT_UUID VARCHAR(36),
         DOCTOR_UUID VARCHAR(36),
         STATUS VARCHAR(4),
