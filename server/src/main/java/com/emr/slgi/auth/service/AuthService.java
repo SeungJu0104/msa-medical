@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
@@ -38,6 +39,7 @@ public class AuthService {
     private final MemberService memberService;
     private final RefreshTokenService refreshTokenService;
     private final JwtUtil jwtUtil;
+    private final PasswordEncoder passwordEncoder;
 
     @Value("${jwt.access-token-secret}")
     private String jwtSecret;
@@ -53,10 +55,11 @@ public class AuthService {
                 );
                 return memberService.createPatient(patientRegisterDTO);
             });
+        String hashed = passwordEncoder.encode(registerByPatientDTO.getPassword());
         CredentialsCreateDTO credentialsCreateDTO = new CredentialsCreateDTO(
             uuid,
             registerByPatientDTO.getUserid(),
-            registerByPatientDTO.getPassword()
+            hashed
         );
         credentialsService.create(credentialsCreateDTO);
     }
@@ -67,7 +70,7 @@ public class AuthService {
 
     public LoginResponse login(LoginDTO loginDTO) {
         Credentials credentials = credentialsService.getMemberCredentials(loginDTO);
-        if (credentials == null || !credentials.getPassword().equals(loginDTO.getPassword())) {
+        if (credentials == null || !passwordEncoder.matches(loginDTO.getPassword(), credentials.getPassword())) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "아이디나 비밀번호가 틀렸습니다.");
         }
         return new LoginResponse(

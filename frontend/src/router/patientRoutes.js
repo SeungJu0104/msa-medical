@@ -3,7 +3,7 @@ const MyPageView = () => import("@/patient/views/MyPageView.vue");
 const PatientLayout = () => import('@/patient/layouts/PatientLayout.vue');
 const RegisterView = () => import("@/patient/views/RegisterView.vue");
 const UpdateProfile = () => import("@/patient/views/UpdateProfile.vue");
-const LoginView = () => import('@/views/auth/LoginView.vue');
+const LoginView = () => import('@/patient/views/LoginView.vue');
 
 export const patientRoutes = [
   {

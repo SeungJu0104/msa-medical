@@ -36,7 +36,7 @@ public class ReservationController {
 
     private final ReservationService rService;
 
-    @PreAuthorize("hasRole('PATIENT')")
+    @PreAuthorize("hasAnyRole('PATIENT', 'DOCTOR', 'NURSE')")
     @PostMapping
     public ResponseEntity<Map<String, String>> makeReservationByPatient(@Valid @RequestBody ReservationForm rf){
 
@@ -63,7 +63,7 @@ public class ReservationController {
 
     }
 
-    @PreAuthorize("hasRole('PATIENT')")
+    @PreAuthorize("hasAnyRole('PATIENT', 'DOCTOR', 'NURSE')")
     @PostMapping("/hold")
     public ResponseEntity<?> holdReservation(@RequestBody FindReservationDate reservationDate) {
 
@@ -86,15 +86,11 @@ public class ReservationController {
         return ResponseEntity.ok().build();
     }
 
-    @PreAuthorize("hasRole('PATIENT')")
+    @PreAuthorize("hasAnyRole('PATIENT', 'DOCTOR', 'NURSE')")
     @GetMapping("/getReservationList/{doctorUuid}/{dateTime}")
     public ResponseEntity<Map<String, List<ReservationList>>> getReservationList(
             @PathVariable("doctorUuid") String doctorUuid,
-            @PathVariable("dateTime")
-            LocalDateTime dateTime) {
-
-        log.info(String.valueOf(dateTime));
-        log.info(doctorUuid);
+            @PathVariable("dateTime") LocalDateTime dateTime) {
 
         if(doctorUuid == null || Validate.regexValidate(Map.of(Validate.MEMBER_UUID_REGEX, doctorUuid)).contains(false)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, ReservationErrorMessage.CHOOSE_DOCTOR);
@@ -128,17 +124,18 @@ public class ReservationController {
 
     }
 
-    @PreAuthorize("hasRole('PATIENT')")
+    @PreAuthorize("hasAnyRole('PATIENT', 'DOCTOR', 'NURSE')")
     @PutMapping("/cancelHoldingReservation")
-    public ResponseEntity<?> cancelHoldingReservation() {
-        log.info("a");
-        String patientUuid = "550e8400-e29b-41d4-a716-446655440020"; // 테스트용 환자 UUID
+    public ResponseEntity<?> cancelHoldingReservation(@RequestBody ReservationList rl) {
 
-        if(!rService.cancelHoldingReservation(patientUuid)) {
-            log.info("b");
+        if(rl.getPatientUuid() == null || Validate.regexValidate(Map.of(Validate.MEMBER_UUID_REGEX, rl.getPatientUuid())).contains(false)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, ReservationErrorMessage.CAN_NOT_FIND_PATIENT);
+        }
+
+        if(!rService.cancelHoldingReservation(rl.getPatientUuid())) {
+
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, CommonErrorMessage.RETRY);
         }
-        log.info("c");
 
         return ResponseEntity.ok().build();
 
@@ -277,7 +274,5 @@ public class ReservationController {
                 )
         );
     }
-
-
 
 }

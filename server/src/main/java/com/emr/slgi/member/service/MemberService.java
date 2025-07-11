@@ -62,7 +62,11 @@ public class MemberService {
       patientRegisterDTO.getRrn(),
       patientRegisterDTO.getPhone()
     );
-    memberDAO.createPatient(memberCreateDTO);
+    try {
+      memberDAO.createPatient(memberCreateDTO);
+    } catch (Exception exception) {
+      throw new ResponseStatusException(HttpStatus.CONFLICT, "이미 존재하는 주민번호입니다.");
+    }
     return uuid;
   }
 

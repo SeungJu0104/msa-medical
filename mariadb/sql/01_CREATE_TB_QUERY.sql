@@ -31,7 +31,7 @@ CREATE table if not EXISTS TB_MEMBER (
 CREATE TABLE if not EXISTS TB_MEMBER_CREDENTIALS (
     user_uuid VARCHAR(36) PRIMARY KEY,
     id VARCHAR(20) NOT NULL,
-    password VARCHAR(20) NOT NULL,
+    password VARCHAR(60) NOT NULL,
     create_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_date DATETIME,
     delete_date DATETIME,

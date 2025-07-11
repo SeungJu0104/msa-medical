@@ -1,11 +1,14 @@
 <template>
-  
+    <router-view />
     <div class= "chat-container">
       
     </div>
   
     <div class="body">
     <aside class="left">왼쪽
+      <div class="my-3">
+        <router-view name="waitingReservationParent"/>
+      </div>
   
     </aside>
     <section class="center">중앙</section>
@@ -14,7 +17,7 @@
       <ChatRooms/>
     </aside>
   </div>
-    <router-view></router-view>
+
   </template>
   
   <script setup>
@@ -35,7 +38,7 @@ import ChatRooms from '@/components/chat/ChatRooms.vue';
   }
   
   .left {
-    width: 200px;
+    width: 20vw;
     background: #f0f0f0;
   }
   

@@ -1,20 +1,24 @@
 <template>
-  <form>
-    <div>
-      <label>아이디</label>
-      <input type="text" :value="member.userid" readonly>
+  <div class="card p-4 w-100" style="max-width: 720px;">
+    <form>
+      <div class="mb-3">
+        <label class="form-label">아이디</label>
+        <input type="text" :value="member.userid" class="form-control" disabled>
+      </div>
+      <div class="mb-3">
+        <label for="name" class="form-label">이름</label>
+        <input type="text" v-model="member.name" class="form-control" id="name">
+      </div>
+      <div class="mb-3">
+        <label for="phone" class="form-label">전화번호</label>
+        <input type="text" v-model="member.phone" class="form-control" id="phone">
+      </div>
+    </form>
+    <div class="d-flex justify-content-end gap-2">
+      <button @click="updateProfile" class="btn btn-primary">수정</button>
+      <button @click="goBack" class="btn btn-danger">취소</button>
     </div>
-    <div>
-      <label>이름</label>
-      <input type="text" v-model="member.name">
-    </div>
-    <div>
-      <label>전화번호</label>
-      <input type="text" v-model="member.phone">
-    </div>
-  </form>
-  <button @click="updateProfile">수정</button>
-  <button @click="goBack">취소</button>
+  </div>
 </template>
 
 <script setup>

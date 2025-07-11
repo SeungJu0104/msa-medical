@@ -1,15 +1,18 @@
 <template>
-  <form>
-    <div>
-      <label for="userid">아이디</label>
-      <input type="text" id="userid" v-model="form.userid">
-    </div>
-    <div>
-      <label for="password">비밀번호</label>
-      <input type="password" id="password" v-model="form.password">
-    </div>
-    <button type="submit" @click.prevent="login">로그인</button>
-  </form>
+  <div class="card p-4 w-100" style="max-width: 720px;">
+    <form>
+      <div class="mb-3">
+        <input type="text" class="form-control" placeholder="아이디" v-model="form.userid"/>
+      </div>
+      <div class="mb-3">
+        <input type="password" class="form-control" placeholder="비밀번호" v-model="form.password"/>
+      </div>
+      <div class="d-grid mb-3">
+        <button class="btn btn-primary text-white" @click.prevent="login">로그인</button>
+      </div>
+    </form>
+    <RouterLink class="btn btn-light text-secondary">회원가입</RouterLink>
+  </div>
 </template>
 
 <script setup>

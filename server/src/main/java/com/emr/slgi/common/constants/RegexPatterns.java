@@ -7,4 +7,5 @@ public class RegexPatterns {
     public static final String PASSWORD = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]+$";
     public static final String JWT_TOKEN = "^[A-Za-z0-9\\-_=]+\\.[A-Za-z0-9\\-_=]+\\.[A-Za-z0-9\\-_=]+$";
     public static final String PHONE = "^(?:0\\d{1,2}-)?\\d{3,4}-\\d{4}$";
+    public static final String BIRTH_DATE = "^(\\d{2})(0[1-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])$";
 }
