@@ -11,6 +11,7 @@ import PaymentList from '@/components/payment/PaymentList.vue';
 import WaitingReservationParent from "@/views/staff/components/WaitingReservationParent.vue";
 
 const OtherView = () => import('@/views/other/OtherView.vue');
+const Reception = () => import('@/reception/views/WaitingList.vue')
 const StaffLayOut = () => import('@/views/staff/StaffMainView.vue');
 
 const router = createRouter({
@@ -23,16 +24,8 @@ const router = createRouter({
       name: 'other',
       component: OtherView
     },
-    {
-      path:'/chatrooms',
-      name: 'chatrooms',
-      component:ChatRooms,
-    },
-    {
-      path: '/chatroom/:roomId',
-      name : 'chatroom',
-      component:ChatRoom
-    },
+    
+    
     {
       path: '/reception',
       children: [

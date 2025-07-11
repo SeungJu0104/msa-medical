@@ -27,6 +27,5 @@ export const staffRoutes = [
         path: 'regPatientByStaff',
         name: 'regPatientByStaff',
         component: RegPatientByStaff
-    }
-
+    },
 ]
