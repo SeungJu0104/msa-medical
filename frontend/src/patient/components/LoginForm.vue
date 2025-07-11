@@ -43,7 +43,7 @@ async function login() {
   if (user.value.role === "PATIENT") {
     router.push({ name: 'home' });
   } else if (user.value.role === "DOCTOR" || user.value.role === "NURSE") {
-    router.push({ name: 'home'});
+    router.push({ name: 'staffMain'});
   } else if (user.value.role === "ADMIN") {
     router.push({ name: 'adminView' });
   }
