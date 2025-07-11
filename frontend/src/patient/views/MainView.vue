@@ -1,7 +1,7 @@
 <template>
   <div class="menu">
-    <RouterLink class="menu-card reservation">진료 예약</RouterLink>
-    <RouterLink class="menu-card confirmation">예약 확인</RouterLink>
+    <RouterLink :to="{ name: 'regReservation'}" class="menu-card reservation">진료 예약</RouterLink>
+    <RouterLink :to="{ name: 'reservationListByPatient'}" class="menu-card confirmation">예약 확인</RouterLink>
   </div>
 </template>
 

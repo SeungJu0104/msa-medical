@@ -11,7 +11,7 @@
         <button class="btn btn-primary text-white" @click.prevent="login">로그인</button>
       </div>
     </form>
-    <RouterLink class="btn btn-light text-secondary">회원가입</RouterLink>
+    <RouterLink :to="{ name: 'patientRegister' }" class="btn btn-light text-secondary">회원가입</RouterLink>
   </div>
 </template>
 
