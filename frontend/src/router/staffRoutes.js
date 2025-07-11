@@ -1,6 +1,7 @@
 const Search = () => import ('@/views/staff/Search.vue');
 const RegPatientByStaff = () => import ("@/views/staff/RegPatientByStaff.vue");
 const StaffMainView = () => import("@/views/staff/StaffMainView.vue");
+const RegReservation = () => import('@/reservation/views/RegReservationByStaff.vue')
 
 export const staffRoutes = [
 
@@ -15,8 +16,16 @@ export const staffRoutes = [
         component: Search
     },
     {
+        path: 'regReservation',
+        name: 'regReservation',
+        component: RegReservation,
+    },
+    {
         path: 'regPatientByStaff',
         name: 'regPatientByStaff',
-        component: RegPatientByStaff
+        components : {
+            default: StaffMainView,
+            modal: RegPatientByStaff
+        }
     },
 ]
