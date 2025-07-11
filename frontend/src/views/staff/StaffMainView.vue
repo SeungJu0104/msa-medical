@@ -1,15 +1,8 @@
 <template>
-    <router-view />
-    <div class= "chat-container">
-      
-    </div>
   
     <div class="body">
-    <aside class="left">왼쪽
-      <div class="my-3">
-        <router-view name="waitingReservationParent"/>
-      </div>
-  
+    <aside class="left">
+        <WaitingReservationParent class="my-3"/>
     </aside>
     <section class="center">중앙</section>
     
@@ -18,20 +11,13 @@
     </aside>
   </div>
 
-  </template>
+</template>
   
-  <script setup>
+<script setup>
 import ChatRooms from '@/components/chat/ChatRooms.vue';
-
-
-  </script>
-  <style scoped>
-  .chat-container {
-    position: absolute;
-    top: 100px; /* Header 밑으로 약간 내려오게 */
-    right: 20px;
-    width: 300px;
-  }
+import WaitingReservationParent from "@/views/staff/components/WaitingReservationParent.vue";
+</script>
+<style scoped>
   .body {
     display: flex;
     align-items: stretch
@@ -57,4 +43,4 @@ import ChatRooms from '@/components/chat/ChatRooms.vue';
     justify-content: flex-start; /* 위로 붙이기 */
   }
   
-  </style>
+</style>
