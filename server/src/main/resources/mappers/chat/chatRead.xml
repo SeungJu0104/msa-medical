@@ -22,7 +22,7 @@
 	WHERE m.room_id = #{roomId}
 	  AND m.create_date > (
 	    SELECT IFNULL(MAX(r.read_time), r.create_date)
-	    FROM TB_CHAT_READ
+	    FROM TB_CHAT_READ r
 	    WHERE r.room_id = m.room_id
 	      AND r.uuid = #{uuid}
 	  )
