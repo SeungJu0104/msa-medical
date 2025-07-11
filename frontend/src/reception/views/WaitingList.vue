@@ -18,7 +18,6 @@ import VisitHistory from "@/components/diagnosis/VisitHistory.vue";
   const selectedDoctorUuid = ref(null)
   const userStore = useUserStore();
   const uuid = computed(() => userStore.user?.uuid ?? '');
-  const router = useRouter();
   let client;
 
 
@@ -36,8 +35,7 @@ import VisitHistory from "@/components/diagnosis/VisitHistory.vue";
 
   // 의료진이 대기 리스트에서 이름을 누른 환자 UUID 가져오는 함수
   const getPatientInfo = ({patientUuid,doctorUuid}) => {
-    console.log("환자 UUID:", patientUuid);
-    console.log("의사 UUID:", doctorUuid);
+
     selectedPatientUuid.value = patientUuid;
     selectedDoctorUuid.value = doctorUuid;
    

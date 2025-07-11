@@ -137,7 +137,7 @@ public class ReservationService {
 
         ReservationStatus status = ReservationStatus.from(updateStatus);
 
-        return rDao.updateReservationStatus(uuid, updateStatus);
+        return rDao.updateReservationStatus(uuid, status);
 
     }
 
