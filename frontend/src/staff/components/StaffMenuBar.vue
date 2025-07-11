@@ -15,9 +15,6 @@ import {useRouter} from "vue-router";
 <template>
   <div class="my-3">
     <div class="menuContainer">
-      <div id="reservation" @click="routerPush({name: 'regReservation'})">
-        <span>예약 등록</span>
-      </div>
       <div id="registration" @click="routerPush({name: 'regPatientByStaff'})">
         <span>환자 등록</span>
       </div>
