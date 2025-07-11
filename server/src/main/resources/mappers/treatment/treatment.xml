@@ -6,50 +6,48 @@
 
 <mapper namespace="com.emr.slgi.treatment.TreatmentDAO">
 
-  <insert id="insertTreatment"  parameterType="com.emr.slgi.treatment.Treatment" >
+  <insert id="insertTreatment" parameterType="com.emr.slgi.treatment.Treatment">
     INSERT INTO TB_TREATMENT(uuid)
     VALUES (#{uuid})
   </insert>
   
-  <select id ="getHistory" parameterType="map" resultType="com.emr.slgi.treatment.Treatment">
-  	select t.*
-	from tb_treatment t
-	join tb_reception r on t.uuid = r.uuid
-	where  r.doctor_uuid = #{doctorUuid} and r.patient_uuid = #{patientUuid}
-	order by t.treat_date desc
-	limit #{start}, #{size}
+  <select id="getHistory" parameterType="map" resultType="com.emr.slgi.treatment.Treatment">
+    SELECT t.*
+    FROM TB_TREATMENT t
+    JOIN TB_RECEPTION r ON t.uuid = r.uuid
+    WHERE r.doctor_uuid = #{doctorUuid}
+      AND r.patient_uuid = #{patientUuid}
+    ORDER BY t.treat_date DESC
+    LIMIT #{start}, #{size}
   </select>
-  
   
   <select id="getHistoryCount" parameterType="map" resultType="int">
-	  SELECT COUNT(*)
-	  FROM TB_TREATMENT T 
-	  JOIN TB_RECEPTION R ON T.uuid = R.uuid
-	  WHERE R.doctor_uuid = #{doctorUuid}
-    	AND R.patient_uuid = #{patientUuid}
-</select>
-  
-  <select id ="selectTreatment" resultType="com.emr.slgi.treatment.Treatment">
-  	select *
-  	from tb_treatment t
-  	where t.id =#{id}
-  	
+    SELECT COUNT(*)
+    FROM TB_TREATMENT t
+    JOIN TB_RECEPTION r ON t.uuid = r.uuid
+    WHERE r.doctor_uuid = #{doctorUuid}
+      AND r.patient_uuid = #{patientUuid}
   </select>
   
- 
-  <insert id="updateTreatment"  parameterType="com.emr.slgi.treatment.Treatment"  >
-    update tb_treatment
-    	set treat_content = #{treatContent},
-    		write_yn = 'Y'
-	 where id = #{id}
+  <select id="selectTreatment" resultType="com.emr.slgi.treatment.Treatment">
+    SELECT *
+    FROM TB_TREATMENT t
+    WHERE t.id = #{id}
+  </select>
+  
+  <insert id="updateTreatment" parameterType="com.emr.slgi.treatment.Treatment">
+    UPDATE TB_TREATMENT
+    SET treat_content = #{treatContent},
+        write_yn = 'Y'
+    WHERE id = #{id}
   </insert>
   
-  
-  <select id ="getDocument" resultType="com.emr.slgi.treatment.DocumentDTO" >
-  SELECT t.treat_date, t.treat_content, r.name,r.uuid,r.rrn, me.name as doctor_name
-	FROM tb_treatment t
-	JOIN tb_reception r ON t.uuid = r.uuid
-	join tb_member me on me.uuid = r.doctor_uuid
-	where t.id = #{treatmentId}
+  <select id="getDocument" resultType="com.emr.slgi.treatment.DocumentDTO">
+    SELECT t.treat_date, t.treat_content, r.name, r.uuid, r.rrn, me.name AS doctor_name
+    FROM TB_TREATMENT t
+    JOIN TB_RECEPTION r ON t.uuid = r.uuid
+    JOIN TB_MEMBER me ON me.uuid = r.doctor_uuid
+    WHERE t.id = #{treatmentId}
   </select>
+
 </mapper>

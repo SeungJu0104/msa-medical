@@ -6,15 +6,15 @@
 
 <mapper namespace="com.emr.slgi.diagnosis.DiagnosisDAO">	
 	<insert id = "insertDiagnosis" parameterType="com.emr.slgi.diagnosis.Diagnosis">
-	 INSERT INTO tb_diagnosis ( id, treatment_id )
+	 INSERT INTO TB_DIAGNOSIS ( id, treatment_id )
 	  VALUES 
 	  ( #{id}, #{treatmentId} )
 	</insert>
 	
 	<select id="selectDiagnosis" resultType="com.emr.slgi.diagnosis.Diagnosis">
 		select dia.* , dis.name,dis.code
-		from tb_diagnosis dia
-		Join tb_disease dis on dia.id = dis.id
+		from TB_DIAGNOSIS dia
+		Join TB_DISEASE dis on dia.id = dis.id
 		where treatment_id =#{id}	
 	</select>
 </mapper>

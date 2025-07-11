@@ -6,7 +6,7 @@
 
 <mapper namespace="com.emr.slgi.attachment.AttachmentDAO">	
 	<insert id = "insertAttachment" parameterType="com.emr.slgi.attachment.Attachment">
-	 INSERT INTO tb_attachment (
+	 INSERT INTO TB_ATTACHMENT (
 	    treatment_id,
 	    original_name,
 	    file_name,
@@ -27,7 +27,7 @@
 	
 	<select id="selectAttachments" resultType="com.emr.slgi.attachment.Attachment">
 		select *
-		from tb_attachment
+		from TB_ATTACHMENT
 		where treatment_id =#{id}	
 	</select>
 </mapper>
