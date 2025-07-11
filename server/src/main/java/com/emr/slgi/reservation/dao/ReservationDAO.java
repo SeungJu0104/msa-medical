@@ -2,6 +2,7 @@ package com.emr.slgi.reservation.dao;
 
 import com.emr.slgi.reservation.dto.*;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -25,13 +26,13 @@ public interface ReservationDAO {
 
     int getAffectedRowsCount(Map reservationData);
 
-    List<ReservationList> getReservationListByStaff(Map date);
+    List<ReservationList> getReservationListByStaff(Map<String, Object> date);
 
     int cancelReservation(Set uuidForCancel);
 
     int changeReservation(String reservationId, LocalDateTime dateTime);
 
-    List<ReservationList> getFullReservationList(String doctorUuid, LocalDateTime date);
+    List<ReservationList> getFullReservationList(@Param("doctorUuid") String doctorUuid, @Param("date") LocalDateTime date);
 
     int updateReservationStatus(String uuid, String updateStatus);
 
