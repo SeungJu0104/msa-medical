@@ -19,9 +19,9 @@
             #{patientUuid},
             #{doctorUuid},
             #{patientName},
-            #{rrn},
+            #{birthDate},
             #{symptom},
-            #{dateTime}
+            CURRENT_TIMESTAMP
         )
   </insert>
 

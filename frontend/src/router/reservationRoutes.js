@@ -4,7 +4,7 @@ const ReservationListByPatient = () => import('@/reservation/views/ReservationLi
 
 export const reservationRoutes = [
     {
-        path: 'list',
+        path: 'reservationList',
         name: 'reservationList',
         component: ReservationList
     },
