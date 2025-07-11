@@ -10,10 +10,12 @@ const router = createRouter({
     ...adminRoutes,
     {
       path: '/staff',
+      // component: StaffLayOut,
       children: [
         ...staffRoutes
       ]
     },
+
   ],
 })
 
