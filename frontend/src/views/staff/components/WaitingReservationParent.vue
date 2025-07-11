@@ -2,6 +2,7 @@
 import '@/css/waitingreservaion.css'
 import {useRouter} from "vue-router";
 import {onMounted} from "vue";
+import WaitingListPatientList from "@/shared/components/WaitingListPatientList.vue";
 
 const router = useRouter();
 
@@ -34,7 +35,7 @@ onMounted (() => {
       <div id="waitingList" @click="linkWaitingList">대기</div>
     </div>
     <div class="scroll">
-      <router-view/>
+      <WaitingListPatientList/>
     </div>
   </div>
 
