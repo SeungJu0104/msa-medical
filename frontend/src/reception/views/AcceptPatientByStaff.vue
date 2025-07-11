@@ -8,6 +8,7 @@ import {omit} from "lodash";
 import {errorMessage} from "@/util/errorMessage.js";
 import {REGEX_PATTERN} from "@/util/RegexPattern.js";
 import {useRoute, useRouter } from "vue-router";
+import {successMessage} from "@/util/successMessage.js";
 
 const selectedVal = reactive({
   doctorUuid: null,
@@ -64,14 +65,14 @@ const acceptPatientByStaff = async () => {
     const response = await customFetch(
       ENDPOINTS.reception.acceptPatientByStaff, {
           data: {
-            ...omit(selectedVal, ['name'])
+            ...omit(selectedVal, ['name', 'birthDate', 'patientName'])
           }
         }
       )
 
       if(response.status === 201) {
-        common.alertError("접수가 완료됐습니다.");
-        await router.push({name: 'staff'});
+        common.alert(successMessage.reception.acceptSuccess);
+        await router.push({name: 'staffMain'});
       }
 
   } catch(err) {
@@ -89,7 +90,6 @@ const acceptPatientByStaff = async () => {
 const insertSelectedValData = () => {
 
   selectedVal.patientUuid = route.query.patientUuid;
-  selectedVal.patientName = route.query.patientName;
   selectedVal.birthDate = route.query.birthDate;
 
 }
