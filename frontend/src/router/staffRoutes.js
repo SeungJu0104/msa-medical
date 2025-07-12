@@ -1,7 +1,7 @@
-const Search = () => import ('@/views/staff/Search.vue');
-const RegPatientByStaff = () => import ("@/views/staff/RegPatientByStaff.vue");
-const StaffMainView = () => import("@/views/staff/StaffMainView.vue");
-const RegReservation = () => import('@/reservation/views/RegReservationByStaff.vue')
+const Search = () => import ('@/staff/views/Search.vue');
+const RegPatientByStaff = () => import ("@/staff/views/RegPatientByStaff.vue");
+const StaffMainView = () => import("@/staff/views/StaffMainView.vue");
+const RegReservation = () => import('@/shared/views/RegReservation.vue')
 
 export const staffRoutes = [
 
