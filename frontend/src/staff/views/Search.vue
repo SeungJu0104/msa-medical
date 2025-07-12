@@ -5,7 +5,7 @@ import {reactive, ref} from "vue";
   import {ENDPOINTS} from "@/util/endpoints.js";
   import {common} from "@/util/common.js";
 import {patientMethods} from "@/reservation/util/reservation.js";
-import RegReservation from "@/reservation/views/RegReservation.vue";
+import RegReservation from "@/shared/views/RegReservation.vue";
 import {useRouter} from 'vue-router'
 import {errorMessage} from "@/util/errorMessage.js";
 
@@ -74,7 +74,7 @@ import {errorMessage} from "@/util/errorMessage.js";
     <div class="input-group mb-3">
       <input class="form-control form-control-lg" type="text" v-model="searchVal.input" minlength="1" maxlength="6" @keyup.enter="search" placeholder="환자명"/>
       <button class="btn btn-outline-secondary" type="button" @click="search">
-        <img class="search" src="@/assets/search.png" alt="검색" style="width: 20px; height: 20px;" /><!--css 분리하기-->
+        <img class="search" src="../../assets/search.png" alt="검색" style="width: 20px; height: 20px;" /><!--css 분리하기-->
       </button>
     </div>
     <div class="my-3">
