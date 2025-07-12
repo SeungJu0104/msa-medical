@@ -1,5 +1,6 @@
 <script setup>
 import '@/css/staff/StaffMenuBar.css'
+import LogoutButton from "@/auth/components/LogoutButton.vue";
 
 </script>
 
@@ -11,7 +12,7 @@ import '@/css/staff/StaffMenuBar.css'
       <router-link :to="{name: 'search'}">환자 검색</router-link>
       <router-link :to="{name: ''}">결제</router-link>
       <router-link :to="{name: ''}">설정</router-link>
-
+      <LogoutButton/>
     </div>
   </div>
 </template>
