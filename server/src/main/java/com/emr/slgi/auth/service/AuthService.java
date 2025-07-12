@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.emr.slgi.auth.domain.Credentials;
-import com.emr.slgi.auth.dto.AccessTokenResponse;
+import com.emr.slgi.auth.dto.TokenResponse;
 import com.emr.slgi.auth.dto.CredentialsCreateDTO;
 import com.emr.slgi.auth.dto.LoginDTO;
 import com.emr.slgi.auth.dto.LoginResponse;
@@ -90,21 +90,21 @@ public class AuthService {
         return jwtUtil.generateToken(claims, thirtyMinutesLater, jwtSecret);
     }
 
-    public AccessTokenResponse refreshToken(RefreshTokenDTO refreshTokenDTO) {
+    public TokenResponse refreshToken(RefreshTokenDTO refreshTokenDTO) {
         Claims claims = refreshTokenService.parseRefreshToken(refreshTokenDTO.getRefreshToken());
         String jti = claims.get("jti", String.class);
-        if (jti == null || refreshTokenService.isTokenBlacklisted(jti)) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "토큰이 만료되었습니다.");
+        if (jti == null || !refreshTokenService.deleteWhitelist(jti)) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "토큰이 유효하지 않습니다.");
         }
         String uuid = claims.get("uuid", String.class);
-        return new AccessTokenResponse(createAccessToken(uuid));
+        return new TokenResponse(
+            createAccessToken(uuid),
+            refreshTokenService.createRefreshToken(uuid)
+        );
     }
 
     public void logout(LogoutDTO logoutDTO) {
         Claims claims = refreshTokenService.parseRefreshToken(logoutDTO.getRefreshToken());
-        refreshTokenService.blacklistTokenJti(
-            claims.get("jti", String.class),
-            claims.getExpiration()
-        );
+        refreshTokenService.deleteWhitelist(claims.get("jti", String.class));
     }
 }

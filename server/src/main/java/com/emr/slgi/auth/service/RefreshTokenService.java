@@ -9,7 +9,9 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.emr.slgi.util.JwtUtil;
 
@@ -27,29 +29,34 @@ public class RefreshTokenService {
     private String refreshTokenSecret;
 
     public String createRefreshToken(String memberUuid) {
+        String jti = UUID.randomUUID().toString();
         Map<String, String> map = Map.of(
             "uuid", memberUuid,
-            "jti", UUID.randomUUID().toString()
+            "jti", jti
         );
         Date twoWeeksLater = Date.from(Instant.now().plus(14, ChronoUnit.DAYS));
 
-        return jwtUtil.generateToken(map, twoWeeksLater, refreshTokenSecret);
+        String refreshToken = jwtUtil.generateToken(map, twoWeeksLater, refreshTokenSecret);
+        whitelistTokenJti(jti, twoWeeksLater);
+        return refreshToken;
     }
 
     public Claims parseRefreshToken(String refreshToken) {
         return jwtUtil.parseToken(refreshToken, refreshTokenSecret);
     }
 
-    public void blacklistTokenJti(String jti, Date exp) {
-        String key = "blacklist:jti:" + jti;
+    public void whitelistTokenJti(String jti, Date exp) {
+        String key = "whitelist:jti:" + jti;
         Duration remaining = Duration.between(Instant.now(), exp.toInstant());
-        remaining = remaining.isNegative() ? Duration.ZERO : remaining;
+        if (remaining.isNegative() || remaining.isZero()) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "토큰이 만료되었습니다.");
+        }
         stringRedisTemplate.opsForValue().set(key, "1", remaining);
     }
 
-    public boolean isTokenBlacklisted(String jti) {
-        String key = "blacklist:jti:" + jti;
-        return Boolean.TRUE.equals(stringRedisTemplate.hasKey(key));
+    public boolean deleteWhitelist(String jti) {
+        String key = "whitelist:jti:" + jti;
+        return stringRedisTemplate.delete(key);
     }
 
 }

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getRefreshToken } from "./refreshToken";
+import { getRefreshToken, setRefreshToken } from "./refreshToken";
 import { setAccessToken } from "./accessToken";
 import { ENDPOINTS } from "@/util/endpoints";
 
@@ -17,6 +17,7 @@ async function renewAccessTokenInternal() {
     data: { refreshToken: getRefreshToken() }
   });
   setAccessToken(response.data.accessToken);
+  setRefreshToken(response.data.refreshToken);
 }
 
 let isRefreshing = false;
