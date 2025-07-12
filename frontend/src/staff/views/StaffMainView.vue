@@ -15,7 +15,7 @@
   
 <script setup>
 import ChatRooms from '@/components/chat/ChatRooms.vue';
-import WaitingReservationParent from "@/views/staff/components/WaitingReservationParent.vue";
+import WaitingReservationParent from "@/staff/components/WaitingReservationParent.vue";
 </script>
 <style scoped>
   .body {
