@@ -1,9 +1,6 @@
 <script setup>
 import '@/css/staff/StaffMenuBar.css'
-
-  const push = () => {
-
-  }
+import LogoutButton from "@/auth/components/LogoutButton.vue";
 
 </script>
 
@@ -23,6 +20,7 @@ import '@/css/staff/StaffMenuBar.css'
       <div class="my-3">
         <router-link :to="{name: ''}">설정</router-link>
       </div>
+      <LogoutButton/>
     </div>
   </div>
 </template>
