@@ -23,9 +23,6 @@ export const staffRoutes = [
     {
         path: 'regPatientByStaff',
         name: 'regPatientByStaff',
-        components : {
-            default: StaffMainView,
-            modal: RegPatientByStaff
-        }
+        component: RegPatientByStaff
     },
 ]

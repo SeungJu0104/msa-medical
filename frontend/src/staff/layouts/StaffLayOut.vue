@@ -1,6 +1,7 @@
 <script setup>
 
 import StaffMenuBar from "@/staff/components/StaffMenuBar.vue";
+import RegPatientByStaff from "@/staff/views/RegPatientByStaff.vue";
 
 
 
@@ -13,7 +14,6 @@ import StaffMenuBar from "@/staff/components/StaffMenuBar.vue";
     </div>
     <div class="mainSide">
       <router-view/>
-      <router-view name="modal"/>
     </div>
     <div class="rightSide">
 
