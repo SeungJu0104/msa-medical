@@ -1,9 +1,8 @@
 package com.emr.slgi.reservation.dto;
 
-import com.emr.slgi.reservation.enums.ReservationStatus;
-import lombok.Data;
-
 import java.time.LocalDateTime;
+
+import lombok.Data;
 
 @Data
 public class ReservationListByPatient {
