@@ -7,7 +7,8 @@
   <select id="getKeyword">
 	select *
 	from TB_MEDICINE
-	where code like concat(#{keyword},'%') or name like concat(#{keyword},'%')
+	where code like concat('%', #{keyword}, '%')  
+	or name like concat('%', #{keyword}, '%')
 	limit 15
 </select>
   
