@@ -44,7 +44,7 @@ const state = reactive({
 })
 let client;
 onMounted(() => {
-    client = getStompClient(uuid.value,(client) => {
+    client = getStompClient((client) => {
     chatSub(client)
 })  
 loadChatName()
@@ -126,19 +126,16 @@ const exit = () => {
 }
 function scrollToBottom() {
     nextTick(() => {
-    const box = document.querySelector('.chat-box');
+    const box = document.querySelector('.chat-room-box');
     if (box) {
     box.scrollTop = box.scrollHeight;
     }
 });
 }
 function shouldShowName(index, msg) {
-// 내가 보낸 메시지는 이름 안 보임
 if (msg.uuid === uuid.value) return false;
-// 첫 메시지는 무조건 보임
 if (index === 0) return true;
 const prev = state.messages[index - 1];
-// 앞 사람이랑 uuid 다르면 이름 표시
 return prev.uuid !== msg.uuid;
 }
 

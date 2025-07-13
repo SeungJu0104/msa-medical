@@ -4,17 +4,13 @@
       <div v-if="alarms.length === 0" class="empty">
         읽지 않은 메시지가 없습니다.
       </div>
-      <div v-for="room in alarms" :key="room.roomId" class="chat-alarmCounts">
-        <div class="chat-alarmText">
-          <div class="chat-alarmTitle">
-          <div @click="$emit('open', room.roomId)">
-            {{ room.roomName }}</div>
-        </div>
-          <div class="chat-alarm-lastMessage">{{ room.content }}</div>
-        </div>
-        <div class="chat-alarmCount">{{ room.alarmCount }}</div>
+      <div v-for="room in alarms" :key="room.roomId" class="chat-alarm-item">
+        <div class="chat-alarmText" @click="$emit('open', room.roomId)">
+        <div class="chat-alarmTitle">{{ room.roomName }}</div>
+        <div class="chat-alarm-lastMessage">{{ room.content }}</div>
       </div>
-      
+      <div class="chat-alarmCounts">{{ room.alarmCount }}</div>
+      </div>
       <div class="chat-alarmBtn">
         <button class="btn btn-primary" @click="$emit('close')">닫기</button>
       </div>

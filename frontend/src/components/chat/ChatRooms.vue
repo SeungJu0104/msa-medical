@@ -2,11 +2,11 @@
   <div v-if="!selectedRoomId" class="chat-rooms">
     <div class = "chat-rooms-header">
       <div class="btn-total">
-        <button class="btn btn-primary" @click="showModal = true" >
-          알림창 <span v-if="totalCount > 0">({{ totalCount }})</span>
-        </button>
         <button class="btn btn-primary" @click="create = true" >
           방 만들기
+        </button>
+        <button class="btn btn-primary" @click="showModal = true" >
+          알림창 <span v-if="totalCount > 0">({{ totalCount }})</span>
         </button>
       </div>
   </div>
@@ -50,7 +50,6 @@ dayjs.locale('ko') // 오후 || 오전 표시 해주는거
 
 const opne = defineEmits('open')
 const userStore = useUserStore();
-const name = computed(() => userStore.user?.name ?? '');
 const uuid = computed(() => userStore.user?.uuid ?? '');
 const selectedRoomId = ref(false);
 
@@ -67,7 +66,7 @@ return state.chatList.reduce((sum, room) => sum + room.count, 0)
 })
   let client;
 onMounted(()=>{
-  client = getStompClient(uuid.value,(client) => {
+  client = getStompClient((client) => {
     subList(client)
     subAlarm(client)
   })  
