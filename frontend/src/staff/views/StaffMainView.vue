@@ -2,9 +2,11 @@
   
     <div class="body">
     <aside class="left">
-        <WaitingReservationParent class="my-3"/>
+        
     </aside>
-    <section class="center">중앙</section>
+    <section class="center">
+      <WaitingReservationParent class="my-3"/>
+    </section>
     
     <aside class="right">오른쪽
       <ChatRooms/>
@@ -15,7 +17,8 @@
   
 <script setup>
 import ChatRooms from '@/components/chat/ChatRooms.vue';
-import WaitingReservationParent from "@/staff/components/WaitingReservationParent.vue";
+import WaitingList from '@/reception/views/WaitingList.vue';
+import WaitingReservationParent from "@/views/staff/components/WaitingReservationParent.vue";
 </script>
 <style scoped>
   .body {

@@ -1,48 +1,75 @@
 <template>
-    <div>
-        <h3>수납 내역</h3>
-        {{props.item.name }}님
-        <p>받을 금액{{ props.item.payment.toLocaleString() }}원</p>
+    <div class="paymentwindow">
+      <h4 class="mb-3">수납 내역</h4>
+  
+      <p class="fw-bold">{{ props.item.patientName }}님</p>
+      <p>받을 금액: <strong>{{ props.item.payment.toLocaleString() }}</strong>원</p>
+  
+      <div 
+        v-for="(pay, index) in state.paymentList" 
+        :key="index"
+        class="text-secondary small"
+      >
+        {{ pay.method }} : {{ pay.amount.toLocaleString() }}원 ({{ pay.installment }})
+      </div>
+  
+      <p class="mt-2">남은 금액: <strong>{{ reloadAmount.toLocaleString() }}</strong>원</p>
+  
+      <button class="btn btn-outline-primary btn-sm mt-2" @click="paymentModal = true">수납추가</button>
+  
+      <!-- 모달 -->
+      <div v-if="paymentModal" class="modal">
+        <div class="modal-box bg-white p-4 rounded shadow-sm">
+          <h5 class="mb-3">수납추가</h5>
+          <p>남은 금액 : <strong>{{ reloadAmount.toLocaleString() }}</strong>원</p>
+  
+          <!-- 결제수단 버튼 -->
+      <div class="btn-group mb-2" >
+        <button 
+        class="btn btn-outline-secondary btn-sm"
+        :class="{ active: state.paymentType === '카드' }"
+        @click="state.paymentType = '카드'" >
+        카드 </button>
 
-        <div v-for="(pay,index) in state.paymentList" :key="index">
-            {{ pay.method }} : {{ pay.amount.toLocaleString() }}원
+        <button 
+        class="btn btn-outline-secondary btn-sm"
+        :class="{ active: state.paymentType === '현금' }"
+        @click="state.paymentType = '현금'" >
+        현금 </button>
+      </div>
+  
+          <div class="mb-2">
+            <label class="form-label">결제금액</label>
+            <input type="number" class="form-control form-control-sm" v-model.number="state.paymentAmount" />
+          </div>
+  
+          <div class="mb-3">
+            <label class="form-label">할부선택</label>
+            <select class="form-select form-select-sm" v-model="state.installment">
+              <option>일시불</option>
+              <option>3개월</option>
+              <option>6개월</option>
+              <option>12개월</option>
+            </select>
+          </div>
+  
+          <div class="d-flex justify-content-between">
+            <button class="btn btn-success btn-sm" @click="addPayment">추가</button>
+            <button class="btn btn-secondary btn-sm" @click="paymentModal = false">취소</button>
+          </div>
         </div>
-        <p>남은 금액: {{ reloadAmount.toLocaleString() }}원</p>
-
-        <button @click ="paymentModal=true">수납추가</button>
-       <div v-if="paymentModal" class="modal">
-            <h4>수납추가</h4>
-            <p>남은 금액 : {{ reloadAmount.toLocaleString()}}원</p>
-
-            <div >
-                <label>결재수단:</label>
-                <button @click="state.paymentType = '카드'">카드</button>
-                <button @click="state.paymentType = '현금'">현금</button>
-            </div>
-
-            <div>
-                <label>결재금액</label>
-                <input type="number" v-model.number="state.paymentAmount"/>
-            </div>
-
-            <div>
-                <label>할부선택</label>
-                <select v-model="state.installment">
-                    <option>일시불</option>
-                    <option>3개월</option>
-                    <option>6개월</option>
-                    <option>12개월</option>
-                </select>
-            </div>
-
-            <button @click="addPayment()" >추가</button>
-            <button @click="paymentModal=false">취소</button>
-        </div>
-
-        <button v-if="reloadAmount ===0 && !isSubmit" @click="submit">결재완료</button>
+      </div>
+  
+      <button
+        v-if="reloadAmount === 0 && !isSubmit"
+        class="btn btn-success mt-3"
+        @click="submit"
+      >
+        결제완료
+      </button>
     </div>
-</template>
-
+  </template>
+  
 <script setup>
 import { customFetch } from '@/util/customFetch';
 import { ENDPOINTS } from '@/util/endpoints';
@@ -97,7 +124,7 @@ import { computed, onMounted, reactive, ref } from 'vue';
 </script>
     
 <style >
-.modal {
+/* .modal {
     position: fixed;
   inset: 0;
   background-color: rgba(0,0,0,0.4);
@@ -105,6 +132,27 @@ import { computed, onMounted, reactive, ref } from 'vue';
   align-items: center;
   justify-content: center;
   z-index: 999;
+} */
+.paymentwindow {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 300px;
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.modal-box {
+  width: 100%;
+  max-width: 400px;
 }
 
 </style>
