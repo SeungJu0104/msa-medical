@@ -1,21 +1,19 @@
 <template>
-  <div class="diagnosis-wrapper">
-    <div class="top-section">
-      <div class="left">
-      </div>
+  <div class="total-wrapper">
       <div class="center">
-        <Treatment ref ="treatmentRef" />
+        <div class="position-section">
         <Disease ref="diseaseRef"/>
+        
+        <Treatment ref ="treatmentRef" />
+        <div class="attachment-section">
+          <Attachment ref ="attachmentRef"/>
+        </div>
+     </div>
+        
+        <Medicine ref="medicineRef"/>
       </div>
-      <div class="right">
-        <Attachment ref ="attachmentRef"/>
-      </div>
-    </div>
-    <div class="bottom-section">
-      <Medicine ref="medicineRef"/>
-    </div>
-    <button @click="submit && !isSubmit">진료 완료</button>
-    <button @click="emit('back')">목록으로</button>
+    <button @click="submit" class ="btn btn-primary" >진료 완료</button>
+    <button @click="emit('back')" class ="btn btn-primary" >목록으로</button>
   </div>
 </template>
 
@@ -29,7 +27,6 @@ import { ENDPOINTS } from '@/util/endpoints'
 import Treatment from './Treatment.vue'
 import { useUserStore } from '@/stores/userStore'
 
-const isSubmit = ref(false);
 const props = defineProps({
                   id:Number,
                   uuid:String
@@ -65,8 +62,11 @@ const submit = async ()  => {
       treatContent : treatment
     },
     prescriptions: medicine.map(item => ({
-    code: item.code,
-    volume: item.volume
+      code: item.code,
+      volume: item.volume,
+      timesPerDay: item.timesPerDay,
+      perDay: item.perDay,
+      instructions: item.instructions
     })),
     diagnosis: disease.map(item => ({
       id: item.id
@@ -84,7 +84,6 @@ const submit = async ()  => {
       data: formData,})
       
       if(response.status ===200){
-        isSubmit.value = true
         alert("진료 작성이 등록되었습니다.")
       }
   } catch (error) {
@@ -94,43 +93,18 @@ const submit = async ()  => {
 </script>
 
 <style scoped>
-.diagnosis-wrapper {
-  height: 100vh;
-  overflow-y: auto;
+.total-wrapper {
   padding: 20px;
   background-color: #f5f5f5;
+  max-width: 1000px;
+
 }
 
 .top-section {
   display: flex;
   gap: 20px;
   margin-bottom: 20px;
-  overflow-x: auto; /* 가로 스크롤 */
 }
-
-.left {
-  background: white;
-  border: 1px solid #ccc;
-  padding: 80px;
-  height: 400px;
-  overflow-y: auto; /* 이 안에서 스크롤 */
-}
-
-.center{
-  background: white;
-  border: 1px solid #ccc;
-  padding: 80px;
-  height: 400px;
-  overflow-y: auto; /* 이 안에서 스크롤 */
-} 
-.right{
-  background: white;
-  border: 1px solid #ccc;
-  padding: 80px;
-  height: 400px;
-  overflow-y: auto; /* 이 안에서 스크롤 */
-}
-
 
 .bottom-section {
   background: white;
@@ -138,6 +112,14 @@ const submit = async ()  => {
   padding: 80px;
   height: 400px;
   
+}
+.position-section{
+  display: flex;
+  gap: 50px;
+  align-items: flex-start;
+}
+.attachment-section{
+  margin-left: 30px
 }
 
 </style>
