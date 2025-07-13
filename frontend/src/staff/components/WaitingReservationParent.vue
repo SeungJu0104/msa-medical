@@ -2,10 +2,10 @@
 import '@/css/staff/waitingreservaion.css'
 import {useRouter} from "vue-router";
 import {reactive} from "vue";
-import ReservationListByStaff from "@/reservation/views/ReservationListByStaff.vue";
-import WaitingList from "@/reception/views/WaitingList.vue";
-import Payment from '@/components/payment/Payment.vue';
+
 import PaymentList from '@/components/payment/PaymentList.vue';
+import ReservationListByStaff from '../views/ReservationListByStaff.vue';
+import WaitingList from '@/reception/components/WaitingList.vue';
 
 const router = useRouter();
 
