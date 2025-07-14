@@ -7,7 +7,6 @@ import {useUserStore} from "@/stores/userStore.js";
 import {common} from "@/util/common.js";
 import {errorMessage} from "@/util/errorMessage.js";
 
-  // 선택한 목록(들)
   const selectedListByPatient = new Set();
   const reservationList = ref();
   const userInfo = computed(() => useUserStore().user);
