@@ -94,9 +94,6 @@ jobs:
           JWT_REFRESH_TOKEN_SECRET=${{secrets.JWT_REFRESH_TOKEN_SECRET}}
           EOF
 
-      - name: .env 파일 내용 출력
-        run: cat .env
-
       - name: docker 이미지 풀 및 재실행
         run: |
           cd ${{ github.workspace }}         
