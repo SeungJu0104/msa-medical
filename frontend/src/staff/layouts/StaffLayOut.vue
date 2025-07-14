@@ -8,16 +8,18 @@ import RegPatientByStaff from "@/staff/views/RegPatientByStaff.vue";
 </script>
 
 <template>
-  <div class="container">
+  <div class="d-flex">
     <div class="leftSide">
       <StaffMenuBar/>
     </div>
     <div class="mainSide">
       <router-view/>
     </div>
-    <div class="rightSide">
-
-    </div>
   </div>
 
 </template>
+<style>
+.mainSide {
+  flex: 1;
+}
+</style>
