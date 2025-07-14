@@ -3,7 +3,9 @@ export const REGEX_PATTERN = {
     RRN : /^\d{6}-\d{7}$/,
     PHONE : /^(?:0\d{1,2}-)?\d{3,4}-\d{4}$/,
     RRN_FRONT : /^\d{6}$/,
-    RRN_BACK : /^\d{7}$/
+    RRN_BACK : /^\d{7}$/,
+    USERID: /^[A-Za-z0-9_]+$/,
+    PASSWORD: /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/,
 };
 
 

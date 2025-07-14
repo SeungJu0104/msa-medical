@@ -45,17 +45,13 @@
 <script setup>
 import { customFetch } from '@/util/customFetch';
 import { ENDPOINTS } from '@/util/endpoints';
+import { REGEX_PATTERN } from '@/util/RegexPattern';
 import { reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
 
 let validId = "";
-
-const USERID_REGEX = /^[A-Za-z0-9_]+$/;
-const PASSWORD_REGEX = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/;
-const PHONE_REGEX = /^(?:0\d{1,2}-)?\d{3,4}-\d{4}$/;
-const RRN_REGEX = /^\d{6}-\d{7}$/;
 
 const member = reactive({
   userid: '',
@@ -127,7 +123,7 @@ async function checkIdDuplicate() {
 function checkIdValidity() {
   touched.userid = true;
 
-  if (!USERID_REGEX.test(member.userid)) {
+  if (!REGEX_PATTERN.USERID.test(member.userid)) {
     invalidity.userid = "아이디는 영문, 숫자, 밑줄(_)로만 구성해주세요.";
     return;
   }
@@ -148,7 +144,7 @@ function checkIdValidity() {
 function checkPasswordValidity() {
   touched.password = true;
 
-  if (!PASSWORD_REGEX.test(member.password)) {
+  if (!REGEX_PATTERN.PASSWORD.test(member.password)) {
     invalidity.password = "비밀번호는 대문자, 소문자, 숫자, 특수문자(@$!%*?&)를 포함해주세요.";
     return;
   }
@@ -191,7 +187,7 @@ function checkNameValidity() {
 function checkRrnValidity() {
   touched.rrn = true;
 
-  if (!RRN_REGEX.test(member.rrn)) {
+  if (!REGEX_PATTERN.RRN.test(member.rrn)) {
     invalidity.rrn = "주민번호는 하이픈(-)을 포함하여 입력해주세요.";
     return;
   }
@@ -202,7 +198,7 @@ function checkRrnValidity() {
 function checkPhoneValidity() {
   touched.phone = true;
 
-  if (!PHONE_REGEX.test(member.phone)) {
+  if (!REGEX_PATTERN.PHONE.test(member.phone)) {
     invalidity.phone = "전화번호는 하이픈(-)을 포함하여 입력해주세요.";
     return;
   }
