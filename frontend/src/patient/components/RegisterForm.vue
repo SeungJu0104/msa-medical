@@ -95,11 +95,16 @@ async function registerPatient() {
     return;
   }
 
-  const response = await customFetch(
-    ENDPOINTS.auth.register.patient,
-    { data: member }
-  );
-  router.push({ name: 'loginView' });
+  try {
+    const response = await customFetch(
+      ENDPOINTS.auth.register.patient,
+      { data: member }
+    );
+    alert("회원가입에 성공했습니다.");
+    router.push({ name: 'loginView' });
+  } catch (err) {
+    alert(err.response.data.message);
+  }
 }
 
 async function checkIdDuplicate() {

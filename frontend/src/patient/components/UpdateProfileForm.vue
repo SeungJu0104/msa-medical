@@ -44,10 +44,15 @@ onMounted(async () => {
 });
 
 async function updateProfile() {
-  const response = await customFetch(ENDPOINTS.patient.updateProfile, {
-    data: pick(member.value, ["name", "phone"])
-  });
-  router.push({ name: 'mypage' });
+  try {
+    const response = await customFetch(ENDPOINTS.patient.updateProfile, {
+      data: pick(member.value, ["name", "phone"])
+    });
+    alert("정보 수정에 성공했습니다.");
+    router.push({ name: 'mypage' });
+  } catch (err) {
+    alert(err.response.data.message);
+  }
 }
 
 async function goBack() {
