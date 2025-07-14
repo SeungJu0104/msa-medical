@@ -4,7 +4,7 @@ services:
   mariadb:
     image: ${MARIA_DB_IMAGE}
     container_name: slgi-emr-mariadb
-    env-file:
+    env_file:
       .env
     # environment:
     #   MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
@@ -24,7 +24,7 @@ services:
     build:
       context: ./server
     image: ${USERNAME}/slgi-emr-backend
-    env-file:
+    env_file:
       .env
     # env:
     #   SPRING_DATA_REDIS_HOST: ${SPRING_DATA_REDIS_HOST}
