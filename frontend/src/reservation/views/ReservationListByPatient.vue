@@ -20,8 +20,6 @@ import {errorMessage} from "@/util/errorMessage.js";
       selectedListByPatient.delete(e.target.value);
     }
 
-    console.log(selectedListByPatient);
-
   }
 
   const reservationListPerPatient = async () => {
