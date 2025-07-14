@@ -4,6 +4,8 @@ import {computed, onMounted, reactive, ref} from "vue";
 import dayjs from "dayjs";
 import {patientMethods} from "@/reservation/util/reservation.js";
 import {useUserStore} from "@/stores/userStore.js";
+import {common} from "@/util/common.js";
+import {errorMessage} from "@/util/errorMessage.js";
 
   // 선택한 목록(들)
   const selectedListByPatient = new Set();
@@ -30,7 +32,14 @@ import {useUserStore} from "@/stores/userStore.js";
 
   const cancelReservation = async () => {
 
+    if(selectedListByPatient.size === 0) {
+      common.alertError(errorMessage.reservation.noDataForCancel);
+      return;
+    }
+
     await patientMethods.cancelReservation(selectedListByPatient);
+    selectedListByPatient.clear();
+    await reservationListPerPatient();
 
   }
 
