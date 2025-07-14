@@ -1,5 +1,5 @@
 <script setup>
-import '@/css/staff/waitingreservaion.css'
+import '@/assets/css/waitingreservaion.css'
 import {useRouter} from "vue-router";
 import {reactive} from "vue";
 
