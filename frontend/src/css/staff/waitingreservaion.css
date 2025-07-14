@@ -4,12 +4,18 @@
 }
 
 .scroll {
-    min-height: 300px;
-    height: 90vh;
+    min-height: 90vh;
+    max-height: 90vh;
+    max-width: 11vw; 
+    min-width: 11vw;    
+    /* height:90vh; */
     /*height: calc(100vh - 상단 Header, Footer 길이);*/
-    min-width: 15vw;
+    
     overflow-y: auto;
-    border: 1px solid #ccc;
+    border: 2px solid #ccc;
     padding: 1rem;
-    box-sizing: border-box;
+    box-sizing: border-box; 
+    
+    
+
 }

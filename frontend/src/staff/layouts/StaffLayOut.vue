@@ -8,7 +8,7 @@ import RegPatientByStaff from "@/staff/views/RegPatientByStaff.vue";
 </script>
 
 <template>
-  <div class="d-flex">
+  <div class="d-flex wrpper" >
     <div class="leftSide">
       <StaffMenuBar/>
     </div>
@@ -22,4 +22,5 @@ import RegPatientByStaff from "@/staff/views/RegPatientByStaff.vue";
 .mainSide {
   flex: 1;
 }
+
 </style>

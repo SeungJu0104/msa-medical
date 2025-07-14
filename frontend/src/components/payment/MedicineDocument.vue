@@ -1,4 +1,5 @@
 <template>
+  <div id="print-area" >
   <div class="medicinedocument-wrapper">
     <h2>처방전</h2>
 
@@ -45,12 +46,13 @@
       <button @click="emit('back')" class="btn btn-primary">목록으로</button>
     </div>
   </div>
+</div>
 </template>
 
 <script setup>
 import { customFetch } from '@/util/customFetch'
 import { ENDPOINTS } from '@/util/endpoints'
-import { onMounted, reactive, ref } from 'vue'
+import { nextTick, onMounted, reactive, ref } from 'vue'
 import '@/assets/css/document.css'
   
   const props = defineProps({
@@ -69,6 +71,9 @@ import '@/assets/css/document.css'
           state.documentList = response.data.documentList
           state.diseaseList = response.data.diseaseList
           state.medicineList = response.data.medicineList
+          
+          await nextTick()
+          window.print()
       }
   } catch (error) {
       console.error("에러",error)

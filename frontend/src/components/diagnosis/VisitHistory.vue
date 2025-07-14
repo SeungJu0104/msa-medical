@@ -26,11 +26,15 @@
     <div class="visit-history-detail" v-if="selecte.id">
       <VisitHistoryDetail
         v-if="mode === 'treatmentDetail'"
-        :id="selecte.id" />
+        :id="selecte.id" 
+        :key="selecte.uuid" 
+        @back="goBack" 
+        />
       <MedicalTreatment
         v-if="mode === 'treatment'"
         :id="selecte.id"
         :uuid="selecte.uuid"
+        :key="selecte.uuid" 
         @back="goBack" />
     </div>
   </div>
@@ -45,19 +49,21 @@ import { computed, onBeforeMount, onMounted, reactive, ref, watch } from 'vue';
 import VisitHistoryDetail from './VisitHistoryDetail.vue';
 import MedicalTreatment from './MedicalTreatment.vue';
 import { getStompClient, subscribeChannel } from '@/util/stompMethod';
+const emit = defineEmits(['back'])
 const props = defineProps({
   patientUuid: String,
   doctorUuid: String
 })
-let client;
 
 onMounted(() => {
-  historyList()
-  client = getStompClient((client) => {
-    statusSub(client)
-  });
-})
+  historyList();
 
+  getStompClient((client) => {
+    subscribeChannel(client, '/sub/status', () => {
+      historyList(); 
+    });
+  });
+});
 const selecte = reactive({ id: null, uuid: null })
 const mode = ref('')
 
@@ -130,26 +136,33 @@ watch(() => props.patientUuid, (newUuid, oldUuid) => {
 
 <style scoped>
 .visit-history-wrapper {
-display: flex;
-gap: 20px;
-margin-top: 20px;
-height: 1000px;
+  display: flex;
+  flex: 1;
+  gap: 20px;
+  margin-top: 20px;
+  height: 75vh;
+  max-height: 75vh;
 }
 
 .visit-history-list {
 display: flex;
 flex-direction: column;
 gap: 12px;
-height: 100%;
+min-height: 70vh;
+max-height: 70vh;
+min-width: 20vh;
+max-width: 20vh;
 }
 .visit-history-detail {
-width: 70%;
+width: 90%;
 background-color: #f9f9f9;
 padding: 16px;
 border: 1px solid #ddd;
 border-radius: 8px;
 overflow-y: auto;
-height: 100%;
+height: 85vh;
+
+
 }
 .visit-history-card {
 background: white;
@@ -167,13 +180,13 @@ margin-bottom: 20px;
 font-weight: bold;
 font-size: 16px;
 }
-.no-history {
+/* .no-history {
 text-align: center;
 margin-top: 20px;
 }
 
 .pagination {
 margin-top: 10px;
-}
+} */
 
 </style>

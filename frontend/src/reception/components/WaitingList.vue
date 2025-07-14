@@ -20,7 +20,6 @@ import VisitHistory from "@/components/diagnosis/VisitHistory.vue";
 
 
   const refreshWaitingList = async () => {
-
     await Promise.all([
       waitingListStore.promiseAll(),
       waitingListStore.getReceptionStatusList()
@@ -78,13 +77,7 @@ import VisitHistory from "@/components/diagnosis/VisitHistory.vue";
           :status="receptionStatusList"/>
     </template>
   </div>
-  <div class="vertical-divider"></div> <!-- 여기에 선 -->
-<div class="history-area" v-if="selectedPatientUuid">
-    <VisitHistory
-        :patientUuid="selectedPatientUuid"
-        :doctorUuid="selectedDoctorUuid"
-      />
-    </div>
+
   </div>
 </template>
 <style scoped>
@@ -105,11 +98,5 @@ import VisitHistory from "@/components/diagnosis/VisitHistory.vue";
   min-width:300px;
 }
 
-.history-area {
-  flex: 2;
-  min-width: 300px;
-  background-color: #f9f9f9;
-  padding: 16px;
-  border-radius: 8px;
-}
+
 </style>

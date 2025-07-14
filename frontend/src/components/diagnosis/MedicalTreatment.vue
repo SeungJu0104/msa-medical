@@ -12,9 +12,10 @@
         
         <Medicine ref="medicineRef"/>
       </div>
+  
+    </div>
     <button @click="submit" class ="btn btn-primary" >진료 완료</button>
     <button @click="emit('back')" class ="btn btn-primary" >목록으로</button>
-  </div>
 </template>
 
 <script setup>
@@ -85,6 +86,7 @@ const submit = async ()  => {
       
       if(response.status ===200){
         alert("진료 작성이 등록되었습니다.")
+        emit('back');
       }
   } catch (error) {
     console.error('진료 전체 등록 실패', error)
@@ -95,9 +97,9 @@ const submit = async ()  => {
 <style scoped>
 .total-wrapper {
   padding: 20px;
-  background-color: #f5f5f5;
+  background-color: #703131;
   max-width: 1000px;
-
+  min-height: 80vh;  
 }
 
 .top-section {
@@ -117,6 +119,8 @@ const submit = async ()  => {
   display: flex;
   gap: 50px;
   align-items: flex-start;
+  /* flex-direction: column; */
+
 }
 .attachment-section{
   margin-left: 30px

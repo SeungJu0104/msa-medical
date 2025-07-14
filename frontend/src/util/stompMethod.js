@@ -1,16 +1,11 @@
-import { getAccessToken, setAccessToken } from '@/auth/accessToken'
-import { getRefreshToken } from '@/auth/refreshToken'
+import { getAccessToken } from '@/auth/accessToken'
 import { Client } from '@stomp/stompjs'
 import SockJS from 'sockjs-client'
-import { customFetch } from './customFetch'
-import { ENDPOINTS } from './endpoints'
 import { renewAccessToken } from '@/auth/renewAccessToken'
-import { useUserStore } from '@/stores/userStore'
 
 let stompClient = null
 let reconnectTimer = null
 let prepareToken = null;
-
 export function getStompClient(onConnectedCallback) {
   const token = getAccessToken();
   if (stompClient && stompClient.connected){
@@ -81,22 +76,29 @@ async function getNewAccessToken() {
   return newAccessToken;
 }
 
+const subscriptions = new Map();
 export function subscribeChannel(client, destination, callback) {
-    try {
-      return client.subscribe(destination, (message) => {
-        try {
-          const payload = JSON.parse(message.body);
-          callback(payload);
-        } catch (e) {
-          console.error("메시지 파싱 오류:", e);
-        }
-      });
-    } catch (err) {
-      console.error(`구독 실패 (${destination}):`, err);
-      return null;
-    }
+  if (subscriptions.has(destination)) {
+    return subscriptions.get(destination);
   }
-  
+
+  try {
+    const sub = client.subscribe(destination, (message) => {
+      try {
+        const payload = JSON.parse(message.body);
+        callback(payload);
+      } catch (e) {
+        console.error("메시지 파싱 오류:", e);
+      }
+    });
+
+    subscriptions.set(destination, sub);
+    return sub;
+  } catch (err) {
+    console.error(`구독 실패 (${destination}):`, err);
+    return null;
+  }
+}  
 
   export function sendMsg(client, destination, Object) {
     try {
@@ -108,4 +110,3 @@ export function subscribeChannel(client, destination, callback) {
       console.error(`메시지 전송 실패 (${destination}):`, err);
     }
   }
-  

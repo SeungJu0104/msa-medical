@@ -1,5 +1,6 @@
 <template>
     <div class="visit-detail">
+      <button @click="emit('back')" class ="btn btn-primary" >x</button>
       <h2 class="section-title">진료 내용</h2>
       <div class="treatment-info">
         <p><strong>내용:</strong> {{ state.treatment.treatContent }}</p>
@@ -83,11 +84,12 @@ import Document from '../payment/Document.vue'
   
   <style scoped>
   .visit-detail {
+    width: 100%;      
+    min-height: 80vh;          
+    overflow-y: auto;
     padding: 20px;
     background-color: #fff;
-    border-radius: 10px;
-    max-width: 900px;
-    margin: auto;
+    max-width: 110vh;
     font-size: 14px;
   }
   

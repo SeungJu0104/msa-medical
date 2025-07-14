@@ -1,5 +1,5 @@
 <template>
-    <div class="medicinedocument-wrapper">
+    <div class="medicinedocument-wrapper"id="print-area">
     <h2>진단서</h2>
 
     <div class="info-section">
@@ -34,8 +34,9 @@
 <script setup>
 import { customFetch } from '@/util/customFetch'
 import { ENDPOINTS } from '@/util/endpoints'
-import { onMounted, reactive } from 'vue'
+import { nextTick, onMounted, reactive } from 'vue'
 import '@/assets/css/document.css'
+
 const emit = defineEmits(['back'])
   const props = defineProps({
     treatmentId: Number
@@ -50,6 +51,9 @@ const emit = defineEmits(['back'])
       if(response.status===200){
           state.documentList = response.data.documentList
           state.diseaseList = response.data.diseaseList
+
+          await nextTick()
+          window.print()
       }
   } catch (error) {
       console.error("에러",error)
@@ -59,7 +63,3 @@ function printDocument() {
   window.print()
 }
 </script>
-
-<style scoped>
-
-</style>
