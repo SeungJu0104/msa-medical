@@ -1,13 +1,16 @@
 package com.emr.slgi.reservation.dto;
 
+import java.time.LocalDateTime;
+
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class FindReservationDate {
 
     private String patientUuid; // 의료진 예약 대비

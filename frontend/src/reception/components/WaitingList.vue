@@ -16,8 +16,6 @@ import VisitHistory from "@/components/diagnosis/VisitHistory.vue";
   const receptionStatusList = ref();
   const selectedPatientUuid = ref(null)
   const selectedDoctorUuid = ref(null)
-  const userStore = useUserStore();
-  const uuid = computed(() => userStore.user?.uuid ?? '');
   let client;
 
 
@@ -53,39 +51,65 @@ import VisitHistory from "@/components/diagnosis/VisitHistory.vue";
   });
 
   const statusSub = (client) => {
-      subscribeChannel(client,`/sub/status`,() => {
-      refreshWaitingList()
-      console.log("성공")
-    })
-  }
-
-
+    setTimeout(() => {
+      subscribeChannel(client, `/sub/status`, () => {
+        refreshWaitingList();
+      });
+    }, 100); 
+};
   onMounted(() => {
-
-    client = getStompClient(uuid.value,(client) => {
+    client = getStompClient((client) => {
       statusSub(client)
     });
-
-
-
   })
 
 </script>
 
 <template>
+  <div class="container-horizontal">
+    <div class="waiting-area">
   <template v-for="list in waitingList" :key="list.doctor?.uuid">
       <WaitingListDoctorName
           :value="list.doctor"/>
-      <WaitingListPatientList
+        <WaitingListPatientList
           @updateStatus="handleUpdateStatus"
           @getPatientInfo="getPatientInfo"
           :value="list.patientList"
           :status="receptionStatusList"/>
     </template>
-
+  </div>
+  <div class="vertical-divider"></div> <!-- 여기에 선 -->
+<div class="history-area" v-if="selectedPatientUuid">
     <VisitHistory
-        v-if="selectedPatientUuid"
         :patientUuid="selectedPatientUuid"
         :doctorUuid="selectedDoctorUuid"
       />
+    </div>
+  </div>
 </template>
+<style scoped>
+.vertical-divider {
+  width: 1px;
+  background-color: #ccc;
+  align-self: stretch;
+ 
+}
+
+.container-horizontal {
+  display: flex;
+  gap: 20px;
+}
+
+.waiting-area {
+  flex: 1;
+  min-width:300px;
+}
+
+.history-area {
+  flex: 2;
+  min-width: 300px;
+  background-color: #f9f9f9;
+  padding: 16px;
+  border-radius: 8px;
+}
+</style>

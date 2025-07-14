@@ -12,12 +12,14 @@
   </insert>
 	
   <select id="getList">
-    SELECT r.name, p.*
-    FROM TB_PAYMENT p 
-    JOIN TB_TREATMENT t ON p.treatment_id = t.id
-    JOIN TB_RECEPTION r ON r.uuid = t.uuid
-    WHERE p.payment_status = 'RR01'
-    ORDER BY t.treat_date
+    SELECT m.name AS patient_name, p.*
+	FROM TB_PAYMENT p
+	JOIN TB_TREATMENT t ON p.treatment_id = t.id
+	JOIN TB_RECEPTION r ON r.uuid = t.uuid
+	JOIN TB_MEMBER m ON m.uuid = r.PATIENT_UUID
+	WHERE p.payment_status = 'RR01'
+	ORDER BY t.treat_date
+
   </select>
 	
   <update id="statusPayment">

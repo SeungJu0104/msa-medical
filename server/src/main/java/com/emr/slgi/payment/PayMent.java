@@ -9,7 +9,7 @@ public class PayMent {
 	private	int id;
 	private	int payment;
 	private int treatmentId;
-	private String name ;
+	private String patientName ;
 	private LocalDateTime paymentDate;
 	
 }

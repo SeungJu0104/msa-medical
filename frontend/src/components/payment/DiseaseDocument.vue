@@ -1,19 +1,22 @@
 <template>
-    <div class="document-wrapper">
+    <div class="medicinedocument-wrapper">
     <h2>진단서</h2>
 
-    <div class="patient-info">
-      <p>환자명: {{ state.documentList.name }}</p>
-      <p>주민등록번호: {{ state.documentList.rrn }}</p>
-      <p>접수 번호: {{ state.documentList.uuid }}</p>
-    </div>
-    
-    <div class="doctor-info">
-      <p>진료일: {{ state.documentList.treatDate }}</p>
-      <p>담당의: {{ state.documentList.doctorName }}</p>
+    <div class="info-section">
+      <div class="info-row">
+        <div>환자명: {{ state.documentList.patientName }}</div>
+        <div>주민등록번호: {{ state.documentList.rrn }}</div>
+      </div>
+      <div class="info-row">
+        <div>접수 번호: {{ state.documentList.uuid }}</div>
+        <div>진료일: {{ state.documentList.treatDate }}</div>
+      </div>
+      <div class="info-row">
+        <div>담당의: {{ state.documentList.doctorName }}</div>
+      </div>
     </div>
 
-    <div class="disease-info">
+    <div class="section">
       <h3>질병명</h3>
       <ul>
         <li v-for="(dis, index) in state.diseaseList" :key="index">
@@ -21,14 +24,19 @@
         </li>
       </ul>
     </div>
-    <button @click="printDocument">출력하기</button>
-  </div>
+    <div class="button-group">
+      <button @click="printDocument" class="btn btn-outline-dark">출력하기</button>
+      <button @click="emit('back')" class="btn btn-primary">목록으로</button>
+    </div>
+</div>
 </template>
 
 <script setup>
 import { customFetch } from '@/util/customFetch'
 import { ENDPOINTS } from '@/util/endpoints'
 import { onMounted, reactive } from 'vue'
+import '@/assets/css/document.css'
+const emit = defineEmits(['back'])
   const props = defineProps({
     treatmentId: Number
   })
@@ -52,6 +60,6 @@ function printDocument() {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 
 </style>

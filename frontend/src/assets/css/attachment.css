@@ -1,0 +1,74 @@
+.attachment-card {
+  width: 200px;
+  height: 300px;                     
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  background: white;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+}
+
+.attachment-card-header {
+  padding: 8px 12px;
+  font-weight: bold;
+  font-size: 14px;
+  border-bottom: 1px solid #eee;
+  background-color: #f9f9f9;
+  flex-shrink: 0;            
+}
+
+.attachment-card-body {
+  overflow: hidden;
+  flex: 1;                          
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.attachment-placeholder {
+  color: #999;
+  font-size: 14px;
+  text-align: center;
+  margin: auto;
+}
+
+.attachment-image-list {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+.attachment-image-item {
+  position: relative;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+
+.attachment-image-item img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+}
+
+.remove-btn {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: rgba(255, 255, 255, 0.8);
+  border: none;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.attachment-hidden-input {
+  display: none;
+}

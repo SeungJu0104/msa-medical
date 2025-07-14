@@ -255,17 +255,22 @@ overflow-x: hidden;
 word-break: break-word; /* 긴 단어 줄바꿈 */
 }
 
-.chat-alarm {
+.chat-alarm-item {
 display: flex;
 justify-content: space-between;
-align-items: flex-start;
-padding: 10px 0;
-gap: 0.5rem;
-border-bottom: 1px solid #eee;
-
-word-break: break-word;
-overflow-wrap: break-word; /* 보조적으로 유지 가능 */
+align-items: center;
+background: #f8f9fa;
+border-radius: 10px;
+padding: 12px 16px;
+margin-bottom: 12px;
+cursor: pointer;
+transition: background-color 0.2s;
 }
+
+.chat-alarm-item:hover {
+background-color: #f1f3f5;
+}
+
 
 .chat-alarmText {
 flex: 1;

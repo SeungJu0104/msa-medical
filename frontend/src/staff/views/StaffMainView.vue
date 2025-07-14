@@ -1,10 +1,10 @@
 <template>
-  
     <div class="body">
     <aside class="left">
-        <WaitingReservationParent class="my-3"/>
     </aside>
-    <section class="center">중앙</section>
+    <section class="center">
+      <WaitingReservationParent class="my-3"/>
+    </section>
     
     <aside class="right">오른쪽
       <ChatRooms/>
@@ -15,18 +15,21 @@
   
 <script setup>
 import ChatRooms from '@/components/chat/ChatRooms.vue';
-import WaitingReservationParent from "@/staff/components/WaitingReservationParent.vue";
+import WaitingReservationParent from '../components/WaitingReservationParent.vue';
+import StaffMenuBar from '../components/StaffMenuBar.vue';
 </script>
 <style scoped>
   .body {
     display: flex;
-    align-items: stretch
+    align-items: stretch;
+    margin: 0;
+    padding: 0;
   }
   
-  .left {
-    width: 20vw;
+  /* .left {
+    width:10vw;
     background: #f0f0f0;
-  }
+  } */
   
   .center {
     flex: 1;

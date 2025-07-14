@@ -1,15 +1,15 @@
 <template>
     <div>
         <h2>문서 발급</h2>
-        <button @click="selectedType = 'DiseaseDocument'">진단서</button>
-        <button @click="selectedType = 'MedicineDocument'" >처방전</button>
+        <button class="btn btn-primary" @click="selectedType = 'DiseaseDocument'">진단서</button>
+        <button class="btn btn-primary" @click="selectedType = 'MedicineDocument'" >처방전</button>
     </div>
     <Suspense>
     <div v-if="selectedType ==='DiseaseDocument'">
-        <DiseaseDocument :treatmentId ="props.id"/>
+        <DiseaseDocument :treatmentId ="props.id"  @back="goBack" />
     </div>
     <div v-else-if="selectedType ==='MedicineDocument'">
-        <MedicineDocument :treatmentId ="props.id"/>
+        <MedicineDocument :treatmentId ="props.id" @back="goBack"/>
     </div>
 </Suspense>
 </template>
@@ -44,9 +44,7 @@ import { ENDPOINTS } from '@/util/endpoints';
     } catch (error) {
         console.error("에러",error)
     }}
-
+    const goBack = () => {
+  selectedType.value = null
+}
 </script>
-
-<style lang="scss" scoped>
-
-</style>

@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,6 +32,7 @@ public class TreatmentController {
 	private final TreatmentService treatmentService;
 	private final PrescriptionDAO prescriptionDAO;
 	private final DiagnosisDAO  diagnosisDAO; 
+	private final SimpMessageSendingOperations messagingTemplate;
 	
 	@PostMapping("/totalTreatment")
 	public ResponseEntity<Object> totalTreatment(
@@ -48,6 +50,7 @@ public class TreatmentController {
 	
 	@GetMapping("/history")
 	public ResponseEntity<Object> history(@ModelAttribute TreatmentHitoryRequestDTO treatmentHitoryRequestDTO){
+		messagingTemplate.convertAndSend("/sub/status", "{}");
 		return ResponseEntity.ok(treatmentService.getHistory(treatmentHitoryRequestDTO));
 	}
 	

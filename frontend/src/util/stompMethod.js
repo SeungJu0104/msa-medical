@@ -5,11 +5,13 @@ import SockJS from 'sockjs-client'
 import { customFetch } from './customFetch'
 import { ENDPOINTS } from './endpoints'
 import { renewAccessToken } from '@/auth/renewAccessToken'
+import { useUserStore } from '@/stores/userStore'
 
 let stompClient = null
 let reconnectTimer = null
 let prepareToken = null;
-export function getStompClient(uuid,onConnectedCallback) {
+
+export function getStompClient(onConnectedCallback) {
   const token = getAccessToken();
   if (stompClient && stompClient.connected){
     if (onConnectedCallback) onConnectedCallback(stompClient)
@@ -19,7 +21,6 @@ export function getStompClient(uuid,onConnectedCallback) {
   stompClient = new Client({
     webSocketFactory: () => new SockJS('/ws'),
     connectHeaders: {
-      sender: uuid,
       Authorization: `Bearer ${token}`,
     },
     onConnect: () => {
@@ -33,7 +34,7 @@ export function getStompClient(uuid,onConnectedCallback) {
         try {
           const token = prepareToken;
           prepareToken = null
-          getStompClient(uuid, onConnectedCallback)
+          getStompClient(onConnectedCallback)
           console.log("연결 성공")
         } catch (e) {
           console.error("재접속  실패", e)

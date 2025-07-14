@@ -43,7 +43,7 @@
   </insert>
   
   <select id="getDocument" resultType="com.emr.slgi.treatment.DocumentDTO">
-    SELECT t.treat_date, t.treat_content, r.name, r.uuid, r.rrn, me.name AS doctor_name
+    SELECT t.treat_date, t.treat_content, me.name as patient_name, me.uuid, me.rrn, me.name AS doctor_name
     FROM TB_TREATMENT t
     JOIN TB_RECEPTION r ON t.uuid = r.uuid
     JOIN TB_MEMBER me ON me.uuid = r.doctor_uuid

@@ -2,14 +2,17 @@
 import '@/css/staff/waitingreservaion.css'
 import {useRouter} from "vue-router";
 import {reactive} from "vue";
-import ReservationListByStaff from "@/staff/views/ReservationListByStaff.vue";
-import WaitingList from "@/reception/components/WaitingList.vue";
+
+import PaymentList from '@/components/payment/PaymentList.vue';
+import ReservationListByStaff from '../views/ReservationListByStaff.vue';
+import WaitingList from '@/reception/components/WaitingList.vue';
 
 const router = useRouter();
 
 const showList = reactive({
   reservationList: true,
-  waitingList: false
+  waitingList: false,
+  paymentList : false,
 });
 
 const list = (selectedKey) => {
@@ -28,10 +31,12 @@ const list = (selectedKey) => {
     <div class="my-3 waitingAndReservation">
       <div id="reservationList" @click="list('reservationList')">예약</div>
       <div id="waitingList" @click="list('waitingList')">대기</div>
+      <div id="PaymentList" @click="list('paymentList')">결재</div>
     </div>
     <div class="scroll">
       <ReservationListByStaff v-if="showList.reservationList"/>
       <WaitingList v-if="showList.waitingList" />
+      <PaymentList v-if="showList.paymentList" />
     </div>
   </div>
 

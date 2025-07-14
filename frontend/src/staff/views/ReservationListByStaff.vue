@@ -8,6 +8,7 @@ import {patientMethods} from "@/reservation/util/reservation.js";
 import VueDatepicker from "@vuepic/vue-datepicker";
 import dayjs from "dayjs";
 import '@vuepic/vue-datepicker/dist/main.css'
+import { getStompClient, subscribeChannel } from "@/util/stompMethod";
 
 
 const reservationListStore = useReservationListStore();
@@ -20,7 +21,7 @@ const selectedDate = reactive({
 const minDate = today;
 const maxDate = today.add(6, 'day');
 const showCalendar = ref(false);
-
+let client;
 // 날짜 증감에 따른 동작 함수들
 const setBeforeDate = async () => {
 
@@ -56,7 +57,6 @@ const hideAfterDateMovement = computed(() => {
   return (selectedDate.date.isBefore(maxDate));
 })
 
-
 // 상태 변경 시 동작하는 함수
 const handleUpdateStatus = async ({uuid, updateStatus}) => {
 
@@ -85,34 +85,40 @@ const handleDate = (date) => {
   selectedDate.date = dayjs(date);
 
 }
-
-onBeforeMount(async () => {
-
+const refreshWaitingList = async () => {
   await Promise.all([
 
-    reservationListStore.promiseAll(minDate.toISOString()),
-    reservationListStore.getReservationStatusList()
+      reservationListStore.promiseAll(minDate.toISOString()),
+      reservationListStore.getReservationStatusList()
 
-  ]);
+    ]);
 
   fullReservationList.value = reservationListStore.reservationList;
   reservationStatusList.value = reservationListStore.reservationStatusList;
+}
 
+onBeforeMount(async () => {
+  await refreshWaitingList()
+  
   console.log(fullReservationList.value);
   console.log(reservationStatusList.value);
 
 });
 
+const statusSub = (client) => {
+    setTimeout(() => {
+      subscribeChannel(client, `/sub/status`, () => {
+        refreshWaitingList();
+      });
+    }, 100); 
+};
 
 onMounted(() => {
-  // 웹소켓 연결부
-
+  client = getStompClient((client) => {
+      statusSub(client)
+    });
 })
 
-onUnmounted(() => {
-  // 웹 소켓 연결 해제부
-
-})
 
 </script>
 

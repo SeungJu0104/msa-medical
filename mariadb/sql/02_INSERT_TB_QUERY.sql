@@ -39,3 +39,22 @@ VALUES
   ('550e8400-e29b-41d4-a716-446655440001', 'doctor', '$2a$12$.yzQA6.4kSYxGUPMSleHRuHd0QLtbLntTuu9k7hQQXkDDmLLe83we'),
   ('660e8400-e29b-41d4-a716-446655440011', 'nurse', '$2a$12$.yzQA6.4kSYxGUPMSleHRuHd0QLtbLntTuu9k7hQQXkDDmLLe83we'),
   ('550e8400-e29b-41d4-a716-446655440002', 'patient', '$2a$12$.yzQA6.4kSYxGUPMSleHRuHd0QLtbLntTuu9k7hQQXkDDmLLe83we');
+
+
+LOAD DATA INFILE '/docker-entrypoint-initdb.d/medicine.csv'
+INTO TABLE TB_MEDICINE
+FIELDS TERMINATED BY ',' 
+OPTIONALLY ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS
+(code, name, company_name)
+SET create_date = NOW(), update_date = NULL;
+  
+LOAD DATA INFILE '/docker-entrypoint-initdb.d/disease.csv'
+INTO TABLE TB_DISEASE
+FIELDS TERMINATED BY ',' 
+OPTIONALLY ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS
+(name, code)
+SET create_date = NOW(), update_date = NULL;

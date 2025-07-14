@@ -7,9 +7,9 @@
 <mapper namespace="com.emr.slgi.prescription.PrescriptionDAO">	
 	<insert id = "insertPrescription" parameterType="com.emr.slgi.prescription.Prescription">
 	 INSERT INTO TB_PRESCRIPTION
-	 ( code, treatment_id, volume )
+	 ( code, treatment_id, volume , times_per_day, per_day ,instructions )
 	  VALUES 
-	  ( #{code}, #{treatmentId}, #{volume} )
+	  ( #{code}, #{treatmentId}, #{volume},#{timesPerDay},#{perDay},#{instructions} )
 	  
 	</insert>
 <select id ="selectPrescriptions" resultType="com.emr.slgi.prescription.Prescription">

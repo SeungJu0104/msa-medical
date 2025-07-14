@@ -1,11 +1,12 @@
 <template>
-    <div>
-        진단<textarea v-model="state.treatContent" placeholder="증상"></textarea>
-    </div>
+    <div class="treatment-box">
+    <textarea id="symptom" v-model="state.treatContent" placeholder="증상 내용을 입력하세요..."></textarea>
+  </div>
 </template>
 
 <script setup>
 import {reactive } from 'vue';
+import '@/assets/css/treatment.css';
 
     const state = reactive({
         treatContent: '',   
@@ -13,7 +14,3 @@ import {reactive } from 'vue';
 
     defineExpose({ state })
 </script>
-
-<style lang="scss" scoped>
-
-</style>

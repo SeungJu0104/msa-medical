@@ -1,39 +1,48 @@
 package com.emr.slgi.reservation.controller;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
+
 import com.emr.slgi.reception.enums.ReceptionStatus;
-import com.emr.slgi.reservation.dto.*;
+import com.emr.slgi.reservation.dto.FindReservationDate;
+import com.emr.slgi.reservation.dto.ReservationForm;
+import com.emr.slgi.reservation.dto.ReservationList;
+import com.emr.slgi.reservation.dto.ReservationListByPatient;
 import com.emr.slgi.reservation.enums.ReservationMessage;
 import com.emr.slgi.reservation.enums.ReservationStatus;
 import com.emr.slgi.reservation.service.ReservationService;
 import com.emr.slgi.reservation.vo.ReservationCancelForm;
-import com.emr.slgi.reservation.util.ReservationUtil;
 import com.emr.slgi.util.CommonErrorMessage;
 import com.emr.slgi.util.ReservationErrorMessage;
 import com.emr.slgi.util.Validate;
+
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @RestController
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/reservation")
 public class ReservationController {
-
+	
+	private final SimpMessageSendingOperations messagingTemplate;
     private final ReservationService rService;
 
     @PreAuthorize("hasAnyRole('PATIENT', 'DOCTOR', 'NURSE')")
@@ -204,8 +213,7 @@ public class ReservationController {
                 )
         );
 
-    }
-
+    } 
     @PreAuthorize("hasAnyRole('DOCTOR', 'NURSE')")
     @PutMapping("/{uuid}/{updateStatus}/updateStatus")
     public ResponseEntity<?> updateReservationStatus(
@@ -245,10 +253,12 @@ public class ReservationController {
             }
 
         }
-
+        messagingTemplate.convertAndSend("/sub/status", "{}");
+        
+        
         return ResponseEntity.ok(
                 message
-        );
+        );  
 
     }
 
