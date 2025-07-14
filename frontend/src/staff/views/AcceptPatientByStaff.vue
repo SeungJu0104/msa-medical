@@ -9,6 +9,7 @@ import {errorMessage} from "@/util/errorMessage.js";
 import {REGEX_PATTERN} from "@/util/RegexPattern.js";
 import {useRoute, useRouter } from "vue-router";
 import {successMessage} from "@/util/successMessage.js";
+import '@/assets/css/AcceptPatientByStaff.css'
 
 const selectedVal = reactive({
   doctorUuid: null,
@@ -105,7 +106,7 @@ onMounted(() => {
   <div class="container">
   <div class="dropdown my-3">
     <h3>의사</h3>
-    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" v-cloak>
+    <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" v-cloak>
       {{  selectedVal?.name || '의사를 선택해주세요.' }}
     </button>
     <ul class="dropdown-menu">
