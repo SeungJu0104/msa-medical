@@ -1,103 +1,107 @@
+<template>
+  <div class="modal-backdrop" @click.self="emit('close')">
+    <div class="modal-content">
+      <h3>환자 검색</h3>
+
+      <div class="input-group">
+        <input
+            type="text"
+            v-model="searchVal.input"
+            minlength="1"
+            maxlength="6"
+            @keyup.enter="search"
+            placeholder="환자명"
+        />
+        <button type="button" @click="search">
+          <img class="search" src="@/assets/icons/search.png" alt="검색" />
+        </button>
+      </div>
+
+      <div class="results">
+        <table v-if="runSearch && searchRes.length > 0">
+          <thead>
+          <tr>
+            <th>이름</th>
+            <th>생년월일</th>
+            <th>전화번호</th>
+            <th>예약</th>
+            <th>대기</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr v-for="res in searchRes" :key="res.uuid">
+            <td>{{ res.name }}</td>
+            <td>{{ res.rrn }}</td>
+            <td>{{ res.phone }}</td>
+            <td><button @click="reservation(res.uuid)">예약 등록</button></td>
+            <td><button @click="waiting(res)">대기 추가</button></td>
+          </tr>
+          </tbody>
+        </table>
+
+        <div v-if="runSearch && searchRes.length < 1" class="no-result">
+          검색결과가 존재하지 않습니다.
+        </div>
+      </div>
+
+      <button class="close-btn" @click="emit('close')">닫기</button>
+    </div>
+  </div>
+</template>
+
 <script setup>
+import { reactive, ref, defineEmits } from "vue"
+import { useRouter } from "vue-router"
+import { customFetch } from "@/util/customFetch.js"
+import { ENDPOINTS } from "@/util/endpoints.js"
+import { common } from "@/util/common.js"
+import { errorMessage } from "@/util/errorMessage.js"
+import '@/assets/css/search.css'
 
-import {reactive, ref} from "vue";
-  import {customFetch} from "@/util/customFetch.js";
-  import {ENDPOINTS} from "@/util/endpoints.js";
-  import {common} from "@/util/common.js";
-import {patientMethods} from "@/reservation/util/reservation.js";
-import RegReservation from "@/shared/views/RegReservation.vue";
-import {useRouter} from 'vue-router'
-import {errorMessage} from "@/util/errorMessage.js";
+  const searchVal = reactive({ input: "" })
+  const searchRes = ref([])
+  const runSearch = ref(false)
+  const router = useRouter()
 
-  const searchVal = reactive({
-    input: ''
-  });
-
-  const router = useRouter();
-  const searchRes = ref([]);
-  const runSearch = ref(false);
+  const emit = defineEmits(['close']);
 
   const search = async () => {
-
-    if(searchVal.input.length < 1) {
-      common.alert(errorMessage.staff.searchValLength);
-      return;
+    if (searchVal.input.length < 1) {
+      common.alert(errorMessage.staff.searchValLength)
+      return
     }
 
     try {
-
-      const response = await customFetch(ENDPOINTS.staff.search(searchVal.input));
-
-      runSearch.value = true;
-
-      if(response.status === 200) {
-
-        searchRes.value = response.data?.list;
-
+      const response = await customFetch(ENDPOINTS.staff.search(searchVal.input))
+      runSearch.value = true
+      if (response.status === 200) {
+        searchRes.value = response.data?.list
       }
-
     } catch (err) {
-
-      common.errMsg(err);
-
+      common.errMsg(err)
     }
-
   }
 
   const reservation = (uuid) => {
-
     router.push({
-      name: 'regReservation',
-      query: {patientUuid: uuid}
+      name: "regReservation",
+      query: { patientUuid: uuid },
     });
-
+    emit('close');
   }
 
-  const waiting = ({uuid, name, rrn}) => {
-
+  const waiting = ({ uuid, name, rrn }) => {
     router.push({
-      name: 'acceptPatientByStaff',
+      name: "acceptPatientByStaff",
       query: {
         patientUuid: uuid,
         patientName: name,
-        birthDate: rrn
-      }
+        birthDate: rrn,
+      },
     });
-
+    emit('close');
   }
 
 </script>
 
-<template>
 
-  <div class="container">
-    <div class="input-group mb-3">
-      <input class="form-control form-control-lg" type="text" v-model="searchVal.input" minlength="1" maxlength="6" @keyup.enter="search" placeholder="환자명"/>
-      <button class="btn btn-outline-secondary" type="button" @click="search">
-        <img class="search" src="../../assets/search.png" alt="검색" style="width: 20px; height: 20px;" /><!--css 분리하기-->
-      </button>
-    </div>
-    <div class="my-3">
-      <table v-if="runSearch && searchRes.length > 0">
-        <tr>
-          <th>이름</th>
-          <th>생년월일</th>
-          <th>전화번호</th>
-        </tr>
-        <tr v-for="res in searchRes" :key="res.uuid">
-          <td v-cloak>{{res.name}}</td>
-          <td v-cloak>{{res.rrn}}</td>
-          <td v-cloak>{{res.phone}}</td>
-          <td><button class="btn btn-outline-secondary" type="button" @click="reservation(res.uuid)">예약</button></td>
-          <td><button class="btn btn-outline-secondary" type="button" @click="waiting(res)">대기</button></td>
-        </tr>
-      </table>
-
-      <div v-if="runSearch && searchRes.length < 1">
-        검색결과가 존재하지 않습니다.
-      </div>
-
-    </div>
-  </div>
-
-</template>
