@@ -34,6 +34,10 @@ import {errorMessage} from "@/util/errorMessage.js";
       return;
     }
 
+    if(!window.confirm("예약 취소하시겠습니까?")) {
+      return;
+    }
+
     await patientMethods.cancelReservation(selectedListByPatient);
     selectedListByPatient.clear();
     await reservationListPerPatient();
