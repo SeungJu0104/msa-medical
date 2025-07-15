@@ -1,0 +1,45 @@
+.nav-arrow {
+    width: 20px;
+    height: 20px;
+    font-size: 16px;
+    line-height: 20px;
+    text-align: center;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.nav-arrow:hover {
+    background-color: #f0f0f0;
+}
+
+.d-flex .container {
+    min-width: 150px;
+    padding: 0;
+    margin: 10px 0 10px 0;
+}
+
+.date-nav {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    margin: 12px 0;
+}
+
+.date-display {
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.dp__menu {
+    z-index: 9999 !important;
+}
+
