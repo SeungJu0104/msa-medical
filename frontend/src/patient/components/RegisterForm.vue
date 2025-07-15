@@ -45,6 +45,7 @@
 <script setup>
 import { customFetch } from '@/util/customFetch';
 import { ENDPOINTS } from '@/util/endpoints';
+import { REGEX_PATTERN } from '@/util/RegexPattern';
 import { reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -90,11 +91,16 @@ async function registerPatient() {
     return;
   }
 
-  const response = await customFetch(
-    ENDPOINTS.auth.register.patient,
-    { data: member }
-  );
-  router.push({ name: 'loginView' });
+  try {
+    const response = await customFetch(
+      ENDPOINTS.auth.register.patient,
+      { data: member }
+    );
+    alert("회원가입에 성공했습니다.");
+    router.push({ name: 'loginView' });
+  } catch (err) {
+    alert(err.response.data.message);
+  }
 }
 
 async function checkIdDuplicate() {
@@ -110,15 +116,20 @@ async function checkIdDuplicate() {
       }
       return;
     }
-    invalidity.id = "해당 아이디가 이미 존재합니다.";
+    invalidity.userid = "해당 아이디가 이미 존재합니다.";
   }
 }
 
 function checkIdValidity() {
   touched.userid = true;
 
-  if (member.userid.length === 0) {
-    invalidity.userid = "아이디를 입력해주세요.";
+  if (!REGEX_PATTERN.USERID.test(member.userid)) {
+    invalidity.userid = "아이디는 영문, 숫자, 밑줄(_)로만 구성해주세요.";
+    return;
+  }
+
+  if (member.userid.length < 5 || member.userid.length > 20) {
+    invalidity.userid = "아이디 길이는 5~20자입니다.";
     return;
   }
 
@@ -133,8 +144,13 @@ function checkIdValidity() {
 function checkPasswordValidity() {
   touched.password = true;
 
-  if (member.password.length === 0) {
-    invalidity.password = "비밀번호를 입력해주세요.";
+  if (!REGEX_PATTERN.PASSWORD.test(member.password)) {
+    invalidity.password = "비밀번호는 대문자, 소문자, 숫자, 특수문자(@$!%*?&)를 포함해주세요.";
+    return;
+  }
+
+  if (member.password.length < 5 || member.password.length > 20) {
+    invalidity.password = "비밀번호 길이는 5~20자입니다.";
     return;
   }
 
@@ -160,8 +176,8 @@ function checkPasswordCheckValidity() {
 function checkNameValidity() {
   touched.name = true;
 
-  if (member.name.length === 0) {
-    invalidity.name = "이름을 입력해주세요.";
+  if (member.name.length < 1 || member.name.length > 20) {
+    invalidity.name = "이름 길이는 1~20자입니다.";
     return;
   }
 
@@ -171,8 +187,8 @@ function checkNameValidity() {
 function checkRrnValidity() {
   touched.rrn = true;
 
-  if (member.rrn.length === 0) {
-    invalidity.rrn = "주민번호를 입력해주세요.";
+  if (!REGEX_PATTERN.RRN.test(member.rrn)) {
+    invalidity.rrn = "주민번호는 하이픈(-)을 포함하여 입력해주세요.";
     return;
   }
 
@@ -182,8 +198,8 @@ function checkRrnValidity() {
 function checkPhoneValidity() {
   touched.phone = true;
 
-  if (member.phone.length === 0) {
-    invalidity.phone = "전화번호를 입력해주세요.";
+  if (!REGEX_PATTERN.PHONE.test(member.phone)) {
+    invalidity.phone = "전화번호는 하이픈(-)을 포함하여 입력해주세요.";
     return;
   }
 
