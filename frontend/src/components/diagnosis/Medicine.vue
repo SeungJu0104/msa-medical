@@ -31,7 +31,7 @@
 
     <ul class="medicine-search-selected-list">
       <li v-for="(item, index) in state.inputText" :key="index">
-        {{ item.code }} - {{ item.name }}
+        {{ item.code }}
         <input type="number" v-model.number="item.volume" min="1" class="volume-input"  placeholder="용량"/>
         <input type="number" v-model.number="item.timesPerDay" min="1" class="volume-input"  placeholder="1회 복용"/>회
         <input type="number" v-model.number="item.perDay" min="1" class="volume-input" placeholder="1일 복용" />일

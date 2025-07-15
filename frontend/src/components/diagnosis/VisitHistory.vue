@@ -6,11 +6,18 @@
     </div>
       <h3>내원이력</h3>
       <ul v-if="state.list.length > 0" class="visit-history-list">
-  <li class="visit-history-item" v-for="(item, index) in state.list" :key="index" @click="division(item)">
-    <div class="visit-history-card">
-      <p class="visit-date">{{ dayjs(item.treatDate).format('YYYY-MM-DD') }}</p>
-    </div>
-  </li>
+        <!-- v-for 안에 -->
+    <li
+      class="visit-history-item"
+      :class="{ active: selecte.id === item.id }"
+      v-for="(item, index) in state.list"
+      :key="index"
+      @click="division(item)"
+    >
+  <div class="visit-history-card">
+    <p class="visit-date">{{ dayjs(item.treatDate).format('YYYY-MM-DD') }}</p>
+  </div>
+</li>
 </ul>
       <p v-else class="no-history">내원이력이 없습니다.</p>
       <!-- 페이징 -->
@@ -143,8 +150,9 @@ watch(() => props.patientUuid, (newUuid, oldUuid) => {
   flex: 1;
   gap: 20px;
   margin-top: 20px;
-  height: 75vh;
-  max-height: 75vh;
+  height: 100%;
+  max-height: 120vh;
+  max-width: 120vh;
 }
 .close-button-wrapper{
   margin-top: 10px;
@@ -171,24 +179,32 @@ min-width: 20vh;
 max-width: 20vh;
 }
 .visit-history-detail {
-width: 90%;
+width: 100%;
 background-color: #f9f9f9;
 padding: 16px;
 border: 1px solid #ddd;
 border-radius: 8px;
 overflow-y: auto;
-height: 85vh;
-
-
 }
 .visit-history-card {
-background: white;
-padding: 16px 24px;
-border-radius: 8px;
-box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-transition: transform 0.2s ease;
+  background: white;
+  padding: 16px 16px;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
 }
 
+.visit-history-item:hover .visit-history-card {
+  transform: scale(1.02);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+}
+
+.visit-history-item.active .visit-history-card {
+  border: 2px solid #007bff;
+  background-color: #ffffff;
+}
 .history-box {
 margin-bottom: 20px;
 }

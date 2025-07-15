@@ -1,9 +1,9 @@
 <template>
-    <div class="body">
+  <div class="body">
     <aside class="left">
     </aside>
     <section class="center">
-      <div class="center-inner">
+    <div class="center-inner">
       <WaitingReservationParent />
 
       <div class="history-area">
@@ -11,16 +11,13 @@
           v-if="currentView === 'visit'"
           :patientUuid="selectedPatientUuid"
           :doctorUuid="selectedDoctorUuid"
-          @back="resetView"
-        />
+          @back="resetView"/>
         <Payment
           v-if="currentView === 'payment'"
           :item="selectedItem"
           :key="selectedItem.id"
-          @back="resetView"
-        />
-</div>
-    
+          @back="resetView"/>
+      </div>
     </div>
     </section>
     
@@ -48,10 +45,7 @@ provide('currentView', currentView);
 provide('selectedPatientUuid', selectedPatientUuid)
 provide('selectedDoctorUuid', selectedDoctorUuid)
 provide('selectedItem', selectedItem)
-const goBack = () => {
-  selectedPatientUuid.value = null
-  selectedDoctorUuid.value = null
-}
+
 const resetView = () => {
   currentView.value = null;
   selectedPatientUuid.value = null;
@@ -70,11 +64,6 @@ const resetView = () => {
     padding: 0;
   }
   
-  /* .left {
-    width:10vw;
-    background: #f0f0f0;
-  } */
-  
   .center {
     flex: 1;
     text-align: center;
@@ -83,12 +72,12 @@ const resetView = () => {
   }
   
   .right {
-    width: 300px;
+    width: 250px; 
     background: #ffe0e0;
     height: 100vh;
     display: flex;
-    flex-direction: column; /* 수직 정렬 기준 설정 */
-    justify-content: flex-start; /* 위로 붙이기 */
+    flex-direction: column; 
+    justify-content: flex-start; 
   }
   .center-inner {
   display: flex;
@@ -107,11 +96,4 @@ const resetView = () => {
   min-height: 90vh;
   overflow-y: auto;
 }
-  /* .history-area {
-  flex: 1;
-  min-width: 300px;
-  background-color: #f9f9f9;
-  padding: 16px;
-  border-radius: 8px;
-} */
 </style>

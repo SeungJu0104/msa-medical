@@ -32,7 +32,7 @@
   import { reactive } from 'vue'
   import { customFetch } from '@/util/customFetch'
   import { ENDPOINTS } from '@/util/endpoints'
-  import '@/assets/css/disease.css';
+  import '@/assets/css/medicine.css';
   const state = reactive({
     search: '',
     isFocus: false,

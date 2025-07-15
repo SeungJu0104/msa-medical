@@ -1,12 +1,9 @@
 <template>
     <div class="payment-wrapper">
-      <button @click="emit('back')" class ="btn btn-primary" >x</button>
-      <!-- 왼쪽: 진료 내용 -->
+      <button @click="emit('back')" class="x-btn" >x</button>
       <div class="left">
         <VisitHistoryDetail :id="props.item.treatmentId" />
       </div>
-  
-      <!-- 오른쪽: 수납 내역 + 문서 발급 -->
       <div class="right">
         <PaymentWindow :item="props.item" />
         <Document :id="props.item.treatmentId"/>
@@ -26,22 +23,61 @@
   
   <style scoped >
   .payment-wrapper {
-    display: flex;
-    gap: 32px;
-    align-items: flex-start;
-    padding: 24px;
-  
-    .left {
-      flex: 2;
-    }
-  
-    .right {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-      align-items: center;
-    }
-  }
+  display: flex;
+  gap: 32px;
+  align-items: flex-start;
+  padding: 32px;
+  background-color: #f8faff;
+}
+
+.left, .right {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  padding: 24px;
+}
+
+.left {
+  flex: 2;
+}
+
+.right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  align-items: center;
+}
+
+button.btn {
+  padding: 8px 16px;
+  border: 1px solid #007bff;
+  background-color: white;
+  color: #007bff;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+button.btn:hover {
+  background-color: #007bff;
+  color: white;
+}
+
+button.btn-primary {
+  align-self: flex-start;
+}
+.x-btn {
+  background: none;
+  border: none;
+  color: #333;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+
   </style>
   
