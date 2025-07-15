@@ -10,6 +10,7 @@ import {REGEX_PATTERN} from "@/util/RegexPattern.js";
 import {useRoute, useRouter } from "vue-router";
 import {successMessage} from "@/util/successMessage.js";
 import '@/assets/css/AcceptPatientByStaff.css'
+import '@/assets/css/icon.css'
 
   const selectedVal = reactive({
     doctorUuid: null,
@@ -105,7 +106,10 @@ import '@/assets/css/AcceptPatientByStaff.css'
 
 <template>
   <div class="reg-accept-card">
-    <div class="reg-accept-title">환자 접수</div>
+    <div class="reg-accept-title">
+      <img src="@/assets/icons/waiting.png" alt="접수" class="icon"/>
+      환자 접수
+    </div>
     <form class="reg-accept-form" @submit.prevent>
       <!-- 의사 선택 -->
       <div class="reg-form-row">
