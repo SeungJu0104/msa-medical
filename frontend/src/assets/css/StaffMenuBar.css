@@ -35,8 +35,3 @@
 .menu-item a:hover, .menu-clickable:hover {
     background-color: #e6f0ff;
 }
-
-.menu-item a.router-link-exact-active {
-    background-color: #e6f0ff;
-    font-weight: bold;
-}
