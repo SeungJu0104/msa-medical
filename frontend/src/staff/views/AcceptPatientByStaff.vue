@@ -13,10 +13,8 @@ import '@/assets/css/AcceptPatientByStaff.css'
 
   const selectedVal = reactive({
     doctorUuid: null,
-    patientUuid: null,
     name: null,
-    birthDate: null,
-    patientName: null,
+    patientUuid: null,
     symptom: null
   });
 
@@ -28,12 +26,12 @@ import '@/assets/css/AcceptPatientByStaff.css'
   const doctorList = ref();
   const route = useRoute();
   const router = useRouter();
+  const isDropdownOpen = ref(false);
 
   const selectDoctor = (doctor) => {
 
     selectedVal.doctorUuid = doctor.uuid;
     selectedVal.name = doctor.name;
-
     acceptChk.doctorChk = selectedVal.doctorUuid !== null && REGEX_PATTERN.MEMBER_UUID_REGEX.test(selectedVal.doctorUuid);
 
   }
@@ -66,7 +64,7 @@ import '@/assets/css/AcceptPatientByStaff.css'
       const response = await customFetch(
         ENDPOINTS.reception.acceptPatientByStaff, {
             data: {
-              ...omit(selectedVal, ['name', 'birthDate', 'patientName'])
+              ...omit(selectedVal, ['name']),
             }
           }
         )
@@ -91,11 +89,10 @@ import '@/assets/css/AcceptPatientByStaff.css'
   const insertSelectedValData = () => {
 
     selectedVal.patientUuid = route.query.patientUuid;
-    selectedVal.birthDate = route.query.birthDate;
 
   }
 
-  const isDropdownOpen = ref(false);
+
   const toggleDropdown = () => { isDropdownOpen.value = !isDropdownOpen.value; };
   const closeDropdown = () => { isDropdownOpen.value = false; };
 

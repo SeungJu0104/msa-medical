@@ -95,8 +95,6 @@ import '@/assets/css/search.css'
       name: "acceptPatientByStaff",
       query: {
         patientUuid: uuid,
-        patientName: name,
-        birthDate: rrn,
       },
     });
     emit('close');
