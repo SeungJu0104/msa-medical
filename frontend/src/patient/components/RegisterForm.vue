@@ -148,8 +148,8 @@ function checkPasswordValidity() {
     return;
   }
 
-  if (member.password.length < 5 || member.password.length > 20) {
-    invalidity.password = "비밀번호 길이는 5~20자입니다.";
+  if (member.password.length < 8 || member.password.length > 20) {
+    invalidity.password = "비밀번호 길이는 8~20자입니다.";
     return;
   }
 
