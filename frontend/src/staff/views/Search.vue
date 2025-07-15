@@ -1,7 +1,10 @@
 <template>
   <div class="modal-backdrop" @click.self="emit('close')">
     <div class="modal-content">
-      <h3>환자 검색</h3>
+      <div class="search-title">
+        <img src="@/assets/icons/search.png" alt="검색" class="icon"/>
+        환자검색
+      </div>
 
       <div class="input-group">
         <input
@@ -57,6 +60,7 @@ import { ENDPOINTS } from "@/util/endpoints.js"
 import { common } from "@/util/common.js"
 import { errorMessage } from "@/util/errorMessage.js"
 import '@/assets/css/search.css'
+import '@/assets/css/icon.css'
 
   const searchVal = reactive({ input: "" })
   const searchRes = ref([])
@@ -101,11 +105,5 @@ import '@/assets/css/search.css'
   }
 
 </script>
-
-<style scoped>
-  tr {
-    cursor: pointer;
-  }
-</style>
 
 
