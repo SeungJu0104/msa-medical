@@ -1,21 +1,42 @@
+.d-flex .container {
+    min-width: 150px;
+}
+
 .waitingAndReservation {
     display: flex;
-    gap: 1em;
+    /*gap: 8px;*/
+    padding: 8px;
+    background-color: #fff;
+    border-bottom: 1px solid #ddd;
+}
+
+.tab-item {
+    padding: 6px 12px;
+    font-size: 14px;
+    background-color: #fff;
+    color: #333;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.2s;
+}
+
+.tab-item:hover {
+    background-color: #e6f0ff;
+}
+
+.tab-item.active {
+    color: #1976d2; /* 파란색 강조 */
+    font-weight: bold;
+    border-color: #e6f0ff;
 }
 
 .scroll {
-    min-height: 90vh;
-    max-height: 90vh;
-    max-width: 11vw; 
-    min-width: 11vw;    
-    /* height:90vh; */
+
+     height:90vh;
     /*height: calc(100vh - 상단 Header, Footer 길이);*/
-    
+    max-width: 200px;
     overflow-y: auto;
-    border: 2px solid #ccc;
-    padding: 1rem;
+    padding: 5px;
     box-sizing: border-box; 
-    
-    
 
 }

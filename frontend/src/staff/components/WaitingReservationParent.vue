@@ -27,12 +27,33 @@ const list = (selectedKey) => {
 
 <template>
 
-  <div class="d-flex">
+  <div class="d-flex container">
     <div class="scroll">
-      <div class=" waitingAndReservation">
-        <div id="reservationList" @click="list('reservationList')">예약</div>
-        <div id="waitingList" @click="list('waitingList')">대기</div>
-        <div id="PaymentList" @click="list('paymentList')">결재</div>
+      <div class="waitingAndReservation">
+        <div
+            id="reservationList"
+            class="tab-item"
+            :class="{ active: showList.reservationList }"
+            @click="list('reservationList')"
+        >
+          예약
+        </div>
+        <div
+            id="waitingList"
+            class="tab-item"
+            :class="{ active: showList.waitingList }"
+            @click="list('waitingList')"
+        >
+          대기
+        </div>
+        <div
+            id="paymentList"
+            class="tab-item"
+            :class="{ active: showList.paymentList }"
+            @click="list('paymentList')"
+        >
+          결제
+        </div>
       </div>
       <ReservationListByStaff v-if="showList.reservationList"/>
       <WaitingList v-if="showList.waitingList" />
