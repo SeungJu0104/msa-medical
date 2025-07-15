@@ -6,14 +6,21 @@
       <div class="center-inner">
       <WaitingReservationParent />
 
-    <div class="history-area" v-if="selectedPatientUuid">
-    <VisitHistory
-     v-if="selectedPatientUuid"
-        :patientUuid="selectedPatientUuid"
-        :doctorUuid="selectedDoctorUuid"
-        @back="goBack"
-      />
-    </div>
+      <div class="history-area">
+        <VisitHistory
+          v-if="currentView === 'visit'"
+          :patientUuid="selectedPatientUuid"
+          :doctorUuid="selectedDoctorUuid"
+          @back="resetView"
+        />
+        <Payment
+          v-if="currentView === 'payment'"
+          :item="selectedItem"
+          :key="selectedItem.id"
+          @back="resetView"
+        />
+</div>
+    
     </div>
     </section>
     
@@ -29,19 +36,30 @@ import ChatRooms from '@/components/chat/ChatRooms.vue';
 import WaitingReservationParent from '../components/WaitingReservationParent.vue';
 import StaffMenuBar from '../components/StaffMenuBar.vue';
 import VisitHistory from '@/components/diagnosis/VisitHistory.vue';
-import { provide, ref } from 'vue'
+import { onMounted, provide, ref } from 'vue'
+import { getStompClient, subscribeChannel } from '@/util/stompMethod';
+import { toastCanceled, toastCreated } from '@/util/alarmToast';
+import Payment from '@/components/payment/Payment.vue';
 
 const selectedPatientUuid = ref(null)
 const selectedDoctorUuid = ref(null)
-
+const selectedItem = ref(null)
+const currentView = ref(null)
+provide('currentView', currentView);
 provide('selectedPatientUuid', selectedPatientUuid)
 provide('selectedDoctorUuid', selectedDoctorUuid)
-
+provide('selectedItem', selectedItem)
 const goBack = () => {
   selectedPatientUuid.value = null
   selectedDoctorUuid.value = null
-  
 }
+const resetView = () => {
+  currentView.value = null;
+  selectedPatientUuid.value = null;
+  selectedDoctorUuid.value = null;
+  selectedItem.value = null;
+};
+
 
 </script>
 
@@ -83,9 +101,10 @@ const goBack = () => {
 .history-area {
   padding: 1rem;
   flex: 1;
-  background-color: #f9f9f9;
+  background-color: #e6f0ff;
   padding: 16px;
   border-radius: 8px;
+  max-height: 90vh;
   min-height: 90vh;
   overflow-y: auto;
 }

@@ -1,5 +1,6 @@
 <template>
     <div class="payment-wrapper">
+      <button @click="emit('back')" class ="btn btn-primary" >x</button>
       <!-- 왼쪽: 진료 내용 -->
       <div class="left">
         <VisitHistoryDetail :id="props.item.treatmentId" />
@@ -17,7 +18,7 @@
   import PaymentWindow from './PaymentWindow.vue'
   import Document from './Document.vue'
   import VisitHistoryDetail from '../diagnosis/VisitHistoryDetail.vue'
-  
+  const emit = defineEmits(['back'])
   const props = defineProps({
     item: Object
   })

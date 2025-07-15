@@ -1,5 +1,8 @@
 <template>
   <div class="total-wrapper">
+    <div class="top-bar">
+      <button @click="emit('back')" class="x-btn" >x</button>
+    </div>
       <div class="center">
         <div class="position-section">
         <Disease ref="diseaseRef"/>
@@ -12,10 +15,12 @@
         
         <Medicine ref="medicineRef"/>
       </div>
-  
+      <div class="submit-button-wrapper">
+        <button @click="submit" class="btn-submit">진료 완료</button>
     </div>
-    <button @click="submit" class ="btn btn-primary" >진료 완료</button>
-    <button @click="emit('back')" class ="btn btn-primary" >목록으로</button>
+    </div>
+    
+    
 </template>
 
 <script setup>
@@ -97,7 +102,7 @@ const submit = async ()  => {
 <style scoped>
 .total-wrapper {
   padding: 20px;
-  background-color: #703131;
+  background-color: #e6f0ff;
   max-width: 1000px;
   min-height: 80vh;  
 }
@@ -109,7 +114,7 @@ const submit = async ()  => {
 }
 
 .bottom-section {
-  background: white;
+  background: rgb(20, 0, 0);
   border: 1px solid #ccc;
   padding: 80px;
   height: 400px;
@@ -119,11 +124,79 @@ const submit = async ()  => {
   display: flex;
   gap: 50px;
   align-items: flex-start;
-  /* flex-direction: column; */
-
 }
 .attachment-section{
   margin-left: 30px
 }
+.total-wrapper {
+  position: relative;
+  padding: 32px;
+  background-color: #e6f0ff;
+  max-width: 1000px;
+  min-height: 85vh;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+}
 
+.top-bar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 16px;
+}
+
+.btn-back {
+  background-color: transparent;
+  border: 1px solid #007bff;
+  color: #007bff;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.btn-back:hover {
+  background-color: #007bff;
+  color: white;
+}
+
+.submit-button-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 40px;
+}
+
+.fixed-buttons {
+  position: fixed;
+  bottom: 24px;
+  right: 32px;
+  z-index: 1000;
+}
+
+.btn-submit {
+  position: absolute;
+  bottom: 24px;
+  right: 32px;
+  background-color: #007bff;
+  color: white;
+  padding: 10px 24px;
+  font-size: 15px;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  transition: background-color 0.2s ease;
+}
+.btn-submit:hover {
+  background-color: #0056b3;
+}
+.x-btn {
+  background: none;
+  border: none;
+  color: #333;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 4px 8px;
+}
 </style>

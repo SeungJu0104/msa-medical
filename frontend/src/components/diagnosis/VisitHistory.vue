@@ -1,7 +1,9 @@
 <template>
   <div class="visit-history-wrapper">
-    <!-- 왼쪽: 내원 이력 리스트 -->
     <div class="visit-history-list">
+      <div class="close-button-wrapper">
+      <button @click="emit('back')" class="x-btn" >x</button>
+    </div>
       <h3>내원이력</h3>
       <ul v-if="state.list.length > 0" class="visit-history-list">
   <li class="visit-history-item" v-for="(item, index) in state.list" :key="index" @click="division(item)">
@@ -11,14 +13,13 @@
   </li>
 </ul>
       <p v-else class="no-history">내원이력이 없습니다.</p>
-
       <!-- 페이징 -->
       <div v-if="state.pageInfo.totalPage > 1" class="pagination">
-        <button v-if="state.pageInfo.prev" @click="changePage(state.pageInfo.startPage - 1)">이전</button>
-        <button v-for="page in pageNumbers" :key="page" @click="changePage(page)">
+        <button v-if="state.pageInfo.prev" @click="changePage(state.pageInfo.startPage - 1)" class="btn btn-primary">이전</button>
+        <button v-for="page in pageNumbers" :key="page" @click="changePage(page)":class="['btn', 'btn-outline-primary', { 'btn-primary text-white': state.pageNo === page }]">
           {{ page }}
         </button>
-        <button v-if="state.pageInfo.next" @click="changePage(state.pageInfo.endPage + 1)">다음</button>
+        <button v-if="state.pageInfo.next" @click="changePage(state.pageInfo.endPage + 1)"class="btn btn-primary">다음</button>
       </div>
     </div>
 
@@ -49,21 +50,31 @@ import { computed, onBeforeMount, onMounted, reactive, ref, watch } from 'vue';
 import VisitHistoryDetail from './VisitHistoryDetail.vue';
 import MedicalTreatment from './MedicalTreatment.vue';
 import { getStompClient, subscribeChannel } from '@/util/stompMethod';
+let client;
 const emit = defineEmits(['back'])
 const props = defineProps({
   patientUuid: String,
   doctorUuid: String
 })
 
-onMounted(() => {
-  historyList();
+onBeforeMount(async () => {
+    await historyList()
+  });
 
-  getStompClient((client) => {
-    subscribeChannel(client, '/sub/status', () => {
-      historyList(); 
-    });
+onMounted(() => {
+  client = getStompClient((client) => {
+    statusSub(client)
   });
 });
+
+const statusSub = (client) => {
+  setTimeout(() => {
+    subscribeChannel(client, `/sub/status`, () => {
+      historyList();
+});
+}, 100); 
+};
+
 const selecte = reactive({ id: null, uuid: null })
 const mode = ref('')
 
@@ -95,14 +106,6 @@ try {
 } catch (error) {
 console.error("에러",error)
 }}
-
-const statusSub = (client) => {
-  setTimeout(() => {
-    subscribeChannel(client, `/sub/status`, () => {
-      historyList();
-});
-}, 100); 
-};
 
 const changePage = (page) => {
   state.pageNo = page;
@@ -143,12 +146,26 @@ watch(() => props.patientUuid, (newUuid, oldUuid) => {
   height: 75vh;
   max-height: 75vh;
 }
-
+.close-button-wrapper{
+  margin-top: 10px;
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: flex-end; 
+}
+.x-btn {
+  background: none;
+  border: none;
+  color: #333;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 4px 8px;
+}
 .visit-history-list {
 display: flex;
 flex-direction: column;
 gap: 12px;
-min-height: 70vh;
+min-height: 60vh;
 max-height: 70vh;
 min-width: 20vh;
 max-width: 20vh;
@@ -180,13 +197,14 @@ margin-bottom: 20px;
 font-weight: bold;
 font-size: 16px;
 }
-/* .no-history {
+.no-history {
 text-align: center;
 margin-top: 20px;
 }
 
 .pagination {
 margin-top: 10px;
-} */
-
+justify-content: flex-end;
+display: flex;
+}
 </style>

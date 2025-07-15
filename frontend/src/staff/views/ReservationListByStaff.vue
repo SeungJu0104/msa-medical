@@ -99,7 +99,6 @@ const refreshWaitingList = async () => {
 
 onBeforeMount(async () => {
   await refreshWaitingList()
-  
   console.log(fullReservationList.value);
   console.log(reservationStatusList.value);
 

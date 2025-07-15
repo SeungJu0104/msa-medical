@@ -1,6 +1,5 @@
 <template>
     <div class="visit-detail">
-      <button @click="emit('back')" class ="btn btn-primary" >x</button>
       <h2 class="section-title">진료 내용</h2>
       <div class="treatment-info">
         <p><strong>내용:</strong> {{ state.treatment.treatContent }}</p>
@@ -55,9 +54,8 @@
   import { customFetch } from '@/util/customFetch'
   import { ENDPOINTS } from '@/util/endpoints'
   import { onMounted, reactive } from 'vue'
-import Document from '../payment/Document.vue'
+  import Document from '../payment/Document.vue'
   const props = defineProps({ id: Number })
-  const emit = defineEmits(['back'])
   
   const state = reactive({
     treatment: {},
@@ -88,9 +86,10 @@ import Document from '../payment/Document.vue'
     min-height: 80vh;          
     overflow-y: auto;
     padding: 20px;
-    background-color: #fff;
+    background-color: #e6f0ff;
     max-width: 110vh;
     font-size: 14px;
+    justify-content: flex-end;
   }
   
   .section-title {

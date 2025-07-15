@@ -2,7 +2,7 @@
     <div class="paymentList">
       <div  class="payment-item"  v-for="item in state.list"  :key="item.id" >
         <!-- 이름 버튼 -->
-        <button  class="btn btn-primary"  @click="payment(item)"> {{ item.patientName }}
+        <button  class="btn btn-primary"  @click="namePayment(item)"> {{ item.patientName }}
         </button>
   
         <!-- 상태 배지 -->
@@ -12,12 +12,7 @@
           {{ item.paymentStatus === 'Y' ? '결제완료' : '결제대기 중' }}
         </span>
       </div>
-  
-      <!-- 결제 컴포넌트 -->
-      <Payment
-        v-if="selectedItem"
-        :item="selectedItem"
-        :key="selectedItem.id" />
+     
     </div>
   </template>
   
@@ -25,11 +20,10 @@
 <script setup>
 import { customFetch } from '@/util/customFetch';
 import { ENDPOINTS } from '@/util/endpoints';
-import { computed, onMounted, reactive, ref } from 'vue';
-import Payment from './Payment.vue';
+import { computed, inject, onMounted, reactive, ref } from 'vue';
 import { getStompClient, subscribeChannel } from '@/util/stompMethod';
-
-const selectedItem = ref(null)
+const currentView = inject('currentView');
+const selectedItem = inject('selectedItem');
 let client ;
 const state = reactive({
     list : [],
@@ -59,8 +53,9 @@ const loadPaymentList = async () => {
     }
     
 }
-const payment = (item) => {
+const namePayment = (item) => {
     selectedItem.value= item;
+    currentView.value = 'payment';
 }
 </script>
 
@@ -68,12 +63,22 @@ const payment = (item) => {
 .paymentList {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px; /* 항목 간 여백 */
 }
 
 .payment-item {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px; /* 버튼 사이 여백 */
 }
+
+.payment-item button,
+.payment-item span {
+  padding: 4px 10px;
+  font-size: 13px;
+  height: 30px;
+  border-radius: 6px;
+  line-height: 1.2;
+}
+
 </style>

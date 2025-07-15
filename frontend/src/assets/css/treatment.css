@@ -3,8 +3,8 @@
     flex-direction: column;
     gap: 8px;
     margin-bottom: 16px;
-    margin-top: 0;       /* 상단 여백 제거 */
-    padding-top: 0;       /* 혹시 padding이 있으면 제거 */
+    margin-top: 0;       
+    padding-top: 0;     
     margin-bottom: 16px;
     max-width: 400px;
     min-width: 200px;
@@ -20,8 +20,8 @@
     border: 1px solid #ccc;
     border-radius: 8px;
     resize: vertical;
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
-    margin-top: 0; /* textarea 상단 여백 제거 */
+    box-shadow: inset 0 1px 3px rgba(167, 37, 37, 0.1);
+    margin-top: 0; 
   }
   
   textarea:focus {

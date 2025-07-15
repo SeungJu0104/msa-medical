@@ -4,6 +4,7 @@ import dayjs from "dayjs";
 import {reactive} from "vue";
 import { inject } from 'vue'
 
+const currentView = inject('currentView');
 const selectedPatientUuid = inject('selectedPatientUuid')
 const selectedDoctorUuid = inject('selectedDoctorUuid')
 
@@ -28,6 +29,7 @@ const getPatientInfo = (patient) => {
   emit('getPatientInfo', {patientUuid: patient.patientUuid,doctorUuid: patient.doctorUuid,});
   selectedPatientUuid.value = patient.patientUuid
   selectedDoctorUuid.value = patient.doctorUuid
+  currentView.value = 'visit';
 }
 
 </script>
