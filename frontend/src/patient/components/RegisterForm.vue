@@ -12,27 +12,27 @@
       <div class="mb-3">
         <Label for="password">비밀번호</Label>
         <Input type="password" @input="checkPasswordValidity" id="password" v-model="member.password" />
-        <div v-show="invalidity.password" v-text="invalidity.password" class="invalid-feedback d-block"></div>
+        <InvalidityMessage v-show="invalidity.password" v-text="invalidity.password" />
       </div>
       <div class="mb-3">
         <Label for="passwordCheck">비밀번호 확인</Label>
         <Input type="password" @input="checkPasswordCheckValidity" id="passwordCheck" v-model="passwordCheck" />
-        <div v-show="invalidity.passwordCheck" v-text="invalidity.passwordCheck" class="invalid-feedback d-block"></div>
+        <InvalidityMessage v-show="invalidity.passwordCheck" v-text="invalidity.passwordCheck" />
       </div>
       <div class="mb-3">
         <Label for="name">이름</Label>
         <Input @input="checkNameValidity" id="name" v-model="member.name" />
-        <div v-show="invalidity.name" v-text="invalidity.name" class="invalid-feedback d-block"></div>
+        <InvalidityMessage v-show="invalidity.name" v-text="invalidity.name" />
       </div>
       <div class="mb-3">
         <Label for="rrn">주민번호</Label>
         <Input @input="checkRrnValidity" id="rrn" v-model="member.rrn" />
-        <div v-show="invalidity.rrn" v-text="invalidity.rrn" class="invalid-feedback d-block"></div>
+        <InvalidityMessage v-show="invalidity.rrn" v-text="invalidity.rrn" />
       </div>
       <div class="mb-3">
         <Label for="phone">전화번호</Label>
         <Input @input="checkPhoneValidity" id="phone" v-model="member.phone" />
-        <div v-show="invalidity.phone" v-text="invalidity.phone" class="invalid-feedback d-block"></div>
+        <InvalidityMessage v-show="invalidity.phone" v-text="invalidity.phone" />
       </div>
     </form>
     <div class="d-flex justify-content-end gap-2">
@@ -44,6 +44,7 @@
 
 <script setup>
 import Input from '@/common/components/Input.vue';
+import InvalidityMessage from '@/common/components/InvalidityMessage.vue';
 import Label from '@/common/components/Label.vue';
 import { customFetch } from '@/util/customFetch';
 import { ENDPOINTS } from '@/util/endpoints';
