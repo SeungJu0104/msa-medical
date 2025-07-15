@@ -33,8 +33,8 @@
             <td>{{ res.name }}</td>
             <td>{{ res.rrn }}</td>
             <td>{{ res.phone }}</td>
-            <td><button @click="reservation(res.uuid)">예약 등록</button></td>
-            <td><button @click="waiting(res)">대기 추가</button></td>
+            <td><button @click="reservation(res.uuid)">추가</button></td>
+            <td><button @click="waiting(res)">추가</button></td>
           </tr>
           </tbody>
         </table>
@@ -84,7 +84,7 @@ import '@/assets/css/search.css'
 
   const reservation = (uuid) => {
     router.push({
-      name: "regReservation",
+      name: "regReservationByStaff",
       query: { patientUuid: uuid },
     });
     emit('close');
@@ -103,5 +103,11 @@ import '@/assets/css/search.css'
   }
 
 </script>
+
+<style scoped>
+  tr {
+    cursor: pointer;
+  }
+</style>
 
 
