@@ -118,38 +118,43 @@ onMounted(() => {
 
   <div class="container">
     <div class="date-nav">
-      <img v-show="hideBeforeDateMovement" @click="setBeforeDate" src="@/assets/icons/datebefore.png" alt="이전 날짜" class="nav-arrow"></img>
+      <img v-show="hideBeforeDateMovement" @click="setBeforeDate" src="@/assets/icons/datebefore.png" alt="이전 날짜" class="nav-arrow" />
       <span class="date-display" @click="toggleCalendar">{{selectedDate.date.format("M월 D일")}}</span>
-      <img v-show="hideAfterDateMovement" @click="setAfterDate" src="@/assets/icons/nextdate.png" alt="다음 날짜" class="nav-arrow"></img>
+      <img v-show="hideAfterDateMovement" @click="setAfterDate" src="@/assets/icons/nextdate.png" alt="다음 날짜" class="nav-arrow" />
     </div>
     <div v-if="showCalendar" @blur="toggleCalendar" class="datepicker-popup">
       <VueDatepicker
-          :model-value = "selectedDate.date"
-          :format="'yyyy-MM-dd'"
-          :min-date="minDate.toISOString()"
-          :max-date="maxDate.toISOString()"
-          :disabled-dates="disabledWeekends"
-          :enable-time-picker="false"  :input-class="'form-control'"
-          :esc-close = "false"
-          :space-confirm = "false"
-          @update:model-value = "handleDate"
-          prevent-min-max-navigation
+        :model-value="selectedDate.date"
+        :format="'yyyy-MM-dd'"
+        :min-date="minDate.toISOString()"
+        :max-date="maxDate.toISOString()"
+        :disabled-dates="disabledWeekends"
+        :enable-time-picker="false"
+        :input-class="'form-control'"
+        :esc-close="false"
+        :space-confirm="false"
+        @update:model-value="handleDate"
+        prevent-min-max-navigation
       />
     </div>
-    <template v-for="list in fullReservationList" :key="list.doctor?.uuid">
-      <WaitingListDoctorName :value="list.doctor"/>
-      <div v-if="list.length < 1">
-        <span>대기 환자가 없습니다.</span>
+    <div class="card-list">
+      <div v-for="list in fullReservationList" :key="list.doctor?.uuid" class="card">
+        <WaitingListDoctorName :value="list.doctor" :count="list.patientList?.length || 0" />
+        <div class="card-body">
+          <div v-if="!list.patientList || list.patientList.length < 1" class="no-patient">
+            <span>대기 환자가 없습니다.</span>
+          </div>
+          <div v-else>
+            <WaitingListPatientList
+              @updateStatus="handleUpdateStatus"
+              @getPatientInfo="getPatientInfo"
+              :value="list.patientList"
+              :status="reservationStatusList"
+              :date="selectedDate.date"
+            />
+          </div>
+        </div>
       </div>
-      <div v-else>
-        <WaitingListPatientList
-            @updateStatus="handleUpdateStatus"
-            @getPatientInfo="getPatientInfo"
-            :value="list.patientList"
-            :status="reservationStatusList"
-            :date="selectedDate.date"
-        />
-      </div>
-    </template>
+    </div>
   </div>
 </template>

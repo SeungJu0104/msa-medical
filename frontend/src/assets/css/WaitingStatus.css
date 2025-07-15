@@ -1,0 +1,51 @@
+.btn-status-예약 {
+    background: #e3eafc !important;
+    color: #2563eb !important;
+    border-color: #b6d0fa !important;
+  }
+  
+  .btn-status-대기 {
+    background: #fffbe6 !important;
+    color: #bfa100 !important;
+    border-color: #ffe066 !important;
+  }
+
+  .btn-status-진료중, .btn-status-진료 중 {
+    background: #e6f4ea !important;
+    color: #1b8a5a !important;
+    border-color: #7ed6a7 !important;
+  }
+
+  .btn-status-접수취소, .btn-status-접수 취소 {
+    background: #f3e6ff !important;
+    color: #7c3aed !important;
+    border-color: #d1b3ff !important;
+  }
+
+  .dropdown-menu {
+    min-width: 80px !important;
+    max-width: 180px !important;
+    width: max-content !important;
+    box-sizing: border-box;
+    left: 0 !important;
+    right: 0 !important;
+    background: #fff;
+    border: 1px solid white;
+    border-radius: 10px;
+    margin-top: 4px;
+  }
+  
+  .dropdown-menu li {
+    cursor: pointer;
+    color: black;
+    font-weight: 500;
+    transition: background 0.15s, color 0.15s;
+    border-radius: 10px;
+    margin: 0 2px;
+    list-style: none;
+  }
+  
+  .dropdown-menu li:hover {
+    background: rgb(236, 236, 236);
+    color: black;
+  }
