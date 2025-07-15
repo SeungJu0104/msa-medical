@@ -38,7 +38,6 @@ import StaffMenuBar from '../components/StaffMenuBar.vue';
 import VisitHistory from '@/components/diagnosis/VisitHistory.vue';
 import { onMounted, provide, ref } from 'vue'
 import { getStompClient, subscribeChannel } from '@/util/stompMethod';
-import { toastCanceled, toastCreated } from '@/util/alarmToast';
 import Payment from '@/components/payment/Payment.vue';
 
 const selectedPatientUuid = ref(null)
