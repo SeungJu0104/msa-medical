@@ -5,7 +5,7 @@ import Search from "@/staff/views/Search.vue";
 import {ref} from "vue";
 import WaitingReservationParent from "@/staff/components/WaitingReservationParent.vue";
 import Header from "@/staff/components/Header.vue";
-
+import Footer from "@/patient/layouts/Footer.vue";
 const modalOpen = ref(false)
 
 </script>
@@ -23,11 +23,13 @@ const modalOpen = ref(false)
         <Search v-if="modalOpen" @close="modalOpen = false"/>
       </div>
     </div>
+    <Footer/>
   </div>
 </template>
 <style>
 .mainSide {
-  flex: 1;
+  border-left: 1px solid #ddd;
+  /* flex: 1; */
 }
 
 .leftSide {
