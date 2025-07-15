@@ -1,5 +1,5 @@
 <script setup>
-import {ref, reactive, onMounted, computed} from 'vue'
+import {ref, reactive, onMounted, computed, onBeforeUnmount} from 'vue'
 import VueDatepicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
 import {common} from '@/util/common.js'
@@ -9,6 +9,7 @@ import dayjs from "dayjs";
 import {errorMessage} from "@/util/errorMessage.js";
 import {useUserStore} from "@/stores/userStore.js";
 import {useRouter, useRoute} from "vue-router";
+import '@/assets/css/RegReservation.css';
 
   const userInfo = computed(() => useUserStore().user);
   const router = useRouter();
@@ -98,11 +99,11 @@ import {useRouter, useRoute} from "vue-router";
   const goHome = async () => {
 
     if(!reservationChk.timeChk) {
-      await common.goHome();
+      await common.goStaffHome();
     }
 
     if(await patientMethods.cancelHoldingReservation(selectedVal.patientUuid)) {
-      await common.goHome();
+      await common.goStaffHome();
     }
 
   }
@@ -151,61 +152,98 @@ import {useRouter, useRoute} from "vue-router";
 
   }
 
+  const isDropdownOpen = ref(false);
+  const toggleDropdown = () => {
+    isDropdownOpen.value = !isDropdownOpen.value;
+  };
+
+  const closeDropdown = () => {
+    isDropdownOpen.value = false;
+  };
+
+  const handleClickOutside = (event) => {
+    const dropdown = document.querySelector('.reg-dropdown-group');
+    if (dropdown && !dropdown.contains(event.target)) {
+      closeDropdown();
+    }
+  };
+
   onMounted(() => {
     getDoctorList();
     checkRole();
+    document.addEventListener('mousedown', handleClickOutside);
+  });
+  onBeforeUnmount(() => {
+    document.removeEventListener('mousedown', handleClickOutside);
   });
 
 
 </script>
 
 <template>
-  <div class="container mt-4">
-    <h2>예약등록</h2>
-    <div class="dropdown my-3">
-      <h3>의사</h3>
-      <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" v-cloak>
-        {{ selectedVal?.name || '의사를 선택해주세요.' }}
-      </button>
-      <ul class="dropdown-menu">
-          <template v-for="doctor in doctorList" :key="doctor.uuid">
-            <li class="dropdown-item" @click="selectDoctor(doctor)" v-cloak>{{doctor.name}}</li>
-          </template>
-      </ul>
-    </div>
-    <div class="my-3">
-      <h3>일자</h3>
-      <VueDatepicker
-          :model-value = "selectedVal.reservationDate" :format="'yyyy-MM-dd'" :min-date="minDate" :max-date="maxDate"
-          :disabled-dates="disabledWeekends" :enable-time-picker="false"  :input-class="'form-control'" :esc-close = "false" :space-confirm = "false"
-          @update:model-value = "handleDate" prevent-min-max-navigation
-      />
-    </div>
-    <template v-if="reservationChk.dateChk && reservationChk.doctorChk && reservationTime">
-      <div class="my-3">
-        <h3>시간</h3>
-        <template v-for="time in Array.from(reservationTime).sort()" :key="time">
-          <button type="button" class="btn btn-primary btn-lg" @click="selectTime(time)" ref="selectedVal.time" v-cloak>{{time}}</button>
-        </template>
-        <template v-if="!reservationTime.size">
-          <div>
-            <span>예약 가능한 시간대가 없습니다.</span>
-          </div>
-        </template>
-      </div>
-    </template>
-    <template v-if="reservationChk.timeChk">
-      <div>
-        <div class="my-3 input-group">
-          <span class="input-group-text">증상</span>
-          <textarea class="form-control" aria-label="symptom" v-model="selectedVal.symptom"
-                    @change = "writeSymptom" maxlength="100"
-                    placeholder="100자 이내로 작성해주세요.">
-          </textarea>
+  <div class="reg-reservation-card">
+    <div class="reg-reservation-title">예약등록</div>
+    <form class="reg-reservation-form" @submit.prevent>
+      <!-- 의사 선택 -->
+      <div class="reg-form-row">
+        <label class="reg-form-label">의사<span class="reg-required">*</span></label>
+        <div class="reg-dropdown-group">
+          <button
+            class="reg-dropdown-btn"
+            type="button"
+            @click="toggleDropdown"
+            :aria-expanded="isDropdownOpen"
+          >
+            {{ selectedVal?.name || '의사를 선택해주세요.' }}
+          </button>
+          <ul class="reg-dropdown-menu" v-if="isDropdownOpen">
+            <template v-for="doctor in doctorList" :key="doctor.uuid">
+              <li class="reg-dropdown-item" @click="selectDoctor(doctor); closeDropdown()">{{doctor.name}}</li>
+            </template>
+          </ul>
         </div>
       </div>
-    </template>
-    <button type="button" class="btn btn-outline-success" @click="reservation">예약</button>
-    <button type="button" class="btn btn-outline-warning" @click="goHome">취소</button>
+      <!-- 날짜 선택 -->
+      <div class="reg-form-row">
+        <label class="reg-form-label">일자<span class="reg-required">*</span></label>
+        <VueDatepicker
+          :model-value="selectedVal.reservationDate"
+          :format="'yyyy-MM-dd'"
+          :min-date="minDate"
+          :max-date="maxDate"
+          :disabled-dates="disabledWeekends"
+          :enable-time-picker="false"
+          :input-class="'reg-form-input'"
+          :esc-close="false"
+          :space-confirm="false"
+          @update:model-value="handleDate"
+          prevent-min-max-navigation
+        />
+      </div>
+      <!-- 시간 선택 -->
+      <div class="reg-form-row" v-if="reservationChk.dateChk && reservationChk.doctorChk && reservationTime">
+        <label class="reg-form-label">시간<span class="reg-required">*</span></label>
+        <div class="reg-time-group">
+          <template v-for="time in Array.from(reservationTime).sort()" :key="time">
+            <button type="button" class="reg-btn-time" :class="{ active: selectedVal.time === time }" @click="selectTime(time)" ref="selectedVal.time" v-cloak>{{time}}</button>
+          </template>
+          <template v-if="!reservationTime.size">
+            <span class="reg-helper-danger">예약 가능한 시간대가 없습니다.</span>
+          </template>
+        </div>
+      </div>
+      <!-- 증상 입력 -->
+      <div class="reg-form-row" v-if="reservationChk.timeChk">
+        <label class="reg-form-label">증상<span class="reg-required">*</span></label>
+        <textarea class="reg-form-input" aria-label="symptom" v-model="selectedVal.symptom"
+                  @change="writeSymptom" maxlength="100"
+                  placeholder="100자 이내로 작성해주세요."></textarea>
+      </div>
+      <!-- 버튼 -->
+      <div class="reg-form-actions">
+        <button type="button" class="reg-btn-main" @click="reservation">예약</button>
+        <button type="button" class="reg-btn-sub" @click="goHome">취소</button>
+      </div>
+    </form>
   </div>
 </template>
