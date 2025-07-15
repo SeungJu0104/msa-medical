@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex flex-column justify-content-center align-items-center mb-5">
-    <h2 class="fw-bold mt-5">로그인</h2>
+    <Title>로그인</Title>
     <SectionDivider />
     <LoginForm />
   </div>
@@ -9,4 +9,5 @@
 <script setup>
 import LoginForm from '@/patient/components/LoginForm.vue';
 import SectionDivider from '../components/SectionDivider.vue';
+import Title from '../components/Title.vue';
 </script>
