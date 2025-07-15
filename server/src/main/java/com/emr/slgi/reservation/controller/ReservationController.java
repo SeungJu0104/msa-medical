@@ -52,7 +52,7 @@ public class ReservationController {
         if(rService.makeReservation(rf) != 1) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ReservationErrorMessage.RESERVATION_RUN_ERROR + " " + CommonErrorMessage.RETRY);
         }
-
+        messagingTemplate.convertAndSend("/sub/status","{}");
         return ResponseEntity.ok(
                 Map.of("message", "예약이 완료됐습니다.")
         );
@@ -161,7 +161,7 @@ public class ReservationController {
         if(!rService.cancelReservation(rcf.getUuidForCancel())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, CommonErrorMessage.RETRY);
         }
-
+        messagingTemplate.convertAndSend("/sub/status","{}");
         return ResponseEntity.ok(
                 Map.of(
                         "message", ReservationMessage.CANCEL_RESERVATION_SUCCESS.getMessage()
