@@ -60,7 +60,7 @@ const member = reactive({
   phone: '',
   rrn: ''
 });
-const passwordCheck = ref(''); // TODO: lodash로 처리하기
+const passwordCheck = ref('');
 const invalidity = reactive({
   userid: '',
   password: '',
@@ -79,7 +79,6 @@ const touched = reactive({
 });
 
 async function registerPatient() {
-  // TODO: 실패 시 이동 안 함
   checkIdValidity();
   checkPasswordValidity();
   checkPasswordCheckValidity();
@@ -149,8 +148,8 @@ function checkPasswordValidity() {
     return;
   }
 
-  if (member.password.length < 5 || member.password.length > 20) {
-    invalidity.password = "비밀번호 길이는 5~20자입니다.";
+  if (member.password.length < 8 || member.password.length > 20) {
+    invalidity.password = "비밀번호 길이는 8~20자입니다.";
     return;
   }
 

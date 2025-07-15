@@ -18,6 +18,7 @@ public class RegisterByPatientDTO {
     private String password;
 
     @NotBlank
+    @Size(max = 20)
     private String name;
 
     @NotBlank
