@@ -60,7 +60,7 @@ const member = reactive({
   phone: '',
   rrn: ''
 });
-const passwordCheck = ref(''); // TODO: lodash로 처리하기
+const passwordCheck = ref('');
 const invalidity = reactive({
   userid: '',
   password: '',
@@ -79,7 +79,6 @@ const touched = reactive({
 });
 
 async function registerPatient() {
-  // TODO: 실패 시 이동 안 함
   checkIdValidity();
   checkPasswordValidity();
   checkPasswordCheckValidity();
