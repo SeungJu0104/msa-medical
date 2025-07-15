@@ -28,7 +28,7 @@
         <RouterLink :to="{ name: 'home' }" class="navbar-brand me-4">로고</RouterLink>
         <ul class="navbar-nav mx-auto mb-0 overflow-auto">
           <li class="nav-item px-2">
-            <RouterLink :to="{ name: 'regReservation' }" class="nav-link fw-bold fs-lg">진료 예약</RouterLink>
+            <RouterLink :to="{ name: 'regReservationByPatient' }" class="nav-link fw-bold fs-lg">진료 예약</RouterLink>
           </li>
           <li class="nav-item px-2">
             <RouterLink :to="{ name: 'reservationListByPatient' }" class="nav-link fw-bold fs-lg">예약 확인</RouterLink>
