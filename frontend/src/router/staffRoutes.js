@@ -1,7 +1,7 @@
-const Search = () => import ('@/staff/views/Search.vue');
 const RegPatientByStaff = () => import ("@/staff/views/RegPatientByStaff.vue");
 const StaffMainView = () => import("@/staff/views/StaffMainView.vue");
-const RegReservation = () => import('@/shared/views/RegReservation.vue')
+const RegReservationByStaff = () => import('@/reservation/views/RegReservationByStaff.vue')
+const AcceptPatientByStaff = () => import('@/staff/views/AcceptPatientByStaff.vue')
 
 export const staffRoutes = [
 
@@ -11,18 +11,18 @@ export const staffRoutes = [
         component: StaffMainView,
     },
     {
-        path: 'search',
-        name: 'search',
-        component: Search
-    },
-    {
-        path: 'regReservation',
-        name: 'regReservation',
-        component: RegReservation,
+        path: 'regReservationByStaff',
+        name: 'regReservationByStaff',
+        component: RegReservationByStaff,
     },
     {
         path: 'regPatientByStaff',
         name: 'regPatientByStaff',
         component: RegPatientByStaff
     },
+    {
+        path: 'acceptPatientByStaff',
+        name: 'acceptPatientByStaff',
+        component: AcceptPatientByStaff
+    }
 ]
