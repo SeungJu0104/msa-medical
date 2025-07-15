@@ -4,16 +4,16 @@
     <template v-else>
       <form>
         <div class="mb-3">
-          <label class="form-label">아이디</label>
+          <Label>아이디</Label>
           <input type="text" :value="member.userid" class="form-control" disabled>
         </div>
         <div class="mb-3">
-          <label for="name" class="form-label">이름</label>
+          <Label for="name">이름</Label>
           <input type="text" @input="checkNameValidity" v-model="member.name" class="form-control" id="name">
           <div v-show="invalidity.name" v-text="invalidity.name" class="invalid-feedback d-block"></div>
         </div>
         <div class="mb-3">
-          <label for="phone" class="form-label">전화번호</label>
+          <Label for="phone">전화번호</Label>
           <input type="text" @input="checkPhoneValidity" v-model="member.phone" class="form-control" id="phone">
           <div v-show="invalidity.phone" v-text="invalidity.phone" class="invalid-feedback d-block"></div>
         </div>
@@ -27,6 +27,7 @@
 </template>
 
 <script setup>
+import Label from '@/common/components/Label.vue';
 import Loading from '@/common/components/Loading.vue';
 import { customFetch } from '@/util/customFetch';
 import { ENDPOINTS } from '@/util/endpoints';
