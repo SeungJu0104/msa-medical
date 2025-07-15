@@ -4,8 +4,6 @@
     </aside>
     <section class="center">
       <div class="center-inner">
-      <WaitingReservationParent />
-
     <div class="history-area" v-if="selectedPatientUuid">
     <VisitHistory
      v-if="selectedPatientUuid"
