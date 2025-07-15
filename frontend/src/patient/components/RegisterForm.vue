@@ -106,20 +106,30 @@ async function registerPatient() {
 }
 
 async function checkIdDuplicate() {
-  if (member.userid.length !== 0) {
-    const userid = member.userid;
-    const response = await customFetch(ENDPOINTS.auth.checkId, {
-      params: { userid }
-    });
-    if (!response.data.exists) {
-      validId = userid;
-      if (validId === member.userid) {
-        invalidity.userid = "";
-      }
-      return;
-    }
-    invalidity.userid = "해당 아이디가 이미 존재합니다.";
+  touched.userid = true;
+
+  if (!REGEX_PATTERN.USERID.test(member.userid)) {
+    invalidity.userid = "아이디는 영문, 숫자, 밑줄(_)로만 구성해주세요.";
+    return;
   }
+
+  if (member.userid.length < 5 || member.userid.length > 20) {
+    invalidity.userid = "아이디 길이는 5~20자입니다.";
+    return;
+  }
+
+  const userid = member.userid;
+  const response = await customFetch(ENDPOINTS.auth.checkId, {
+    params: { userid }
+  });
+  if (!response.data.exists) {
+    validId = userid;
+    if (validId === member.userid) {
+      invalidity.userid = "";
+    }
+    return;
+  }
+  invalidity.userid = "해당 아이디가 이미 존재합니다.";
 }
 
 function checkIdValidity() {
