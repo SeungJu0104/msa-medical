@@ -5,16 +5,16 @@
       <form>
         <div class="mb-3">
           <Label>아이디</Label>
-          <input type="text" :value="member.userid" class="form-control" disabled>
+          <Input v-model="member.userid" disabled />
         </div>
         <div class="mb-3">
           <Label for="name">이름</Label>
-          <input type="text" @input="checkNameValidity" v-model="member.name" class="form-control" id="name">
+          <Input @input="checkNameValidity" v-model="member.name" id="name" />
           <div v-show="invalidity.name" v-text="invalidity.name" class="invalid-feedback d-block"></div>
         </div>
         <div class="mb-3">
           <Label for="phone">전화번호</Label>
-          <input type="text" @input="checkPhoneValidity" v-model="member.phone" class="form-control" id="phone">
+          <Input @input="checkPhoneValidity" v-model="member.phone" id="phone" />
           <div v-show="invalidity.phone" v-text="invalidity.phone" class="invalid-feedback d-block"></div>
         </div>
       </form>
@@ -27,6 +27,7 @@
 </template>
 
 <script setup>
+import Input from '@/common/components/Input.vue';
 import Label from '@/common/components/Label.vue';
 import Loading from '@/common/components/Loading.vue';
 import { customFetch } from '@/util/customFetch';

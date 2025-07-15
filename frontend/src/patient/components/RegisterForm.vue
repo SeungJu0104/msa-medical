@@ -4,34 +4,34 @@
       <div class="mb-3">
         <Label for="userid">아이디</Label>
         <div class="input-group">
-          <input type="text" @input="checkIdValidity" class="form-control" id="userid" v-model="member.userid">
+          <Input @input="checkIdValidity" id="userid" v-model="member.userid" />
           <button type="button" @click="checkIdDuplicate" class="btn btn-outline-primary">중복확인</button>
         </div>
         <div v-show="invalidity.userid" v-text="invalidity.userid" class="invalid-feedback d-block"></div>
       </div>
       <div class="mb-3">
         <Label for="password">비밀번호</Label>
-        <input type="password" @input="checkPasswordValidity" class="form-control" id="password" v-model="member.password">
+        <Input type="password" @input="checkPasswordValidity" id="password" v-model="member.password" />
         <div v-show="invalidity.password" v-text="invalidity.password" class="invalid-feedback d-block"></div>
       </div>
       <div class="mb-3">
         <Label for="passwordCheck">비밀번호 확인</Label>
-        <input type="password" @input="checkPasswordCheckValidity" class="form-control" id="passwordCheck" v-model="passwordCheck">
+        <Input type="password" @input="checkPasswordCheckValidity" id="passwordCheck" v-model="passwordCheck" />
         <div v-show="invalidity.passwordCheck" v-text="invalidity.passwordCheck" class="invalid-feedback d-block"></div>
       </div>
       <div class="mb-3">
         <Label for="name">이름</Label>
-        <input type="text" @input="checkNameValidity" class="form-control" id="name" v-model="member.name">
+        <Input @input="checkNameValidity" id="name" v-model="member.name" />
         <div v-show="invalidity.name" v-text="invalidity.name" class="invalid-feedback d-block"></div>
       </div>
       <div class="mb-3">
         <Label for="rrn">주민번호</Label>
-        <input type="text" @input="checkRrnValidity" class="form-control" id="rrn" v-model="member.rrn">
+        <Input @input="checkRrnValidity" id="rrn" v-model="member.rrn" />
         <div v-show="invalidity.rrn" v-text="invalidity.rrn" class="invalid-feedback d-block"></div>
       </div>
       <div class="mb-3">
         <Label for="phone">전화번호</Label>
-        <input type="text" @input="checkPhoneValidity" class="form-control" id="phone" v-model="member.phone">
+        <Input @input="checkPhoneValidity" id="phone" v-model="member.phone" />
         <div v-show="invalidity.phone" v-text="invalidity.phone" class="invalid-feedback d-block"></div>
       </div>
     </form>
@@ -43,6 +43,7 @@
 </template>
 
 <script setup>
+import Input from '@/common/components/Input.vue';
 import Label from '@/common/components/Label.vue';
 import { customFetch } from '@/util/customFetch';
 import { ENDPOINTS } from '@/util/endpoints';
