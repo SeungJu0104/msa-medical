@@ -5,7 +5,7 @@
 
 
 .sidebar {
-    width: 200px;
+    min-width: 150px;
     height: 100vh;
     background-color: #fff;
     border-right: 1px solid #ddd;
