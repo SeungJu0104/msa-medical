@@ -10,6 +10,7 @@ import {errorMessage} from "@/util/errorMessage.js";
 import {useUserStore} from "@/stores/userStore.js";
 import {useRouter, useRoute} from "vue-router";
 import '@/assets/css/RegReservation.css';
+import '@/assets/css/icon.css';
 
   const userInfo = computed(() => useUserStore().user);
   const router = useRouter();
@@ -182,7 +183,10 @@ import '@/assets/css/RegReservation.css';
 
 <template>
   <div class="reg-reservation-card">
-    <div class="reg-reservation-title">예약등록</div>
+    <div class="reg-reservation-title">
+      <img src="@/assets/icons/reservation.png" alt="예약" class="icon"/>
+      예약등록
+    </div>
     <form class="reg-reservation-form" @submit.prevent>
       <!-- 의사 선택 -->
       <div class="reg-form-row">
