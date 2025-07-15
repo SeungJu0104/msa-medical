@@ -2,6 +2,10 @@
 import WaitingStatus from "@/shared/components/WaitingStatus.vue";
 import dayjs from "dayjs";
 import {reactive} from "vue";
+import { inject } from 'vue'
+
+const selectedPatientUuid = inject('selectedPatientUuid')
+const selectedDoctorUuid = inject('selectedDoctorUuid')
 
 const {value, status, date} = defineProps({
                 value: Object,
@@ -22,6 +26,8 @@ const onStatusChange = (patient, updateStatus) => {
 
 const getPatientInfo = (patient) => {
   emit('getPatientInfo', {patientUuid: patient.patientUuid,doctorUuid: patient.doctorUuid,});
+  selectedPatientUuid.value = patient.patientUuid
+  selectedDoctorUuid.value = patient.doctorUuid
 }
 
 </script>
