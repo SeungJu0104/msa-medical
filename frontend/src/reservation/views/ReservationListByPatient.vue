@@ -4,8 +4,9 @@ import {computed, onMounted, reactive, ref} from "vue";
 import dayjs from "dayjs";
 import {patientMethods} from "@/reservation/util/reservation.js";
 import {useUserStore} from "@/stores/userStore.js";
+import {common} from "@/util/common.js";
+import {errorMessage} from "@/util/errorMessage.js";
 
-  // 선택한 목록(들)
   const selectedListByPatient = new Set();
   const reservationList = ref();
   const userInfo = computed(() => useUserStore().user);
@@ -18,8 +19,6 @@ import {useUserStore} from "@/stores/userStore.js";
       selectedListByPatient.delete(e.target.value);
     }
 
-    console.log(selectedListByPatient);
-
   }
 
   const reservationListPerPatient = async () => {
@@ -30,7 +29,18 @@ import {useUserStore} from "@/stores/userStore.js";
 
   const cancelReservation = async () => {
 
+    if(selectedListByPatient.size === 0) {
+      common.alertError(errorMessage.reservation.noDataForCancel);
+      return;
+    }
+
+    if(!window.confirm("예약 취소하시겠습니까?")) {
+      return;
+    }
+
     await patientMethods.cancelReservation(selectedListByPatient);
+    selectedListByPatient.clear();
+    await reservationListPerPatient();
 
   }
 
