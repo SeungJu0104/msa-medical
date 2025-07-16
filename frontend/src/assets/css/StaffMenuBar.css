@@ -1,0 +1,37 @@
+.menuContainer {
+    border: 1px;
+    color: black;
+}
+
+
+.sidebar {
+    min-width: 150px;
+    height: 100vh;
+    background-color: #fff;
+    border-right: 1px solid #ddd;
+    padding: 16px;
+    box-sizing: border-box;
+}
+
+.sidebar nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menu-item {
+    margin-bottom: 12px;
+}
+
+.menu-item a, .menu-clickable {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    color: #333;
+    padding: 8px;
+    border-radius: 4px;
+}
+
+.menu-item a:hover, .menu-clickable:hover {
+    background-color: #e6f0ff;
+}
