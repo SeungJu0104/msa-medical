@@ -10,7 +10,7 @@ import {REGEX_PATTERN} from "@/util/RegexPattern.js";
 import {useRoute, useRouter } from "vue-router";
 import {successMessage} from "@/util/successMessage.js";
 import '@/assets/css/AcceptPatientByStaff.css'
-import '@/assets/css/icon.css'
+import '@/assets/css/icons.css'
 
   const selectedVal = reactive({
     doctorUuid: null,

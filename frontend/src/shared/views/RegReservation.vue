@@ -10,7 +10,7 @@ import {errorMessage} from "@/util/errorMessage.js";
 import {useUserStore} from "@/stores/userStore.js";
 import {useRouter, useRoute} from "vue-router";
 import '@/assets/css/RegReservation.css';
-import '@/assets/css/icon.css';
+import '@/assets/css/icons.css';
 
   const userInfo = computed(() => useUserStore().user);
   const router = useRouter();
