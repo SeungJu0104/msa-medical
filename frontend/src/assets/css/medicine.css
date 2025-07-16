@@ -38,7 +38,7 @@
     width: 55px;
     height: 38px;
     padding: 0 16px;
-    font-size: 12px;
+    font-size: 9px;
     border: none;
     border-radius: 6px;
     cursor: pointer;
@@ -64,24 +64,19 @@
     padding: 6px 8px;
     cursor: pointer;
   }
-  
   .medicine-search-search-results li:hover {
     background-color: #f0f0f0;
   }
   
   .medicine-search-selected-list {
-    max-height: 200px;
-    max-width: 100%;
-    padding: 4px 6px; 
-    overflow-y: auto; 
-    margin-top: 12px;
-    list-style: none;
-    padding-left: 0;
-    padding: 8px;             
-    border: 1px solid #ccc;   
-    border-radius: 6px;        
-    background-color: #f9f9f9;
-  
+  min-height: 120px;    
+  max-height: 120px;    
+  overflow-y: auto;            
+  padding: 6px;            
+  list-style: none;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #f9f9f9;
   }
   
   .medicine-search-selected-list li {

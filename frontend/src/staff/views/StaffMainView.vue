@@ -1,17 +1,23 @@
 <template>
-    <div class="body">
+  <div class="body">
     <aside class="left">
     </aside>
     <section class="center">
-      <div class="center-inner">
-    <div class="history-area" v-if="selectedPatientUuid">
-    <VisitHistory
-     v-if="selectedPatientUuid"
-        :patientUuid="selectedPatientUuid"
-        :doctorUuid="selectedDoctorUuid"
-        @back="goBack"
-      />
-    </div>
+    <div class="center-inner">
+      <WaitingReservationParent />
+
+      <div class="history-area">
+        <VisitHistory
+          v-if="currentView === 'visit'"
+          :patientUuid="selectedPatientUuid"
+          :doctorUuid="selectedDoctorUuid"
+          @back="resetView"/>
+        <Payment
+          v-if="currentView === 'payment'"
+          :item="selectedItem"
+          :key="selectedItem.id"
+          @back="resetView"/>
+      </div>
     </div>
     </section>
     
@@ -27,19 +33,26 @@ import ChatRooms from '@/components/chat/ChatRooms.vue';
 import WaitingReservationParent from '../components/WaitingReservationParent.vue';
 import StaffMenuBar from '../components/StaffMenuBar.vue';
 import VisitHistory from '@/components/diagnosis/VisitHistory.vue';
-import { provide, ref } from 'vue'
+import { onMounted, provide, ref } from 'vue'
+import { getStompClient, subscribeChannel } from '@/util/stompMethod';
+import Payment from '@/components/payment/Payment.vue';
 
 const selectedPatientUuid = ref(null)
 const selectedDoctorUuid = ref(null)
-
+const selectedItem = ref(null)
+const currentView = ref(null)
+provide('currentView', currentView);
 provide('selectedPatientUuid', selectedPatientUuid)
 provide('selectedDoctorUuid', selectedDoctorUuid)
+provide('selectedItem', selectedItem)
 
-const goBack = () => {
-  selectedPatientUuid.value = null
-  selectedDoctorUuid.value = null
-  
-}
+const resetView = () => {
+  currentView.value = null;
+  selectedPatientUuid.value = null;
+  selectedDoctorUuid.value = null;
+  selectedItem.value = null;
+};
+
 
 </script>
 
@@ -51,11 +64,6 @@ const goBack = () => {
     padding: 0;
   }
   
-  /* .left {
-    width:10vw;
-    background: #f0f0f0;
-  } */
-  
   .center {
     flex: 1;
     text-align: center;
@@ -64,12 +72,12 @@ const goBack = () => {
   }
   
   .right {
-    width: 300px;
+    width: 250px; 
     background: #ffe0e0;
     height: 100vh;
     display: flex;
-    flex-direction: column; /* 수직 정렬 기준 설정 */
-    justify-content: flex-start; /* 위로 붙이기 */
+    flex-direction: column; 
+    justify-content: flex-start; 
   }
   .center-inner {
   display: flex;
@@ -81,17 +89,11 @@ const goBack = () => {
 .history-area {
   padding: 1rem;
   flex: 1;
-  background-color: #f9f9f9;
+  background-color: #e6f0ff;
   padding: 16px;
   border-radius: 8px;
+  max-height: 90vh;
   min-height: 90vh;
   overflow-y: auto;
 }
-  /* .history-area {
-  flex: 1;
-  min-width: 300px;
-  background-color: #f9f9f9;
-  padding: 16px;
-  border-radius: 8px;
-} */
 </style>

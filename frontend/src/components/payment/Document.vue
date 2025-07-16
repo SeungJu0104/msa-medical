@@ -1,8 +1,8 @@
 <template>
     <div>
-        <h2>문서 발급</h2>
-        <button class="btn btn-primary" @click="selectedType = 'DiseaseDocument'">진단서</button>
-        <button class="btn btn-primary" @click="selectedType = 'MedicineDocument'"  >처방전</button>
+        <h5>문서 발급</h5>
+        <button class="btn btn-outline-secondary" @click="selectedType = 'DiseaseDocument'">진단서</button>
+        <button class="btn btn-outline-secondary" @click="selectedType = 'MedicineDocument'"  >처방전</button>
     </div>
     <Suspense>
         <div v-if="selectedType ==='DiseaseDocument'">
@@ -20,7 +20,6 @@ import DiseaseDocument from './DiseaseDocument.vue';
 import MedicineDocument from './MedicineDocument.vue';
 import { customFetch } from '@/util/customFetch';
 import { ENDPOINTS } from '@/util/endpoints';
-import { nextTick } from 'vue'
 
     const props = defineProps({
         id:Number

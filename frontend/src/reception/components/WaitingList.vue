@@ -19,7 +19,6 @@ import VisitHistory from "@/components/diagnosis/VisitHistory.vue";
   const selectedDoctorUuid = ref(null)
   let client;
 
-
   const refreshWaitingList = async () => {
     await Promise.all([
       waitingListStore.promiseAll(),

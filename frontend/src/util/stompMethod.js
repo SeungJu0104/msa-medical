@@ -76,14 +76,9 @@ async function getNewAccessToken() {
   return newAccessToken;
 }
 
-const subscriptions = new Map();
 export function subscribeChannel(client, destination, callback) {
-  if (subscriptions.has(destination)) {
-    return subscriptions.get(destination);
-  }
-
   try {
-    const sub = client.subscribe(destination, (message) => {
+    return client.subscribe(destination, (message) => {
       try {
         const payload = JSON.parse(message.body);
         callback(payload);
@@ -91,14 +86,11 @@ export function subscribeChannel(client, destination, callback) {
         console.error("메시지 파싱 오류:", e);
       }
     });
-
-    subscriptions.set(destination, sub);
-    return sub;
   } catch (err) {
     console.error(`구독 실패 (${destination}):`, err);
     return null;
   }
-}  
+}
 
   export function sendMsg(client, destination, Object) {
     try {

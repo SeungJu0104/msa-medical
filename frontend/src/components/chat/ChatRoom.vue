@@ -4,15 +4,23 @@
         <h3>{{state.roomName}} </h3>
         <button class="btn-close" aria-label="Close" @click="exit"></button>
         </div>
-      <div class="chat-room-box">
-        <div v-for="(msg, idx) in state.messages" :key="idx" :class="msg.uuid === uuid ? 'my-msg' : 'other-msg'">
-            <div v-if="shouldShowName(idx, msg)">
-                <strong>{{ msg.name }}</strong>
-            </div>
-                {{ msg.content }}<br />
-            <small>{{ dayjs(msg.createDate).format('A h:mm:ss') }}</small>
-            </div>
+        <div class="chat-room-box">
+      <div
+        v-for="(msg, idx) in state.messages"
+        :key="msg.messageId || idx">
+        <div v-if="shouldShowDate(idx)" class="date-divider">
+          {{ dayjs(msg.createDate).format('YYYY.MM.DD') }}
         </div>
+
+        <div :class="msg.uuid === uuid ? 'my-msg' : 'other-msg'">
+          <div v-if="shouldShowName(idx, msg)">
+            <strong>{{ msg.name }}</strong>
+          </div>
+          {{ msg.content }}<br />
+          <small>{{ dayjs(msg.createDate).format('A h:mm:ss') }}</small>
+        </div>
+      </div>
+    </div>
         <div class="chat-room-input">
             <input v-model="state.content" class="form-control" @keyup.enter="sendMessage" @keyup.esc ="exit" placeholder="메시지를 입력하세요" />
             <button class="btn btn-warning"  @click="sendMessage">전송</button>
@@ -141,4 +149,11 @@ return prev.uuid !== msg.uuid;
 
 watch(() => state.messages, () => {
 scrollToBottom();}, { deep: true });
+
+function shouldShowDate(index) {
+  if (index === 0) return true;
+  const current = dayjs(state.messages[index].createDate).format('YYYY-MM-DD');
+  const prev = dayjs(state.messages[index - 1].createDate).format('YYYY-MM-DD');
+  return current !== prev;
+}
 </script>

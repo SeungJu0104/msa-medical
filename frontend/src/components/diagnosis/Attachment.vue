@@ -2,7 +2,7 @@
   <div class="attachment-card" @click="triggerFileInput">
     <!-- 상단 제목 -->
     <div class="attachment-card-header">
-      <span>📎 이미지</span>
+      <span>이미지</span>
     </div>
 
     <!-- 이미지 미리보기 리스트 -->
