@@ -127,7 +127,6 @@ import '@/assets/css/icons.css';
       ...omit(selectedVal, ['reservationDate', 'time', 'name']), // date와 time, name 속성을 제외한 나머지 속성들을 복사
       dateTime:
           dayjs(`${common.dateFormatter(selectedVal.reservationDate, 'YYYY-MM-DD')}T${selectedVal.time}:00`).toDate().toISOString()
-      // `${dayjs(selectedVal.reservationDate).format('YYYY-MM-DD')}T${selectedVal.time}:00`
 
     }, router, userInfo.value.role);
 
