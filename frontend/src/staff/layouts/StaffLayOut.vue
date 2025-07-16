@@ -7,6 +7,7 @@ import WaitingReservationParent from "@/staff/components/WaitingReservationParen
 import Header from "@/staff/components/Header.vue";
 import Footer from "@/patient/layouts/Footer.vue";
 import ChatRooms from "@/components/chat/ChatRooms.vue";
+import "@/assets/css/StaffLayOut.css";
 const modalOpen = ref(false)
 
 </script>
@@ -30,37 +31,3 @@ const modalOpen = ref(false)
     <Footer/>
   </div>
 </template>
-<style scoped>
-.mainSide {
-  border-left: 1px solid #ddd;
-  width: 1200px;
-  /* flex: 1; */
-}
-
-.leftSide {
-  display: flex;              /* 가로 정렬 */
-  flex-direction: row;        /* 기본값이지만 명시하면 더 명확함 */
-  gap: 5px;                 /* 컴포넌트 사이 간격 */
-  align-items: flex-start;    /* 높이 맞추기 (필요에 따라 center) */
-  margin-right: 5px;
-  height: 90vh;
-  min-width: 350px;
-}
-
-.layout-container {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-.rightSide {
-    width: 15%; 
-    background: #dce4ee;
-    height: 100vh;
-    display: flex;
-    flex-direction: column; 
-    justify-content: flex-start; 
-  }
-
-
-</style>
