@@ -13,9 +13,12 @@ export const staffRoutes = [
         component: StaffLayOut,
         beforeEnter: (to, from, next) => {
           const role = useUserStore().user?.role;
-          if ([roles.PATIENT].includes(role)) {
+          if ([roles.PATIENT].includes(role) || role === null || role === undefined) {
             return next({ name: 'home' });
           }
+        //   if(roles.ADMIN === role) {
+        //     return next({ name: 'adminMain' });
+        //   }
           next();
         },
         children: [
