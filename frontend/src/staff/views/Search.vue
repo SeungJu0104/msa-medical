@@ -24,7 +24,7 @@
         <table v-if="runSearch && searchRes.length > 0">
           <thead>
           <tr>
-            <th>이름</th>
+            <th @click="detail">이름</th>
             <th>생년월일</th>
             <th>전화번호</th>
             <th>예약</th>
@@ -33,7 +33,7 @@
           </thead>
           <tbody>
           <tr v-for="res in searchRes" :key="res.uuid">
-            <td>{{ res.name }}</td>
+            <td @click="openVisitHistory(res)">{{ res.name }}</td>
             <td>{{ res.rrn }}</td>
             <td>{{ res.phone }}</td>
             <td><button @click="reservation(res.uuid)">추가</button></td>
@@ -61,7 +61,9 @@ import { common } from "@/util/common.js"
 import { errorMessage } from "@/util/errorMessage.js"
 import '@/assets/css/search.css'
 import '@/assets/css/icons.css'
-
+import { usePatientViewStore } from '@/stores/patientViewStore.js'
+  
+  const store = usePatientViewStore()
   const searchVal = reactive({ input: "" })
   const searchRes = ref([])
   const runSearch = ref(false)
@@ -104,6 +106,12 @@ import '@/assets/css/icons.css'
     emit('close');
   }
 
+  const openVisitHistory = (res) =>{
+    store.setVisitView({
+      patientUuid: res.uuid,
+      name :res.name
+    })
+    emit('close')
+  }
 </script>
-
 
