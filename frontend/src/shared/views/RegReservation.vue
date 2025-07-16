@@ -100,11 +100,23 @@ import '@/assets/css/icons.css';
   const goHome = async () => {
 
     if(!reservationChk.timeChk) {
-      await common.goStaffHome();
+      routeToHome();
+      // await common.goStaffHome();
     }
 
     if(await patientMethods.cancelHoldingReservation(selectedVal.patientUuid)) {
-      await common.goStaffHome();
+      routeToHome();
+      // await common.goStaffHome();
+    }
+
+  }
+
+  const routeToHome = () => {
+
+    if(userInfo.value.role === roles.PATIENT) {
+      common.goHome();
+    } else {
+      common.goStaffHome();
     }
 
   }
@@ -129,6 +141,7 @@ import '@/assets/css/icons.css';
           dayjs(`${common.dateFormatter(selectedVal.reservationDate, 'YYYY-MM-DD')}T${selectedVal.time}:00`).toDate().toISOString()
 
     }, router, userInfo.value.role);
+
 
   }
 
