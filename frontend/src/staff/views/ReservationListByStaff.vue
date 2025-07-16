@@ -95,6 +95,7 @@ const refreshWaitingList = async () => {
 
 onBeforeMount(async () => {
   await refreshWaitingList()
+
 });
 
 const statusSub = (client) => {

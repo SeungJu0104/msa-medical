@@ -47,8 +47,10 @@ public class SecurityConfig {
         return http
             .csrf((csrf) -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/attachment/**").permitAll()
                 .anyRequest().authenticated()
             )
+            
             .exceptionHandling(exceptionHandling -> exceptionHandling
                 .authenticationEntryPoint(unauthorizedEntryPoint())
                 .accessDeniedHandler(forbiddenHandler())

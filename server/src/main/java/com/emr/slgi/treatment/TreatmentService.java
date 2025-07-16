@@ -31,7 +31,7 @@ public class TreatmentService {
 	private final DiagnosisDAO diagnosisDAO;
 	private final AttachmentDAO attachmentDAO;
 	private final ReceptionDAO receptionDAO;
-	private final SimpMessageSendingOperations messagingTemplate;
+	
 	private final PayMentDAO payMentDAO;
 	
 	// 대기에서 접수 상태 전환시에 만들어진다.
@@ -67,7 +67,7 @@ public class TreatmentService {
 		receptionDAO.changeReceptionStatusToComplete(treatment.getUuid());
 		
 		payMentDAO.insertPayMent(treatment.getId());
-		messagingTemplate.convertAndSend("/sub/status", "{}");
+		
 	}
 
 	public PageResponseDTO<Treatment> getHistory(TreatmentHitoryRequestDTO treatmentHitoryRequestDTO) {

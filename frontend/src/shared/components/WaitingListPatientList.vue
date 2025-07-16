@@ -5,8 +5,9 @@ import {reactive} from "vue";
 import { inject } from 'vue'
 import "@/assets/css/waitingreservaion.css"
 
-  const selectedPatientUuid = inject('selectedPatientUuid')
-  const selectedDoctorUuid = inject('selectedDoctorUuid')
+const currentView = inject('currentView');
+const selectedPatientUuid = inject('selectedPatientUuid')
+const selectedDoctorUuid = inject('selectedDoctorUuid')
 
   const {value, status, date} = defineProps({
                   value: Object,

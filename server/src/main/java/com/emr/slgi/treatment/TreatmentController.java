@@ -1,7 +1,6 @@
 package com.emr.slgi.treatment;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
@@ -17,10 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.emr.slgi.diagnosis.Diagnosis;
 import com.emr.slgi.diagnosis.DiagnosisDAO;
 import com.emr.slgi.page.TreatmentHitoryRequestDTO;
-import com.emr.slgi.prescription.Prescription;
 import com.emr.slgi.prescription.PrescriptionDAO;
 
 import lombok.RequiredArgsConstructor;
@@ -44,13 +41,12 @@ public class TreatmentController {
 		}
 		treatmentService.totalInsert(data,files);
 		
-	
+		messagingTemplate.convertAndSend("/sub/status", "{}");
 		return ResponseEntity.ok().build();
 	}
 	
 	@GetMapping("/history")
 	public ResponseEntity<Object> history(@ModelAttribute TreatmentHitoryRequestDTO treatmentHitoryRequestDTO){
-		messagingTemplate.convertAndSend("/sub/status", "{}");
 		return ResponseEntity.ok(treatmentService.getHistory(treatmentHitoryRequestDTO));
 	}
 	

@@ -17,7 +17,6 @@ import VisitHistory from "@/components/diagnosis/VisitHistory.vue";
   const receptionStatusList = ref();
   let client;
 
-
   const refreshWaitingList = async () => {
     await Promise.all([
       waitingListStore.promiseAll(),

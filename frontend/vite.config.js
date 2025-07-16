@@ -42,6 +42,10 @@ export default defineConfig({
         ws: true,
         changeOrigin: true,
       },
+      "/attachment": {
+        target: "http://localhost:8080",
+        changeOrigin: true,
+      },
     }
   }
 })
