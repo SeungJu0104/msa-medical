@@ -33,10 +33,9 @@
         <p>• {{ a.originalName }}</p>
         <div v-if="a.contentType.startsWith('image/')">
           <img
-              :src="a.blobUrl"
+            :src="`/attachment/${a.fileName}`"
             alt="첨부 이미지"
-            class="attachment-image"
-          />
+            class="attachment-image"/>
         </div>
       </li>
     </ul>
@@ -48,7 +47,7 @@
 <script setup>
 import { customFetch } from '@/util/customFetch'
 import { ENDPOINTS } from '@/util/endpoints'
-import { onMounted, reactive } from 'vue'
+import { onBeforeUnmount, onMounted, reactive } from 'vue'
 import Document from '../payment/Document.vue'
 
 const props = defineProps({ id: Number })
@@ -59,7 +58,7 @@ const state = reactive({
   prescriptions: [],
   attachments: []
 })
-
+const blobUrls = []
 onMounted(async () => {
   try {
     const response = await customFetch(ENDPOINTS.treatment.historyDetail(props.id))
@@ -69,28 +68,12 @@ onMounted(async () => {
       state.diagnosis = data.diagnosis
       state.prescriptions = data.prescriptions
       state.attachments = data.attachments
-
-      const attachmentsWithPreview = await Promise.all(
-        data.attachments.map(async (a) => {
-          // 이미지일 경우에만 blob URL 생성
-          if (a.contentType.startsWith('image/')) {
-            const { data: blob } = await customFetch(
-              ENDPOINTS.treatment.getFile(a.fileName),
-              {
-    responseType: 'blob',
-  }
-            )
-            a.blobUrl = URL.createObjectURL(blob)
-          }
-          return a
-        })
-      )
-      state.attachments = attachmentsWithPreview
     }
   } catch (error) {
     console.error('에러', error)
   }
 })
+
 </script>
 
 <style scoped>
