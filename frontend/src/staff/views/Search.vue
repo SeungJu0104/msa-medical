@@ -60,7 +60,7 @@ import { ENDPOINTS } from "@/util/endpoints.js"
 import { common } from "@/util/common.js"
 import { errorMessage } from "@/util/errorMessage.js"
 import '@/assets/css/search.css'
-import '@/assets/css/icon.css'
+import '@/assets/css/icons.css'
 
   const searchVal = reactive({ input: "" })
   const searchRes = ref([])
