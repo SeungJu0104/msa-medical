@@ -147,7 +147,6 @@ onMounted(() => {
           <div v-else>
             <WaitingListPatientList
               @updateStatus="handleUpdateStatus"
-              @getPatientInfo="getPatientInfo"
               :value="list.patientList"
               :status="reservationStatusList"
               :date="selectedDate.date"
