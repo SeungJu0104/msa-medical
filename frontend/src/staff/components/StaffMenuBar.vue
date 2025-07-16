@@ -5,6 +5,7 @@ import LogoutButton from "@/auth/components/LogoutButton.vue";
 import {defineEmits} from 'vue'
 
 const emit = defineEmits(['open']);
+
 const action = () => {
   emit('open');
 }
