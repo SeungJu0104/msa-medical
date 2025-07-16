@@ -47,7 +47,7 @@ public class SecurityConfig {
         return http
             .csrf((csrf) -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/attachment/**").permitAll()
+                .requestMatchers("/image/**").permitAll() //지울예정
                 .anyRequest().authenticated()
             )
             
