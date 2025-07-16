@@ -6,6 +6,7 @@ import {ref} from "vue";
 import WaitingReservationParent from "@/staff/components/WaitingReservationParent.vue";
 import Header from "@/staff/components/Header.vue";
 import Footer from "@/patient/layouts/Footer.vue";
+import ChatRooms from "@/components/chat/ChatRooms.vue";
 const modalOpen = ref(false)
 
 </script>
@@ -22,13 +23,17 @@ const modalOpen = ref(false)
         <router-view/>
         <Search v-if="modalOpen" @close="modalOpen = false"/>
       </div>
+      <div class="rightSide">
+        <ChatRooms/>
+      </div>
     </div>
     <Footer/>
   </div>
 </template>
-<style>
+<style scoped>
 .mainSide {
   border-left: 1px solid #ddd;
+  width: 1200px;
   /* flex: 1; */
 }
 
@@ -47,6 +52,15 @@ const modalOpen = ref(false)
   flex-direction: column;
   min-height: 100vh;
 }
+
+.rightSide {
+    width: 15%; 
+    background: #dce4ee;
+    height: 100vh;
+    display: flex;
+    flex-direction: column; 
+    justify-content: flex-start; 
+  }
 
 
 </style>

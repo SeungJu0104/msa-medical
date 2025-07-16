@@ -35,7 +35,7 @@
 
 .scroll {
 
-     height:90vh;
+     height:98vh;
     /*height: calc(100vh - 상단 Header, Footer 길이);*/
     width: 100%;
     overflow-y: auto;
