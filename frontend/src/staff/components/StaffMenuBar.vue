@@ -3,11 +3,17 @@ import '@/assets/css/StaffMenuBar.css'
 import '@/assets/css/icons.css'
 import LogoutButton from "@/auth/components/LogoutButton.vue";
 import {defineEmits} from 'vue'
+import { useRouter } from 'vue-router';
 
 const emit = defineEmits(['open']);
+const router = useRouter();
 
 const action = () => {
   emit('open');
+}
+
+const goStaffMain = () => {
+  router.push({ name: 'staffMain' });
 }
 
 const menuItems = [
@@ -26,6 +32,7 @@ const menuItems = [
 <template>
   <div class="sidebar">
     <nav>
+      <img class="logo" src="@/assets/logo.png" @click="goStaffMain" />
       <ul>
         <li v-for="item in menuItems" :key="item.label" class="menu-item">
           <router-link v-if="item.to" :to="item.to">
