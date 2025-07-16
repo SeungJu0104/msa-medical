@@ -1,29 +1,28 @@
 <template>
-    <div class="paymentList">
-      <div  class="payment-item"  v-for="item in state.list"  :key="item.id" >
-        <!-- 이름 버튼 -->
-        <button  class="btn btn-primary"  @click="namePayment(item)"> {{ item.patientName }}
-        </button>
-  
-        <!-- 상태 배지 -->
-        <span 
-          class="btn btn-primary"
-          :class="item.paymentStatus === 'Y' ? 'bg-success' : 'bg-secondary'" >
-          {{ item.paymentStatus === 'Y' ? '결제완료' : '결제대기 중' }}
-        </span>
+  <div class="paymentList">
+    <div class="payment-card" v-for="item in state.list" :key="item.id">
+      <div class="payment-name" @click="namePayment(item)">
+        {{ item.patientName }}
       </div>
-     
+      <div
+        class="payment-badge"
+        :class="item.paymentStatus === 'Y' ? 'badge-paid' : 'badge-wait'">
+        {{ item.paymentStatus === 'Y' ? '결제완료' : '결제대기 중' }}
+      </div>
     </div>
-  </template>
+  </div>
+</template>
   
   
 <script setup>
 import { customFetch } from '@/util/customFetch';
 import { ENDPOINTS } from '@/util/endpoints';
-import { computed, inject, onMounted, reactive, ref } from 'vue';
+import { onMounted, reactive } from 'vue';
 import { getStompClient, subscribeChannel } from '@/util/stompMethod';
-const currentView = inject('currentView');
-const selectedItem = inject('selectedItem');
+import { usePatientViewStore } from '@/stores/patientViewStore'
+import '@/assets/css/Payment.css'
+const store = usePatientViewStore()
+
 let client ;
 const state = reactive({
     list : [],
@@ -54,31 +53,6 @@ const loadPaymentList = async () => {
     
 }
 const namePayment = (item) => {
-    selectedItem.value= item;
-    currentView.value = 'payment';
+    store.setPaymentView(item);
 }
 </script>
-
-<style scoped>
-.paymentList {
-  display: flex;
-  flex-direction: column;
-  gap: 10px; /* 항목 간 여백 */
-}
-
-.payment-item {
-  display: flex;
-  align-items: center;
-  gap: 8px; /* 버튼 사이 여백 */
-}
-
-.payment-item button,
-.payment-item span {
-  padding: 4px 10px;
-  font-size: 13px;
-  height: 30px;
-  border-radius: 6px;
-  line-height: 1.2;
-}
-
-</style>

@@ -1,0 +1,126 @@
+.payment-wrapper {
+    position: relative;
+    display: flex;
+    gap: 32px;
+    align-items: flex-start;
+    padding: 32px;
+    background-color: #f8faff;
+  }
+  
+  .left, .right {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    padding: 24px;
+  }
+  
+  .left {
+    flex: 2;
+  }
+  
+  .right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    align-items: center;
+  }
+  
+  button.btn {
+    padding: 8px 16px;
+    border: 1px solid #007bff;
+    background-color: white;
+    color: #007bff;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s;
+  }
+  
+  button.btn:hover {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  button.btn-primary {
+    align-self: flex-start;
+  }
+  .x-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: none;
+    border: none;
+    color: #333;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 4px 8px;
+  }
+
+  .paymentList {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin: 16px auto 0 auto;
+    width: fit-content;
+  }
+  
+  .payment-card {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 50px;
+    background-color: #ffffff;
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1px solid #eee;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+    cursor: pointer;
+  }
+  
+  .payment-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+  }
+  
+  .payment-badge {
+    padding: 4px 10px;
+    font-size: 12px;
+    font-weight: 600;
+    border-radius: 6px;
+    white-space: nowrap;
+  }
+  
+  .badge-paid {
+    background-color: #d1f5e0;
+    color: #117a4d;
+  }
+  
+  .badge-wait {
+    background-color: #fdf0c3;
+    color: #302d23;
+  }
+  .paymentwindow {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 300px;
+  }
+  
+  .modal {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+  }
+  
+  .modal-box {
+    width: 100%;
+    max-width: 400px;
+  }
+  
