@@ -27,19 +27,12 @@ const selectedDoctorUuid = inject('selectedDoctorUuid')
 
   }
 
-const getPatientInfo = (patient) => {
-  emit('getPatientInfo', {patientUuid: patient.patientUuid,doctorUuid: patient.doctorUuid,});
-  selectedPatientUuid.value = patient.patientUuid
-  selectedDoctorUuid.value = patient.doctorUuid
-  currentView.value = 'visit';
-}
-
 </script>
 
 <template>
 
   <div class="patient-item" v-for="patient in value" :key="patient.uuid">
-    <div class="patient-info" @click="getPatientInfo(patient)">
+    <div class="patient-info" > 
       <span class="patient-name" v-cloak>{{ patient.name }}님</span>
       <span class="patient-meta" v-cloak v-if="patient.reservationDate">{{ dayjs(patient.reservationDate).format("HH:mm") }}</span>
       <WaitingStatus

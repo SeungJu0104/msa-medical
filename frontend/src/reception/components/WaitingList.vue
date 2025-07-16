@@ -15,8 +15,6 @@ import VisitHistory from "@/components/diagnosis/VisitHistory.vue";
   const waitingListStore = useWaitingListStore();
   const waitingList = ref();
   const receptionStatusList = ref();
-  const selectedPatientUuid = ref(null)
-  const selectedDoctorUuid = ref(null)
   let client;
 
   const refreshWaitingList = async () => {
@@ -29,14 +27,6 @@ import VisitHistory from "@/components/diagnosis/VisitHistory.vue";
     receptionStatusList.value = waitingListStore.receptionStatusList;
 
   };
-
-  // 의료진이 대기 리스트에서 이름을 누른 환자 UUID 가져오는 함수
-  // const getPatientInfo = ({patientUuid,doctorUuid}) => {
-
-  //   selectedPatientUuid.value = patientUuid;
-  //   selectedDoctorUuid.value = doctorUuid;
-   
-  // }
 
   // 상태 변경 시 동작하는 함수
   const handleUpdateStatus = async (patient) => {
@@ -76,7 +66,6 @@ import VisitHistory from "@/components/diagnosis/VisitHistory.vue";
           <div v-else>
             <WaitingListPatientList
               @updateStatus="handleUpdateStatus"
-              @getPatientInfo="getPatientInfo"
               :value="list.patientList"
               :status="receptionStatusList"
             />
