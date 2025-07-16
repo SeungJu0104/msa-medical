@@ -1,0 +1,64 @@
+.d-flex .container {
+    width: 250px;
+    min-width: 250px;
+    max-width: 300px;
+}
+
+.waitingAndReservation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 8px;
+    background-color: #fff;
+    border-bottom: 1px solid #ddd;
+}
+
+.tab-item {
+    padding: 6px 12px;
+    font-size: 14px;
+    background-color: #fff;
+    color: #333;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.2s;
+}
+
+.tab-item:hover {
+    background-color: #e6f0ff;
+}
+
+.tab-item.active {
+    color: #1976d2; /* 파란색 강조 */
+    font-weight: bold;
+    border-color: #e6f0ff;
+}
+
+.scroll {
+
+     height:90vh;
+    /*height: calc(100vh - 상단 Header, Footer 길이);*/
+    width: 100%;
+    overflow-y: auto;
+    box-sizing: border-box;
+
+}
+
+.patient-item {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.patient-name {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.patient-info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  flex: none;
+  min-width: 0;
+}

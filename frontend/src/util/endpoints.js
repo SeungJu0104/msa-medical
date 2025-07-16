@@ -211,7 +211,11 @@ export const ENDPOINTS = {
         document:(treatmentId) =>({
             method:'get',
             url:`/treatment/getDocument/${treatmentId}`
-        })
+        }),
+        getFile:(name) =>({
+            method:'get',
+            url:`http://localhost:8080/attachment/${name}`
+        }),
     },
 
     payment:{

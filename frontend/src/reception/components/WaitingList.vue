@@ -10,6 +10,7 @@ import { getAccessToken } from "@/auth/accessToken.js";
 import { createWebSocketModuleRunnerTransport } from "vite/module-runner";
 import VisitHistory from "@/components/diagnosis/VisitHistory.vue";
   import {useRouter} from "vue-router";
+  import "@/assets/css/ReservationListByStaff.css";
 
   const waitingListStore = useWaitingListStore();
   const waitingList = ref();
@@ -18,9 +19,7 @@ import VisitHistory from "@/components/diagnosis/VisitHistory.vue";
   const selectedDoctorUuid = ref(null)
   let client;
 
-
   const refreshWaitingList = async () => {
-
     await Promise.all([
       waitingListStore.promiseAll(),
       waitingListStore.getReceptionStatusList()
@@ -32,12 +31,12 @@ import VisitHistory from "@/components/diagnosis/VisitHistory.vue";
   };
 
   // 의료진이 대기 리스트에서 이름을 누른 환자 UUID 가져오는 함수
-  const getPatientInfo = ({patientUuid,doctorUuid}) => {
+  // const getPatientInfo = ({patientUuid,doctorUuid}) => {
 
-    selectedPatientUuid.value = patientUuid;
-    selectedDoctorUuid.value = doctorUuid;
+  //   selectedPatientUuid.value = patientUuid;
+  //   selectedDoctorUuid.value = doctorUuid;
    
-  }
+  // }
 
   // 상태 변경 시 동작하는 함수
   const handleUpdateStatus = async (patient) => {
@@ -66,50 +65,24 @@ import VisitHistory from "@/components/diagnosis/VisitHistory.vue";
 </script>
 
 <template>
-  <div class="container-horizontal">
-    <div class="waiting-area">
-  <template v-for="list in waitingList" :key="list.doctor?.uuid">
-      <WaitingListDoctorName
-          :value="list.doctor"/>
-        <WaitingListPatientList
-          @updateStatus="handleUpdateStatus"
-          @getPatientInfo="getPatientInfo"
-          :value="list.patientList"
-          :status="receptionStatusList"/>
-    </template>
-  </div>
-  <div class="vertical-divider"></div> <!-- 여기에 선 -->
-<div class="history-area" v-if="selectedPatientUuid">
-    <VisitHistory
-        :patientUuid="selectedPatientUuid"
-        :doctorUuid="selectedDoctorUuid"
-      />
+  <div class="container">
+    <div class="card-list">
+      <div v-for="list in waitingList" :key="list.doctor?.uuid" class="card">
+        <WaitingListDoctorName :value="list.doctor" :count="list.patientList?.length || 0" />
+        <div class="card-body">
+          <div v-if="!list.patientList || list.patientList.length < 1" class="no-patient">
+            <span>대기 환자가 없습니다.</span>
+          </div>
+          <div v-else>
+            <WaitingListPatientList
+              @updateStatus="handleUpdateStatus"
+              @getPatientInfo="getPatientInfo"
+              :value="list.patientList"
+              :status="receptionStatusList"
+            />
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
-<style scoped>
-.vertical-divider {
-  width: 1px;
-  background-color: #ccc;
-  align-self: stretch;
- 
-}
-
-.container-horizontal {
-  display: flex;
-  gap: 20px;
-}
-
-.waiting-area {
-  flex: 1;
-  min-width:300px;
-}
-
-.history-area {
-  flex: 2;
-  min-width: 300px;
-  background-color: #f9f9f9;
-  padding: 16px;
-  border-radius: 8px;
-}
-</style>

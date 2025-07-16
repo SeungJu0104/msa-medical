@@ -8,6 +8,7 @@ import {patientMethods} from "@/reservation/util/reservation.js";
 import VueDatepicker from "@vuepic/vue-datepicker";
 import dayjs from "dayjs";
 import '@vuepic/vue-datepicker/dist/main.css'
+import '@/assets/css/ReservationListByStaff.css'
 import { getStompClient, subscribeChannel } from "@/util/stompMethod";
 
 
@@ -71,11 +72,6 @@ const handleUpdateStatus = async ({uuid, updateStatus}) => {
 
 }
 
-// 의료진이 예약 리스트에서 이름을 누른 환자 UUID 가져오는 함수
-const getPatientInfo = ({uuid}) => {
-
-}
-
 const disabledWeekends = (date) => {
   return dayjs(date).toDate().getDay() === 0;
 };
@@ -99,9 +95,6 @@ const refreshWaitingList = async () => {
 
 onBeforeMount(async () => {
   await refreshWaitingList()
-  
-  console.log(fullReservationList.value);
-  console.log(reservationStatusList.value);
 
 });
 
@@ -125,37 +118,44 @@ onMounted(() => {
 <template>
 
   <div class="container">
-  <h1 v-show="hideBeforeDateMovement" @click="setBeforeDate">&lt;</h1>
-  <div @click="toggleCalendar">{{selectedDate.date.format("M월 D일")}}</div>
-  <h1 v-show="hideAfterDateMovement" @click="setAfterDate">&gt;</h1>
-  <template v-if="showCalendar" @blur="toggleCalendar">
-    <VueDatepicker
-        :model-value = "selectedDate.date"
+    <div class="date-nav">
+      <img v-show="hideBeforeDateMovement" @click="setBeforeDate" src="@/assets/icons/datebefore.png" alt="이전 날짜" class="nav-arrow" />
+      <span class="date-display" @click="toggleCalendar">{{selectedDate.date.format("M월 D일")}}</span>
+      <img v-show="hideAfterDateMovement" @click="setAfterDate" src="@/assets/icons/nextdate.png" alt="다음 날짜" class="nav-arrow" />
+    </div>
+    <div v-if="showCalendar" @blur="toggleCalendar" class="datepicker-popup">
+      <VueDatepicker
+        :model-value="selectedDate.date"
         :format="'yyyy-MM-dd'"
         :min-date="minDate.toISOString()"
         :max-date="maxDate.toISOString()"
         :disabled-dates="disabledWeekends"
-        :enable-time-picker="false"  :input-class="'form-control'"
-        :esc-close = "false"
-        :space-confirm = "false"
-        @update:model-value = "handleDate"
+        :enable-time-picker="false"
+        :input-class="'form-control'"
+        :esc-close="false"
+        :space-confirm="false"
+        @update:model-value="handleDate"
         prevent-min-max-navigation
-    />
-  </template>
-  <template v-for="list in fullReservationList" :key="list.doctor?.uuid">
-    <div v-if="list.isEmpty">
-      <span>대기 환자가 없습니다.</span>
+      />
     </div>
-    <div v-else>
-    <WaitingListDoctorName :value="list.doctor"/>
-    <WaitingListPatientList
-        @updateStatus="handleUpdateStatus"
-        @getPatientInfo="getPatientInfo"
-        :value="list.patientList"
-        :status="reservationStatusList"
-        :date="selectedDate.date"
-    />
+    <div class="card-list">
+      <div v-for="list in fullReservationList" :key="list.doctor?.uuid" class="card">
+        <WaitingListDoctorName :value="list.doctor" :count="list.patientList?.length || 0" />
+        <div class="card-body">
+          <div v-if="!list.patientList || list.patientList.length < 1" class="no-patient">
+            <span>대기 환자가 없습니다.</span>
+          </div>
+          <div v-else>
+            <WaitingListPatientList
+              @updateStatus="handleUpdateStatus"
+              @getPatientInfo="getPatientInfo"
+              :value="list.patientList"
+              :status="reservationStatusList"
+              :date="selectedDate.date"
+            />
+          </div>
+        </div>
+      </div>
     </div>
-  </template>
   </div>
 </template>

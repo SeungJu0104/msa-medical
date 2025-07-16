@@ -1,3 +1,5 @@
+import { useUserStore } from '@/stores/userStore';
+
 const MainView = () => import('@/patient/views/MainView.vue');
 const MyPageView = () => import("@/patient/views/MyPageView.vue");
 const PatientLayout = () => import('@/patient/layouts/PatientLayout.vue');
@@ -11,6 +13,13 @@ export const patientRoutes = [
   {
     path: '/',
     component: PatientLayout,
+    beforeEnter: (to, from, next) => {
+      const role = useUserStore().user?.role;
+      if (['NURSE', 'DOCTOR'].includes(role)) {
+        return next({ name: 'staffMain' });
+      }
+      next();
+    },
     children: [
       {
         path: '',

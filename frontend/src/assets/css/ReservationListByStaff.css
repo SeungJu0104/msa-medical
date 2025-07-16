@@ -1,0 +1,177 @@
+.nav-arrow {
+    width: 20px;
+    height: 20px;
+    font-size: 16px;
+    line-height: 20px;
+    text-align: center;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.nav-arrow:hover {
+    background-color: #f0f0f0;
+}
+
+.d-flex .container {
+    min-width: 150px;
+    padding: 0;
+    margin: 10px 0 10px 0;
+}
+
+.date-nav {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    margin: 12px 0;
+}
+
+.date-display {
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.dp__menu {
+    z-index: 9999 !important;
+}
+
+/* 카드 전체 리스트 */
+.card-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* 개별 카드 */
+.card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  padding: 0;
+  overflow: hidden;
+}
+
+.card-body {
+  padding: 0 20px 16px 20px;
+}
+
+.card, .card-body {
+  overflow: visible !important;
+}
+
+/* 의사 헤더 */
+.doctor-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #f6f8fa;
+  padding: 16px 20px 12px 20px;
+  border-bottom: 1px solid #eee;
+}
+.doctor-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #b3c6ff;
+  display: inline-block;
+}
+.doctor-name {
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+.patient-count {
+  margin-left: auto;
+  color: #888;
+  font-size: 0.95rem;
+}
+
+/* 환자 리스트 */
+.patient-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+.patient-item:last-child {
+  border-bottom: none;
+}
+.patient-info {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  cursor: pointer;
+}
+.patient-name {
+  font-weight: 500;
+  font-size: 1rem;
+}
+.patient-meta {
+  color: #888;
+  font-size: 0.95rem;
+}
+.patient-type {
+  color: #666;
+  font-size: 0.95rem;
+}
+.patient-status {
+  min-width: 80px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* 상태 버튼 */
+.status-btn {
+  border: none;
+  border-radius: 16px;
+  padding: 4px 18px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  background: #eee;
+  color: #555;
+  transition: background 0.2s, color 0.2s;
+}
+.status-inprogress {
+  background: #e6f0ff !important;
+  color: #2563eb !important;
+}
+.status-waiting {
+  background: #fff7e6 !important;
+  color: #f59e42 !important;
+}
+.status-btn.dropdown-toggle::after {
+  margin-left: 8px;
+}
+.status-dropdown {
+  min-width: 90px;
+  font-size: 0.95rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  padding: 4px 0;
+  z-index: 9999 !important;
+}
+.status-dropdown li {
+  padding: 6px 18px;
+  cursor: pointer;
+}
+.status-dropdown li:hover {
+  background: #f6f8fa;
+}
+
+/* 대기 환자 없음 */
+.no-patient {
+  color: #aaa;
+  text-align: center;
+  padding: 24px 0 16px 0;
+  font-size: 1rem;
+}
+

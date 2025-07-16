@@ -9,119 +9,145 @@ import {errorMessage} from "@/util/errorMessage.js";
 import {REGEX_PATTERN} from "@/util/RegexPattern.js";
 import {useRoute, useRouter } from "vue-router";
 import {successMessage} from "@/util/successMessage.js";
+import '@/assets/css/AcceptPatientByStaff.css'
+import '@/assets/css/icon.css'
 
-const selectedVal = reactive({
-  doctorUuid: null,
-  patientUuid: null,
-  name: null,
-  birthDate: null,
-  patientName: null,
-  symptom: null
-});
+  const selectedVal = reactive({
+    doctorUuid: null,
+    name: null,
+    patientUuid: null,
+    symptom: null
+  });
 
-const acceptChk = reactive({
-  doctorChk : false,
-  symptomChk : false
-});
+  const acceptChk = reactive({
+    doctorChk : false,
+    symptomChk : false
+  });
 
-const doctorList = ref();
-const route = useRoute();
-const router = useRouter();
+  const doctorList = ref();
+  const route = useRoute();
+  const router = useRouter();
+  const isDropdownOpen = ref(false);
 
-const selectDoctor = (doctor) => {
+  const selectDoctor = (doctor) => {
 
-  selectedVal.doctorUuid = doctor.uuid;
-  selectedVal.name = doctor.name;
+    selectedVal.doctorUuid = doctor.uuid;
+    selectedVal.name = doctor.name;
+    acceptChk.doctorChk = selectedVal.doctorUuid !== null && REGEX_PATTERN.MEMBER_UUID_REGEX.test(selectedVal.doctorUuid);
 
-  acceptChk.doctorChk = selectedVal.doctorUuid !== null && REGEX_PATTERN.MEMBER_UUID_REGEX.test(selectedVal.doctorUuid);
-
-}
-
-const writeSymptom = () => {
-
-  acceptChk.symptomChk = selectedVal.symptom !== null && selectedVal.symptom.trim().length > 0;
-
-}
-
-function goHome () {
-  common.goHome();
-}
-
-async function getDoctorList () {
-  doctorList.value = await patientMethods.getDoctorList();
-}
-
-const acceptPatientByStaff = async () => {
-
-  for(const [key, val] of Object.entries(acceptChk)) {
-    if(!val) {
-      common.alertError(errorMessage.common[key]);
-      return;
-    }
   }
 
-  try{
+  const writeSymptom = () => {
 
-    const response = await customFetch(
-      ENDPOINTS.reception.acceptPatientByStaff, {
-          data: {
-            ...omit(selectedVal, ['name', 'birthDate', 'patientName'])
-          }
-        }
-      )
+    acceptChk.symptomChk = selectedVal.symptom !== null && selectedVal.symptom.trim().length > 0;
 
-      if(response.status === 201) {
-        common.alert(successMessage.reception.acceptSuccess);
-        await router.push({name: 'staffMain'});
+  }
+
+  function goHome () {
+    common.goStaffHome();
+  }
+
+  async function getDoctorList () {
+    doctorList.value = await patientMethods.getDoctorList();
+  }
+
+  const acceptPatientByStaff = async () => {
+
+    for(const [key, val] of Object.entries(acceptChk)) {
+      if(!val) {
+        common.alertError(errorMessage.common[key]);
+        return;
       }
+    }
 
-  } catch(err) {
+    try{
 
-    common.errMsg(err);
+      const response = await customFetch(
+        ENDPOINTS.reception.acceptPatientByStaff, {
+            data: {
+              ...omit(selectedVal, ['name']),
+            }
+          }
+        )
 
-    selectedVal.name = null;
-    selectedVal.doctorUuid = null;
-    selectedVal.symptom = null;
+        if(response.status === 201) {
+          common.alert(successMessage.reception.acceptSuccess);
+          await router.push({name: 'staffMain'});
+        }
+
+    } catch(err) {
+
+      common.errMsg(err);
+
+      selectedVal.name = null;
+      selectedVal.doctorUuid = null;
+      selectedVal.symptom = null;
+
+    }
 
   }
 
-}
+  const insertSelectedValData = () => {
 
-const insertSelectedValData = () => {
+    selectedVal.patientUuid = route.query.patientUuid;
 
-  selectedVal.patientUuid = route.query.patientUuid;
-  selectedVal.birthDate = route.query.birthDate;
+  }
 
-}
 
-onMounted(() => {
-      getDoctorList();
-      insertSelectedValData();
-});
+  const toggleDropdown = () => { isDropdownOpen.value = !isDropdownOpen.value; };
+  const closeDropdown = () => { isDropdownOpen.value = false; };
+
+  onMounted(() => {
+        getDoctorList();
+        insertSelectedValData();
+  });
 
 </script>
 
 <template>
-  <div class="container">
-  <div class="dropdown my-3">
-    <h3>의사</h3>
-    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" v-cloak>
-      {{  selectedVal?.name || '의사를 선택해주세요.' }}
-    </button>
-    <ul class="dropdown-menu">
-      <template v-for="doctor in doctorList" :key="doctor.uuid">
-        <li class="dropdown-item" @click="selectDoctor(doctor)" v-cloak>{{doctor.name}}</li>
-      </template>
-    </ul>
-  </div>
-  <div class="my-3 input-group">
-    <span class="input-group-text">증상</span>
-    <textarea class="form-control" aria-label="symptom" v-model="selectedVal.symptom"
-              @input = "writeSymptom" maxlength="100"
-              placeholder="100자 이내로 작성해주세요.">
-      </textarea>
-  </div>
-  <button type="button" class="btn btn-outline-success" @click="acceptPatientByStaff">접수</button>
-  <button type="button" class="btn btn-outline-warning" @click="goHome">취소</button>
+  <div class="reg-accept-card">
+    <div class="reg-accept-title">
+      <img src="@/assets/icons/waiting.png" alt="접수" class="icon"/>
+      환자 접수
+    </div>
+    <form class="reg-accept-form" @submit.prevent>
+      <!-- 의사 선택 -->
+      <div class="reg-form-row">
+        <label class="reg-form-label">의사<span class="reg-required">*</span></label>
+        <div class="reg-dropdown-group">
+          <button
+            class="reg-dropdown-btn"
+            type="button"
+            @click="toggleDropdown"
+            :aria-expanded="isDropdownOpen"
+            v-cloak
+          >
+            {{ selectedVal?.name || '의사를 선택해주세요.' }}
+          </button>
+          <ul class="reg-dropdown-menu" v-if="isDropdownOpen">
+            <template v-for="doctor in doctorList" :key="doctor.uuid">
+              <li class="reg-dropdown-item" @click="selectDoctor(doctor); closeDropdown()">{{doctor.name}}</li>
+            </template>
+          </ul>
+        </div>
+      </div>
+      <!-- 증상 입력 -->
+      <div class="reg-form-row">
+        <label class="reg-form-label">증상<span class="reg-required">*</span></label>
+        <textarea
+          class="reg-form-input"
+          aria-label="symptom"
+          v-model="selectedVal.symptom"
+          @input="writeSymptom"
+          maxlength="100"
+          placeholder="100자 이내로 작성해주세요."
+        ></textarea>
+      </div>
+      <!-- 버튼 -->
+      <div class="reg-form-actions">
+        <button type="button" class="reg-btn-main" @click="acceptPatientByStaff">접수</button>
+        <button type="button" class="reg-btn-sub" @click="goHome">취소</button>
+      </div>
+    </form>
   </div>
 </template>

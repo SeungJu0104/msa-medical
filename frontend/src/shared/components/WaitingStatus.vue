@@ -1,6 +1,7 @@
 <script setup>
 import { computed } from "vue";
 import dayjs from "dayjs";
+import "@/assets/css/WaitingStatus.css";
 
 const { status, value, date } = defineProps({
   status: Array,
@@ -44,7 +45,10 @@ const selectedStatus = (name) => {
       class="btn btn-secondary btn-sm"
       type="button"
       v-bind="patientCurrentStatus.trim() !== '진료 중' ? { 'data-bs-toggle': 'dropdown', 'aria-expanded': 'false' } : {}"
-      :class="{ 'dropdown-toggle': patientCurrentStatus.trim() !== '진료 중' }"
+      :class="[
+        { 'dropdown-toggle': patientCurrentStatus.trim() !== '진료 중' },
+        'btn-status-' + patientCurrentStatus.trim().replace(/\s/g, '')
+      ]"
   >
     {{ patientCurrentStatus }}
   </button>
@@ -62,4 +66,5 @@ const selectedStatus = (name) => {
     </li>
   </ul>
 </template>
+
 

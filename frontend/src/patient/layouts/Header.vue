@@ -24,8 +24,10 @@
     </nav>
   
     <nav class="navbar navbar-expand navbar-light bg-white border-bottom py-3">
-      <div class="container-fluid">
-        <RouterLink :to="{ name: 'home' }" class="navbar-brand me-4">로고</RouterLink>
+      <div class="container-fluid position-relative">
+        <RouterLink :to="{ name: 'home' }" class="navbar-brand position-absolute ms-3 start-0 top-50 translate-middle-y">
+          <img src="@/assets/logo.png" height="40" />
+        </RouterLink>
         <ul class="navbar-nav mx-auto mb-0 overflow-auto">
           <li class="nav-item px-2">
             <RouterLink :to="{ name: 'regReservationByPatient' }" class="nav-link fw-bold fs-lg">진료 예약</RouterLink>

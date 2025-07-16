@@ -9,6 +9,9 @@ export const errorMessage = {
     },
     staff : {
         searchValLength: "검색어는 최소 1자 이상 입력해야합니다.",
+    },
+    reservation: {
+        noDataForCancel: "취소할 예약 일정을 선택해주세요."
     }
 
 }
