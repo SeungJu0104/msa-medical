@@ -49,7 +49,7 @@ public class ReceptionController {
         if(receptionService.acceptPatientByStaff(receptionInfo) != 1) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, CommonErrorMessage.RETRY);
         }
-
+        messagingTemplate.convertAndSend("/sub/status", "{}");
         return ResponseEntity.status(HttpStatus.CREATED).build();
 
     }

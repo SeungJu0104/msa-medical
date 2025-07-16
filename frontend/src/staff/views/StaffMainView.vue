@@ -4,8 +4,6 @@
     </aside>
     <section class="center">
     <div class="center-inner">
-      <WaitingReservationParent />
-
       <div class="history-area">
         <VisitHistory
           v-if="currentView === 'visit'"
@@ -20,10 +18,6 @@
       </div>
     </div>
     </section>
-    
-    <aside class="right">
-      <ChatRooms/>
-    </aside>
   </div>
 
 </template>
@@ -67,18 +61,10 @@ const resetView = () => {
   .center {
     flex: 1;
     text-align: center;
-    background: #e0e0ff;
+    background: #ffffff;
     height: 100vh;
   }
   
-  .right {
-    width: 250px; 
-    background: #ffe0e0;
-    height: 100vh;
-    display: flex;
-    flex-direction: column; 
-    justify-content: flex-start; 
-  }
   .center-inner {
   display: flex;
   gap: 20px;
