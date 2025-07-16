@@ -1,17 +1,15 @@
 <script setup>
 
 defineProps({
-  value: Object
+  value: Object,
+  count: Number
 })
 
 </script>
 
 <template>
-
-  <div class="container">
-    <div class="my-3">
-      <span v-cloak>{{value.name}}</span>
-    </div>
+  <div class="doctor-header">
+    <span class="doctor-name">{{ value.name }}</span>
+    <span class="patient-count">{{ count }}명</span>
   </div>
-
 </template>

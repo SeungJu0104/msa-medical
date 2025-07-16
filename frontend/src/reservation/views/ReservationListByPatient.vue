@@ -4,10 +4,12 @@ import {computed, onMounted, reactive, ref} from "vue";
 import dayjs from "dayjs";
 import {patientMethods} from "@/reservation/util/reservation.js";
 import {useUserStore} from "@/stores/userStore.js";
+import '@/assets/css/reservation.css'
+import {errorMessage} from "@/util/errorMessage.js";
+import {common} from "@/util/common.js";
 
-  // 선택한 목록(들)
   const selectedListByPatient = new Set();
-  const reservationList = ref();
+  const reservationList = ref([]);
   const userInfo = computed(() => useUserStore().user);
 
   const checked = (e) => {
@@ -17,8 +19,6 @@ import {useUserStore} from "@/stores/userStore.js";
     } else {
       selectedListByPatient.delete(e.target.value);
     }
-
-    console.log(selectedListByPatient);
 
   }
 
@@ -30,7 +30,18 @@ import {useUserStore} from "@/stores/userStore.js";
 
   const cancelReservation = async () => {
 
+    if(selectedListByPatient.size === 0) {
+      common.alertError(errorMessage.reservation.noDataForCancel);
+      return;
+    }
+
+    if(!window.confirm("예약 취소하시겠습니까?")) {
+      return;
+    }
+
     await patientMethods.cancelReservation(selectedListByPatient);
+    selectedListByPatient.clear();
+    await reservationListPerPatient();
 
   }
 
@@ -43,20 +54,32 @@ import {useUserStore} from "@/stores/userStore.js";
 <template>
 
   <div class="container">
-
-    <div>
-
-      <template v-for="reservation in reservationList" :key="reservation.uuid">
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" @change="checked" :value="reservation.uuid">
-          <span v-cloak>{{reservation.name}}</span>
-          <span v-cloak>{{dayjs(reservation.reservationDate).format('MM-DD')}}</span>
-        </div>
-      </template>
-
-      <button type="button" class="btn btn-outline-danger" @click="cancelReservation">취소</button>
+    <div class="reservationBox">
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>진료 의사</th>
+            <th>진료 예약 일시</th>
+          </tr>
+        </thead>
+        <tbody>
+          <template v-if="reservationList.length > 0">
+            <tr v-for="reservation in reservationList" :key="reservation.uuid">
+              <td><input class="form-check-input" type="checkbox" @change="checked" :value="reservation.uuid"></td>
+              <td>{{reservation.name}}</td>
+              <td><span v-cloak>{{dayjs(reservation.reservationDate).format('MM월 DD일 HH시 mm분')}}</span></td>
+            </tr>
+          </template>
+          <template v-else>
+            <tr>
+              <td colspan="3">진료 예약이 없습니다.</td>
+            </tr>
+          </template>
+        </tbody>
+      </table>
     </div>
-
+  <button type="button" class="btn btn-outline-danger" @click="cancelReservation">예약 취소</button>
   </div>
 
 </template>

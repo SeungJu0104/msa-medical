@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -25,15 +26,27 @@ import lombok.RequiredArgsConstructor;
 @EnableMethodSecurity
 public class SecurityConfig {
 
+    private static final String[] PUBLIC_URLS = {
+        "/auth/**",
+        "/error",
+        "/api-docs",
+        "/swagger-ui/**",
+        "/v3/api-docs/**",
+        "/ws/**"
+    };
+
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+
+    @Bean
+    WebSecurityCustomizer webSecurityCustomizer() {
+        return web -> web.ignoring().requestMatchers(PUBLIC_URLS);
+    }
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
             .csrf((csrf) -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/auth/**", "/error").permitAll()
-                .requestMatchers("/ws/**").permitAll()
                 .requestMatchers("/attachment/**").permitAll()
                 .anyRequest().authenticated()
             )

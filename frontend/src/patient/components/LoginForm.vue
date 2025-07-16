@@ -34,11 +34,16 @@ const form = reactive({
 });
 
 async function login() {
-  const response = await customFetch(ENDPOINTS.auth.login, {
-    data: form
-  });
-  setAccessToken(response.data.accessToken);
-  setRefreshToken(response.data.refreshToken);
+  try {
+    const response = await customFetch(ENDPOINTS.auth.login, {
+      data: form
+    });
+    setAccessToken(response.data.accessToken);
+    setRefreshToken(response.data.refreshToken);
+  } catch (err) {
+    alert(err.response.data.message);
+    return;
+  }
   await getMe();
   if (user.value.role === "PATIENT") {
     router.push({ name: 'home' });

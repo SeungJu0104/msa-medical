@@ -1,0 +1,104 @@
+name: SlgiEMR
+on: 
+  push: # 동작시 어떤 것을 가지고 동작할 것인가
+    branches: [main]
+  workflow_dispatch: #테스트용
+  
+jobs:
+    
+  build:
+    runs-on: [ubuntu-latest]
+    steps:
+      - name: 깃 클론
+        uses: actions/checkout@v3
+
+      - name: 자바 17 설치
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          
+      - name: Node.js 설치
+        uses: actions/setup-node@v4
+        with:
+         node-version: '20.x'
+         
+      - name: 의존성 추가
+        run: |
+          cd ${{ github.workspace }}/frontend
+          npm install
+
+      - name: Server 빌드
+        run: |
+          cd server
+          chmod +x gradlew
+          ./gradlew bootJar
+
+      - name: Frontend 빌드
+        run: |
+          cd frontend
+          npm install
+          npm run build
+
+      - name: EC2에서 DockerHub에 로그인
+        uses: docker/login-action@v1
+        with:
+          username: ${{secrets.USERNAME}} 
+          password: ${{secrets.PASSWORD}} 
+
+      - name: 백엔드 이미지 빌드 및 푸시
+        run: |
+          docker build -t ${{secrets.USERNAME}}/slgi-emr-backend ./server
+          docker push ${{secrets.USERNAME}}/slgi-emr-backend
+
+      - name: 프론트엔드 이미지 빌드 및 푸시
+        run: |
+          docker build -t ${{secrets.USERNAME}}/slgi-emr-frontend ./frontend
+          docker push ${{secrets.USERNAME}}/slgi-emr-frontend
+
+  deploy:
+    needs: build
+    name: EC2에 배포
+    runs-on: [self-hosted, slgi-emr]
+    environment: msa-medical
+    
+    steps:
+      - name: 변경권한 설정
+        run: |
+          sudo chown -R ubuntu:ubuntu ${{ github.workspace }}
+
+      - name: GitHub 리포지토리 체크아웃
+        uses: actions/checkout@v3
+    
+      - name: 운영서버에서 DockerHub에 로그인
+        uses: docker/login-action@v1
+        with:
+          username: ${{secrets.USERNAME}} 
+          password: ${{secrets.PASSWORD}} 
+
+      - name: .env 파일 생성
+        run: |
+          cd ${{ github.workspace }}
+          cat <<EOF > .env
+          MARIA_DB_IMAGE=${{ vars.MARIA_DB_IMAGE }}
+          MARIADB_ROOT_PASSWORD=${{ secrets.MARIADB_ROOT_PASSWORD }}
+          MARIADB_DATABASE=${{ vars.MARIADB_DATABASE }}
+          REDIS_IMAGE=${{ vars.REDIS_IMAGE }}
+          SPRING_DATA_REDIS_HOST=${{ vars.SPRING_DATA_REDIS_HOST }}
+          SPRING_DATA_REDIS_PASSWORD=${{ secrets.SPRING_DATA_REDIS_PASSWORD }}
+          SPRING_DATASOURCE_URL=${{ vars.SPRING_DATASOURCE_URL }}
+          SPRING_DATASOURCE_USER=${{ vars.SPRING_DATASOURCE_USER }}
+          SPRING_DATASOURCE_PASSWORD=${{ secrets.SPRING_DATASOURCE_PASSWORD }}
+          FRONTEND_PORT=${{ vars.FRONTEND_PORT }}
+          USERNAME=${{secrets.USERNAME}}
+          JWT_ACCESS_TOKEN_SECRET=${{secrets.JWT_ACCESS_TOKEN_SECRET}}
+          JWT_REFRESH_TOKEN_SECRET=${{secrets.JWT_REFRESH_TOKEN_SECRET}}
+          EOF
+
+      - name: docker 이미지 풀 및 재실행
+        run: |
+          cd ${{ github.workspace }}         
+          docker compose pull
+          docker compose down
+          docker compose up -d
+  
