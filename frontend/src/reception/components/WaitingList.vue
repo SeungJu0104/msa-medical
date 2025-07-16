@@ -1,20 +1,22 @@
 <script setup>
-  import {useWaitingListStore} from "@/stores/waitingListStore.js";
-  import {computed, onBeforeMount, onMounted, onUnmounted, ref} from "vue";
-  import WaitingListDoctorName from "@/shared/components/WaitingListDoctorName.vue";
-  import WaitingListPatientList from "@/shared/components/WaitingListPatientList.vue";
-  import {reception} from "@/reception/util/reception.js";
+import {useWaitingListStore} from "@/stores/waitingListStore.js";
+import {computed, onBeforeMount, onMounted, onUnmounted, ref} from "vue";
+import WaitingListDoctorName from "@/shared/components/WaitingListDoctorName.vue";
+import WaitingListPatientList from "@/shared/components/WaitingListPatientList.vue";
+import {reception} from "@/reception/util/reception.js";
 import { getStompClient, sendMsg, subscribeChannel } from "@/util/stompMethod.js";
 import { useUserStore } from "@/stores/userStore.js";
 import { getAccessToken } from "@/auth/accessToken.js";
 import { createWebSocketModuleRunnerTransport } from "vite/module-runner";
 import VisitHistory from "@/components/diagnosis/VisitHistory.vue";
-  import {useRouter} from "vue-router";
-  import "@/assets/css/ReservationListByStaff.css";
+import {useRouter} from "vue-router";
+import "@/assets/css/ReservationListByStaff.css";
+import dayjs from "dayjs";
 
   const waitingListStore = useWaitingListStore();
   const waitingList = ref();
   const receptionStatusList = ref();
+  const today = dayjs(new Date);
   let client;
 
   const refreshWaitingList = async () => {
@@ -56,6 +58,9 @@ import VisitHistory from "@/components/diagnosis/VisitHistory.vue";
 
 <template>
   <div class="container">
+    <div class="date-nav">
+      <span class="date-display" @click="toggleCalendar">{{today.format("M월 D일")}}</span>
+    </div>
     <div class="card-list">
       <div v-for="list in waitingList" :key="list.doctor?.uuid" class="card">
         <WaitingListDoctorName :value="list.doctor" :count="list.patientList?.length || 0" />
