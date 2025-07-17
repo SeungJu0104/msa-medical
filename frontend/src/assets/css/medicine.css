@@ -35,9 +35,9 @@
     height: 38px;
   }
   .custom-btn{
-    width: 55px;
+    width: 50px;
     height: 38px;
-    padding: 0 16px;
+    padding: 0 5px;
     font-size: 9px;
     border: none;
     border-radius: 6px;
@@ -67,10 +67,14 @@
   .medicine-search-search-results li:hover {
     background-color: #f0f0f0;
   }
-  
+  .section-box .scroll-area {
+    overflow-y: auto;
+    flex: 1;
+    min-height: 0;
+  }
   .medicine-search-selected-list {
-  min-height: 120px;    
-  max-height: 120px;    
+  min-height: 190px;  
+  max-height: 190px;    
   overflow-y: auto;            
   padding: 6px;            
   list-style: none;
@@ -84,5 +88,14 @@
     align-items: center;
     gap: 8px;
     font-size: 14px;
-    margin-bottom: 4px;
+    margin-bottom: 5px;
+  }
+  .x-btn {
+    background: none;
+    border: none;
+    color: #333;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 4px 8px;
   }

@@ -25,7 +25,7 @@ import Medicine from './Medicine.vue'
 import Treatment from './Treatment.vue'
 import { customFetch } from '@/util/customFetch'
 import { ENDPOINTS } from '@/util/endpoints'
-
+import '@/assets/css/Treatment.css';
 const props = defineProps({
   id: Number,
   uuid: String,
@@ -91,75 +91,3 @@ const submit = async () => {
   }
 }
 </script>
-
-<style scoped>
-.total-wrapper {
-  width: 100%;
-  min-height: 80vh;
-  overflow-y: auto;
-  padding: 20px;
-  background-color: #ffffff;
-  max-width: 110vh;
-  font-size: 14px;
-  position: relative;
-}
-
-.top-bar {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 16px;
-}
-
-.grid-wrapper {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: auto auto;
-  gap: 24px;
-}
-
-.grid-item {
-  max-height: 400px;      
-  overflow-y: hidden;   
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  padding: 24px;
-  overflow-y: auto;
-}
-
-.submit-button-wrapper {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 24px;
-}
-
-.btn-submit {
-  background-color: #007bff;
-  color: white;
-  padding: 10px 24px;
-  font-size: 15px;
-  font-weight: 600;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-  transition: background-color 0.2s ease;
-  position: absolute;
-  bottom: 24px;
-  right: 32px;
-}
-
-.btn-submit:hover {
-  background-color: #0056b3;
-}
-
-.x-btn {
-  background: none;
-  border: none;
-  color: #333;
-  font-size: 20px;
-  font-weight: bold;
-  cursor: pointer;
-  padding: 4px 8px;
-}
-</style>

@@ -35,7 +35,7 @@
 import { customFetch } from '@/util/customFetch'
 import { ENDPOINTS } from '@/util/endpoints'
 import { nextTick, onMounted, reactive } from 'vue'
-import '@/assets/css/document.css'
+import '@/assets/css/Document.css'
 
 const emit = defineEmits(['back'])
   const props = defineProps({

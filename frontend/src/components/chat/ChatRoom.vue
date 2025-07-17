@@ -1,26 +1,23 @@
 <template>
     <div class="chat-room-container">
-      <div class="chat-room-header" >
-        <h3>{{state.roomName}} </h3>
-        <button class="btn-close" aria-label="Close" @click="exit"></button>
+        <div class="chat-room-header" >
+            <h3>{{state.roomName}} </h3>
+            <button class="btn-close" aria-label="Close" @click="exit"></button>
         </div>
         <div class="chat-room-box">
-      <div
-        v-for="(msg, idx) in state.messages"
-        :key="msg.messageId || idx">
-        <div v-if="shouldShowDate(idx)" class="date-divider">
-          {{ dayjs(msg.createDate).format('YYYY.MM.DD') }}
+            <div v-for="(msg, idx) in state.messages" :key="msg.messageId || idx">
+                <div v-if="shouldShowDate(idx)" class="date-divider">
+                    {{ dayjs(msg.createDate).format('YYYY.MM.DD') }}
+                </div>
+            <div :class="msg.uuid === uuid ? 'my-msg' : 'other-msg'">
+                <div v-if="shouldShowName(idx, msg)">
+                    <strong>{{ msg.name }}</strong>
+                </div>
+                {{ msg.content }}<br />
+                <small>{{ dayjs(msg.createDate).format('A h:mm:ss') }}</small>
+            </div>
         </div>
-
-        <div :class="msg.uuid === uuid ? 'my-msg' : 'other-msg'">
-          <div v-if="shouldShowName(idx, msg)">
-            <strong>{{ msg.name }}</strong>
-          </div>
-          {{ msg.content }}<br />
-          <small>{{ dayjs(msg.createDate).format('A h:mm:ss') }}</small>
         </div>
-      </div>
-    </div>
         <div class="chat-room-input">
             <input v-model="state.content" class="form-control" @keyup.enter="sendMessage" @keyup.esc ="exit" placeholder="메시지를 입력하세요" />
             <button class="btn btn-warning"  @click="sendMessage">전송</button>
@@ -29,7 +26,7 @@
 </template>
 
 <script setup>
-import '@/assets/css/chat.css';
+import '@/assets/css/Chat.css';
 import { useUserStore } from '@/stores/userStore';
 import { customFetch } from '@/util/customFetch';
 import { ENDPOINTS } from '@/util/endpoints';

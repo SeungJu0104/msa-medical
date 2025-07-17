@@ -330,3 +330,38 @@ text-align: right;
 margin-top: 1rem;
 }
 
+.alarm-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 8px;
+  box-shadow: none;
+  outline: none;
+}
+.alarm-button:hover {
+  background-color: #f0f0f0; 
+}
+.icon-wrapper {
+  position: relative;
+  display: inline-block;
+  font-size: 20px;
+}
+
+.alarm-badge {
+  position: absolute;
+  top: -6px;
+  right: -8px;
+  background-color: red;
+  color: white;
+  font-size: 0.6rem;
+  padding: 2px 5px;
+  border-radius: 999px;
+  font-weight: bold;
+  line-height: 1;
+}
+

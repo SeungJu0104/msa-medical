@@ -1,12 +1,10 @@
 package com.emr.slgi.member.dto;
 
 import jakarta.validation.constraints.*;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.Data;
 
-@Getter
-@RequiredArgsConstructor
+@Data
 public class PatientSearchDTO {
   @NotBlank
-  private final String searchValue;
+  private String searchValue;
 }

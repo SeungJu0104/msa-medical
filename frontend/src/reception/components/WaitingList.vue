@@ -1,17 +1,11 @@
 <script setup>
-import {useWaitingListStore} from "@/stores/waitingListStore.js";
-import {computed, onBeforeMount, onMounted, onUnmounted, ref} from "vue";
-import WaitingListDoctorName from "@/shared/components/WaitingListDoctorName.vue";
-import WaitingListPatientList from "@/shared/components/WaitingListPatientList.vue";
-import {reception} from "@/reception/util/reception.js";
-import { getStompClient, sendMsg, subscribeChannel } from "@/util/stompMethod.js";
-import { useUserStore } from "@/stores/userStore.js";
-import { getAccessToken } from "@/auth/accessToken.js";
-import { createWebSocketModuleRunnerTransport } from "vite/module-runner";
-import VisitHistory from "@/components/diagnosis/VisitHistory.vue";
-import {useRouter} from "vue-router";
-import "@/assets/css/ReservationListByStaff.css";
-import dayjs from "dayjs";
+  import {useWaitingListStore} from "@/stores/waitingListStore.js";
+  import {computed, onBeforeMount, onMounted, onUnmounted, ref} from "vue";
+  import WaitingListDoctorName from "@/shared/components/WaitingListDoctorName.vue";
+  import WaitingListPatientList from "@/shared/components/WaitingListPatientList.vue";
+  import {reception} from "@/reception/util/reception.js";
+  import { getStompClient, subscribeChannel } from "@/util/stompMethod.js";
+  import "@/assets/css/ReservationListByStaff.css";
 
   const waitingListStore = useWaitingListStore();
   const waitingList = ref();
@@ -29,7 +23,6 @@ import dayjs from "dayjs";
     receptionStatusList.value = waitingListStore.receptionStatusList;
 
   };
-
   // 상태 변경 시 동작하는 함수
   const handleUpdateStatus = async (patient) => {
 

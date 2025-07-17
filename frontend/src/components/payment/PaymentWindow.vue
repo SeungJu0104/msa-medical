@@ -63,8 +63,7 @@
       <button
         v-if="reloadAmount === 0 && !isSubmit"
         class="btn btn-success mt-3"
-        @click="submit"
-      >
+        @click="submit">
         결제완료
       </button>
     </div>
@@ -73,77 +72,51 @@
 <script setup>
 import { customFetch } from '@/util/customFetch';
 import { ENDPOINTS } from '@/util/endpoints';
-import { getStompClient } from '@/util/stompMethod';
-import { computed, onMounted, reactive, ref } from 'vue';
+import { computed, reactive, ref } from 'vue';
+import '@/assets/css/Payment.css'
 
-    const isSubmit = ref(false) // 결재완료 버튼 누를시 없어짐
-    const props = defineProps({
-        item: Object
-    })
-    const paymentModal = ref(false)
-    const state = reactive({
-        paymentList :[],
-        paymentType: '카드',
-        paymentAmount : 0,
-        installment : '일시불',
-    })
-    const reloadAmount = computed(()=> {
-        const total =state.paymentList.reduce((sum,item) => sum + item.amount,0)
-        return props.item.payment-total
-    })
+const isSubmit = ref(false) // 결재완료 버튼 누를시 없어짐
+const props = defineProps({
+    item: Object
+})
+const paymentModal = ref(false)
+const state = reactive({
+    paymentList :[],
+    paymentType: '카드',
+    paymentAmount : 0,
+    installment : '일시불',
+})
+const reloadAmount = computed(()=> {
+    const total =state.paymentList.reduce((sum,item) => sum + item.amount,0)
+    return props.item.payment-total
+})
 
-    function addPayment(){
-        if(state.paymentAmount <=0) return;
-        if(reloadAmount.value < state.paymentAmount){
-            alert("지불 금액이 남은 금액보다 큽니다")
-            return
-        }
-        state.paymentList.push({
-            method: state.paymentType,
-            amount: state.paymentAmount,
-            installment:state.installment,
-        })
-        state.paymentAmount = 0
-        state.paymentType = '카드'
-        state.installment = '일시불'
-        paymentModal.value = false
+function addPayment(){
+    if(state.paymentAmount <=0) return;
+    if(reloadAmount.value < state.paymentAmount){
+        alert("지불 금액이 남은 금액보다 큽니다")
+        return
     }
+    state.paymentList.push({
+        method: state.paymentType,
+        amount: state.paymentAmount,
+        installment:state.installment,
+    })
+    state.paymentAmount = 0
+    state.paymentType = '카드'
+    state.installment = '일시불'
+    paymentModal.value = false
+}
 
-    const submit = async () => {
-        try {
-            const response = await customFetch(ENDPOINTS.payment.statusPayment(props.item.id))
-        if(response.status===200){
-            isSubmit.value = true
-        }    
-        } catch (error) {
-            console.error("에러",error)   
-        }
+const submit = async () => {
+    try {
+        const response = await customFetch(ENDPOINTS.payment.statusPayment(props.item.id))
+    if(response.status===200){
+        isSubmit.value = true
+    }    
+    } catch (error) {
+        console.error("에러",error)   
     }
+}
 
-    
 </script>
-    
-<style >
-.paymentwindow {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  min-width: 300px;
-}
-
-.modal {
-  position: fixed;
-  inset: 0;
-  background-color: rgba(0, 0, 0, 0.4);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 999;
-}
-
-.modal-box {
-  width: 100%;
-  max-width: 400px;
-}
-
-</style>
