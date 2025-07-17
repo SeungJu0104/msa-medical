@@ -20,7 +20,7 @@
     
   <script setup>
 import { computed, onMounted } from 'vue'
-import '@/assets/css/Chat.css';
+import '@/assets/css/chat.css';
 defineEmits(['close','open'])
 
 const props = defineProps({

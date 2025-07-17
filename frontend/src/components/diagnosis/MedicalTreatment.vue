@@ -25,7 +25,7 @@ import Medicine from './Medicine.vue'
 import Treatment from './Treatment.vue'
 import { customFetch } from '@/util/customFetch'
 import { ENDPOINTS } from '@/util/endpoints'
-import '@/assets/css/Treatment.css';
+import '@/assets/css/treatment.css';
 const props = defineProps({
   id: Number,
   uuid: String,

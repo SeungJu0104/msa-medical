@@ -6,7 +6,7 @@
 
 <script setup>
 import {reactive } from 'vue';
-import '@/assets/css/Treatment.css';
+import '@/assets/css/treatment.css';
 
     const state = reactive({
         treatContent: '',   

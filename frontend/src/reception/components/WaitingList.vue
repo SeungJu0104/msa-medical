@@ -6,7 +6,8 @@
   import {reception} from "@/reception/util/reception.js";
   import { getStompClient, subscribeChannel } from "@/util/stompMethod.js";
   import "@/assets/css/ReservationListByStaff.css";
-
+  import dayjs from "dayjs";
+  
   const waitingListStore = useWaitingListStore();
   const waitingList = ref();
   const receptionStatusList = ref();

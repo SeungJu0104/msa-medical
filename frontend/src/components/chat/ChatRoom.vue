@@ -26,7 +26,7 @@
 </template>
 
 <script setup>
-import '@/assets/css/Chat.css';
+import '@/assets/css/chat.css';
 import { useUserStore } from '@/stores/userStore';
 import { customFetch } from '@/util/customFetch';
 import { ENDPOINTS } from '@/util/endpoints';
