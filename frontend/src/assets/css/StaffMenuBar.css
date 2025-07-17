@@ -30,8 +30,17 @@
     color: #333;
     padding: 8px;
     border-radius: 4px;
+    font-weight: bold;
 }
 
 .menu-item a:hover, .menu-clickable:hover {
     background-color: #e6f0ff;
 }
+
+.logo {
+    margin-bottom: 1rem;
+    cursor: pointer;
+    height: 40px;
+    width: 100%;
+}
+
