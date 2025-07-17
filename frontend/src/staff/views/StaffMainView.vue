@@ -23,7 +23,7 @@
 import VisitHistory from '@/components/diagnosis/VisitHistory.vue';
 import Payment from '@/components/payment/Payment.vue';
 import { usePatientViewStore } from '@/stores/patientViewStore';
-import '@/assets/css/staffMainView.css';
+import '@/assets/css/StaffMainView.css';
 const store = usePatientViewStore()
 
 </script>
