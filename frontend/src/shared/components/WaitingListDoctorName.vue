@@ -1,4 +1,5 @@
 <script setup>
+import "@/assets/css/WaitingListDoctorName.css";
 
 defineProps({
   value: Object,

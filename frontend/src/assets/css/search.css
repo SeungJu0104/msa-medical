@@ -1,5 +1,5 @@
 
-.modal-backdrop {
+.search-modal-backdrop {
     position: fixed;
     top: 0;
     left: 0;
@@ -12,7 +12,7 @@
     z-index: 9999;
 }
 
-.modal-content {
+.search-modal-content {
     background-color: white;
     padding: 24px;
     border-radius: 16px;
@@ -23,12 +23,12 @@
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
-.input-group {
+.search-input-group {
     display: flex;
     margin-bottom: 16px;
 }
 
-.input-group input {
+.search-input-group input {
     flex: 1;
     padding: 10px;
     font-size: 16px;
@@ -38,11 +38,11 @@
     transition: border 0.2s;
 }
 
-.input-group input:focus {
+.search-input-group input:focus {
     border-color: #e6f0ff;
 }
 
-.input-group button {
+.search-input-group button {
     padding: 6px 12px;
     background-color: #f1f1f1;
     border: 1px solid #ccc;
@@ -51,7 +51,7 @@
     transition: background-color 0.2s;
 }
 
-.input-group button:hover {
+.search-input-group button:hover {
     background-color: #e6f0ff;
 }
 
@@ -60,19 +60,15 @@
     height: 20px;
 }
 
-.menu-item:hover {
-    cursor: pointer
-}
-
 .search-title {
     font-size: 1.1rem;
     font-weight: 600;
     color: #222;
     margin-bottom: 24px;
     letter-spacing: -0.5px;
-  }
+}
 
-table {
+.search-results table {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0;
@@ -83,27 +79,27 @@ table {
     box-shadow: 0 0 0 1px #ddd;
 }
 
-tr {
+.search-results tr {
     cursor: pointer;
 }
 
-th,
-td {
+.search-results th,
+.search-results td {
     padding: 10px;
     border-bottom: 1px solid #eee;
     text-align: center;
 }
 
-th {
+.search-results th {
     background-color: #e6f0ff;
     font-weight: 600;
 }
 
-tr:last-child td {
+.search-results tr:last-child td {
     border-bottom: none;
 }
 
-td button {
+.search-results td button {
     padding: 6px 12px;
     font-size: 14px;
     border-radius: 8px;
@@ -113,18 +109,18 @@ td button {
     transition: background-color 0.2s;
 }
 
-td button:hover {
+.search-results td button:hover {
     background-color: #e6f0ff;
 }
 
-.no-result {
+.search-no-result {
     margin-top: 16px;
     color: #666;
     text-align: center;
     font-style: italic;
 }
 
-.close-btn {
+.search-close-btn {
     margin-top: 20px;
     padding: 10px 16px;
     background-color: #f5f5f5;
@@ -134,6 +130,6 @@ td button:hover {
     transition: background-color 0.2s;
 }
 
-.close-btn:hover {
+.search-close-btn:hover {
     background-color: #e6f0ff;
 }

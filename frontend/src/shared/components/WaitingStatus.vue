@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from "vue";
+import { computed, ref, onMounted, onBeforeUnmount } from "vue";
 import dayjs from "dayjs";
 import "@/assets/css/WaitingStatus.css";
 
@@ -8,8 +8,10 @@ const { status, value, date } = defineProps({
   value: String,
   date: dayjs
 });
+const isDropdownOpen = ref(false);
 
 const patientCurrentStatus = computed(() => value);
+const emit = defineEmits(["update:value"]);
 
 const filterStages = {
   left: { //'현재 상태 제외'
@@ -31,40 +33,61 @@ const leftOver = computed(() => {
   }, status);
 });
 
-const emit = defineEmits(["update:value"]);
-
 const selectedStatus = (name) => {
   emit("update:value", name);
 }
 
+function toggleDropdown() {
+  isDropdownOpen.value = !isDropdownOpen.value;
+}
+function closeDropdown() {
+  isDropdownOpen.value = false;
+}
+
+function handleClickOutside(event) {
+  const wrapper = document.querySelector('.ws-dropdown-wrapper');
+  if (wrapper && !wrapper.contains(event.target)) {
+    closeDropdown();
+  }
+}
+
+onMounted(() => {
+  document.addEventListener('mousedown', handleClickOutside);
+});
+onBeforeUnmount(() => {
+  document.removeEventListener('mousedown', handleClickOutside);
+});
+
 </script>
 
 <template>
-
-  <button
+  <div class="ws-dropdown-wrapper">
+    <button
       class="btn btn-secondary btn-sm"
       type="button"
-      v-bind="patientCurrentStatus.trim() !== '진료 중' ? { 'data-bs-toggle': 'dropdown', 'aria-expanded': 'false' } : {}"
+      @click="toggleDropdown"
+      v-bind="patientCurrentStatus.trim() !== '진료 중' ? { 'aria-expanded': 'false' } : {}"
       :class="[
         { 'dropdown-toggle': patientCurrentStatus.trim() !== '진료 중' },
         'btn-status-' + patientCurrentStatus.trim().replace(/\s/g, '')
       ]"
-  >
-    {{ patientCurrentStatus }}
-  </button>
+    >
+      {{ patientCurrentStatus }}
+    </button>
 
-  <ul
-      class="dropdown-menu"
-      v-if="patientCurrentStatus.trim() !== '진료 중'"
-  >
-    <li
+    <ul
+      class="ws-dropdown-menu"
+      v-if="patientCurrentStatus.trim() !== '진료 중' && isDropdownOpen"
+    >
+      <li
         v-for="left in leftOver"
         :key="left.id"
-        @click="selectedStatus(left.name)"
-    >
-      <span v-cloak>{{ left.name }}</span>
-    </li>
-  </ul>
+        @click="selectedStatus(left.name); closeDropdown()"
+      >
+        <span v-cloak>{{ left.name }}</span>
+      </li>
+    </ul>
+  </div>
 </template>
 
 

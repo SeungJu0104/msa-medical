@@ -1,0 +1,12 @@
+.doctor-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #f8faff;
+  border-bottom: 1px solid #eee;
+}
+
+.doctor-name {
+  font-weight: 600;
+  font-size: 1.1rem;
+}

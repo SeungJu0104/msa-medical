@@ -27,7 +27,7 @@ const list = (selectedKey) => {
 
 <template>
 
-  <div class="d-flex container">
+  <div class="d-flex wr-parent-container">
     <div class="scroll">
       <div class="waitingAndReservation">
         <div
