@@ -69,6 +69,8 @@ import '@/assets/css/icons.css';
       return;
     }
 
+
+
     console.log("다시 프론트");
     console.log(reservationTime.value);
 
@@ -227,10 +229,18 @@ import '@/assets/css/icons.css';
       <div class="reg-form-row" v-if="reservationChk.dateChk && reservationChk.doctorChk && reservationTime">
         <label class="reg-form-label">시간<span class="reg-required">*</span></label>
         <div class="reg-time-group">
-          <template v-for="time in Array.from(reservationTime).sort()" :key="time">
-            <button type="button" class="reg-btn-time" :class="{ active: selectedVal.time === time }" @click="selectTime(time)" ref="selectedVal.time" v-cloak>{{time}}</button>
+          <template v-for="time in Array.from(reservationTime.filteredAvailableSlots).sort()" :key="time">
+            <button 
+              type="button" 
+              class="reg-btn-time" 
+              :class="{ active: selectedVal.time === time }"
+              :disabled="reservationTime.alreadyReservatedSlots.has(time)"
+              @click="selectTime(time)" ref="selectedVal.time" 
+              v-cloak>
+              {{time}}
+            </button>
           </template>
-          <template v-if="!reservationTime.size">
+          <template v-if="!reservationTime.filteredAvailableSlots.size">
             <span class="reg-helper-danger">예약 가능한 시간대가 없습니다.</span>
           </template>
         </div>
