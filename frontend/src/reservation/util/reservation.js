@@ -1,10 +1,10 @@
 import {computed, ref} from 'vue'
 import {customFetch} from "@/util/customFetch.js";
 import {ENDPOINTS} from "@/util/endpoints.js";
-import { useRouter } from "vue-router";
 import {omit} from "lodash";
 import {common} from "@/util/common.js";
 import dayjs from "dayjs";
+import {roles} from "@/util/roles.js";
 
 export const patientMethods = {
     getReservationListPerPatient: async (uuid) => {
@@ -100,16 +100,27 @@ export const patientMethods = {
         console.log("전체 가능한 시간 목록", [...availableSlots]);
 
 
-        const diff = new Set(
+        // const diff = new Set(
+        //     [...availableSlots].filter(slot => {
+        //         const [hh] = slot.split(':');
+        //         return !alreadyReservatedSlots.has(slot) && hh !== '12';
+        //     })
+        // );
+
+        // console.log("최종 목록 ", diff);
+
+        // return diff;
+
+        const filteredAvailableSlots = new Set(
             [...availableSlots].filter(slot => {
                 const [hh] = slot.split(':');
-                return !alreadyReservatedSlots.has(slot) && hh !== '12';
+                return hh !== '12';
             })
         );
 
-        console.log("최종 목록 ", diff);
+        console.log("필터링 된 목록 ", [...filteredAvailableSlots]);
 
-        return diff;
+        return {filteredAvailableSlots, alreadyReservatedSlots};
 
     },
     reservationTime : async (selectedVal) => {
@@ -135,11 +146,11 @@ export const patientMethods = {
     },
     routeByRole : (role, router) => {
 
-        if(role === 'PATIENT') {
+        if(role === roles.PATIENT) {
             router.push({name: 'home'});
         }
 
-        if(role === 'DOCTOR' || role === 'NURSE') {
+        if(role === roles.DOCTOR || role === roles.NURSE) {
             router.push({name: 'staffMain'});
         }
 

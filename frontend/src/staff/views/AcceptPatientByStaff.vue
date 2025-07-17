@@ -43,8 +43,8 @@ import '@/assets/css/icons.css'
 
   }
 
-  function goHome () {
-    common.goStaffHome();
+  async function goHome () {
+    await router.push({name: 'staffMain'});
   }
 
   async function getDoctorList () {

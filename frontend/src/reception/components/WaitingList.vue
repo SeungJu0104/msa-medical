@@ -10,6 +10,7 @@
   const waitingListStore = useWaitingListStore();
   const waitingList = ref();
   const receptionStatusList = ref();
+  const today = dayjs(new Date);
   let client;
 
   const refreshWaitingList = async () => {
@@ -50,6 +51,9 @@
 
 <template>
   <div class="container">
+    <div class="date-nav">
+      <span class="date-display" @click="toggleCalendar">{{today.format("M월 D일")}}</span>
+    </div>
     <div class="card-list">
       <div v-for="list in waitingList" :key="list.doctor?.uuid" class="card">
         <WaitingListDoctorName :value="list.doctor" :count="list.patientList?.length || 0" />

@@ -3,12 +3,6 @@ import dayjs from "dayjs";
 
 export const common =  {
 
-    goHome : () => {
-        return router.push({name: 'home'});
-    },
-    goStaffHome: () => {
-        return router.push({name: 'staffMain'})
-    },
     goBack : () => {
         return router.back();
     },
