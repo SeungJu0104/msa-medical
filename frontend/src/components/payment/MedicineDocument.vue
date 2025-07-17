@@ -52,35 +52,35 @@
 <script setup>
 import { customFetch } from '@/util/customFetch'
 import { ENDPOINTS } from '@/util/endpoints'
-import { nextTick, onMounted, reactive, ref } from 'vue'
-import '@/assets/css/document.css'
+import { nextTick, onMounted, reactive } from 'vue'
+import '@/assets/css/Document.css'
   
-  const props = defineProps({
-    treatmentId: Number
-  })
-  const emit = defineEmits(['back'])
-  const state = reactive({
-    documentList : {},
-    diseaseList:[],
-    medicineList:[],
-  })
-  onMounted(async ()=>{
-    try {
-      const response = await customFetch(ENDPOINTS.treatment.document(props.treatmentId))
-      if(response.status===200){
-          state.documentList = response.data.documentList
-          state.diseaseList = response.data.diseaseList
-          state.medicineList = response.data.medicineList
-          
-          await nextTick()
-          window.print()
-      }
-  } catch (error) {
-      console.error("에러",error)
-  }}
+const props = defineProps({
+  treatmentId: Number
+})
+const emit = defineEmits(['back'])
+const state = reactive({
+  documentList : {},
+  diseaseList:[],
+  medicineList:[],
+})
+onMounted(async ()=>{
+  try {
+    const response = await customFetch(ENDPOINTS.treatment.document(props.treatmentId))
+    if(response.status===200){
+        state.documentList = response.data.documentList
+        state.diseaseList = response.data.diseaseList
+        state.medicineList = response.data.medicineList
+        
+        await nextTick()
+        window.print()
+    }
+} catch (error) {
+    console.error("에러",error)
+}}
 )
 function printDocument() {
-  window.print()
+window.print()
 }
 
 </script>

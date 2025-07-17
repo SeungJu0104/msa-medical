@@ -20,17 +20,17 @@
     
   <script setup>
 import { computed, onMounted } from 'vue'
-import '@/assets/css/chat.css';
-  defineEmits(['close','open'])
+import '@/assets/css/Chat.css';
+defineEmits(['close','open'])
 
-  const props = defineProps({
+const props = defineProps({
   alarms: Array,
   loadAlarmList: Function
 })
-  onMounted(() => {
-    props.loadAlarmList()  // 알림 수동 새로고침할 때
+onMounted(() => {
+  props.loadAlarmList()  // 알림 수동 새로고침할 때
 })
-  const alarms = computed(() => {
-    return props.alarms.filter(room => room.alarmCount > 0)
-  })
-  </script>
+const alarms = computed(() => {
+  return props.alarms.filter(room => room.alarmCount > 0)
+})
+</script>

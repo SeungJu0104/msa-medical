@@ -1,4 +1,4 @@
-  <template>
+<template>
   <div class="visit-detail">
     <h2 class="section-title">진료 내용</h2>
     <div class="treatment-info">
@@ -33,23 +33,22 @@
         <p>• {{ a.originalName }}</p>
         <div v-if="a.contentType.startsWith('image/')">
           <img
-            :src="`/attachment/${a.fileName}`"
+            :src="`/image/${a.fileName}`"
             alt="첨부 이미지"
             class="attachment-image"/>
         </div>
       </li>
     </ul>
-
-    <Document :id="props.id" />
+  <Document :id="props.id" />
   </div>
 </template>
 
 <script setup>
 import { customFetch } from '@/util/customFetch'
 import { ENDPOINTS } from '@/util/endpoints'
-import { onBeforeUnmount, onMounted, reactive } from 'vue'
+import { onMounted, reactive } from 'vue'
 import Document from '../payment/Document.vue'
-
+import '@/assets/css/VisitHistory.css';
 const props = defineProps({ id: Number })
 
 const state = reactive({
@@ -75,55 +74,3 @@ onMounted(async () => {
 })
 
 </script>
-
-<style scoped>
-.visit-detail {
-  width: 100%;
-  min-height: 80vh;
-  overflow-y: auto;
-  padding: 20px;
-  background-color: #ffffff;
-  max-width: 100vh;
-  font-size: 14px;
-  justify-content: flex-end;
-}
-
-.section-title {
-  font-size: 18px;
-  font-weight: bold;
-  margin: 32px 0 12px;
-  border-bottom: 1px solid #ccc;
-  padding-bottom: 6px;
-}
-
-.treatment-info p,
-.prescription-item p {
-  margin: 4px 0;
-}
-
-ul {
-  list-style: none;
-  padding-left: 0;
-}
-
-.prescription-item {
-  margin-bottom: 12px;
-  background: #f9f9f9;
-  padding: 10px;
-  border-radius: 6px;
-  border: 1px solid #ddd;
-}
-
-.attachment-item {
-  margin-bottom: 16px;
-}
-
-.attachment-image {
-  max-width: 200px;
-  margin-top: 8px;
-  margin-bottom: 12px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-</style>

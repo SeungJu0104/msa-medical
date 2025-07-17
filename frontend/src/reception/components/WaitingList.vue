@@ -8,7 +8,6 @@ import { getStompClient, subscribeChannel } from "@/util/stompMethod.js";
 import "@/assets/css/ReservationListByStaff.css";
 import dayjs from "dayjs";
 
-
   const waitingListStore = useWaitingListStore();
   const waitingList = ref();
   const receptionStatusList = ref();
@@ -25,7 +24,6 @@ import dayjs from "dayjs";
     receptionStatusList.value = waitingListStore.receptionStatusList;
 
   };
-
   // 상태 변경 시 동작하는 함수
   const handleUpdateStatus = async (patient) => {
 

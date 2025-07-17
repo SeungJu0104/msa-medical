@@ -20,14 +20,22 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/attachment")
+@RequestMapping("/image")
 public class AttachmentController {
-	private final String uploadDir = "/Users/Ksy/upload";
+	private final String uploadDir = "/Users/Ksy/upload"; //서버에 올리면 서버경로
 	
 	@GetMapping("/{fileName}")
 	public ResponseEntity<Object> getFile(@PathVariable("fileName") String fileName) throws IOException {
 		Path path = Paths.get(uploadDir).resolve(fileName);
-		Resource resource = new UrlResource(path.toUri());
+		// 경로 탈출 방지
+	    if (!path.startsWith(Paths.get(uploadDir))) {
+	        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "잘못된 접근입니다.");
+	    }
+
+	    Resource resource = new UrlResource(path.toUri());
+	    if (!resource.exists()) {
+	        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "파일을 찾을 수 없습니다.");
+	    }
 		
 		if (!resource.exists()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "파일을 찾을 수 없습니다.");
@@ -36,7 +44,4 @@ public class AttachmentController {
                 .contentType(MediaTypeFactory.getMediaType(resource).orElse(MediaType.APPLICATION_OCTET_STREAM))
                 .body(resource);
 	}
-	
-	
-
 }

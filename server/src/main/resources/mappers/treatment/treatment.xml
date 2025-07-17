@@ -15,8 +15,7 @@
     SELECT t.*
     FROM TB_TREATMENT t
     JOIN TB_RECEPTION r ON t.uuid = r.uuid
-    WHERE r.doctor_uuid = #{doctorUuid}
-      AND r.patient_uuid = #{patientUuid}
+    WHERE r.patient_uuid = #{patientUuid}
     ORDER BY t.treat_date DESC
     LIMIT #{start}, #{size}
   </select>
@@ -25,8 +24,7 @@
     SELECT COUNT(*)
     FROM TB_TREATMENT t
     JOIN TB_RECEPTION r ON t.uuid = r.uuid
-    WHERE r.doctor_uuid = #{doctorUuid}
-      AND r.patient_uuid = #{patientUuid}
+    WHERE r.patient_uuid = #{patientUuid}
   </select>
   
   <select id="selectTreatment" resultType="com.emr.slgi.treatment.Treatment">

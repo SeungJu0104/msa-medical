@@ -2,31 +2,41 @@
   <div class="visit-history-wrapper">
     <div class="visit-history-list">
       <div class="close-button-wrapper">
-      <button @click="emit('back')" class="x-btn" >x</button>
-    </div>
-      <h3>내원이력</h3>
-      <ul v-if="state.list.length > 0" class="visit-history-list">
-        <!-- v-for 안에 -->
-    <li
-      class="visit-history-item"
-      :class="{ active: selecte.id === item.id }"
-      v-for="(item, index) in state.list"
-      :key="index"
-      @click="division(item)"
-    >
-  <div class="visit-history-card">
-    <p class="visit-date">{{ dayjs(item.treatDate).format('YYYY-MM-DD') }}</p>
-  </div>
-</li>
-</ul>
+        <button @click="emit('back')" class="x-btn" >x</button>
+      </div>
+      <h5> {{ props.name }}님  내원이력</h5>
+      
+      <ul v-if="state.list.length > 0">
+        <li
+          class="visit-history-item"
+          :class="{ active: selecte.id === item.id }"
+          v-for="(item, index) in state.list"
+          :key="index"
+          @click="division(item)">
+            <div class="visit-history-card">
+              <p class="visit-date">{{ dayjs(item.treatDate).format('YYYY-MM-DD') }}</p>
+            </div>
+        </li>
+      </ul>
       <p v-else class="no-history">내원이력이 없습니다.</p>
-      <!-- 페이징 -->
-      <div v-if="state.pageInfo.totalPage > 1" class="pagination">
-        <button v-if="state.pageInfo.prev" @click="changePage(state.pageInfo.startPage - 1)" class="btn btn-primary">이전</button>
-        <button v-for="page in pageNumbers" :key="page" @click="changePage(page)":class="['btn', 'btn-outline-primary', { 'btn-primary text-white': state.pageNo === page }]">
-          {{ page }}
-        </button>
-        <button v-if="state.pageInfo.next" @click="changePage(state.pageInfo.endPage + 1)"class="btn btn-primary">다음</button>
+
+      <div class="pagination-wrapper" v-if="state.pageInfo.totalPage > 1">
+        <button
+          v-if="state.pageInfo.prev"
+          @click="changePage(state.pageInfo.startPage - 1)"
+          class="btn btn-primary">이전</button>
+
+        <button
+          v-for="page in pageNumbers"
+          :key="page"
+          @click="changePage(page)"
+          :class="['btn', 'btn-outline-primary', { 'btn-primary text-white': state.pageNo === page }]">
+          {{ page }}</button>
+
+        <button
+          v-if="state.pageInfo.next"
+          @click="changePage(state.pageInfo.endPage + 1)"
+          class="btn btn-primary">다음</button>
       </div>
     </div>
 
@@ -36,8 +46,7 @@
         v-if="mode === 'treatmentDetail'"
         :id="selecte.id" 
         :key="selecte.uuid" 
-        @back="goBack" 
-        />
+        @back="goBack" />
       <MedicalTreatment
         v-if="mode === 'treatment'"
         :id="selecte.id"
@@ -57,11 +66,12 @@ import { computed, onBeforeMount, onMounted, reactive, ref, watch } from 'vue';
 import VisitHistoryDetail from './VisitHistoryDetail.vue';
 import MedicalTreatment from './MedicalTreatment.vue';
 import { getStompClient, subscribeChannel } from '@/util/stompMethod';
+import '@/assets/css/VisitHistory.css';
 let client;
 const emit = defineEmits(['back'])
 const props = defineProps({
   patientUuid: String,
-  doctorUuid: String
+  name:String,
 })
 
 onBeforeMount(async () => {
@@ -102,7 +112,6 @@ try {
     const response = await customFetch(ENDPOINTS.treatment.history,
     {params:{
         patientUuid: props.patientUuid,
-        doctorUuid: props.doctorUuid,
         pageNo: state.pageNo,
         size: state.size,
     }})
@@ -143,84 +152,3 @@ watch(() => props.patientUuid, (newUuid, oldUuid) => {
   }
 );
 </script>
-
-<style scoped>
-.visit-history-wrapper {
-  display: flex;
-  flex: 1;
-  gap: 20px;
-  margin-top: 20px;
-  height: 100%;
-  max-height: 120vh;
-  max-width: 120vh;
-}
-.close-button-wrapper{
-  margin-top: 10px;
-  margin-bottom: 8px;
-  display: flex;
-  justify-content: flex-end; 
-}
-.x-btn {
-  background: none;
-  border: none;
-  color: #333;
-  font-size: 20px;
-  font-weight: bold;
-  cursor: pointer;
-  padding: 4px 8px;
-}
-.visit-history-list {
-display: flex;
-flex-direction: column;
-gap: 12px;
-min-height: 60vh;
-max-height: 70vh;
-min-width: 20vh;
-max-width: 20vh;
-}
-.visit-history-detail {
-width: 100%;
-background-color: #f9f9f9;
-padding: 16px;
-border: 1px solid #ddd;
-border-radius: 8px;
-overflow-y: auto;
-}
-.visit-history-card {
-  background: white;
-  padding: 16px 16px;
-  border-radius: 8px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
-  cursor: pointer;
-  transition: all 0.2s ease;
-  text-align: center;
-}
-
-.visit-history-item:hover .visit-history-card {
-  transform: scale(1.02);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
-}
-
-.visit-history-item.active .visit-history-card {
-  border: 2px solid #007bff;
-  background-color: #ffffff;
-}
-.history-box {
-margin-bottom: 20px;
-}
-
-.visit-date {
-font-weight: bold;
-font-size: 16px;
-}
-.no-history {
-text-align: center;
-margin-top: 20px;
-}
-
-.pagination {
-margin-top: 10px;
-justify-content: flex-end;
-display: flex;
-}
-</style>

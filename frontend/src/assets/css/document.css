@@ -1,80 +1,80 @@
 .medicinedocument-wrapper {
+  width: 100%;
+  height: 100%;
+  margin: 12x ;
+  padding: 24px;
+  overflow-x: auto;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+}
+
+.medicinedocument-wrapper h2 {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.info-section {
+  margin-bottom: 24px;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.section {
+  margin-bottom: 24px;
+}
+
+.section h3 {
+  margin-bottom: 12px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 4px;
+}
+
+.section ul {
+  list-style: disc;
+  padding-left: 20px;
+}
+
+.med-item {
+  margin-bottom: 12px;
+}
+
+.med-item p {
+  margin: 0;
+}
+
+.button-group {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 32px;
+}
+.section ul {
+  list-style: none;  
+  padding-left: 0;   
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #print-area, #print-area * {
+    visibility: visible;
+  }
+  #print-area {
+    position: absolute;
+    left: 0;
+    top: 0;
     width: 100%;
-    height: 100%;
-    margin: 12x ;
+    background: white;
     padding: 24px;
-    overflow-x: auto;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    font-family: Arial, sans-serif;
-    font-size: 12px;
   }
-  
-  .medicinedocument-wrapper h2 {
-    text-align: center;
-    margin-bottom: 24px;
-  }
-  
-  .info-section {
-    margin-bottom: 24px;
-  }
-  
-  .info-row {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 8px;
-  }
-  
-  .section {
-    margin-bottom: 24px;
-  }
-  
-  .section h3 {
-    margin-bottom: 12px;
-    border-bottom: 1px solid #ddd;
-    padding-bottom: 4px;
-  }
-  
-  .section ul {
-    list-style: disc;
-    padding-left: 20px;
-  }
-  
-  .med-item {
-    margin-bottom: 12px;
-  }
-  
-  .med-item p {
-    margin: 0;
-  }
-  
   .button-group {
-    display: flex;
-    gap: 12px;
-    justify-content: center;
-    margin-top: 32px;
+    display: none !important;
   }
-  .section ul {
-    list-style: none;  
-    padding-left: 0;   
-  }
-  
-  @media print {
-    body * {
-      visibility: hidden;
-    }
-    #print-area, #print-area * {
-      visibility: visible;
-    }
-    #print-area {
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 100%;
-      background: white;
-      padding: 24px;
-    }
-    .button-group {
-      display: none !important;
-    }
-  }
+}

@@ -5,8 +5,13 @@
         <button class="btn btn-primary" @click="create = true" >
           방 만들기
         </button>
-        <button class="btn btn-primary" @click="showModal = true" >
-          알림창 <span v-if="totalCount > 0">({{ totalCount }})</span>
+        <button class="alarm-button" @click="showModal = true">
+          <span class="icon-wrapper">
+            🔔
+            <span v-if="totalCount > 0" class="alarm-badge">
+              {{ totalCount }}
+            </span>
+          </span>
         </button>
       </div>
   </div>
@@ -35,7 +40,7 @@
 </template>
 
 <script setup>  
-import '@/assets/css/chat.css';
+import '@/assets/css/Chat.css';
 import ChatCreate from './ChatCreate.vue'
 import { customFetch } from '@/util/customFetch';
 import {onMounted, computed, reactive, ref } from 'vue';

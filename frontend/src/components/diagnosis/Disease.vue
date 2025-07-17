@@ -6,8 +6,8 @@
           class="medicine-search-input" type="text" :value="state.search" @input="onInput" 
           @focus="state.isFocus = true" @blur="onBlur" @keyup.enter="submit"
           placeholder="코드 및 병명을 입력해주세요."/>
-        <button class="btn btn-primary custom-btn" @click="clearSearch">지움</button>
-        <button class="btn btn-primary custom-btn" @click="submit">확인</button>
+          <button class="btn btn-primary custom-btn" @click="clearSearch">지움</button>
+          <button class="btn btn-primary custom-btn" @click="submit">확인</button>
       </div>
   
       <ul v-if="state.isFocus" class="medicine-search-search-results">
@@ -18,84 +18,84 @@
         </li>
       </ul>
     </div>
-
-    <ul class="medicine-search-selected-list">
-      <li v-for="(item, index) in state.inputText" :key="index">
-        {{ item.code }} - {{ item.name }}
-        <button class="btn btn-primary custom-btn" @click="removeDisease(index)">x</button>
-      </li>
-    </ul>
+    <div class="scroll-area">
+      <ul class="medicine-search-selected-list">
+        <li v-for="(item, index) in state.inputText" :key="index">
+          {{ item.code }} - {{ item.name }}
+          <button @click="removeDisease(index)" class="x-btn" >x</button>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
   <script setup>
-  import { reactive } from 'vue'
-  import { customFetch } from '@/util/customFetch'
-  import { ENDPOINTS } from '@/util/endpoints'
-  import '@/assets/css/medicine.css';
-  const state = reactive({
-    search: '',
-    isFocus: false,
-    diseaseList: [],
-    selectedDisease: null,
-    inputText : [],
-  })
-  
-  let debounceTimer;
+import { reactive } from 'vue'
+import { customFetch } from '@/util/customFetch'
+import { ENDPOINTS } from '@/util/endpoints'
+import '@/assets/css/Medicine.css';
+const state = reactive({
+  search: '',
+  isFocus: false,
+  diseaseList: [],
+  selectedDisease: null,
+  inputText : [],
+})
 
-  const onInput = (e) => {
-    state.search = e.target.value;
+let debounceTimer;
 
-    if (debounceTimer) clearTimeout(debounceTimer);
+const onInput = (e) => {
+  state.search = e.target.value;
 
-    debounceTimer = setTimeout(() => {
-      searchDisease();
-    }, 300);
-  };
+  if (debounceTimer) clearTimeout(debounceTimer);
 
-    const searchDisease = async () =>{
-      try {
-        const response = await customFetch(ENDPOINTS.disease.searchlist(state.search)
-        )
-        if (response.status === 200) {
-          state.diseaseList = response.data
-        }
-      } catch (error) {
-        console.error('에러:', error)
+  debounceTimer = setTimeout(() => {
+    searchDisease();
+  }, 300);
+};
+
+  const searchDisease = async () =>{
+    try {
+      const response = await customFetch(ENDPOINTS.disease.searchlist(state.search)
+      )
+      if (response.status === 200) {
+        state.diseaseList = response.data
       }
+    } catch (error) {
+      console.error('에러:', error)
     }
-  
-  const selectedDisease = (item) => {
-    state.selectedDisease = item
-    state.search = item.name
-    state.diseaseList = []
-    state.isFocus = false
   }
-  
-  const clearSearch = () => {
-    state.search = ''
-    state.diseaseList = []
-    state.selectedDisease = null
-  }
-  const onBlur = () => {
-  setTimeout(() => {
-    state.isFocus = false
-  }, 150)
+
+const selectedDisease = (item) => {
+  state.selectedDisease = item
+  state.search = item.name
+  state.diseaseList = []
+  state.isFocus = false
+}
+
+const clearSearch = () => {
+  state.search = ''
+  state.diseaseList = []
+  state.selectedDisease = null
+}
+const onBlur = () => {
+setTimeout(() => {
+  state.isFocus = false
+}, 150)
 }
 
 const submit = () => {
-    if (state.search.trim() !== '' && state.selectedDisease) {
-        state.inputText.push(state.selectedDisease)
-        state.search = ''
-        state.selectedDisease = null
-  }
+  if (state.search.trim() !== '' && state.selectedDisease) {
+      state.inputText.push(state.selectedDisease)
+      state.search = ''
+      state.selectedDisease = null
+}
 }
 
 const removeDisease=  (index) => {
-    state.inputText.splice(index,1)
+  state.inputText.splice(index,1)
 }
 
 defineExpose({
-  inputText: () => state.inputText
-})
+  inputText: () => state.inputText})
 </script>
