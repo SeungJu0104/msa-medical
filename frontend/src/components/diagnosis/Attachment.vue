@@ -26,7 +26,7 @@
 
 <script setup>
 import { reactive, ref } from 'vue';
-import '@/assets/css/Attachment.css';
+import '@/assets/css/attachment.css';
 
 const fileInput = ref(null)
 const state = reactive({

@@ -48,7 +48,7 @@ import { customFetch } from '@/util/customFetch'
 import { ENDPOINTS } from '@/util/endpoints'
 import { onMounted, reactive } from 'vue'
 import Document from '../payment/Document.vue'
-import '@/assets/css/VisitHistory.css';
+import '@/assets/css/visitHistoryDetail.css';
 const props = defineProps({ id: Number })
 
 const state = reactive({

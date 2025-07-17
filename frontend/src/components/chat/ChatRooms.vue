@@ -40,7 +40,7 @@
 </template>
 
 <script setup>  
-import '@/assets/css/Chat.css';
+import '@/assets/css/chat.css';
 import ChatCreate from './ChatCreate.vue'
 import { customFetch } from '@/util/customFetch';
 import {onMounted, computed, reactive, ref } from 'vue';

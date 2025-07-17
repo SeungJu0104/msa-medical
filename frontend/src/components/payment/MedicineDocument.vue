@@ -53,7 +53,7 @@
 import { customFetch } from '@/util/customFetch'
 import { ENDPOINTS } from '@/util/endpoints'
 import { nextTick, onMounted, reactive } from 'vue'
-import '@/assets/css/Document.css'
+import '@/assets/css/document.css'
   
 const props = defineProps({
   treatmentId: Number

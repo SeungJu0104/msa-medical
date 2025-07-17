@@ -1,11 +1,8 @@
 <template>
   <div class="visit-history-wrapper">
     <div class="visit-history-list">
-      <div class="close-button-wrapper">
         <button @click="emit('back')" class="x-btn" >x</button>
-      </div>
       <h5> {{ props.name }}님  내원이력</h5>
-      
       <ul v-if="state.list.length > 0">
         <li
           class="visit-history-item"
@@ -66,7 +63,7 @@ import { computed, onBeforeMount, onMounted, reactive, ref, watch } from 'vue';
 import VisitHistoryDetail from './VisitHistoryDetail.vue';
 import MedicalTreatment from './MedicalTreatment.vue';
 import { getStompClient, subscribeChannel } from '@/util/stompMethod';
-import '@/assets/css/VisitHistory.css';
+import '@/assets/css/visitHistory.css';
 let client;
 const emit = defineEmits(['back'])
 const props = defineProps({

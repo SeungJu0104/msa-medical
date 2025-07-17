@@ -1,6 +1,5 @@
 <template>
   <div class="body">
-    <aside class="left"></aside>
     <section class="center">
       <div class="center-inner">
         <div class="history-area">
@@ -24,7 +23,7 @@
 import VisitHistory from '@/components/diagnosis/VisitHistory.vue';
 import Payment from '@/components/payment/Payment.vue';
 import { usePatientViewStore } from '@/stores/patientViewStore';
-import '@/assets/css/StaffMainView.css';
+import '@/assets/css/staffMainView.css';
 const store = usePatientViewStore()
 
 </script>

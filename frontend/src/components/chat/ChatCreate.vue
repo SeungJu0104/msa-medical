@@ -18,7 +18,7 @@ import { computed, onMounted, reactive } from 'vue';
 import { customFetch } from '@/util/customFetch';
 import { ENDPOINTS } from '@/util/endpoints';
 import { useUserStore } from '@/stores/userStore';
-import '@/assets/css/Chat.css';
+import '@/assets/css/chat.css';
 
 const userStore = useUserStore();
 const uuid = computed(() => userStore.user?.uuid ?? '');
