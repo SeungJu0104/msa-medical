@@ -1,10 +1,10 @@
 import {computed, ref} from 'vue'
 import {customFetch} from "@/util/customFetch.js";
 import {ENDPOINTS} from "@/util/endpoints.js";
-import { useRouter } from "vue-router";
 import {omit} from "lodash";
 import {common} from "@/util/common.js";
 import dayjs from "dayjs";
+import {roles} from "@/util/roles.js";
 
 export const patientMethods = {
     getReservationListPerPatient: async (uuid) => {
@@ -146,11 +146,11 @@ export const patientMethods = {
     },
     routeByRole : (role, router) => {
 
-        if(role === 'PATIENT') {
+        if(role === roles.PATIENT) {
             router.push({name: 'home'});
         }
 
-        if(role === 'DOCTOR' || role === 'NURSE') {
+        if(role === roles.DOCTOR || role === roles.NURSE) {
             router.push({name: 'staffMain'});
         }
 

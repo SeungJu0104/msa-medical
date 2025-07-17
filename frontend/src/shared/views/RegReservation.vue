@@ -9,6 +9,7 @@ import dayjs from "dayjs";
 import {errorMessage} from "@/util/errorMessage.js";
 import {useUserStore} from "@/stores/userStore.js";
 import {useRouter, useRoute} from "vue-router";
+import {roles} from "@/util/roles.js";
 import '@/assets/css/RegReservation.css';
 import '@/assets/css/icons.css';
 
@@ -102,14 +103,24 @@ import '@/assets/css/icons.css';
   const goHome = async () => {
 
     if(!reservationChk.timeChk) {
-      await common.goStaffHome();
+      await routeToHome();
     }
 
     if(await patientMethods.cancelHoldingReservation(selectedVal.patientUuid)) {
-      await common.goStaffHome();
+      await routeToHome();
     }
 
   }
+
+  const routeToHome = async() => {
+
+    if(userInfo.value.role === roles.PATIENT) {
+      await router.push({name: 'home'});
+    } else {
+      await router.push({name: 'staffMain'});
+    }
+
+}
 
   const reservation = () => {
     console.log(selectedVal.reservationDate);
@@ -131,6 +142,7 @@ import '@/assets/css/icons.css';
           dayjs(`${common.dateFormatter(selectedVal.reservationDate, 'YYYY-MM-DD')}T${selectedVal.time}:00`).toDate().toISOString()
 
     }, router, userInfo.value.role);
+
 
   }
 
