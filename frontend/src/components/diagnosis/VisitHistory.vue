@@ -63,7 +63,7 @@ import { computed, onBeforeMount, onMounted, reactive, ref, watch } from 'vue';
 import VisitHistoryDetail from './VisitHistoryDetail.vue';
 import MedicalTreatment from './MedicalTreatment.vue';
 import { getStompClient, subscribeChannel } from '@/util/stompMethod';
-import '@/assets/css/visitHistory.css';
+import '@/assets/css/VisitHistory.css';
 let client;
 const emit = defineEmits(['back'])
 const props = defineProps({
