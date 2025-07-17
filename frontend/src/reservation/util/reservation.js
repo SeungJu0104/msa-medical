@@ -147,7 +147,7 @@ export const patientMethods = {
     routeByRole : (role, router) => {
 
         if(role === roles.PATIENT) {
-            router.push({name: 'home'});
+            router.push({name: 'reservationListByPatient'});
         }
 
         if(role === roles.DOCTOR || role === roles.NURSE) {
