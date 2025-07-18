@@ -1,201 +1,201 @@
 .reg-reservation-card {
-    max-width: 700px;
-    min-width: 500px;
-    margin: 40px auto;
-    background: #fff;
-    border-radius: 14px;
-    box-shadow: 0 2px 8px rgba(30, 64, 175, 0.06);
-    padding: 32px 28px 24px 28px;
-    border: 1px solid #f0f1f3;
-    font-family: 'Noto Sans KR', sans-serif;
-  }
-  
-  .reg-reservation-title {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #222;
-    margin-bottom: 24px;
-    letter-spacing: -0.5px;
-  }
-  
-  .reg-reservation-form {
-    display: flex;
-    flex-direction: column;
-    gap: 22px;
-  }
-  
-  .reg-form-row {
-    display: flex;
-    flex-direction: column;
-    gap: 7px;
-  }
-  
-  .reg-form-label {
-    font-size: 1rem;
-    color: black;
-    font-weight: 400;
-    margin-bottom: 2px;
-    letter-spacing: -0.5px;
-  }
-  
-  .reg-required {
-    color: #e74c3c;
-    margin-left: 2px;
-    font-size: 1em;
-  }
-  
-  .reg-form-input {
-    border: 1.5px solid #e5e7eb;
-    border-radius: 7px;
-    padding: 9px 12px;
-    font-size: 1rem;
-    background: #f8fafc;
-    transition: border 0.2s;
-    outline: none;
-    resize: none;
-    width: 100%;
-    box-sizing: border-box;
-  }
-  
-  .reg-form-input:focus {
-    border-color: #2563eb;
-    background: #fff;
-  }
-  
-  .reg-dropdown-group {
-    position: relative;
-    width: 100%;
-  }
-  
-  .reg-dropdown-btn {
-    width: 100%;
-    background: #f8fafc;
-    border: 1.5px solid #e5e7eb;
-    border-radius: 7px;
-    padding: 9px 12px;
-    font-size: 1rem;
-    color: #222;
-    text-align: left;
-    cursor: pointer;
-    transition: border 0.2s;
-  }
-  
-  .reg-dropdown-btn:focus, .reg-dropdown-btn[aria-expanded='true'] {
-    border-color: #2563eb;
-    background: #fff;
-  }
-  
-  .reg-dropdown-menu {
-    position: absolute;
-    top: 110%;
-    left: 0;
-    width: 100%;
-    background: #fff;
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(30, 64, 175, 0.08);
-    z-index: 10;
-    padding: 4px 0;
-    margin: 0;
-    list-style: none;
-    display: none;
-  }
-  
-  .reg-dropdown-btn[aria-expanded='true'] + .reg-dropdown-menu {
-    display: block;
-  }
-  
-  .reg-dropdown-item {
-    padding: 8px 16px;
-    cursor: pointer;
-    color: black;
-    font-weight: 500;
-    transition: background 0.15s;
-    border-radius: 6px;
-  }
-  
-  .reg-dropdown-item:hover {
-    background: #e3eafc;
-  }
-  
-  .reg-time-group {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-  
-  .reg-btn-time {
-    background: #f3f4f6;
-    color: black;
-    border: 1.5px solid #e5e7eb;
-    border-radius: 7px;
-    padding: 7px 18px;
-    font-size: 1.2rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background 0.2s, border 0.2s;
-  }
-  
-  .reg-btn-time:hover {
-    background: #e3eafc;
-    border-color: #e6f0ff;
-  }
-  
-  .reg-btn-time.active {
-    background: #2563eb;
-    color: #fff;
-    border-color: #2563eb;
-  }
-  
-  .reg-btn-time[disabled] {
-    background: #e0e0e0;
-    color: #b0b0b0;
-    cursor: not-allowed;
-    border: 1px solid #cccccc;
-    opacity: 0.7;
-  }
-  
-  .reg-form-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-    margin-top: 18px;
-  }
-  
-  .reg-btn-main {
-    background: #e6f0ff;
-    color: #2563eb;
-    border: none;
-    border-radius: 7px;
-    padding: 8px 22px;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s;
-  }
-  
-  .reg-btn-main:hover {
-    background: #82a5f0;
-  }
-  
-  .reg-btn-sub {
-    background: rgb(253, 179, 179);
-    color: red;
-    border: none;
-    border-radius: 7px;
-    padding: 8px 18px;
-    font-size: 1rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background 0.2s;
-  }
-  
-  .reg-btn-sub:hover {
-    background: rgb(255, 110, 110);
-  }
-  
-  .reg-helper-danger {
-    color: #e74c3c;
-    font-size: 0.95em;
-    margin-top: 4px;
-  }
+  max-width: 700px;
+  min-width: 500px;
+  margin: 40px auto;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(30, 64, 175, 0.06);
+  padding: 32px 28px 24px 28px;
+  border: 1px solid #f0f1f3;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+.reg-reservation-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 24px;
+  letter-spacing: -0.5px;
+}
+
+.reg-reservation-form {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.reg-form-row {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.reg-form-label {
+  font-size: 1rem;
+  color: black;
+  font-weight: 400;
+  margin-bottom: 2px;
+  letter-spacing: -0.5px;
+}
+
+.reg-required {
+  color: #e74c3c;
+  margin-left: 2px;
+  font-size: 1em;
+}
+
+.reg-form-input {
+  border: 1.5px solid #e5e7eb;
+  border-radius: 7px;
+  padding: 9px 12px;
+  font-size: 1rem;
+  background: #f8fafc;
+  transition: border 0.2s;
+  outline: none;
+  resize: none;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.reg-form-input:focus {
+  border-color: #2563eb;
+  background: #fff;
+}
+
+.reg-dropdown-group {
+  position: relative;
+  width: 100%;
+}
+
+.reg-dropdown-btn {
+  width: 100%;
+  background: #f8fafc;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 7px;
+  padding: 9px 12px;
+  font-size: 1rem;
+  color: #222;
+  text-align: left;
+  cursor: pointer;
+  transition: border 0.2s;
+}
+
+.reg-dropdown-btn:focus, .reg-dropdown-btn[aria-expanded='true'] {
+  border-color: #2563eb;
+  background: #fff;
+}
+
+.reg-dropdown-menu {
+  position: absolute;
+  top: 110%;
+  left: 0;
+  width: 100%;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(30, 64, 175, 0.08);
+  z-index: 10;
+  padding: 4px 0;
+  margin: 0;
+  list-style: none;
+  display: none;
+}
+
+.reg-dropdown-btn[aria-expanded='true'] + .reg-dropdown-menu {
+  display: block;
+}
+
+.reg-dropdown-item {
+  padding: 8px 16px;
+  cursor: pointer;
+  color: black;
+  font-weight: 500;
+  transition: background 0.15s;
+  border-radius: 6px;
+}
+
+.reg-dropdown-item:hover {
+  background: #e3eafc;
+}
+
+.reg-time-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.reg-btn-time {
+  background: #f3f4f6;
+  color: black;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 7px;
+  padding: 7px 18px;
+  font-size: 1.2rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, border 0.2s;
+}
+
+.reg-btn-time:hover {
+  background: #e3eafc;
+  border-color: #e6f0ff;
+}
+
+.reg-btn-time.active {
+  background: #2563eb;
+  color: #fff;
+  border-color: #2563eb;
+}
+
+.reg-btn-time[disabled] {
+  background: #e0e0e0;
+  color: #b0b0b0;
+  cursor: not-allowed;
+  border: 1px solid #cccccc;
+  opacity: 0.7;
+}
+
+.reg-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.reg-btn-main {
+  background: #e6f0ff;
+  color: #2563eb;
+  border: none;
+  border-radius: 7px;
+  padding: 8px 22px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.reg-btn-main:hover {
+  background: #82a5f0;
+}
+
+.reg-btn-sub {
+  background: rgb(253, 179, 179);
+  color: red;
+  border: none;
+  border-radius: 7px;
+  padding: 8px 18px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.reg-btn-sub:hover {
+  background: rgb(255, 110, 110);
+}
+
+.reg-helper-danger {
+  color: #e74c3c;
+  font-size: 0.95em;
+  margin-top: 4px;
+}

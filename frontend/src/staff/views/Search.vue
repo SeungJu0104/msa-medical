@@ -1,12 +1,12 @@
 <template>
-  <div class="modal-backdrop" @click.self="emit('close')">
-    <div class="modal-content">
+  <div class="search-modal-backdrop" @click.self="emit('close')">
+    <div class="search-modal-content">
       <div class="search-title">
         <img src="@/assets/icons/search.png" alt="검색" class="icon"/>
         환자검색
       </div>
 
-      <div class="input-group">
+      <div class="search-input-group">
         <input
             type="text"
             v-model="searchVal.input"
@@ -20,7 +20,7 @@
         </button>
       </div>
 
-      <div class="results">
+      <div class="search-results">
         <table v-if="runSearch && searchRes.length > 0">
           <thead>
           <tr>
@@ -42,12 +42,12 @@
           </tbody>
         </table>
 
-        <div v-if="runSearch && searchRes.length < 1" class="no-result">
+        <div v-if="runSearch && searchRes.length < 1" class="search-no-result">
           검색결과가 존재하지 않습니다.
         </div>
       </div>
 
-      <button class="close-btn" @click="emit('close')">닫기</button>
+      <button class="search-close-btn" @click="emit('close')">닫기</button>
     </div>
   </div>
 </template>

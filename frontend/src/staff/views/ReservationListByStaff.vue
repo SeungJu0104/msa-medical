@@ -138,12 +138,12 @@ onMounted(() => {
         prevent-min-max-navigation
       />
     </div>
-    <div class="card-list">
-      <div v-for="list in fullReservationList" :key="list.doctor?.uuid" class="card">
+    <div class="wr-card-list">
+      <div v-for="list in fullReservationList" :key="list.doctor?.uuid" class="wr-card">
         <WaitingListDoctorName :value="list.doctor" :count="list.patientList?.length || 0" />
-        <div class="card-body">
+        <div class="wr-card-body">
           <div v-if="!list.patientList || list.patientList.length < 1" class="no-patient">
-            <span>대기 환자가 없습니다.</span>
+            <span>예약 환자가 없습니다.</span>
           </div>
           <div v-else>
             <WaitingListPatientList

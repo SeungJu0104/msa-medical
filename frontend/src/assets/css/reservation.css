@@ -1,4 +1,4 @@
-.container {
+.reservation-list-by-patient {
     max-width: 800px;
     margin: 40px auto;
     padding: 24px;
@@ -16,56 +16,62 @@
     margin-bottom: 20px;
 }
 
-table {
+.reservationBox table {
     width: 100%;
     border-collapse: collapse;
     font-size: 15px;
     background-color: #fff;
 }
 
-thead {
+.reservationBox thead {
     background-color: #f1f5f9;
 }
 
-th, td {
+.reservationBox th, .reservationBox td {
     padding: 12px 16px;
     border-bottom: 1px solid #e0e0e0;
     text-align: center;
 }
 
-/* ✅ 세로 구분선 제거 */
-th:first-child,
-td:first-child {
+.reservationBox th:first-child,
+.reservationBox td:first-child {
     border-left: none;
 }
-th:last-child,
-td:last-child {
+.reservationBox th:last-child,
+.reservationBox td:last-child {
     border-right: none;
 }
-th, td {
+.reservationBox th, .reservationBox td {
     border-left: none;
     border-right: none;
 }
 
-th {
+.reservationBox th {
     font-weight: 600;
     color: #333;
 }
 
-td {
+.reservationBox td {
     color: #444;
 }
 
-/* 체크박스 */
-.form-check-input {
+.patient-reservation-check-input {
     width: 18px;
     height: 18px;
+    accent-color: #2563eb;
+    border: 2px solid #2563eb;
+    border-radius: 4px;
     cursor: pointer;
-    accent-color: #007bff;
+    vertical-align: middle;
+    margin-right: 6px;
+    transition: box-shadow 0.2s;
+  }
+  
+.patient-reservation-check-input:checked {
+box-shadow: 0 0 0 2px #a5d8ff;
 }
 
-/* 버튼 스타일 */
-.btn {
+.patient-reservation-btn-cancel {
     display: inline-block;
     padding: 10px 20px;
     font-size: 15px;
@@ -78,7 +84,7 @@ td {
     margin-top: 16px;
 }
 
-.btn:hover {
+.patient-reservation-btn-cancel:hover {
     background-color: #dc3545;
     color: white;
 }

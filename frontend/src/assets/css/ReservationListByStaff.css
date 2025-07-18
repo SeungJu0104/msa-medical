@@ -1,3 +1,23 @@
+.wr-card-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+}
+
+.wr-card {
+  background: #fff;
+  border-radius: 16px;
+  width: 230px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  padding: 0;
+  overflow: visible;
+}
+
+.wr-card-body, .doctor-header {
+  padding: 5px 10px;
+}
+
 .nav-arrow {
     width: 20px;
     height: 20px;
@@ -37,87 +57,6 @@
     z-index: 9999 !important;
 }
 
-/* 카드 전체 리스트 */
-.card-list {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  align-items: center;
-}
-
-/* 개별 카드 */
-.card {
-  background: #fff;
-  border-radius: 16px;
-  width: 230px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
-  padding: 0;
-  overflow: hidden;
-}
-
-.card-body, .doctor-header {
-  padding: 5px 10px;
-}
-
-.card, .card-body {
-  overflow: visible !important;
-}
-
-/* 의사 헤더 */
-.doctor-header {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background: #f8faff;
-  border-bottom: 1px solid #eee;
-}
-
-.doctor-name {
-  font-weight: 600;
-  font-size: 1.1rem;
-}
-.patient-count {
-  margin-left: auto;
-  color: #888;
-  font-size: 0.95rem;
-}
-
-/* 환자 리스트 */
-.patient-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px 0;
-  border-bottom: 1px solid #f0f0f0;
-}
-.patient-item:last-child {
-  border-bottom: none;
-}
-.patient-info {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  cursor: pointer;
-}
-.patient-name {
-  font-weight: 500;
-  font-size: 1rem;
-}
-.patient-meta {
-  color: #888;
-  font-size: 0.95rem;
-}
-.patient-type {
-  color: #666;
-  font-size: 0.95rem;
-}
-.patient-status {
-  min-width: 80px;
-  display: flex;
-  justify-content: flex-end;
-}
-
-/* 상태 버튼 */
 .status-btn {
   border: none;
   border-radius: 16px;
@@ -129,17 +68,21 @@
   color: #555;
   transition: background 0.2s, color 0.2s;
 }
+
 .status-inprogress {
   background: #f8faff !important;
   color: #2563eb !important;
 }
+
 .status-waiting {
   background: #fff7e6 !important;
   color: #f59e42 !important;
 }
+
 .status-btn.dropdown-toggle::after {
   margin-left: 8px;
 }
+
 .status-dropdown {
   min-width: 90px;
   font-size: 0.95rem;
@@ -148,19 +91,19 @@
   padding: 4px 0;
   z-index: 9999 !important;
 }
+
 .status-dropdown li {
   padding: 6px 18px;
   cursor: pointer;
 }
+
 .status-dropdown li:hover {
   background: #f6f8fa;
 }
 
-/* 대기 환자 없음 */
 .no-patient {
   color: #aaa;
   text-align: center;
   padding: 24px 0 16px 0;
   font-size: 1rem;
 }
-

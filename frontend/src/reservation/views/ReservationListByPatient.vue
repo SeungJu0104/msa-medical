@@ -53,7 +53,7 @@ import {common} from "@/util/common.js";
 
 <template>
 
-  <div class="container">
+  <div class="container reservation-list-by-patient">
     <div class="reservationBox">
       <table>
         <thead>
@@ -66,7 +66,7 @@ import {common} from "@/util/common.js";
         <tbody>
           <template v-if="reservationList.length > 0">
             <tr v-for="reservation in reservationList" :key="reservation.uuid">
-              <td><input class="form-check-input" type="checkbox" @change="checked" :value="reservation.uuid"></td>
+              <td><input class="patient-reservation-check-input" type="checkbox" @change="checked" :value="reservation.uuid"></td>
               <td>{{reservation.name}}</td>
               <td><span v-cloak>{{dayjs(reservation.reservationDate).format('MM월 DD일 HH시 mm분')}}</span></td>
             </tr>
@@ -79,7 +79,7 @@ import {common} from "@/util/common.js";
         </tbody>
       </table>
     </div>
-  <button type="button" class="btn btn-outline-danger" @click="cancelReservation">예약 취소</button>
+  <button type="button" class="patient-reservation-btn-cancel" @click="cancelReservation">예약 취소</button>
   </div>
 
 </template>
