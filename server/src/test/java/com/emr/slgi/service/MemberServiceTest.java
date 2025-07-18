@@ -169,7 +169,8 @@ class MemberServiceTest {
   class SearchTests {
     @Test
     void returnsListResponse() {
-      PatientSearchDTO searchDTO = new PatientSearchDTO("test");
+      PatientSearchDTO searchDTO = new PatientSearchDTO();
+      searchDTO.setSearchValue("test");
       List<PatientSummary> list = List.of(new PatientSummary());
       when(memberDAO.search(any())).thenReturn(list);
 
@@ -180,9 +181,11 @@ class MemberServiceTest {
 
     @Test
     void whenEmpty_returnsEmptyListResponse() {
+      PatientSearchDTO searchDTO = new PatientSearchDTO();
+      searchDTO.setSearchValue("test");
       when(memberDAO.search(any())).thenReturn(Collections.emptyList());
 
-      ListResponse<PatientSummary> response = memberService.search(new PatientSearchDTO("test"));
+      ListResponse<PatientSummary> response = memberService.search(searchDTO);
 
       assertThat(response.list()).isEmpty();
     }
