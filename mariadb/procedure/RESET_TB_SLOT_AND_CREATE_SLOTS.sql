@@ -2,9 +2,9 @@ DELIMITER //
 
 CREATE PROCEDURE auto_cancel_and_create_slots()
 BEGIN
-  DECLARE tomorrow DATE;
-  DECLARE curTime TIME;
-  DECLARE slotTime DATETIME;
+  DECLARE slot_date DATE;
+  DECLARE cur_time TIME;
+  DECLARE slot_datetime DATETIME;
 
   UPDATE TB_RESERVATION
   SET STATUS = 'RS04'
@@ -12,21 +12,23 @@ BEGIN
     SELECT ID FROM TB_SLOT
     WHERE DATE(SLOT) = DATE_SUB(CURDATE(), INTERVAL 1 DAY)
   )
-  AND STATUS IN ('RS01');
+  AND STATUS IN ('RS01', 'RS02');
 
-  SET tomorrow = DATE_ADD(CURDATE(), INTERVAL 1 DAY);
-  IF DAYOFWEEK(tomorrow) != 1 THEN
-    SET curTime = '09:00:00';
+  SET slot_date = DATE_ADD(CURDATE(), INTERVAL 7 DAY);
 
-    WHILE curTime < '18:00:00' DO
-      IF curTime < '13:00:00' OR curTime >= '14:00:00' THEN
-        SET slotTime = STR_TO_DATE(CONCAT(tomorrow, ' ', curTime), '%Y-%m-%d %H:%i:%s');
+  IF DAYOFWEEK(slot_date) != 1 THEN 
+    SET cur_time = '09:00:00';
+
+    WHILE cur_time < '18:00:00' DO
+      IF cur_time < '13:00:00' OR cur_time >= '14:00:00' THEN
+        SET slot_datetime = STR_TO_DATE(CONCAT(slot_date, ' ', cur_time), '%Y-%m-%d %H:%i:%s');
         INSERT INTO TB_SLOT (SLOT, CREATE_DATE)
-        VALUES (slotTime, NOW());
+        VALUES (slot_datetime, NOW());
       END IF;
-      SET curTime = ADDTIME(curTime, '00:15:00');
+      SET cur_time = ADDTIME(cur_time, '00:15:00');
     END WHILE;
   END IF;
+
 END;
 //
 
