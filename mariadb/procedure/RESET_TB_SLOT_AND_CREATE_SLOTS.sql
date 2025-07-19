@@ -29,6 +29,8 @@ BEGIN
     END WHILE;
   END IF;
 
+  COMMIT;
+
 END;
 //
 
