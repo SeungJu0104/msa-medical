@@ -1,13 +1,13 @@
 DELIMITER //
 
-CREATE PROCEDURE auto_cancel_and_create_slots()
+CREATE PROCEDURE reset_tb_slot_and_create_slots()
 BEGIN
   DECLARE slot_date DATE;
   DECLARE cur_time TIME;
   DECLARE slot_datetime DATETIME;
 
   UPDATE TB_RESERVATION
-  SET STATUS = 'RS04'
+  SET STATUS = 'RS02'
   WHERE SLOT_ID IN (
     SELECT ID FROM TB_SLOT
     WHERE DATE(SLOT) = DATE_SUB(CURDATE(), INTERVAL 1 DAY)
@@ -16,7 +16,7 @@ BEGIN
 
   SET slot_date = DATE_ADD(CURDATE(), INTERVAL 7 DAY);
 
-  IF DAYOFWEEK(slot_date) != 1 THEN 
+  IF DAYOFWEEK(slot_date) != 1 THEN  
     SET cur_time = '09:00:00';
 
     WHILE cur_time < '18:00:00' DO
@@ -33,3 +33,4 @@ END;
 //
 
 DELIMITER ;
+
