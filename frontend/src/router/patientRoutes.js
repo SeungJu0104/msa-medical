@@ -24,37 +24,41 @@ export const patientRoutes = [
       {
         path: '',
         name: 'home',
-        component: MainView
+        component: MainView,
       },
       {
         path: 'login',
         name: 'loginView',
-        component: LoginView
+        component: LoginView,
       },
       {
         path: 'register',
         name: 'patientRegister',
-        component: RegisterView
+        component: RegisterView,
       },
       {
         path: 'mypage',
         name: 'mypage',
-        component: MyPageView
+        component: MyPageView,
+        meta: { requiresAuth: true,  roles: ['PATIENT'] },
       },
       {
         path: 'profile/update',
         name: 'updateProfile',
-        component: UpdateProfile
+        component: UpdateProfile,
+        meta: { requiresAuth: true,  roles: ['PATIENT'] },
       },
       {
         path: 'regReservationByPatient',
         name: 'regReservationByPatient',
         component: RegReservationByPatient,
+        meta: { requiresAuth: true,  roles: ['PATIENT'] },
       },
       {
         path: 'reservationListByPatient',
         name: 'reservationListByPatient',
-        component: ReservationListByPatient
+        component: ReservationListByPatient,
+        meta: { requiresAuth: true,  roles: ['PATIENT'] },
       },
     ]
   },
