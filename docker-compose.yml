@@ -27,6 +27,9 @@ services:
     container_name: slgi-emr-backend
     env_file:
       .env
+    environment:
+      - SPRING_PROFILES_ACTIVE=env
+      - UPLOAD_DIR=/home/ubuntu/upload/images
     depends_on:
       - redis
       - mariadb
