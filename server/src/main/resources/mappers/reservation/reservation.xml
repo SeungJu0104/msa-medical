@@ -118,6 +118,8 @@
         WHERE
             SLOT_ID = #{slotId}
             AND
+            DOCTOR_UUID = #{doctorUuid}
+            AND
             STATUS IN ('RS01', 'RS04')
     </select>
 

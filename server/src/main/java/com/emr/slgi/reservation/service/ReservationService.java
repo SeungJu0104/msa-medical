@@ -49,7 +49,7 @@ public class ReservationService {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, ReservationErrorMessage.RESERVATION_RUN_ERROR + " " + CommonErrorMessage.RETRY);
         }
 
-        if(rDao.checkReservation(rs.getSlotId()) > 0) {
+        if(rDao.checkReservation(rs.getDoctorUuid(), rs.getSlotId()) > 0) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, ReservationErrorMessage.ALREADY_RESERVED);
         };
 
