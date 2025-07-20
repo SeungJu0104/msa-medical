@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -16,17 +16,20 @@ import org.springframework.web.server.ResponseStatusException;
 import com.emr.slgi.auth.util.JwtUtil;
 
 import io.jsonwebtoken.Claims;
-import lombok.RequiredArgsConstructor;
 
 @Service
-@RequiredArgsConstructor
 public class RefreshTokenService {
 
     private final JwtUtil jwtUtil;
     private final StringRedisTemplate stringRedisTemplate;
 
-    @Value("${jwt.refresh-token-secret}")
-    private String refreshTokenSecret;
+    public RefreshTokenService(
+        @Qualifier("refreshJwtUtil") JwtUtil jwtUtil,
+        StringRedisTemplate stringRedisTemplate
+    ) {
+        this.jwtUtil = jwtUtil;
+        this.stringRedisTemplate = stringRedisTemplate;
+    }
 
     public String createRefreshToken(String memberUuid) {
         String jti = UUID.randomUUID().toString();
@@ -36,13 +39,13 @@ public class RefreshTokenService {
         );
         Date twoWeeksLater = Date.from(Instant.now().plus(14, ChronoUnit.DAYS));
 
-        String refreshToken = jwtUtil.generateToken(map, twoWeeksLater, refreshTokenSecret);
+        String refreshToken = jwtUtil.generateToken(map, twoWeeksLater);
         whitelistTokenJti(jti, twoWeeksLater);
         return refreshToken;
     }
 
     public Claims parseRefreshToken(String refreshToken) {
-        return jwtUtil.parseToken(refreshToken, refreshTokenSecret);
+        return jwtUtil.parseToken(refreshToken);
     }
 
     public void whitelistTokenJti(String jti, Date exp) {

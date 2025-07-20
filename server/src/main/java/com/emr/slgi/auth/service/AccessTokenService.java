@@ -5,7 +5,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.emr.slgi.auth.util.JwtUtil;
@@ -13,17 +13,20 @@ import com.emr.slgi.member.domain.Member;
 import com.emr.slgi.member.service.MemberService;
 
 import io.jsonwebtoken.Claims;
-import lombok.RequiredArgsConstructor;
 
 @Service
-@RequiredArgsConstructor
 public class AccessTokenService {
 
     private final JwtUtil jwtUtil;
     private final MemberService memberService;
 
-    @Value("${jwt.access-token-secret}")
-    private String accessTokenSecret;
+    public AccessTokenService(
+        @Qualifier("accessJwtUtil") JwtUtil jwtUtil,
+        MemberService memberService
+    ) {
+        this.jwtUtil = jwtUtil;
+        this.memberService = memberService;
+    }
 
     public String createAccessToken(String memberUuid) {
         Member member = memberService.getByUuid(memberUuid);
@@ -33,11 +36,11 @@ public class AccessTokenService {
             "role", member.getRole().getCode()
         );
         Date thirtyMinutesLater = Date.from(Instant.now().plus(30, ChronoUnit.MINUTES));
-        return jwtUtil.generateToken(claims, thirtyMinutesLater, accessTokenSecret);
+        return jwtUtil.generateToken(claims, thirtyMinutesLater);
     }
 
     public Claims parseAccessToken(String accessToken) {
-        return jwtUtil.parseToken(accessToken, accessTokenSecret);
+        return jwtUtil.parseToken(accessToken);
     }
 
 }
