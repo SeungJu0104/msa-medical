@@ -1,7 +1,7 @@
 name: SlgiEMR
 on: 
   push: 
-    branches: [procedure-reset-tb-and-create-slots]
+    branches: [main]
   workflow_dispatch: 
   
 jobs:
