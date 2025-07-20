@@ -6,7 +6,7 @@ import jakarta.validation.constraints.*;
 import lombok.Data;
 
 @Data
-public class RefreshTokenDTO {
+public class RefreshTokenRequest {
     @NotBlank
     @Pattern(regexp = RegexPatterns.JWT_TOKEN)
     private String refreshToken;

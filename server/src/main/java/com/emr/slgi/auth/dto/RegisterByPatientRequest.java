@@ -6,7 +6,7 @@ import jakarta.validation.constraints.*;
 import lombok.Data;
 
 @Data
-public class RegisterByPatientDTO {
+public class RegisterByPatientRequest {
     @NotBlank
     @Size(min = 5, max = 20)
     @Pattern(regexp = RegexPatterns.USERID)
