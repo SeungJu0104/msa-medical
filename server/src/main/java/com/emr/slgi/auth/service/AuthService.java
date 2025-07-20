@@ -1,11 +1,5 @@
 package com.emr.slgi.auth.service;
 
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.Date;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -20,10 +14,8 @@ import com.emr.slgi.auth.dto.LogoutRequest;
 import com.emr.slgi.auth.dto.RefreshTokenRequest;
 import com.emr.slgi.auth.dto.RegisterByPatientRequest;
 import com.emr.slgi.auth.dto.UseridExistsResponse;
-import com.emr.slgi.member.domain.Member;
 import com.emr.slgi.member.dto.PatientRegisterDTO;
 import com.emr.slgi.member.service.MemberService;
-import com.emr.slgi.util.JwtUtil;
 
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
@@ -34,14 +26,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class AuthService {
 
+    private final AccessTokenService accessTokenService;
     private final CredentialsService credentialsService;
     private final MemberService memberService;
     private final RefreshTokenService refreshTokenService;
-    private final JwtUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
-
-    @Value("${jwt.access-token-secret}")
-    private String jwtSecret;
 
     @Transactional
     public void registerByPatient(RegisterByPatientRequest registerByPatientRequest) {
@@ -73,20 +62,9 @@ public class AuthService {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "아이디나 비밀번호가 틀렸습니다.");
         }
         return new TokenResponse(
-            createAccessToken(credentials.getUserUuid()),
+            accessTokenService.createAccessToken(credentials.getUserUuid()),
             refreshTokenService.createRefreshToken(credentials.getUserUuid())
         );
-    }
-
-    public String createAccessToken(String memberUuid) {
-        Member member = memberService.getByUuid(memberUuid);
-
-        Map<String, String> claims = Map.of(
-            "uuid", member.getUuid(),
-            "role", member.getRole().getCode()
-        );
-        Date thirtyMinutesLater = Date.from(Instant.now().plus(30, ChronoUnit.MINUTES));
-        return jwtUtil.generateToken(claims, thirtyMinutesLater, jwtSecret);
     }
 
     public TokenResponse refreshToken(RefreshTokenRequest refreshTokenRequest) {
@@ -97,7 +75,7 @@ public class AuthService {
         }
         String uuid = claims.get("uuid", String.class);
         return new TokenResponse(
-            createAccessToken(uuid),
+            accessTokenService.createAccessToken(uuid),
             refreshTokenService.createRefreshToken(uuid)
         );
     }
