@@ -7,8 +7,8 @@ services:
     env_file:
       .env
     volumes:
-      - ./mariadb/sql:/docker-entrypoint-initdb.d/
-      - ./mariadb/data:/var/lib/mysql
+      - /home/ubuntu/sql:/docker-entrypoint-initdb.d/
+      - /home/ubuntu/mariadb/data:/var/lib/mysql
 
   redis:
     image: ${REDIS_IMAGE}
