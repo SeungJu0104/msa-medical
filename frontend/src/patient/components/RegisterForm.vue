@@ -4,34 +4,65 @@
       <div class="mb-3">
         <Label for="userid">아이디</Label>
         <div class="input-group">
-          <Input @input="checkIdValidity" id="userid" v-model="member.userid" />
+          <Input
+            @input="checkIdValidity"
+            id="userid"
+            v-model="member.userid"
+            placeholder="영문·숫자·밑줄 5~20자로 입력해주세요"
+          />
           <button type="button" @click="checkIdDuplicate" class="btn btn-outline-primary">중복확인</button>
         </div>
         <div v-show="invalidity.userid" v-text="invalidity.userid" class="invalid-feedback d-block"></div>
       </div>
       <div class="mb-3">
         <Label for="password">비밀번호</Label>
-        <Input type="password" @input="checkPasswordValidity" id="password" v-model="member.password" />
+        <Input
+          type="password"
+          @input="checkPasswordValidity"
+          id="password"
+          v-model="member.password"
+          placeholder="대문자, 소문자, 숫자, 특수문자(@$!%*?&)를 포함해 8~20자로 입력해주세요"
+        />
         <InvalidityMessage v-show="invalidity.password" v-text="invalidity.password" />
       </div>
       <div class="mb-3">
         <Label for="passwordCheck">비밀번호 확인</Label>
-        <Input type="password" @input="checkPasswordCheckValidity" id="passwordCheck" v-model="passwordCheck" />
+        <Input
+          type="password"
+          @input="checkPasswordCheckValidity"
+          id="passwordCheck"
+          v-model="passwordCheck"
+          placeholder="비밀번호와 동일하게 다시 입력해주세요"
+        />
         <InvalidityMessage v-show="invalidity.passwordCheck" v-text="invalidity.passwordCheck" />
       </div>
       <div class="mb-3">
         <Label for="name">이름</Label>
-        <Input @input="checkNameValidity" id="name" v-model="member.name" />
+        <Input
+          @input="checkNameValidity"
+          id="name"
+          v-model="member.name"
+          placeholder="1~20자로 입력해주세요"
+        />
         <InvalidityMessage v-show="invalidity.name" v-text="invalidity.name" />
       </div>
       <div class="mb-3">
         <Label for="rrn">주민번호</Label>
-        <Input @input="checkRrnValidity" id="rrn" v-model="member.rrn" />
+        <Input
+          @input="checkRrnValidity"
+          id="rrn"
+          v-model="member.rrn"
+          placeholder="하이픈(-)을 포함하여 입력해주세요"
+        />
         <InvalidityMessage v-show="invalidity.rrn" v-text="invalidity.rrn" />
       </div>
       <div class="mb-3">
         <Label for="phone">전화번호</Label>
-        <Input @input="checkPhoneValidity" id="phone" v-model="member.phone" />
+        <Input
+          @input="checkPhoneValidity"
+          id="phone"
+          v-model="member.phone"
+          placeholder="하이픈(-)을 포함하여 입력해주세요"/>
         <InvalidityMessage v-show="invalidity.phone" v-text="invalidity.phone" />
       </div>
     </form>
