@@ -1,6 +1,6 @@
 <script setup>
 
-import RegReservation from "@/shared/views/RegReservation.vue";
+import RegReservation from "@/reservation/components/RegReservation.vue";
 </script>
 
 <template>
