@@ -9,6 +9,7 @@ services:
     volumes:
       - /home/ubuntu/sql:/docker-entrypoint-initdb.d/
       - /home/ubuntu/mariadb/data:/var/lib/mysql
+      - /home/ubuntu/procedure:/var/run/procedure
 
   redis:
     image: ${REDIS_IMAGE}
