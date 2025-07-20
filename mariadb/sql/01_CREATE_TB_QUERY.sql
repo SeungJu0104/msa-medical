@@ -17,7 +17,7 @@ CREATE table if not EXISTS TB_MEMBER (
     member_role VARCHAR(4) NOT NULL,
     name VARCHAR(20) NOT NULL,
     rrn VARCHAR(15) NOT NULL UNIQUE,
-    phone VARCHAR(15) NOT NULL UNIQUE,
+    phone VARCHAR(15) NOT NULL,
     create_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_date DATETIME,
     delete_date DATETIME,
