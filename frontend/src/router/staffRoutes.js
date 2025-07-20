@@ -2,7 +2,7 @@ import { roles } from "@/util/roles";
 
 const RegPatientByStaff = () => import ("@/staff/views/RegPatientByStaff.vue");
 const StaffMainView = () => import("@/staff/views/StaffMainView.vue");
-const RegReservationByStaff = () => import('@/reservation/views/RegReservationByStaff.vue')
+const RegReservationByStaff = () => import('@/staff/views/RegReservationByStaff.vue')
 const AcceptPatientByStaff = () => import('@/staff/views/AcceptPatientByStaff.vue')
 const StaffLayOut = () => import('@/staff/layouts/StaffLayOut.vue')
 

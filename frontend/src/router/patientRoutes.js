@@ -7,7 +7,7 @@ const PatientLayout = () => import('@/patient/layouts/PatientLayout.vue');
 const RegisterView = () => import("@/patient/views/RegisterView.vue");
 const UpdateProfile = () => import("@/patient/views/UpdateProfile.vue");
 const LoginView = () => import('@/patient/views/LoginView.vue');
-const RegReservationByPatient = () => import('@/reservation/views/RegReservationByPatient.vue')
+const RegReservationByPatient = () => import('@/patient/views/RegReservationByPatient.vue')
 const ReservationListByPatient = () => import('@/patient/views/ReservationListByPatient.vue')
 
 export const patientRoutes = [
