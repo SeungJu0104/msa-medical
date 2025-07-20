@@ -6,58 +6,58 @@ on:
   
 jobs:
     
-  # build:
-  #   runs-on: [ubuntu-latest]
-  #   steps:
-  #     - name: 깃 클론
-  #       uses: actions/checkout@v3
+  build:
+    runs-on: [ubuntu-latest]
+    steps:
+      - name: 깃 클론
+        uses: actions/checkout@v3
 
-  #     - name: 자바 17 설치
-  #       uses: actions/setup-java@v3
-  #       with:
-  #         java-version: '17'
-  #         distribution: 'temurin'
+      - name: 자바 17 설치
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
           
-  #     - name: Node.js 설치
-  #       uses: actions/setup-node@v4
-  #       with:
-  #        node-version: '20.x'
+      - name: Node.js 설치
+        uses: actions/setup-node@v4
+        with:
+         node-version: '20.x'
          
-  #     - name: 의존성 추가
-  #       run: |
-  #         cd ${{ github.workspace }}/frontend
-  #         npm install
+      - name: 의존성 추가
+        run: |
+          cd ${{ github.workspace }}/frontend
+          npm install
 
-  #     - name: Server 빌드
-  #       run: |
-  #         cd server
-  #         chmod +x gradlew
-  #         ./gradlew bootJar
+      - name: Server 빌드
+        run: |
+          cd server
+          chmod +x gradlew
+          ./gradlew bootJar
 
-  #     - name: Frontend 빌드
-  #       run: |
-  #         cd frontend
-  #         npm install
-  #         npm run build
+      - name: Frontend 빌드
+        run: |
+          cd frontend
+          npm install
+          npm run build
 
-  #     - name: EC2에서 DockerHub에 로그인
-  #       uses: docker/login-action@v1
-  #       with:
-  #         username: ${{secrets.USERNAME}} 
-  #         password: ${{secrets.PASSWORD}} 
+      - name: EC2에서 DockerHub에 로그인
+        uses: docker/login-action@v1
+        with:
+          username: ${{secrets.USERNAME}} 
+          password: ${{secrets.PASSWORD}} 
 
-  #     - name: 백엔드 이미지 빌드 및 푸시
-  #       run: |
-  #         docker build -t ${{secrets.USERNAME}}/slgi-emr-backend ./server
-  #         docker push ${{secrets.USERNAME}}/slgi-emr-backend
+      - name: 백엔드 이미지 빌드 및 푸시
+        run: |
+          docker build -t ${{secrets.USERNAME}}/slgi-emr-backend ./server
+          docker push ${{secrets.USERNAME}}/slgi-emr-backend
 
-  #     - name: 프론트엔드 이미지 빌드 및 푸시
-  #       run: |
-  #         docker build -t ${{secrets.USERNAME}}/slgi-emr-frontend ./frontend
-  #         docker push ${{secrets.USERNAME}}/slgi-emr-frontend
+      - name: 프론트엔드 이미지 빌드 및 푸시
+        run: |
+          docker build -t ${{secrets.USERNAME}}/slgi-emr-frontend ./frontend
+          docker push ${{secrets.USERNAME}}/slgi-emr-frontend
 
   deploy:
-    # needs: build
+    needs: build
     name: EC2에 배포
     runs-on: [self-hosted, slgi-emr]
     environment: msa-medical
@@ -69,33 +69,6 @@ jobs:
 
       - name: GitHub 리포지토리 체크아웃
         uses: actions/checkout@v3
-
-      # - name: 프로시저 등록용 .sh 파일 환경변수용 .env 파일 생성
-      #   run: |
-      #     cat <<EOF > .env
-      #     INIT_FILE=${{ vars.INIT_FILE }}
-      #     BODY_FILE=${{ vars.BODY_FILE }}
-      #     PROC_NAME=${{ vars.PROC_NAME }}0000000
-      #     EOF
-
-      # - name: base64 키 복호화 → PEM 저장
-      #   run: |
-      #     echo "${{ secrets.EC2_KEY_BASE64 }}" | base64 -d > ec2-key.pem
-      #     chmod 400 ec2-key.pem
-
-      # - name: EC2에 .env 전송
-      #   run: |
-      #     scp -i ec2-key.pem -o StrictHostKeyChecking=no .env ubuntu@${{ secrets.EC2_HOST }}:/home/ubuntu/.env
-
-      # - name: EC2에서 프로시저 등록하는 .sh 실행
-      #   run: |
-      #     ssh -i ec2-key.pem -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
-      #       cd ~/sh
-      #       set -a
-      #       source ~/.env
-      #       set +a
-      #       ./registerProcedure.sh
-      #     EOF
     
       - name: 운영서버에서 DockerHub에 로그인
         uses: docker/login-action@v1
