@@ -1,4 +1,4 @@
-package com.emr.slgi.util;
+package com.emr.slgi.auth.util;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Date;

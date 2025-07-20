@@ -12,8 +12,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.emr.slgi.auth.config.SecurityConstants;
 import com.emr.slgi.auth.service.AccessTokenService;
-import com.emr.slgi.config.SecurityConstants;
 import com.emr.slgi.member.enums.MemberRole;
 
 import io.jsonwebtoken.Claims;

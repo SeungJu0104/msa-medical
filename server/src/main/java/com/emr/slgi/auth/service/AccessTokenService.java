@@ -8,9 +8,9 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.emr.slgi.auth.util.JwtUtil;
 import com.emr.slgi.member.domain.Member;
 import com.emr.slgi.member.service.MemberService;
-import com.emr.slgi.util.JwtUtil;
 
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
