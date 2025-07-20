@@ -13,6 +13,8 @@ import com.emr.slgi.auth.dto.LoginRequest;
 import com.emr.slgi.auth.dto.LogoutRequest;
 import com.emr.slgi.auth.dto.RefreshTokenRequest;
 import com.emr.slgi.auth.dto.RegisterByPatientRequest;
+import com.emr.slgi.auth.dto.TokenResponse;
+import com.emr.slgi.auth.dto.UseridExistsResponse;
 import com.emr.slgi.auth.service.AuthService;
 import com.emr.slgi.common.constants.RegexPatterns;
 
@@ -28,13 +30,13 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/register/patient")
-    public ResponseEntity<?> registerByPatient(@RequestBody @Valid RegisterByPatientRequest registerByPatientRequest) {
+    public ResponseEntity<Void> registerByPatient(@RequestBody @Valid RegisterByPatientRequest registerByPatientRequest) {
         authService.registerByPatient(registerByPatientRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("/check-id")
-    public ResponseEntity<?> checkIdDuplicate(
+    public ResponseEntity<UseridExistsResponse> checkIdDuplicate(
         @RequestParam("userid")
         @NotBlank
         @Pattern(regexp = RegexPatterns.USERID)
@@ -44,17 +46,17 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody @Valid LoginRequest loginRequest) {
+    public ResponseEntity<TokenResponse> login(@RequestBody @Valid LoginRequest loginRequest) {
         return ResponseEntity.ok(authService.login(loginRequest));
     }
 
     @PostMapping("/refresh-token")
-    public ResponseEntity<?> refreshToken(@RequestBody @Valid RefreshTokenRequest refreshTokenRequest) {
+    public ResponseEntity<TokenResponse> refreshToken(@RequestBody @Valid RefreshTokenRequest refreshTokenRequest) {
         return ResponseEntity.ok(authService.refreshToken(refreshTokenRequest));
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<?> logout(@RequestBody @Valid LogoutRequest logoutRequest) {
+    public ResponseEntity<Void> logout(@RequestBody @Valid LogoutRequest logoutRequest) {
         authService.logout(logoutRequest);
         return ResponseEntity.noContent().build();
     }
