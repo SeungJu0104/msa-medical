@@ -1,8 +1,11 @@
 name: SlgiEMR
-on: 
-  push: 
-    branches: [main] 
-
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - 'v*.*.*'
+  
 jobs:
     
   build:
