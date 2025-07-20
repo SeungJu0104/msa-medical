@@ -69,12 +69,6 @@ jobs:
 
       - name: GitHub 리포지토리 체크아웃
         uses: actions/checkout@v3
-
-      - name: 프로시저 등록하는 .sh 파일 실행
-        run: |
-          cd ~/sh
-          ./registerProcedure.sh
-
     
       - name: 운영서버에서 DockerHub에 로그인
         uses: docker/login-action@v1
@@ -103,6 +97,11 @@ jobs:
           PROC_NAME=${{ vars.PROC_NAME }}
           BODY_FILE=${{ vars.BODY_FILE }}
           EOF
+      
+      - name: 프로시저 등록하는 .sh 파일 실행
+        run: |
+          cd ~/sh
+          ./registerProcedure.sh
 
       - name: docker 이미지 풀 및 재실행
         run: |
