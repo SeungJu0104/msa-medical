@@ -1,7 +1,6 @@
 <script setup>
 import '@/assets/css/StaffMenuBar.css'
 import '@/assets/css/icons.css'
-import LogoutButton from "@/auth/components/LogoutButton.vue";
 import {defineEmits} from 'vue'
 import { useRouter } from 'vue-router';
 
@@ -22,8 +21,6 @@ const menuItems = [
   { label: '환자등록', icon: new URL('@/assets/icons/registration.png', import.meta.url), to: { name: 'regPatientByStaff' } },
   { label: '예약등록', icon: new URL('@/assets/icons/reservation.png', import.meta.url), action: action },
   { label: '방문접수', icon: new URL('@/assets/icons/waiting.png', import.meta.url), action: action },
-  // { label: '통계', icon: new URL('@/assets/icons/stat.png', import.meta.url), to: { name: 'stat' } },
-  // { label: '설정', icon: new URL('@/assets/icons/settings.png', import.meta.url), to: { name: 'settings' } },
 ]
 
 
@@ -39,10 +36,10 @@ const menuItems = [
             <img :src="item.icon" alt="아이콘" class="icon" />
             <span>{{ item.label }}</span>
           </router-link>
-          <a v-else @click="item.action" class="menu-clickable">
+          <div v-else @click="item.action" class="menu-clickable">
             <img :src="item.icon" alt="아이콘" class="icon" />
             <span>{{ item.label }}</span>
-          </a>
+          </div>
         </li>
       </ul>
     </nav>
