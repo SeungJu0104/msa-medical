@@ -1,0 +1,1 @@
+CALL reset_tb_slot_and_create_slots();
