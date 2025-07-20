@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Data
 public class LogoutDTO {
-  @NotBlank
-  @Pattern(regexp = RegexPatterns.JWT_TOKEN)
-  private String refreshToken;
+    @NotBlank
+    @Pattern(regexp = RegexPatterns.JWT_TOKEN)
+    private String refreshToken;
 }

@@ -107,4 +107,5 @@ public class AuthService {
         Claims claims = refreshTokenService.parseRefreshToken(logoutDTO.getRefreshToken());
         refreshTokenService.deleteWhitelist(claims.get("jti", String.class));
     }
+
 }

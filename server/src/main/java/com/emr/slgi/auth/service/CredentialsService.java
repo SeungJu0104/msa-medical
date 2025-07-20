@@ -26,4 +26,5 @@ public class CredentialsService {
     public Credentials getMemberCredentials(LoginDTO loginDTO) {
         return credentialsDAO.getMemberCredentials(loginDTO.getUserid());
     }
+
 }

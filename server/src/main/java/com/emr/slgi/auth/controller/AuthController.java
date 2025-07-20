@@ -24,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthController {
+
     private final AuthService authService;
 
     @PostMapping("/register/patient")
@@ -57,4 +58,5 @@ public class AuthController {
         authService.logout(logoutDTO);
         return ResponseEntity.noContent().build();
     }
+
 }

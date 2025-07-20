@@ -55,7 +55,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 MemberRole role = MemberRole.fromCode(claims.get("role", String.class));
                 GrantedAuthority authority = new SimpleGrantedAuthority(role.getAuthority());
                 UsernamePasswordAuthenticationToken auth =
-                        new UsernamePasswordAuthenticationToken(uuid, null, List.of(authority));
+                    new UsernamePasswordAuthenticationToken(uuid, null, List.of(authority));
                 SecurityContextHolder.getContext().setAuthentication(auth);
             } catch (JwtException e) {
                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid JWT token");
