@@ -69,6 +69,33 @@ jobs:
 
       - name: GitHub 리포지토리 체크아웃
         uses: actions/checkout@v3
+
+      - name: 프로시저 등록용 .sh 파일 환경변수용 .env 파일 생성
+        run: |
+          cat <<EOF > .env
+          INIT_FILE=${{ vars.INIT_FILE }}
+          BODY_FILE=${{ vars.BODY_FILE }}
+          PROC_NAME=${{ vars.PROC_NAME }}
+          EOF
+
+      - name: base64 키 복호화 → PEM 저장
+        run: |
+          echo "${{ secrets.EC2_KEY_BASE64 }}" | base64 -d > ec2-key.pem
+          chmod 400 ec2-key.pem
+
+      - name: EC2에 .env 전송
+        run: |
+          scp -i ec2-key.pem -o StrictHostKeyChecking=no .env ubuntu@${{ secrets.EC2_HOST }}:/home/ubuntu/.env
+
+      - name: EC2에서 프로시저 등록하는 .sh 실행
+        run: |
+          ssh -i ec2-key.pem -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
+            cd ~/sh
+            set -a
+            source ~/.env
+            set +a
+            ./registerProcedure.sh
+          EOF
     
       - name: 운영서버에서 DockerHub에 로그인
         uses: docker/login-action@v1
@@ -76,7 +103,7 @@ jobs:
           username: ${{secrets.USERNAME}} 
           password: ${{secrets.PASSWORD}} 
 
-      - name: .env 파일 생성
+      - name: docker compose 용 .env 파일 생성
         run: |
           cd ${{ github.workspace }}
           cat <<EOF > .env
@@ -93,15 +120,7 @@ jobs:
           USERNAME=${{secrets.USERNAME}}
           JWT_ACCESS_TOKEN_SECRET=${{secrets.JWT_ACCESS_TOKEN_SECRET}}
           JWT_REFRESH_TOKEN_SECRET=${{secrets.JWT_REFRESH_TOKEN_SECRET}}
-          INIT_FILE=${{ vars.INIT_FILE }}
-          PROC_NAME=${{ vars.PROC_NAME }}
-          BODY_FILE=${{ vars.BODY_FILE }}
           EOF
-      
-      - name: 프로시저 등록하는 .sh 파일 실행
-        run: |
-          cd ~/sh
-          ./registerProcedure.sh
 
       - name: docker 이미지 풀 및 재실행
         run: |
