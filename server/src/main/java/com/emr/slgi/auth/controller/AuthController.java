@@ -9,10 +9,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.emr.slgi.auth.dto.LoginDTO;
-import com.emr.slgi.auth.dto.LogoutDTO;
-import com.emr.slgi.auth.dto.RefreshTokenDTO;
-import com.emr.slgi.auth.dto.RegisterByPatientDTO;
+import com.emr.slgi.auth.dto.LoginRequest;
+import com.emr.slgi.auth.dto.LogoutRequest;
+import com.emr.slgi.auth.dto.RefreshTokenRequest;
+import com.emr.slgi.auth.dto.RegisterByPatientRequest;
+import com.emr.slgi.auth.dto.TokenResponse;
+import com.emr.slgi.auth.dto.UseridExistsResponse;
 import com.emr.slgi.auth.service.AuthService;
 import com.emr.slgi.common.constants.RegexPatterns;
 
@@ -24,16 +26,17 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthController {
+
     private final AuthService authService;
 
     @PostMapping("/register/patient")
-    public ResponseEntity<?> registerByPatient(@RequestBody @Valid RegisterByPatientDTO registerByPatient) {
-        authService.registerByPatient(registerByPatient);
+    public ResponseEntity<Void> registerByPatient(@RequestBody @Valid RegisterByPatientRequest registerByPatientRequest) {
+        authService.registerByPatient(registerByPatientRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("/check-id")
-    public ResponseEntity<?> checkIdDuplicate(
+    public ResponseEntity<UseridExistsResponse> checkIdDuplicate(
         @RequestParam("userid")
         @NotBlank
         @Pattern(regexp = RegexPatterns.USERID)
@@ -43,18 +46,19 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody @Valid LoginDTO loginDTO) {
-        return ResponseEntity.ok(authService.login(loginDTO));
+    public ResponseEntity<TokenResponse> login(@RequestBody @Valid LoginRequest loginRequest) {
+        return ResponseEntity.ok(authService.login(loginRequest));
     }
 
     @PostMapping("/refresh-token")
-    public ResponseEntity<?> refreshToken(@RequestBody @Valid RefreshTokenDTO refreshTokenDTO) {
-        return ResponseEntity.ok(authService.refreshToken(refreshTokenDTO));
+    public ResponseEntity<TokenResponse> refreshToken(@RequestBody @Valid RefreshTokenRequest refreshTokenRequest) {
+        return ResponseEntity.ok(authService.refreshToken(refreshTokenRequest));
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<?> logout(@RequestBody @Valid LogoutDTO logoutDTO) {
-        authService.logout(logoutDTO);
+    public ResponseEntity<Void> logout(@RequestBody @Valid LogoutRequest logoutRequest) {
+        authService.logout(logoutRequest);
         return ResponseEntity.noContent().build();
     }
+
 }

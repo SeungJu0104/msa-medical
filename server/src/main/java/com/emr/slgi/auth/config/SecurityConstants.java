@@ -1,4 +1,4 @@
-package com.emr.slgi.config;
+package com.emr.slgi.auth.config;
 
 public class SecurityConstants {
 

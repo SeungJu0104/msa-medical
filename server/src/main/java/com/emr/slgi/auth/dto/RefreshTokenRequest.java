@@ -6,8 +6,8 @@ import jakarta.validation.constraints.*;
 import lombok.Data;
 
 @Data
-public class LogoutDTO {
-  @NotBlank
-  @Pattern(regexp = RegexPatterns.JWT_TOKEN)
-  private String refreshToken;
+public class RefreshTokenRequest {
+    @NotBlank
+    @Pattern(regexp = RegexPatterns.JWT_TOKEN)
+    private String refreshToken;
 }

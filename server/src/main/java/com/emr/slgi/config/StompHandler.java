@@ -3,7 +3,6 @@ package com.emr.slgi.config;
 
 import java.util.Date;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessagingException;
@@ -12,8 +11,8 @@ import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.stereotype.Component;
 
+import com.emr.slgi.auth.service.AccessTokenService;
 import com.emr.slgi.chat.DAO.ChatJoinDAO;
-import com.emr.slgi.util.JwtUtil;
 
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
@@ -23,13 +22,10 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @RequiredArgsConstructor
 public class StompHandler implements ChannelInterceptor{
-	
-	private final JwtUtil jwtUtil;
+
+    private final AccessTokenService accessTokenService;
 	private final ChatJoinDAO chatJoinDAO;
-	
-	@Value("${jwt.access-token-secret}")
-    private String jwtSecret;
-	
+
 	@Override
 	public Message<?> preSend(Message<?> message, MessageChannel channel){
 		StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
@@ -39,7 +35,7 @@ public class StompHandler implements ChannelInterceptor{
 		    if (token == null || token.isBlank()) {
 		        throw new IllegalArgumentException("로그인된 사용자만 접속 가능합니다.");
 		    }
-		    Claims jwt = jwtUtil.parseToken(token.replace("Bearer ", ""), jwtSecret);
+		    Claims jwt = accessTokenService.parseAccessToken(token.replace("Bearer ", ""));
 		    String uuid = jwt.get("uuid",String.class);
 		    Date expiration =  jwt.getExpiration();
 		    

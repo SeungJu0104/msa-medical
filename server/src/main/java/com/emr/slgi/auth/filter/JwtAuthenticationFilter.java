@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -13,9 +12,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.emr.slgi.config.SecurityConstants;
+import com.emr.slgi.auth.config.SecurityConstants;
+import com.emr.slgi.auth.service.AccessTokenService;
 import com.emr.slgi.member.enums.MemberRole;
-import com.emr.slgi.util.JwtUtil;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
@@ -30,11 +29,7 @@ import lombok.RequiredArgsConstructor;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final AntPathMatcher matcher = new AntPathMatcher();
-
-    private final JwtUtil jwtUtil;
-
-    @Value("${jwt.access-token-secret}")
-    private String jwtSecret;
+    private final AccessTokenService accessTokenService;
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
@@ -50,12 +45,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             String token = authorizationHeader.substring(7);
             try {
-                Claims claims = jwtUtil.parseToken(token, jwtSecret);
+                Claims claims = accessTokenService.parseAccessToken(token);
                 String uuid = claims.get("uuid", String.class);
                 MemberRole role = MemberRole.fromCode(claims.get("role", String.class));
                 GrantedAuthority authority = new SimpleGrantedAuthority(role.getAuthority());
                 UsernamePasswordAuthenticationToken auth =
-                        new UsernamePasswordAuthenticationToken(uuid, null, List.of(authority));
+                    new UsernamePasswordAuthenticationToken(uuid, null, List.of(authority));
                 SecurityContextHolder.getContext().setAuthentication(auth);
             } catch (JwtException e) {
                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid JWT token");
