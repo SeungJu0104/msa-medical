@@ -33,11 +33,22 @@ const store = usePatientViewStore()
 
   }
 
+  const sortedPatients = computed(() => {
+
+    return [...value].sort((a, b) => {
+      if (!a.slot) return 1;
+      if (!b.slot) return -1;
+      return new Date(a.slot) - new Date(b.slot);
+    });
+    
+  });
+
+
 </script>
 
 <template>
 
-  <div class="patient-item" v-for="patient in value" :key="patient.uuid">
+  <div class="patient-item" v-for="patient in sortedPatients" :key="patient.uuid">
     <div class="patient-info" > 
       <span class="patient-name" @click="getUuid(patient)"v-cloak>{{ patient.name }}님</span>
       <span class="patient-meta" v-cloak v-if="patient?.slot">{{ dayjs(patient.slot).format("HH:mm") }}</span>
