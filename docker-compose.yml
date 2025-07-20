@@ -16,7 +16,7 @@ services:
     image: ${REDIS_IMAGE}
     container_name: slgi-emr-redis
     volumes:
-      - ./redis/redis.conf:/etc/redis/redis.conf
+      - /home/ubuntu/redis/redis.conf:/etc/redis/redis.conf
     command: ["redis-server", "/etc/redis/redis.conf"]
     restart: always
 
