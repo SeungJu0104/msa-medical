@@ -16,7 +16,6 @@ import com.emr.slgi.auth.domain.Credentials;
 import com.emr.slgi.auth.dto.TokenResponse;
 import com.emr.slgi.auth.dto.CredentialsCreateDTO;
 import com.emr.slgi.auth.dto.LoginDTO;
-import com.emr.slgi.auth.dto.LoginResponse;
 import com.emr.slgi.auth.dto.LogoutDTO;
 import com.emr.slgi.auth.dto.RefreshTokenDTO;
 import com.emr.slgi.auth.dto.RegisterByPatientDTO;
@@ -68,12 +67,12 @@ public class AuthService {
         return new UseridExistsResponse(credentialsService.existsByUserid(userid));
     }
 
-    public LoginResponse login(LoginDTO loginDTO) {
+    public TokenResponse login(LoginDTO loginDTO) {
         Credentials credentials = credentialsService.getMemberCredentials(loginDTO);
         if (credentials == null || !passwordEncoder.matches(loginDTO.getPassword(), credentials.getPassword())) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "아이디나 비밀번호가 틀렸습니다.");
         }
-        return new LoginResponse(
+        return new TokenResponse(
             createAccessToken(credentials.getUserUuid()),
             refreshTokenService.createRefreshToken(credentials.getUserUuid())
         );
