@@ -1,8 +1,8 @@
 <script setup>
+import "@/assets/css/waitingreservaion.css";
 import WaitingStatus from "@/shared/components/WaitingStatus.vue";
+import { usePatientViewStore } from '@/stores/patientViewStore';
 import dayjs from "dayjs";
-import "@/assets/css/waitingreservaion.css"
-import { usePatientViewStore } from '@/stores/patientViewStore'
 import { computed } from "vue";
 const store = usePatientViewStore()
 

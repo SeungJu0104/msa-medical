@@ -1,14 +1,13 @@
 <script setup>
-import { computed, reactive, ref, watch } from "vue";
-import { useRouter } from 'vue-router';
-import { common } from "@/util/common.js";
-import { REGEX_PATTERN as RegexPattern } from "@/util/RegexPattern.js";
-import { StaffMessage } from "@/staff/util/StaffMessage.js";
-import { ENDPOINTS } from "@/util/endpoints.js";
-import { customFetch } from "@/util/customFetch.js";
-import {number} from "sockjs-client/lib/utils/random.js";
 import '@/assets/css/icons.css';
 import '@/assets/css/RegPatientByStaff.css';
+import { StaffMessage } from "@/staff/util/StaffMessage.js";
+import { common } from "@/util/common.js";
+import { customFetch } from "@/util/customFetch.js";
+import { ENDPOINTS } from "@/util/endpoints.js";
+import { REGEX_PATTERN as RegexPattern } from "@/util/RegexPattern.js";
+import { computed, reactive, ref, watch } from "vue";
+import { useRouter } from 'vue-router';
 
   const inputData = reactive({
     name: '',

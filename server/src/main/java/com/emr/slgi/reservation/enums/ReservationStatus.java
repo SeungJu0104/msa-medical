@@ -1,8 +1,6 @@
 package com.emr.slgi.reservation.enums;
 
-import com.emr.slgi.reception.enums.ReceptionStatus;
 import com.emr.slgi.util.CommonErrorMessage;
-import com.emr.slgi.util.ReservationErrorMessage;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
@@ -28,7 +26,6 @@ public enum ReservationStatus {
     @JsonValue
     private final String status;
 
-    // 직렬화(상태코드를 ENUM 상수명으로 변경)
     private static final Map<String, ReservationStatus> map =
             Arrays.stream(values()).collect(Collectors.toMap(ReservationStatus::getCode, e -> e));
 
@@ -36,12 +33,11 @@ public enum ReservationStatus {
         return map.get(code);
     }
 
-    // 역직렬화(한글 상태명을 ENUM 상수명으로 변경)
     private static final Map<String, ReservationStatus> byStatus =
             Arrays.stream(values())
                     .collect(Collectors.toMap(ReservationStatus::getStatus, e -> e));
 
-    @JsonCreator // ENUM 상수명을 ENUM 내 상태코드로 변경
+    @JsonCreator 
     public static ReservationStatus from(String statusText) {
         return Optional.ofNullable(byStatus.get(statusText))
                 .orElseThrow(() -> new IllegalArgumentException(

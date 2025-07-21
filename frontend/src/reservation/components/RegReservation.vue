@@ -1,17 +1,17 @@
 <script setup>
-import {ref, reactive, onMounted, computed, onBeforeUnmount} from 'vue'
+import '@/assets/css/RegReservation.css'
+import '@/assets/css/icons.css'
+import { reservation } from '@/reservation/util/reservation.js'
+import { useUserStore } from "@/stores/userStore.js"
+import { common } from '@/util/common.js'
+import { errorMessage } from "@/util/errorMessage.js"
+import { roles } from "@/util/roles.js"
 import VueDatepicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
-import {common} from '@/util/common.js'
-import { reservation } from '@/reservation/util/reservation.js'
-import {omit} from 'lodash'
-import dayjs from "dayjs";
-import {errorMessage} from "@/util/errorMessage.js";
-import {useUserStore} from "@/stores/userStore.js";
-import {useRouter, useRoute} from "vue-router";
-import {roles} from "@/util/roles.js";
-import '@/assets/css/RegReservation.css';
-import '@/assets/css/icons.css';
+import dayjs from "dayjs"
+import { omit } from 'lodash'
+import { computed, onBeforeUnmount, onMounted, reactive, ref } from 'vue'
+import { useRoute, useRouter } from "vue-router"
 
   const userInfo = computed(() => useUserStore().user);
   

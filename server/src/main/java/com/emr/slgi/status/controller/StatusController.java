@@ -5,7 +5,6 @@ import com.emr.slgi.reservation.dto.ReservationStatusList;
 import com.emr.slgi.status.service.StatusService;
 import com.emr.slgi.util.CommonErrorMessage;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,7 +16,6 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 import java.util.Map;
 
-@Slf4j
 @RestController
 @RequestMapping("/status")
 @RequiredArgsConstructor
@@ -50,8 +48,6 @@ public class StatusController {
         if(list == null || list.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, CommonErrorMessage.RETRY);
         };
-
-        log.info(list.toString());
 
         return ResponseEntity.ok(
                 Map.of("statusList", list)

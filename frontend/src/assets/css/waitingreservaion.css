@@ -29,7 +29,7 @@
 }
 
 .tab-item.active {
-    color: #1976d2; /* 파란색 강조 */
+    color: #1976d2;
     font-weight: bold;
     border-color: #e6f0ff;
 }
@@ -37,7 +37,6 @@
 .scroll {
 
      height:98vh;
-    /*height: calc(100vh - 상단 Header, Footer 길이);*/
     width: 100%;
     overflow-y: auto;
     box-sizing: border-box;

@@ -1,11 +1,11 @@
 <script setup>
-import '@/assets/css/waitingreservaion.css'
-import {useRouter} from "vue-router";
-import {reactive} from "vue";
+import '@/assets/css/waitingreservaion.css';
+import { reactive } from "vue";
+import { useRouter } from "vue-router";
 
 import PaymentList from '@/components/payment/PaymentList.vue';
-import ReservationListByStaff from '../views/ReservationListByStaff.vue';
 import WaitingList from '@/reception/components/WaitingList.vue';
+import ReservationListByStaff from '../views/ReservationListByStaff.vue';
 
 const router = useRouter();
 

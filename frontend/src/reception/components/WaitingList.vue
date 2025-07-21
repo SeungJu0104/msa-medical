@@ -1,12 +1,12 @@
 <script setup>
-import {useWaitingListStore} from "@/stores/waitingListStore.js";
-import {computed, onBeforeMount, onMounted, onUnmounted, ref} from "vue";
+import "@/assets/css/ReservationListByStaff.css";
+import { reception } from "@/reception/util/reception.js";
 import WaitingListDoctorName from "@/shared/components/WaitingListDoctorName.vue";
 import WaitingListPatientList from "@/shared/components/WaitingListPatientList.vue";
-import {reception} from "@/reception/util/reception.js";
+import { useWaitingListStore } from "@/stores/waitingListStore.js";
 import { getStompClient, subscribeChannel } from "@/util/stompMethod.js";
-import "@/assets/css/ReservationListByStaff.css";
 import dayjs from "dayjs";
+import { onBeforeMount, onMounted, ref } from "vue";
 
   const waitingListStore = useWaitingListStore();
   const waitingList = ref();

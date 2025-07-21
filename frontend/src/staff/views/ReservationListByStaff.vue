@@ -1,15 +1,15 @@
 <script setup>
 
+import '@/assets/css/ReservationListByStaff.css';
+import { reservation } from "@/reservation/util/reservation.js";
 import WaitingListDoctorName from "@/shared/components/WaitingListDoctorName.vue";
 import WaitingListPatientList from "@/shared/components/WaitingListPatientList.vue";
-import {computed, onBeforeMount, onMounted, onUnmounted, reactive, ref} from "vue";
-import {useReservationListStore} from "@/stores/reservationListStore.js";
-import {reservation} from "@/reservation/util/reservation.js";
-import VueDatepicker from "@vuepic/vue-datepicker";
-import dayjs from "dayjs";
-import '@vuepic/vue-datepicker/dist/main.css'
-import '@/assets/css/ReservationListByStaff.css'
+import { useReservationListStore } from "@/stores/reservationListStore.js";
 import { getStompClient, subscribeChannel } from "@/util/stompMethod";
+import VueDatepicker from "@vuepic/vue-datepicker";
+import '@vuepic/vue-datepicker/dist/main.css';
+import dayjs from "dayjs";
+import { computed, onBeforeMount, onMounted, reactive, ref } from "vue";
 
 
   const reservationListStore = useReservationListStore();

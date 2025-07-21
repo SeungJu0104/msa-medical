@@ -3,7 +3,6 @@ package com.emr.slgi.reservation.vo;
 import com.emr.slgi.util.ReservationErrorMessage;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
-import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
 
 import java.util.Set;
 
