@@ -2,7 +2,6 @@ version: "3"
 
 volumes:
   mariadb-data:
-
   backend-image:
 
 services:
