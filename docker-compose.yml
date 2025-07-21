@@ -12,7 +12,7 @@ services:
       .env
     volumes:
       - /home/ubuntu/sql:/docker-entrypoint-initdb.d/
-      - mariadb-data:/var/lib/mysql
+      - /home/ubuntu/mariadb/data:/var/lib/mysql
       - /home/ubuntu/procedure:/var/run/procedure
     restart: always
 
@@ -31,8 +31,6 @@ services:
     container_name: slgi-emr-backend
     env_file:
       .env
-    environment:
-      - UPLOAD_DIR=${UPLOAD_DIR}
     volumes:
       - ${UPLOAD_DIR}:${UPLOAD_DIR}
     depends_on:
