@@ -13,16 +13,16 @@ services:
     env_file:
       .env
     volumes:
-      - /home/ubuntu/sql:/docker-entrypoint-initdb.d/
-      - /home/ubuntu/mariadb/data:/var/lib/mysql
-      - /home/ubuntu/procedure:/var/run/procedure
+      - ./mariadb/sql:/docker-entrypoint-initdb.d/
+      - mariadb-data:/var/lib/mysql
+      - ./mariadb/procedure:/var/run/procedure
     restart: always
 
   redis:
     image: ${REDIS_IMAGE}
     container_name: slgi-emr-redis
     volumes:
-      - /home/ubuntu/redis/redis.conf:/etc/redis/redis.conf
+      - ./redis/redis.conf:/etc/redis/redis.conf
     command: ["redis-server", "/etc/redis/redis.conf"]
     restart: always
 
