@@ -33,6 +33,6 @@ public interface ReservationDAO {
 
     List<ReservationListByPatient> getReservationListPerPatient(String patientUuid);
 
-    int checkReservation(Long slotId);
+    int checkReservation(@Param("doctorUuid") String doctorUuid, @Param("slotId") Long slotId);
 
 }
