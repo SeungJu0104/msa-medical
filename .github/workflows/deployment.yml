@@ -92,6 +92,7 @@ jobs:
           USERNAME=${{secrets.USERNAME}}
           JWT_ACCESS_TOKEN_SECRET=${{secrets.JWT_ACCESS_TOKEN_SECRET}}
           JWT_REFRESH_TOKEN_SECRET=${{secrets.JWT_REFRESH_TOKEN_SECRET}}
+          UPLOAD_DIR=${{ vars.UPLOAD_DIR }}
           EOF
 
       - name: docker 이미지 풀 및 재실행
