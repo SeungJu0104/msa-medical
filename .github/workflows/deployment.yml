@@ -28,13 +28,13 @@ jobs:
           cd ${{ github.workspace }}/frontend
           npm install
 
-      - name: Server 빌드
+      - name: Server 빌드 및 CI
         run: |
           cd server
           chmod +x gradlew
           ./gradlew bootJar
 
-      - name: Frontend 빌드
+      - name: Frontend 빌드 및 CI
         run: |
           cd frontend
           npm install
@@ -102,4 +102,9 @@ jobs:
           docker compose pull
           docker compose down
           docker compose up -d
+
+      - name: Docker Cleanup
+        run: |
+          docker container prune -f
+          docker image prune -a -f
   
