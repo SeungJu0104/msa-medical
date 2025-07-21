@@ -3,6 +3,8 @@ version: "3"
 volumes:
   mariadb-data:
 
+  backend-image:
+
 services:
 
   mariadb:
@@ -32,7 +34,7 @@ services:
     env_file:
       .env
     volumes:
-      - ${UPLOAD_DIR}:${UPLOAD_DIR}
+      - backend-image:${UPLOAD_DIR}
     depends_on:
       - redis
       - mariadb
