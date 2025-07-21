@@ -1,12 +1,12 @@
-import {defineStore} from "pinia";
-import {useUserStore} from "@/stores/userStore.js";
-import {reservation} from "@/reservation/util/reservation.js";
-import {errorMessage} from "@/util/errorMessage.js";
-import {common} from "@/util/common.js";
-import {computed, ref} from "vue";
-import {reception} from "@/reception/util/reception.js";
-import {status} from "@/status/util/status.js";
-import {roles} from "@/util/roles.js";
+import { reception } from "@/reception/util/reception.js";
+import { reservation } from "@/reservation/util/reservation.js";
+import { status } from "@/status/util/status.js";
+import { useUserStore } from "@/stores/userStore.js";
+import { common } from "@/util/common.js";
+import { errorMessage } from "@/util/errorMessage.js";
+import { roles } from "@/util/roles.js";
+import { defineStore } from "pinia";
+import { computed, ref } from "vue";
 
 export const useReservationListStore = defineStore('reservation', () =>  {
 

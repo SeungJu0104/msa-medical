@@ -10,7 +10,6 @@ import com.emr.slgi.reservation.enums.SlotErrorMessage;
 import com.emr.slgi.util.CommonErrorMessage;
 import com.emr.slgi.util.ReservationErrorMessage;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -21,9 +20,10 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ReservationService {

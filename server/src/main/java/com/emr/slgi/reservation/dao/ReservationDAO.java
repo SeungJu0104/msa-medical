@@ -10,10 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.emr.slgi.reservation.dto.FindReservationDate;
-import com.emr.slgi.reservation.dto.ReservationListByStaff;
-import com.emr.slgi.reservation.dto.ReservationListByPatient;
-
 @Mapper
 public interface ReservationDAO {
 

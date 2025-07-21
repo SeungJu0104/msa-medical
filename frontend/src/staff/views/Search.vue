@@ -53,15 +53,15 @@
 </template>
 
 <script setup>
-import { reactive, ref, defineEmits } from "vue"
-import { useRouter } from "vue-router"
+import '@/assets/css/icons.css'
+import '@/assets/css/search.css'
+import { usePatientViewStore } from '@/stores/patientViewStore.js'
+import { common } from "@/util/common.js"
 import { customFetch } from "@/util/customFetch.js"
 import { ENDPOINTS } from "@/util/endpoints.js"
-import { common } from "@/util/common.js"
 import { errorMessage } from "@/util/errorMessage.js"
-import '@/assets/css/search.css'
-import '@/assets/css/icons.css'
-import { usePatientViewStore } from '@/stores/patientViewStore.js'
+import { defineEmits, reactive, ref } from "vue"
+import { useRouter } from "vue-router"
   
   const store = usePatientViewStore()
   const searchVal = reactive({ input: "" })

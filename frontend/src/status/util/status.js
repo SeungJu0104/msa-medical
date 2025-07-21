@@ -1,6 +1,6 @@
-import {customFetch} from "@/util/customFetch.js";
-import {ENDPOINTS} from "@/util/endpoints.js";
-import {common} from "@/util/common.js";
+import { common } from "@/util/common.js";
+import { customFetch } from "@/util/customFetch.js";
+import { ENDPOINTS } from "@/util/endpoints.js";
 
 export const status = {
 

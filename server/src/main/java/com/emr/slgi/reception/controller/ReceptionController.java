@@ -31,9 +31,7 @@ import com.emr.slgi.util.Validate;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/reception")
@@ -62,8 +60,6 @@ public class ReceptionController {
 
         List<WaitingList> list = receptionService.getWaitingList(doctorUuid);
 
-        log.info(list.toString());
-
         return ResponseEntity.ok(
                 Map.of("waitingList", list)
         );
@@ -90,9 +86,6 @@ public class ReceptionController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ReceptionErrorMessage.RECEPTION_DATA_NOT_VALID);
         }
 
-        log.info(urs.toString());
-
-        // 나중에 상태에 맞춰 별도 함수로 분리하는 코드 리팩토링 수행하기
         if (ReceptionStatus.ON_TREATMENT.equals(ReceptionStatus.from(urs.getUpdateStatus()))) {
 
             if(receptionService.checkOnTreatmentStatusExists(urs.getDoctorUuid()) > 0) {
@@ -124,11 +117,9 @@ public class ReceptionController {
 
         if(statusChk.get("RE03")) {
 
-            // 여기서 진료 테이블 내에 INSERT문 수행하도록 treatment 쪽 서비스 연결
         	treatmentDAO.insertTreatment(urs.getUuid());
 
         }
-        log.info(result.get("updateRes").toString());
 
         messagingTemplate.convertAndSend("/sub/status", "{}");
 

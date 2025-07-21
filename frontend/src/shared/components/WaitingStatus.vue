@@ -1,7 +1,7 @@
 <script setup>
-import { computed, ref, onMounted, onBeforeUnmount } from "vue";
-import dayjs from "dayjs";
 import "@/assets/css/WaitingStatus.css";
+import dayjs from "dayjs";
+import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 
   const { status, value, date } = defineProps({
     status: Array,

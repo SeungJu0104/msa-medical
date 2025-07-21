@@ -10,7 +10,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
 
 @Getter
 @Setter
@@ -19,7 +18,7 @@ public class ReservationForm {
     @NotEmpty(message = ReservationErrorMessage.CAN_NOT_FIND_PATIENT)
     @Pattern(regexp = Validate.MEMBER_UUID_REGEX, message = ReservationErrorMessage.CAN_NOT_FIND_PATIENT)
     @Size(min = 36, max=36)
-    private String patientUuid; // 테스트용. 추후 JWT 추가되면 삭제.
+    private String patientUuid; 
 
     @NotEmpty(message = ReservationErrorMessage.CHOOSE_DOCTOR)
     @Pattern(regexp = Validate.MEMBER_UUID_REGEX, message = ReservationErrorMessage.CHOOSE_DOCTOR)
@@ -28,9 +27,6 @@ public class ReservationForm {
 
     @NotNull(message = ReservationErrorMessage.CHOOSE_DATE_TIME)
     private LocalDateTime dateTime;
-
-//    @NotNull(message = ReservationErrorMessage.CHOOSE_DATE_TIME)
-//    private OffsetDateTime dateTime;
 
     @NotEmpty(message = ReservationErrorMessage.WRITE_SYMPTOM)
     @Size(min = 1, max = 100)

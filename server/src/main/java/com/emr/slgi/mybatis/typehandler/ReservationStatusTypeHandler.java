@@ -1,6 +1,5 @@
 package com.emr.slgi.mybatis.typehandler;
 
-import com.emr.slgi.reception.enums.ReceptionStatus;
 import com.emr.slgi.reservation.enums.ReservationStatus;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;

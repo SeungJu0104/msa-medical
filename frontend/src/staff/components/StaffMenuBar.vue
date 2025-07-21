@@ -1,7 +1,7 @@
 <script setup>
-import '@/assets/css/StaffMenuBar.css'
-import '@/assets/css/icons.css'
-import {defineEmits} from 'vue'
+import '@/assets/css/StaffMenuBar.css';
+import '@/assets/css/icons.css';
+import { defineEmits } from 'vue';
 import { useRouter } from 'vue-router';
 
 const emit = defineEmits(['open']);

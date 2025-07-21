@@ -5,10 +5,9 @@ import com.emr.slgi.reservation.dto.ReservationStatusList;
 import com.emr.slgi.status.dao.StatusDAO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -16,12 +15,14 @@ public class StatusService {
 
     private final StatusDAO statusDAO;
 
+    @Transactional
     public List<ReceptionStatusList> getReceptionStatusList() {
 
         return statusDAO.getReceptionStatusList();
 
     }
 
+    @Transactional
     public List<ReservationStatusList> getReservationStatusList() {
 
         return statusDAO.getReservationStatusList();

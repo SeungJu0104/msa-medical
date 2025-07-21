@@ -1,16 +1,16 @@
 <script setup>
-import {onMounted, reactive, ref} from "vue";
-import {common} from "@/util/common.js";
-import {reservation} from "@/reservation/util/reservation.js";
-import {customFetch} from "@/util/customFetch.js";
-import {ENDPOINTS} from "@/util/endpoints.js";
-import {omit} from "lodash";
-import {errorMessage} from "@/util/errorMessage.js";
-import {REGEX_PATTERN} from "@/util/RegexPattern.js";
-import {useRoute, useRouter } from "vue-router";
-import {successMessage} from "@/util/successMessage.js";
-import '@/assets/css/AcceptPatientByStaff.css'
-import '@/assets/css/icons.css'
+import '@/assets/css/AcceptPatientByStaff.css';
+import '@/assets/css/icons.css';
+import { reservation } from "@/reservation/util/reservation.js";
+import { common } from "@/util/common.js";
+import { customFetch } from "@/util/customFetch.js";
+import { ENDPOINTS } from "@/util/endpoints.js";
+import { errorMessage } from "@/util/errorMessage.js";
+import { REGEX_PATTERN } from "@/util/RegexPattern.js";
+import { successMessage } from "@/util/successMessage.js";
+import { omit } from "lodash";
+import { onMounted, reactive, ref } from "vue";
+import { useRoute, useRouter } from "vue-router";
 
   const selectedVal = reactive({
     doctorUuid: null,
@@ -111,7 +111,6 @@ import '@/assets/css/icons.css'
       환자 접수
     </div>
     <form class="reg-accept-form" @submit.prevent>
-      <!-- 의사 선택 -->
       <div class="reg-form-row">
         <label class="reg-form-label">의사<span class="reg-required">*</span></label>
         <div class="reg-dropdown-group">
@@ -131,7 +130,6 @@ import '@/assets/css/icons.css'
           </ul>
         </div>
       </div>
-      <!-- 증상 입력 -->
       <div class="reg-form-row">
         <label class="reg-form-label">증상<span class="reg-required">*</span></label>
         <textarea
@@ -143,7 +141,6 @@ import '@/assets/css/icons.css'
           placeholder="100자 이내로 작성해주세요."
         ></textarea>
       </div>
-      <!-- 버튼 -->
       <div class="reg-form-actions">
         <button type="button" class="reg-btn-main" @click="acceptPatientByStaff">접수</button>
         <button type="button" class="reg-btn-sub" @click="goHome">취소</button>

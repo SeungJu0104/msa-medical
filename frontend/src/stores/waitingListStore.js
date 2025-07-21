@@ -1,10 +1,10 @@
-import {defineStore} from "pinia";
-import {computed, ref} from "vue";
-import {reception} from "@/reception/util/reception.js";
-import {errorMessage} from "@/util/errorMessage.js";
-import {common} from "@/util/common.js";
-import {useUserStore} from "@/stores/userStore.js";
-import {status} from "@/status/util/status.js";
+import { reception } from "@/reception/util/reception.js";
+import { status } from "@/status/util/status.js";
+import { useUserStore } from "@/stores/userStore.js";
+import { common } from "@/util/common.js";
+import { errorMessage } from "@/util/errorMessage.js";
+import { defineStore } from "pinia";
+import { computed, ref } from "vue";
 
 export const useWaitingListStore = defineStore('waitingList', () => {
 

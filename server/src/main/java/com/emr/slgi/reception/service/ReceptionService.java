@@ -3,24 +3,22 @@ package com.emr.slgi.reception.service;
 import com.emr.slgi.reception.dao.ReceptionDAO;
 import com.emr.slgi.reception.dto.ReceptionInfo;
 import com.emr.slgi.reception.dto.UpdateReceptionStatus;
-import com.emr.slgi.reception.vo.UpdateReceptionStatusForm;
 import com.emr.slgi.reception.dto.WaitingList;
 import com.emr.slgi.reception.enums.ReceptionStatus;
-import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ReceptionService {
 
     private final ReceptionDAO receptionDAO;
 
+    @Transactional
     public Map<String, ?> updateReceptionStatus (String uuid, String updateStatus) {
 
         ReceptionStatus status = ReceptionStatus.from(updateStatus);
@@ -37,6 +35,7 @@ public class ReceptionService {
 
     }
 
+    @Transactional
     public int acceptPatientByStaff(ReceptionInfo receptionInfo) {
         return receptionDAO.acceptPatientByStaff(receptionInfo);
     }
@@ -49,6 +48,7 @@ public class ReceptionService {
 
     }
 
+    @Transactional
     public int checkOnTreatmentStatusExists(String doctorUuid) {
 
         int res = receptionDAO.checkOnTreatmentStatusExists(doctorUuid);
@@ -57,10 +57,11 @@ public class ReceptionService {
 
     }
 
-    // 진료 완료 시 Status 변경
+    @Transactional
     public int changeReceptionStatusToComplete(String uuid) {
 
         return receptionDAO.changeReceptionStatusToComplete(uuid);
 
     }
+
 }

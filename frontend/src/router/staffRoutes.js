@@ -1,4 +1,4 @@
-import { roles } from "@/util/roles"; 
+import { roles } from "@/util/roles";
 
 const RegPatientByStaff = () => import ("@/staff/views/RegPatientByStaff.vue");
 const StaffMainView = () => import("@/staff/views/StaffMainView.vue");
