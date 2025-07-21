@@ -12,6 +12,11 @@ import {common} from "@/util/common.js";
   const reservationList = ref([]);
   const userInfo = computed(() => useUserStore().user);
 
+  const sortedReservationList = computed(() => {
+    const list = Array.isArray(reservationList.value) ? reservationList.value : [];
+    return list.slice().sort((a, b) => new Date(a.slot) - new Date(b.slot));
+  });
+
   const checked = (e) => {
 
     if (e.target.checked) {
@@ -25,6 +30,7 @@ import {common} from "@/util/common.js";
   const reservationListPerPatient = async () => {
 
     reservationList.value = await reservation.getReservationListPerPatient(userInfo.value.uuid);
+    console.log(reservationList.value);
 
   }
 
@@ -65,7 +71,7 @@ import {common} from "@/util/common.js";
         </thead>
         <tbody>
           <template v-if="reservationList?.length > 0">
-            <tr v-for="reservation in reservationList" :key="reservation.uuid">
+            <tr v-for="reservation in sortedReservationList" :key="reservation.uuid">
               <td><input class="patient-reservation-check-input" type="checkbox" @change="checked" :value="reservation.uuid"></td>
               <td>{{reservation.name}}</td>
               <td><span v-cloak>{{dayjs(reservation.slot).format('MM월 DD일 HH시 mm분')}}</span></td>

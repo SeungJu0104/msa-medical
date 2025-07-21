@@ -28,7 +28,7 @@ export const reservation = {
 
         try {
 
-            const response = await customFetch(ENDPOINTS.doctor.list); // 일반함수와 비동기 함수 완료 타이밍이 다르기 때문에 async와 await 추가
+            const response = await customFetch(ENDPOINTS.doctor.list);
 
             if (response.status === 200) {
                 return response.data?.list;
@@ -36,7 +36,6 @@ export const reservation = {
 
         } catch (err) {
             common.errMsg(err);
-            await useRouter().push({name: 'home'});
         }
 
     },

@@ -44,17 +44,6 @@
 
 }
 
-/* .patient-item {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-}
-
-.patient-name {
-  display: inline-block;
-  white-space: nowrap;
-} */
-
 .patient-info {
   display: flex;
   flex-direction: row;
