@@ -1,4 +1,8 @@
 version: "3"
+
+volumes:
+  mariadb-data:
+
 services:
 
   mariadb:
@@ -8,7 +12,7 @@ services:
       .env
     volumes:
       - /home/ubuntu/sql:/docker-entrypoint-initdb.d/
-      - /home/ubuntu/mariadb/data:/var/lib/mysql
+      - mariadb-data:/var/lib/mysql
       - /home/ubuntu/procedure:/var/run/procedure
     restart: always
 
