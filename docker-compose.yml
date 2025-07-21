@@ -14,7 +14,7 @@ services:
       .env
     volumes:
       - ./mariadb/sql:/docker-entrypoint-initdb.d/
-      - ./mariadb/data:/var/lib/mysql
+      - mariadb-data:/var/lib/mysql
       - ./mariadb/procedure:/var/run/procedure
     restart: always
 
