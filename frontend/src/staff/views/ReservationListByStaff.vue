@@ -84,7 +84,7 @@ import { computed, onBeforeMount, onMounted, reactive, ref } from "vue";
 
     await Promise.all([
 
-        reservationListStore.promiseAll(minDate.toISOString()),
+        reservationListStore.promiseAll(selectedDate.date.toISOString()),
         reservationListStore.getReservationStatusList()
 
       ]);
