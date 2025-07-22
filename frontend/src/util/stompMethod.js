@@ -92,7 +92,7 @@ export function subscribeChannel(client, destination, callback) {
   }
 }
 
-  export function sendMsg(client, destination, Object) {
+export function sendMsg(client, destination, Object) {
     try {
       client.publish({
         destination,
@@ -100,5 +100,18 @@ export function subscribeChannel(client, destination, callback) {
       });
     } catch (err) {
       console.error(`메시지 전송 실패 (${destination}):`, err);
+    }
+  }
+
+  
+export async function disconnectStompClient() {
+    if (stompClient && stompClient.active) {
+      try {
+        await stompClient.deactivate();
+        stompClient = null;
+        console.log("STOMP 연결 해제 완료");
+      } catch (err) {
+        console.error("STOMP 연결 해제 실패:", err);
+      }
     }
   }
