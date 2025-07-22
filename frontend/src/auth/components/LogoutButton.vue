@@ -9,6 +9,7 @@ import { getRefreshToken, removeRefreshToken } from '../refreshToken';
 import { customFetch } from '@/util/customFetch';
 import { ENDPOINTS } from '@/util/endpoints';
 import { useUserStore } from '@/stores/userStore';
+import { disconnectStompClient } from '@/util/stompMethod';
 
 const router = useRouter();
 
@@ -19,6 +20,8 @@ async function logout() {
   removeAccessToken();
   removeRefreshToken();
   useUserStore().clearUser();
+  await disconnectStompClient();
+
   router.push({ name: 'loginView' });
 }
 </script>
