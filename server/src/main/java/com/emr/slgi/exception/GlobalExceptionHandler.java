@@ -1,5 +1,6 @@
 package com.emr.slgi.exception;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -56,6 +57,13 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Map<String, Object>> handleCannotDeleteException(DataAccessResourceFailureException e) {
         Map<String, Object> map = new HashMap<>();
         map.put("message", "데이터베이스 연결에 실패했습니다. 잠시 후 다시 시도해 주세요.");
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(map);
+    }
+
+    @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
+    public ResponseEntity<Map<String, Object>> handleSQLIntegrityConstraintViolationException(SQLIntegrityConstraintViolationException e) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("message", "이미 존재하는 리소스입니다.");
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(map);
     }
 

@@ -49,7 +49,11 @@ public class AuthService {
             registerByPatientRequest.getUserid(),
             hashed
         );
-        credentialsService.create(credentialsCreateParam);
+        try {
+            credentialsService.create(credentialsCreateParam);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "이미 가입된 회원입니다.");
+        }
     }
 
     public UseridExistsResponse checkIdDuplicate(String userid) {

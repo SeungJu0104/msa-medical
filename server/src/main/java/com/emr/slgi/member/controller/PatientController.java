@@ -1,5 +1,7 @@
 package com.emr.slgi.member.controller;
 
+import java.util.Map;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -30,7 +32,7 @@ public class PatientController {
     @PostMapping
     public ResponseEntity<?> registerByStaff(@RequestBody @Valid PatientRegisterDTO patientRegisterDTO) {
         memberService.createPatient(patientRegisterDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("message", "환자가 등록되었습니다."));
     }
 
     @PreAuthorize("hasAnyRole('DOCTOR', 'NURSE')")
