@@ -27,6 +27,7 @@
 |[김찬희](https://github.com/Conut-1) | [남승주](https://github.com/SeungJu0104) | [김수영](https://github.com/suyungking) | [김영선](https://github.com/sunny950610) |
 |:---------:|:---------:|:---------:|:---------:|
 | ![](https://github.com/Conut-1.png) | ![](https://github.com/SeungJu0104.png) | ![](https://github.com/suyungking.png) | ![](https://github.com/sunny950610.png) |
+| 사용자 인증, 회원 | 예약, 접수, 대기, DevOps | 채팅, 웹소켓, 진료 | 관리자 페이지 |
 
 ## 개발 기간
 
