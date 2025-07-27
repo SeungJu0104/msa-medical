@@ -16,6 +16,12 @@
 
 ## 기능 소개
 
+## 학습 및 트러블 슈팅
+
+- (김찬희) [전역 예외 처리기](https://www.notion.so/21861813692f80f9a8e7c2dc1181ba37)
+- (남승주) [Docker Compose 수정](https://www.notion.so/Docker-Compose-23661813692f80d4931afcaa21a429f1)
+- (김수영) [STOMP 학습](https://www.notion.so/STOMP-21516ca889ab806795d9cc96b13f55b7)
+
 ## 팀원 소개
 
 |[김찬희](https://github.com/Conut-1) | [남승주](https://github.com/SeungJu0104) | [김수영](https://github.com/suyungking) | [김영선](https://github.com/sunny950610) |
