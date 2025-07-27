@@ -16,6 +16,59 @@
 
 ## 기능 소개
 
+### 사용자 인증
+
+- 아이디와 비밀번호를 사용해서 로그인합니다.
+- 액세스 토큰과 리프레시 토큰을 사용해서 사용자 인증을 합니다.
+- 리프레시 토큰은 화이트리스트 방식과 회전 방식을 사용해서 Redis에 저장됩니다.
+
+#### 백엔드 구조
+```tree/bash/shell
+📦auth
+ ┣ 📂config                       // Spring Security 등 인증 관련 설정
+ ┣ 📂controller
+ ┣ 📂dao                          // MyBatis 매퍼
+ ┣ 📂domain
+ ┣ 📂dto
+ ┣ 📂filter                       // JWT 인증 필터
+ ┣ 📂service
+ ┃ ┣ 📜AccessTokenService.java
+ ┃ ┣ 📜AuthService.java
+ ┃ ┣ 📜CredentialsService.java
+ ┃ ┗ 📜RefreshTokenService.java
+ ┗ 📂util
+   ┗ 📜JwtUtil.java
+```
+
+#### Axios 요청, 응답 인터셉터
+- 프론트엔드에서는 Axios 인터셉터를 사용해서 인증과 재시도를 자동화했습니다.
+- 재발급 도중에는 한 번의 재발급만 발생하도록 했습니다.
+<img width="1200" height="596" alt="Image" src="https://github.com/user-attachments/assets/ec5be817-90ab-4759-bc32-f818996a201b" />
+
+### 예약 및 대기
+- 의사와 일자, 시간을 선택해서 예약을 등록할 수 있습니다.
+- 예약, 대기 목록은 웹소켓을 사용해서 실시간으로 업데이트됩니다.
+
+|예약 등록|예약열|대기열|
+|:---:|:---:|:---:|
+|![Image](https://github.com/user-attachments/assets/a967de56-e561-429c-af5e-7d45f050e35f)|![Image](https://github.com/user-attachments/assets/edd1a5ae-1026-403e-bcd6-852b15e96219)|![Image](https://github.com/user-attachments/assets/72521bbe-9963-419e-94a2-8c56f1bd3b09)|
+
+### 진료
+- 진료 시에는 이미지를 추가해서 내용을 보완할 수 있습니다.
+- 진료 시에는 내원 이력이 생성됩니다.
+
+|내원 이력|진료 작성|
+|:---:|:---:|
+|![Image](https://github.com/user-attachments/assets/77a3d587-75ae-4ec5-aed1-0292a85a3c9c)|![Image](https://github.com/user-attachments/assets/6f554bbf-9403-4b9b-a5f5-755d4a6214ee)|
+
+### 채팅
+- 의료진 간에 채팅이 가능합니다.
+- 방 밖에서 채팅이 올 경우에 알림이 나타납니다.
+
+|채팅방 목록|채팅 알림|채팅창|
+|:---:|:---:|:---:|
+|![Image](https://github.com/user-attachments/assets/badec411-3950-4927-bd6d-af7eca0dfce4)|![Image](https://github.com/user-attachments/assets/b2b721d0-1793-4a64-9d30-fafeb52c2da8)|![Image](https://github.com/user-attachments/assets/e4f4203b-a86b-4b02-b1e6-7cfc877958fb)|
+
 ## 학습 및 트러블 슈팅
 
 - [전체 문서](https://www.notion.so/20861813692f814e985de7b5a3f58cda?v=20861813692f815b8222000c6818ecaa)
